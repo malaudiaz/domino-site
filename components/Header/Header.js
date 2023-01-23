@@ -1,0 +1,99 @@
+import { useContext } from "react";
+import { signOut } from "next-auth/react";
+import AppContext from "../../AppContext";
+import Image from "next/image";
+import Link from "next/link";
+import Swal from 'sweetalert2';
+
+const Header = () => {
+  const value = useContext(AppContext);
+  const t = value.state.languages.header;
+
+  const logOut = (e) => {
+    e.preventDefault();
+
+    Swal.fire({
+      title: t.logOutTitle,
+      text: t.logOutText,
+      icon: 'question',
+      showCancelButton: true,
+      allowOutsideClick: false,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: t.confirmButtonText,
+      cancelButtonText: t.cancelButtonText
+    }).then((result) => {
+      if (result.isConfirmed) {
+        signOut();
+      }
+    })    
+  }
+
+  return (
+    <header id="header" className="header fixed-top d-flex align-items-center">
+      <div className="d-flex align-items-center justify-content-between">
+        <a className="logo d-flex align-items-center">
+          <Image src="/domino.png" alt="" width="25%" height="25%" />
+          <span
+            className="d-none d-lg-block"
+            style={{ fontSize: "26px", paddingLeft: "10px" }}
+          >
+            <b>{t.title}</b>
+          </span>
+        </a>
+        <i className="bi bi-list toggle-sidebar-btn"></i>
+      </div>
+
+      <nav className="header-nav ms-auto">
+        <ul className="d-flex align-items-center">
+          <li className="nav-item dropdown pe-3">
+            <a
+              className="nav-link nav-profile d-flex align-items-center pe-0"
+              href="#"
+              data-bs-toggle="dropdown"
+            >
+              <i
+                className="bi bi-person-circle"
+                style={{ fontSize: "28px", color: "green" }}
+              ></i>
+              <span className="d-none d-md-block dropdown-toggle ps-2">
+                Pepe Pérez
+              </span>
+            </a>
+
+            <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+              <li className="dropdown-header">
+                <h6>Pepe Pérez</h6>
+                <span> - </span>
+              </li>
+              <li>
+                <hr className="dropdown-divider" />
+              </li>
+
+              <li>
+                <Link href="/users/profile">
+                  <a className="dropdown-item d-flex align-items-center">
+                    <i className="bi bi-person"></i>
+                    <span>Mi Perfil</span>
+                  </a>
+                </Link>
+              </li>
+              <li>
+                <hr className="dropdown-divider" />
+              </li>
+
+              <li onClick={(e) => logOut(e)}>
+                <a href="#" className="dropdown-item d-flex align-items-center">
+                  <i className="bi bi-box-arrow-right"></i>
+                  <span>Desconectarse</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </header>
+  );
+};
+
+export default Header;
