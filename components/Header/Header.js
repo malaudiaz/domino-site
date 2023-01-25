@@ -29,6 +29,18 @@ const Header = () => {
     })    
   }
 
+  const toggle = () => {
+    const select = (el, all = false) => {
+      el = el.trim()
+      if (all) {
+        return [...document.querySelectorAll(el)]
+      } else {
+        return document.querySelector(el)
+      }
+    }
+    select('body').classList.toggle('toggle-sidebar');
+  };      
+
   return (
     <header id="header" className="header fixed-top d-flex align-items-center">
       <div className="d-flex align-items-center justify-content-between">
@@ -41,7 +53,7 @@ const Header = () => {
             <b>{t.title}</b>
           </span>
         </a>
-        <i className="bi bi-list toggle-sidebar-btn"></i>
+        <i className="bi bi-list toggle-sidebar-btn" onClick={toggle} />
       </div>
 
       <nav className="header-nav ms-auto">
