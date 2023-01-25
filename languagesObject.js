@@ -44,10 +44,19 @@ let languagesObject = {
       confirmButtonText: "Yes",
       cancelButtonText: "No"
     },
+    notification: {
+      header: "You have 99 new notifications",
+      viewAll: "View All",
+      showAll: "Show all notifications"
+    },
     footer: {
       help: "Help",
       privacy: "Privacy",
       term: "Terms",
+    },
+    private: {
+      title: "Private",
+      h1: "Private Test Page"
     }
   },
   es: {
@@ -95,10 +104,19 @@ let languagesObject = {
       confirmButtonText: "Sí",
       cancelButtonText: "No",
     },
+    notification: {
+      header: "Usted tiene 99 nuevas notificaciones",
+      viewAll: "Ver todas",
+      showAll: "Ver todas las Notificaciones"
+    },
     footer: {
       help: "Ayuda",
       privacy: "Privacidad",
       term: "Codiciones",
+    },
+    private: {
+      title: "Privado",
+      h1: "Pagina Privada de Prueba"
     }
   },
 };

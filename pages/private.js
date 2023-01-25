@@ -1,17 +1,27 @@
 import React from "react"
+import { useContext, useEffect } from "react";
 import { getSession } from "next-auth/react";
 import Head from "next/head";
 import Layout from "../layouts/Layout";
+import AppContext from "../AppContext";
 
 export default function Page({session}) {
+  const value = useContext(AppContext);
+
+  useEffect(() => {
+    value.setLanguageSelected(session.locale);
+
+  }, [session.locale, value])
+
+  const t = value.state.languages.private;
 
   return (
     <Layout>
       <Head>
         <link rel="shortcut icon" href="/domino.ico" />
-        <title>Private</title>
+        <title>{t.private}</title>
       </Head>
-      <h1>Private Page</h1>
+      <h1>{t.h1}</h1>
       <p>{JSON.stringify(session)}</p>
     </Layout>
   )

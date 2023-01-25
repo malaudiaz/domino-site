@@ -1,18 +1,13 @@
-
 import { useRouter } from "next/router";
 import Link from "next/link";
 
 const Sidebar = () => {
   const router = useRouter();
 
-  const activeRoute = (routeName) => {
-    return router.route.indexOf(routeName) > -1;
-  };
-
   const menus = [
     {
       id: 0,
-      text: "Torneos",
+      text: "Inicio",
       iconClass: "bi bi-house-door-fill",
       path: "/",
       hasChild: false,
@@ -21,7 +16,25 @@ const Sidebar = () => {
     },
     {
       id: 1,
-      text: "Private",
+      text: "Torneos",
+      iconClass: "bi bi-trophy-fill",
+      path: "/tournaments",
+      hasChild: false,
+      parent_id: null,
+      target: null,
+    },
+    {
+      id: 2,
+      text: "Jugadores",
+      iconClass: "bi bi-people-fill",
+      path: "/players",
+      hasChild: false,
+      parent_id: null,
+      target: null,
+    },
+    {
+      id: 3,
+      text: "Prueba",
       iconClass: "bi bi-grid",
       path: "/private",
       hasChild: false,
@@ -29,7 +42,7 @@ const Sidebar = () => {
       target: null,
     },
     {
-      id: 2,
+      id: 4,
       text: "Pages",
       iconClass: "bi bi-page",
       path: "#",
@@ -38,24 +51,29 @@ const Sidebar = () => {
       target: "_blank",
     },
     {
-      id: 3,
-      text: "Blank",
+      id: 5,
+      text: "404",
       iconClass: "bi bi-page",
       path: "/blank",
       hasChild: false,
-      parent_id: 2,
+      parent_id: 4,
       target: null,
-    }
-
+    },
   ];
 
-  const mainMenu = ({ id, text, path, iconClass, hasChild, parent_id, target }, index) => {
-    
+  const mainMenu = (
+    { id, text, path, iconClass, hasChild, parent_id, target },
+    index
+  ) => {
     if (id == 0) {
       return (
         <li className="nav-item" key={index}>
           <Link href={path}>
-            <a className={router.asPath === path ? "nav-link active" : "nav-link"}>
+            <a
+              className={
+                router.asPath === path ? "nav-link active" : "nav-link"
+              }
+            >
               <i className={iconClass}></i>
               <span>{text}</span>
             </a>
@@ -68,7 +86,9 @@ const Sidebar = () => {
           <li className="nav-item" key={index}>
             <Link href={path}>
               <a
-                className={router.asPath === path ? "nav-link" : "nav-link collapsed"}
+                className={
+                  router.asPath === path ? "nav-link" : "nav-link collapsed"
+                }
                 data-bs-target={"#" + target}
                 data-bs-toggle="collapse"
               >
@@ -78,41 +98,21 @@ const Sidebar = () => {
               </a>
             </Link>
 
-
             <div id={target} className="collapse p-2">
-                <div className="bg-gray-200 py-2 collapse-inner rounded">
-                    <h6 className="collapse-header">Custom Components:</h6>
-                    <a className="collapse-item" href="buttons.html">Buttons</a>
-                    <a className="collapse-item" href="cards.html">Cards</a>
-                </div>
-            </div>
-
-
-            {/* <ul
-              id={target}
-              className="collapse "
-              data-bs-parent="#sidebar-nav"
-            >
-              {menus.map(({ text, path, parent_id, className }, idx) => {
-                if (parent_id == id) {
-                  return (
-
-
-                    
-                    <li key={idx}>
-                      <Link href={path}>
-                        <a className={router.asPath === path ? "nav-link active" : "collapse-item"}>
-                          <i className={className}></i>
-                          <span>{text}</span>
+              <div className="bg-gray-200 py-2 collapse-inner rounded">
+                {menus.map(({ text, path, parent_id }, idx) => {
+                  if (parent_id == id) {
+                    return (
+                      <Link key={idx} href={path}>
+                        <a  className={router.asPath === path ? "collapse-item active" : "collapse-item"} href="#">
+                          {text}
                         </a>
                       </Link>
-                    </li>
-                  );
-                }
-              })}
-            </ul> */}
-
-
+                    );
+                  }
+                })}
+              </div>
+            </div>
           </li>
         );
       } else {
@@ -120,7 +120,11 @@ const Sidebar = () => {
           return (
             <li className="nav-item" key={index}>
               <Link href={path}>
-                <a className={router.asPath === path ? "nav-link active" : "nav-link"}>
+                <a
+                  className={
+                    router.asPath === path ? "nav-link active" : "nav-link"
+                  }
+                >
                   <i className={iconClass}></i>
                   <span>{text}</span>
                 </a>
@@ -138,7 +142,7 @@ const Sidebar = () => {
         }
       }
     }
-  }  
+  };
 
   return (
     <aside id="sidebar" className="sidebar">

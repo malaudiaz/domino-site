@@ -1,9 +1,8 @@
 import React from "react";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import AppContext from "../AppContext";
 import { getSession } from "next-auth/react";
 import Layout from "../layouts/Layout";
-import { Row, Col } from "reactstrap";
 
 export default function Page({ session }) {
   const value = useContext(AppContext);

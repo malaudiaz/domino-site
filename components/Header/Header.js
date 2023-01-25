@@ -4,6 +4,7 @@ import AppContext from "../../AppContext";
 import Image from "next/image";
 import Link from "next/link";
 import Swal from 'sweetalert2';
+import Notification from "../Notifications/Notifications";
 
 const Header = () => {
   const value = useContext(AppContext);
@@ -58,6 +59,9 @@ const Header = () => {
 
       <nav className="header-nav ms-auto">
         <ul className="d-flex align-items-center">
+
+          <Notification />
+
           <li className="nav-item dropdown pe-3">
             <a
               className="nav-link nav-profile d-flex align-items-center pe-0"
@@ -69,14 +73,14 @@ const Header = () => {
                 style={{ fontSize: "28px", color: "green" }}
               ></i>
               <span className="d-none d-md-block dropdown-toggle ps-2">
-                Pepe Pérez
+                Wilfredo Pérez Romero
               </span>
             </a>
 
             <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
               <li className="dropdown-header">
-                <h6>Pepe Pérez</h6>
-                <span> - </span>
+                <h6>Wilfredo Pérez Romero</h6>
+                <span>Usuario</span>
               </li>
               <li>
                 <hr className="dropdown-divider" />
