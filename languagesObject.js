@@ -37,6 +37,12 @@ let languagesObject = {
       register: "Register",
       logIn: "Log in"
     },
+    breadcrumb: {
+      Home: "Home",
+      Tournaments: "Tournaments",
+      Players: "Players",
+      Private: "Private"
+    },
     header: {
       title: "Domino",
       logOutTitle: "Log Out",
@@ -96,6 +102,12 @@ let languagesObject = {
       showPassword: "Mostrar Contraseña",
       register: "Registrarte",
       logIn: "Iniciar sesión"
+    },
+    breadcrumb: {
+      Home: "Inicio",
+      Tournaments: "Torneos",
+      Players: "Jugadores",
+      Private: "Privado"
     },
     header: {
       title: "Dominó",

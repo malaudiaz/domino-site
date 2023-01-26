@@ -39,7 +39,7 @@ export default function Layout({ children }) {
       <main id="main" className="main">
         <Breadcrumb>
           <BreadcrumbItem isCurrent={router.pathname === "/"} href="/" icon="bi bi-house-door-fill">
-            Inicio
+            Home
           </BreadcrumbItem>
           {breadcrumbs &&
             breadcrumbs.map((breadcrumb) => (
