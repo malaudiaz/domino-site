@@ -7,7 +7,7 @@ import SideBar from "../components/Sidebar/SideBar";
 import Breadcrumb from "../components/Breadcrumbs/Breadcrumbs";
 import BreadcrumbItem from "../components/Breadcrumbs/BreadcrumbItem";
 
-export default function Layout({ children }) {
+export default function Layout({ children, title }) {
   const router = useRouter();
   const [breadcrumbs, setBreadcrumbs] = useState();
 
@@ -24,9 +24,9 @@ export default function Layout({ children }) {
         href,
         label: path.charAt(0).toUpperCase() + path.slice(1),
         isCurrent: index === pathArray.length - 1,
+        isDisabled: index === 0 && pathArray.length > 1
       };
     });
-
     setBreadcrumbs(breadcrumbs);
   }, [router.asPath]);
 
@@ -37,22 +37,29 @@ export default function Layout({ children }) {
       <SideBar />
 
       <main id="main" className="main">
-        <Breadcrumb>
-          <BreadcrumbItem isCurrent={router.pathname === "/"} href="/" icon="bi bi-house-door-fill">
-            Home
-          </BreadcrumbItem>
-          {breadcrumbs &&
-            breadcrumbs.map((breadcrumb) => (
-              <BreadcrumbItem
-                key={breadcrumb.href}
-                href={breadcrumb.href}
-                isCurrent={breadcrumb.isCurrent}
-              >
-                {breadcrumb.label}
-              </BreadcrumbItem>
-            ))}
-        </Breadcrumb>
-
+        <div className="pagetitle">
+          <h1>{title}</h1>
+          <Breadcrumb>
+            <BreadcrumbItem
+              isCurrent={router.pathname === "/"}
+              href="/"
+              icon="bi bi-house-door-fill"
+            >
+              Home
+            </BreadcrumbItem>
+            {breadcrumbs &&             
+              breadcrumbs.map((breadcrumb) => (
+                <BreadcrumbItem
+                  key={breadcrumb.href}
+                  href={breadcrumb.href}
+                  isCurrent={breadcrumb.isCurrent}
+                  isDisabled={breadcrumb.isDisabled}
+                >
+                  {breadcrumb.label}
+                </BreadcrumbItem>
+              ))}
+          </Breadcrumb>
+        </div>
         {children}
       </main>
 

@@ -16,10 +16,10 @@ export default function Page({session}) {
   const t = value.state.languages.private;
 
   return (
-    <Layout>
+    <Layout title={t.title}>
       <Head>
         <link rel="shortcut icon" href="/domino.ico" />
-        <title>{t.private}</title>
+        <title>{t.title}</title>
       </Head>
       <h1>{t.h1}</h1>
       <p>{JSON.stringify(session)}</p>

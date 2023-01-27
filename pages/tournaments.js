@@ -3,18 +3,25 @@ import { useContext, useEffect } from "react";
 import AppContext from "../AppContext";
 import { getSession } from "next-auth/react";
 import Layout from "../layouts/Layout";
+import Head from "next/head";
 
 export default function Tournaments({ session }) {
   const value = useContext(AppContext);
 
   useEffect(() => {
     value.setLanguageSelected(session.locale);
+  }, [session.locale, value]);
 
-  }, [session.locale, value])
+  const t = value.state.languages.tournaments;
 
-  const t = value.state.languages.header;
-
-  return <Layout></Layout>;
+  return (
+    <Layout title={t.title}>
+      <Head>
+        <link rel="shortcut icon" href="/domino.ico" />
+        <title>{t.title}</title>
+      </Head>
+    </Layout>
+  );
 }
 
 export const getServerSideProps = async (context) => {

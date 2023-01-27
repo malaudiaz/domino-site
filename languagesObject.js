@@ -41,7 +41,9 @@ let languagesObject = {
       Home: "Home",
       Tournaments: "Tournaments",
       Players: "Players",
-      Private: "Private"
+      Private: "Private",
+      Forms: "Forms",
+      Test: "Test"
     },
     header: {
       title: "Domino",
@@ -59,6 +61,15 @@ let languagesObject = {
       help: "Help",
       privacy: "Privacy",
       term: "Terms",
+    },
+    home: {
+      title: "Home"
+    },
+    tournaments: {
+      title: "Tournaments",
+    },
+    players: {
+      title: "Players",
     },
     private: {
       title: "Private",
@@ -107,7 +118,9 @@ let languagesObject = {
       Home: "Inicio",
       Tournaments: "Torneos",
       Players: "Jugadores",
-      Private: "Privado"
+      Private: "Privado",
+      Forms: "Formularios",
+      Test: "Prueba"
     },
     header: {
       title: "Dominó",
@@ -125,6 +138,15 @@ let languagesObject = {
       help: "Ayuda",
       privacy: "Privacidad",
       term: "Codiciones",
+    },
+    home: {
+      title: "Inicio"
+    },
+    tournaments: {
+      title: "Torneos",
+    },
+    players: {
+      title: "Jugadores",
     },
     private: {
       title: "Privado",

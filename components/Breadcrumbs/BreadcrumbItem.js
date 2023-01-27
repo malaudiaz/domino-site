@@ -6,9 +6,9 @@ const BreadcrumbItem = ({ children, href, ...props }) => {
   const value = useContext(AppContext);
   const t = value.state.languages.breadcrumb;
 
-  if (props.isCurrent) {
+  if (props.isCurrent || props.isDisabled) {
     return (
-      <li className={props.isCurrent ? "active" : ""}>
+      <li className="breadcrumb-item active">
         <a>
           <i className={props.icon}></i> {t[children]}
         </a>
@@ -16,7 +16,7 @@ const BreadcrumbItem = ({ children, href, ...props }) => {
     );
   } else {
     return (
-      <li className={props.isCurrent ? "active" : ""}>
+      <li className="breadcrumb-item">
         <Link href={href} passHref>
           <a>
             <i className={props.icon}></i> {t[children]}

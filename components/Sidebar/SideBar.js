@@ -8,7 +8,7 @@ const Sidebar = () => {
     {
       id: 0,
       text: "Inicio",
-      iconClass: "bi bi-house-door-fill",
+      iconClass: "bi bi-house-door",
       path: "/",
       hasChild: false,
       parent_id: null,
@@ -17,7 +17,7 @@ const Sidebar = () => {
     {
       id: 1,
       text: "Torneos",
-      iconClass: "bi bi-trophy-fill",
+      iconClass: "bi bi-trophy",
       path: "/tournaments",
       hasChild: false,
       parent_id: null,
@@ -26,7 +26,7 @@ const Sidebar = () => {
     {
       id: 2,
       text: "Jugadores",
-      iconClass: "bi bi-people-fill",
+      iconClass: "bi bi-people",
       path: "/players",
       hasChild: false,
       parent_id: null,
@@ -43,8 +43,8 @@ const Sidebar = () => {
     },
     {
       id: 4,
-      text: "Pages",
-      iconClass: "bi bi-page",
+      text: "Forms",
+      iconClass: "bi bi-journal-text",
       path: "#",
       hasChild: true,
       parent_id: null,
@@ -52,9 +52,9 @@ const Sidebar = () => {
     },
     {
       id: 5,
-      text: "404",
-      iconClass: "bi bi-page",
-      path: "/blank",
+      text: "Test",
+      iconClass: "",
+      path: "/forms/test",
       hasChild: false,
       parent_id: 4,
       target: null,
@@ -71,7 +71,9 @@ const Sidebar = () => {
           <Link href={path}>
             <a
               className={
-                router.asPath === path ? "nav-link active" : "nav-link"
+                router.asPath === path
+                  ? "nav-link active"
+                  : "nav-link collapsed"
               }
             >
               <i className={iconClass}></i>
@@ -84,35 +86,40 @@ const Sidebar = () => {
       if (hasChild) {
         return (
           <li className="nav-item" key={index}>
-            <Link href={path}>
-              <a
-                className={
-                  router.asPath === path ? "nav-link" : "nav-link collapsed"
-                }
-                data-bs-target={"#" + target}
-                data-bs-toggle="collapse"
-              >
-                <i className={iconClass}></i>
-                <span>{text}</span>
-                <i className="bi bi-chevron-right ms-auto"></i>
-              </a>
-            </Link>
+            <a
+              className={
+                router.asPath === path
+                  ? "nav-link collapsed"
+                  : "nav-link collapsed"
+              }
+              data-bs-target={"#" + target}
+              data-bs-toggle="collapse"
+            >
+              <i className={iconClass}></i>
+              <span>{text}</span>
+              <i className="bi bi-chevron-right ms-auto"></i>
+            </a>
 
-            <div id={target} className="collapse p-2">
-              <div className="bg-gray-200 py-2 collapse-inner rounded">
-                {menus.map(({ text, path, parent_id }, idx) => {
-                  if (parent_id == id) {
-                    return (
-                      <Link key={idx} href={path}>
-                        <a  className={router.asPath === path ? "collapse-item active" : "collapse-item"} href="#">
-                          {text}
+            <ul
+              id={target}
+              className="nav-content collapse "
+              data-bs-parent="#sidebar-nav"
+            >
+              {menus.map(({ text, path, parent_id }, idx) => {
+                if (parent_id == id) {
+                  return (
+                    <li key={idx}>
+                      <Link href={path}>
+                        <a href="#">
+                          <i className="bi bi-circle"></i>
+                          <span>{text}</span>
                         </a>
                       </Link>
-                    );
-                  }
-                })}
-              </div>
-            </div>
+                    </li>
+                  );
+                }
+              })}
+            </ul>
           </li>
         );
       } else {
@@ -122,7 +129,9 @@ const Sidebar = () => {
               <Link href={path}>
                 <a
                   className={
-                    router.asPath === path ? "nav-link active" : "nav-link"
+                    router.asPath === path
+                      ? "nav-link active"
+                      : "nav-link collapsed"
                   }
                 >
                   <i className={iconClass}></i>
