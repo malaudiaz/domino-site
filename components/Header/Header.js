@@ -6,7 +6,8 @@ import Link from "next/link";
 import Swal from 'sweetalert2';
 import Notification from "../Notifications/Notifications";
 
-const Header = () => {
+const Header = ({session}) => {
+  
   const value = useContext(AppContext);
   const t = value.state.languages.header;
 
@@ -68,26 +69,29 @@ const Header = () => {
               href="#"
               data-bs-toggle="dropdown"
             >
-              <i
-                className="bi bi-person-circle"
-                style={{ fontSize: "28px", color: "green" }}
-              ></i>
+              <Image
+                src={"/user-vector.jpg"}
+                alt="Perfil"
+                width="100%"
+                height="100%"
+                className="rounded-circle"
+              />              
               <span className="d-none d-md-block dropdown-toggle ps-2">
-                Wilfredo Pérez Romero
+                {session.firstName}
               </span>
             </a>
 
             <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
               <li className="dropdown-header">
-                <h6>Wilfredo Pérez Romero</h6>
-                <span>Usuario</span>
+                <h6>{session.firstName}</h6>
+                <span>{session.lastName}</span>
               </li>
               <li>
                 <hr className="dropdown-divider" />
               </li>
 
               <li>
-                <Link href="/users/profile">
+                <Link href="/profile">
                   <a className="dropdown-item d-flex align-items-center">
                     <i className="bi bi-person"></i>
                     <span>Mi Perfil</span>

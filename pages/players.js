@@ -15,7 +15,7 @@ export default function Players({ session }) {
   const t = value.state.languages.players;
 
   return (
-    <Layout title={t.title}>
+    <Layout session={session} title={t.title}>
       <Head>
         <link rel="shortcut icon" href="/domino.ico" />
         <title>{t.title}</title>

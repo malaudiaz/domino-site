@@ -1,70 +1,86 @@
-import NextAuth from "next-auth"
-import CredentialsProvider from 'next-auth/providers/credentials';
-
-const isCorrectCredentials = credentials =>
-  credentials.username === process.env.NEXTAUTH_USERNAME &&
-  credentials.password === process.env.NEXTAUTH_PASSWORD
+import NextAuth from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import axios from "axios";
 
 export default NextAuth({
   // Configure one or more authentication providers
 
   providers: [
     CredentialsProvider({
-      name: 'Credenciales',
+      name: "Credenciales",
       credentials: {
         username: {
-          label: 'Usuario',
-          type: 'text',
-          placeholder: 'Nombre de Usuario',
+          label: "Usuario",
+          type: "text",
+          placeholder: "Nombre de Usuario",
         },
         password: {
-          label: 'Password',
-          type: 'password',
-          placeholder: "Contraseña"
+          label: "Password",
+          type: "password",
+          placeholder: "Contraseña",
         },
       },
       async authorize(credentials) {
-        if (isCorrectCredentials(credentials)) {
+        const url = `${process.env.API_URL}login`;
 
-          const user = { id: 26, name: "jhon lennon", email: "lennon@example.com", jwt: "Bearer u234ssdas.sdasdas-adsadas,asdasda", locale: credentials.locale}
+        const response = await axios.post(
+          url,
+          {
+            username: credentials.username,
+            password: credentials.password,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json",
+              "accept-Language": credentials.locale
+            }
+          }
+        );
+
+        if (response.status == 200) {
+          // expire in 30 days
+
+          const user = {
+            id: response.data.user_id,
+            firstName: response.data.first_name,
+            lastName: response.data.last_name,
+            token: response.data.token,
+            token_type: response.data.token_type,
+            locale: credentials.locale,
+          };
 
           if (user) {
             // return user
-            return Promise.resolve(user)
+            return Promise.resolve(user);
           } else {
             // return null
-            return Promise.resolve(null)
-          }          
-        }
-        // return null;
-        return Promise.resolve(null)
+            return Promise.resolve(null);
+          }
+        } 
+        
+        return Promise.resolve();
       },
     }),
-  ],  
-  // theme: {
-  //   colorScheme: "light",
-  // },
+  ],
   pages: {
-    signIn: '/login',
-//    signOut: '/signout',
-  },  
-
+    signIn: "/login",
+  },
+  site: process.env.NEXTAUTH_URL || "http://localhost:3000",
   callbacks: {
     jwt: async ({ token, user }) => {
       if (user) {
         token = user;
       }
-      return token
+      return token;
     },
     session: (seshProps) => {
       return seshProps.token;
     },
   },
-  secret: 'my-secret',
+  secret: process.env.TOKEN_SECRET,
   jwt: {
-    secret: 'my-secret',
+    secret: process.env.TOKEN_SECRET,
     maxAge: 60 * 60 * 24 * 30,
-  }
+  },
 });
-
-// export default NextAuth(options)

@@ -3,11 +3,12 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Header from "../components/Header/Header";
 import SideBar from "../components/Sidebar/SideBar";
+import Footer from "../components/Footers/Footer";
 
 import Breadcrumb from "../components/Breadcrumbs/Breadcrumbs";
 import BreadcrumbItem from "../components/Breadcrumbs/BreadcrumbItem";
 
-export default function Layout({ children, title }) {
+export default function Layout({ children, session, title }) {
   const router = useRouter();
   const [breadcrumbs, setBreadcrumbs] = useState();
 
@@ -32,7 +33,7 @@ export default function Layout({ children, title }) {
 
   return (
     <>
-      <Header />
+      <Header session={session} />
 
       <SideBar />
 
@@ -63,7 +64,7 @@ export default function Layout({ children, title }) {
         {children}
       </main>
 
-      {/* <Footer/> */}
+      <Footer/>
     </>
   );
 }

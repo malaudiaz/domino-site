@@ -13,7 +13,7 @@ export default function AuthFooter() {
   };
 
   return (
-    <footer className="bg-white p-4 text-muted mt-auto">
+    <footer className="bg-white p-3 text-muted mt-auto">
       <div className="container">
         <div className="row">
           <div className="col-4">

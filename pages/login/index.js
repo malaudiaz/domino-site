@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import AppContext from "../../AppContext";
 import Link from "next/link";
+import Swal from "sweetalert2";
 
 import {
   Label,
@@ -61,13 +62,23 @@ export default function Login(session) {
     });
 
     if (validate.username === "success" && validate.password === "success") {
-      await signIn("credentials", {
+      const res = await signIn("credentials", {
         redirect: false,
         locale: languageSelected,
         username: values.username,
         password: values.password,
       });
-      router.push("/");
+
+      if (res?.error) {
+        Swal.fire({
+          icon: "error",
+          title: t.logIn,
+          text: t.logInFail,
+          showConfirmButton: true,
+        });
+      } else {
+        router.push("/");
+      }
     }
   };
 
@@ -125,6 +136,7 @@ export default function Login(session) {
                         type={values.showPassword ? "text" : "password"}
                         name="password"
                         placeholder={t.passwordLabel}
+                        autoComplete="off"
                         onChange={handleChange("password")}
                         invalid={validate.password === "error"}
                         value={values.password}
@@ -144,12 +156,12 @@ export default function Login(session) {
                   </FormGroup>
                 </Col>
                 <div className="text-center">
-                  <Button type="submit" className="my-4" color="primary">
+                  <Button type="submit" className="my-2" color="primary">
                     <b>{t.logIn}</b>
                   </Button>
                 </div>
               </Form>
-              <Row className="mt-3">
+              <Row className="mt-2">
                 <Col xs="6">
                   <Link href="/">
                     <a className="text-decoration-none">

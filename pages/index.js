@@ -15,11 +15,41 @@ export default function Page({ session }) {
   const t = value.state.languages.home;
 
   return (
-    <Layout title={t.title}>
+    <Layout session={session} title={t.title}>
       <Head>
         <link rel="shortcut icon" href="/domino.ico" />
         <title>{t.title}</title>
       </Head>
+
+      <div className="row">
+        <div className="col-lg-8">
+          <div className="row">
+            <div className="col-12">
+              <div className="card">
+                <div className="card-body">
+                  <h5 className="card-title">
+                    Reports <span>/Today</span>
+                  </h5>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="col-lg-4">
+          <div className="card">
+            <div className="card-body pb-0">
+              <h5 className="card-title">Budget Report</h5>
+            </div>
+          </div>
+          <div className="card">
+            <div className="card-body pb-0">
+              <h5 className="card-title">
+                News &amp; Updates
+              </h5>
+            </div>
+          </div>
+        </div>
+      </div>
     </Layout>
   );
 }
