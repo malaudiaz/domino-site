@@ -52,7 +52,7 @@ export default function AuthFooter() {
         </div>
         <hr />
         <div className="text-center">
-          <p className="fs-7">Domino &copy; 2023</p>
+          <p className="fs-7">&copy; 2023, Dominó</p>
         </div>
       </div>
     </footer>
