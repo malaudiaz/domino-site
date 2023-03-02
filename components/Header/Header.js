@@ -1,15 +1,19 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { signOut } from "next-auth/react";
 import AppContext from "../../AppContext";
 import Image from "next/image";
 import Link from "next/link";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 import Notification from "../Notifications/Notifications";
 
-const Header = ({session}) => {
-  
+const Header = ({ session }) => {
   const value = useContext(AppContext);
   const t = value.state.languages.header;
+  const [avatar, setAvatar] = useState(null);
+
+  useEffect(() => {
+    setAvatar(sessionStorage.getItem("avatar"));
+  }, []);
 
   const logOut = (e) => {
     e.preventDefault();
@@ -17,31 +21,31 @@ const Header = ({session}) => {
     Swal.fire({
       title: t.logOutTitle,
       text: t.logOutText,
-      icon: 'question',
+      icon: "question",
       showCancelButton: true,
       allowOutsideClick: false,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
       confirmButtonText: t.confirmButtonText,
-      cancelButtonText: t.cancelButtonText
+      cancelButtonText: t.cancelButtonText,
     }).then((result) => {
       if (result.isConfirmed) {
         signOut();
       }
-    })    
-  }
+    });
+  };
 
   const toggle = () => {
     const select = (el, all = false) => {
-      el = el.trim()
+      el = el.trim();
       if (all) {
-        return [...document.querySelectorAll(el)]
+        return [...document.querySelectorAll(el)];
       } else {
-        return document.querySelector(el)
+        return document.querySelector(el);
       }
-    }
-    select('body').classList.toggle('toggle-sidebar');
-  };      
+    };
+    select("body").classList.toggle("toggle-sidebar");
+  };
 
   return (
     <header id="header" className="header fixed-top d-flex align-items-center">
@@ -60,7 +64,6 @@ const Header = ({session}) => {
 
       <nav className="header-nav ms-auto">
         <ul className="d-flex align-items-center">
-
           <Notification />
 
           <li className="nav-item dropdown pe-3">
@@ -70,12 +73,12 @@ const Header = ({session}) => {
               data-bs-toggle="dropdown"
             >
               <Image
-                src={sessionStorage.getItem('avatar')}
+                src={avatar ? avatar : "/user-vector.jpg"}
                 alt="Perfil"
-                width="100%"
-                height="100%"
+                width={50}
+                height={50}
                 className="rounded-circle"
-              />              
+              />
               <span className="d-none d-md-block dropdown-toggle ps-2">
                 {session.firstName}
               </span>

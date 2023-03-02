@@ -1,5 +1,5 @@
 import React from "react";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import AppContext from "../AppContext";
 import { getSession } from "next-auth/react";
 import Layout from "../layouts/Layout";
@@ -10,12 +10,18 @@ import Link from "next/link";
 export default function Page({ session }) {
   const value = useContext(AppContext);
 
+  const [like, setLike] = useState(false);
+
   useEffect(() => {
     value.setLanguageSelected(session.locale);
-    sessionStorage.setItem('avatar', session.photo);
+    sessionStorage.setItem("avatar", session.photo);
   }, [session.locale, value]);
 
   const t = value.state.languages.home;
+
+  const toggle = () => {
+    setLike(!like);
+  };
 
   return (
     <Layout session={session} title={t.title}>
@@ -126,44 +132,38 @@ export default function Page({ session }) {
 
                     <div className="d-flex justify-content-between align-items-center">
                       <div className="d-flex flex-row icons d-flex align-items-center">
-                        <button
-                          type="button"
-                          style={{ border: "none", background: "transparent" }}
-                        >
+                        <div className="btn-like" onClick={() => toggle()}>
                           <svg
                             aria-label="Me gusta"
-                            color="rgb(38, 38, 38)"
-                            fill="rgb(38, 38, 38)"
-                            height="24"
-                            role="img"
-                            viewBox="0 0 24 24"
-                            width="24"
-                          >
-                            <path d="M16.792 3.904A4.989 4.989 0 0 1 21.5 9.122c0 3.072-2.652 4.959-5.197 7.222-2.512 2.243-3.865 3.469-4.303 3.752-.477-.309-2.143-1.823-4.303-3.752C5.141 14.072 2.5 12.167 2.5 9.122a4.989 4.989 0 0 1 4.708-5.218 4.21 4.21 0 0 1 3.675 1.941c.84 1.175.98 1.763 1.12 1.763s.278-.588 1.11-1.766a4.17 4.17 0 0 1 3.679-1.938m0-2a6.04 6.04 0 0 0-4.797 2.127 6.052 6.052 0 0 0-4.787-2.127A6.985 6.985 0 0 0 .5 9.122c0 3.61 2.55 5.827 5.015 7.97.283.246.569.494.853.747l1.027.918a44.998 44.998 0 0 0 3.518 3.018 2 2 0 0 0 2.174 0 45.263 45.263 0 0 0 3.626-3.115l.922-.824c.293-.26.59-.519.885-.774 2.334-2.025 4.98-4.32 4.98-7.94a6.985 6.985 0 0 0-6.708-7.218Z"></path>
-                          </svg>
-                        </button>
-                        <button
-                          type="button"
-                          style={{ border: "none", background: "transparent" }}
-                        >
-                          <svg
-                            aria-label="Comentar"
-                            color="rgb(38, 38, 38)"
-                            fill="rgb(38, 38, 38)"
-                            height="24"
-                            role="img"
-                            viewBox="0 0 24 24"
-                            width="24"
+                            width="20"
+                            height="20"
+                            fill={like ? "red" : "rgb(38, 38, 38)"}
+                            className="bi bi-heart-fill"
+                            viewBox="0 0 16 16"
                           >
                             <path
-                              d="M20.656 17.008a9.993 9.993 0 1 0-3.59 3.615L22 22Z"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeLinejoin="round"
-                              strokeWidth="2"
-                            ></path>
+                              fill-rule="evenodd"
+                              d={
+                                like
+                                  ? "M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
+                                  : "m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"
+                              }
+                            />
                           </svg>
-                        </button>
+                        </div>
+
+                        <div className="btn-comment ms-2">
+                          <svg
+                            aria-label="Comentar"
+                            width="20"
+                            height="20"
+                            fill="currentColor"
+                            class="bi bi-chat"
+                            viewBox="0 0 16 16"
+                          >
+                            <path d="M2.678 11.894a1 1 0 0 1 .287.801 10.97 10.97 0 0 1-.398 2c1.395-.323 2.247-.697 2.634-.893a1 1 0 0 1 .71-.074A8.06 8.06 0 0 0 8 14c3.996 0 7-2.807 7-6 0-3.192-3.004-6-7-6S1 4.808 1 8c0 1.468.617 2.83 1.678 3.894zm-.493 3.905a21.682 21.682 0 0 1-.713.129c-.2.032-.352-.176-.273-.362a9.68 9.68 0 0 0 .244-.637l.003-.01c.248-.72.45-1.548.524-2.319C.743 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.52.263-1.639.742-3.468 1.105z" />
+                          </svg>
+                        </div>
                       </div>
                       <div className="d-flex flex-row fw-bold muted-color align-items-center">
                         <span style={{ fontSize: "12px" }}>12 comentarios</span>

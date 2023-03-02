@@ -1042,3 +1042,15 @@ h6 {
 .muted-color{color: #a09c9c;font-size: 13px}
 .ellipsis i{margin-top: 3px;cursor: pointer}
 .icons i{font-size: 25px}
+
+.btn-like .btn-comment {
+  cursor: pointer;
+}
+
+.btn-like:hover {
+  transform: scale(0.8);
+}
+
+.icon-red {
+  color: red;
+}
