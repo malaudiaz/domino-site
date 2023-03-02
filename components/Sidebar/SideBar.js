@@ -16,8 +16,9 @@ const Sidebar = () => {
     },
     {
       id: 1,
-      text: "Torneos",
-      iconClass: "bi bi-trophy",
+      text: "Eventos",
+      // iconClass: "bi bi-trophy",
+      iconClass: "bi bi-calendar3",
       path: "/tournaments",
       hasChild: false,
       parent_id: null,

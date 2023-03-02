@@ -70,7 +70,7 @@ const Header = ({session}) => {
               data-bs-toggle="dropdown"
             >
               <Image
-                src={"/user-vector.jpg"}
+                src={sessionStorage.getItem('avatar')}
                 alt="Perfil"
                 width="100%"
                 height="100%"

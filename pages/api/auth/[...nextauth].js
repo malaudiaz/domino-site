@@ -45,6 +45,7 @@ export default NextAuth({
             id: response.data.user_id,
             firstName: response.data.first_name,
             lastName: response.data.last_name,
+            photo: response.data.photo,
             token: response.data.token,
             token_type: response.data.token_type,
             locale: credentials.locale,

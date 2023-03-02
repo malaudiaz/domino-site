@@ -12,6 +12,7 @@ export default function Page({ session }) {
 
   useEffect(() => {
     value.setLanguageSelected(session.locale);
+    sessionStorage.setItem('avatar', session.photo);
   }, [session.locale, value]);
 
   const t = value.state.languages.home;
@@ -31,11 +32,12 @@ export default function Page({ session }) {
                 <div className="card">
                   <div className="d-flex justify-content-between p-2 px-3">
                     <div className="d-flex flex-row align-items-center">
-                      <img
+                      <Image
                         alt=""
-                        src="/UXdKE3o.jpeg"
-                        width="50"
-                        className="rounded-circle"
+                        src={"/UXdKE3o.jpeg"}
+                        width={40}
+                        height={40}
+                        className="rounded-image"
                       />
                       <div className="d-flex flex-column ms-2">
                         <span className="fw-bold">Jeanette Sun</span>
@@ -43,13 +45,81 @@ export default function Page({ session }) {
                       </div>
                     </div>
                     <div className="d-flex flex-row mt-1 ellipsis">
-                      <small className="me-2">20 mins</small>
+                      <small className="me-2">20 min</small>
                       <i className="bi bi-three-dots"></i>
                     </div>
                   </div>
-                  <img src="/dance.jpg" className="img-fluid" alt="..."></img>
+
+                  <div
+                    id="carouselPostIndicators"
+                    className="carousel slide"
+                    data-bs-touch="false"
+                    data-bs-interval="false"
+                  >
+                    <div className="carousel-indicators">
+                      <button
+                        type="button"
+                        data-bs-target="#carouselPostIndicators"
+                        data-bs-slide-to="0"
+                        className="active"
+                        aria-current="true"
+                        aria-label="Slide 1"
+                      ></button>
+                      <button
+                        type="button"
+                        data-bs-target="#carouselPostIndicators"
+                        data-bs-slide-to="1"
+                        aria-label="Slide 2"
+                      ></button>
+                    </div>
+                    <div className="carousel-inner">
+                      <div className="carousel-item active">
+                        <Image
+                          alt=""
+                          src={"/dance.jpg"}
+                          width={1000}
+                          height={1000}
+                          className="d-block w-100 h-100"
+                        />
+                      </div>
+                      <div className="carousel-item">
+                        <Image
+                          alt=""
+                          src={"/marc-kleen-H02BVUa2IVY-unsplash.jpg"}
+                          width={1000}
+                          height={1000}
+                          className="d-block w-100 h-100"
+                        />
+                      </div>
+                    </div>
+                    <button
+                      className="carousel-control-prev"
+                      type="button"
+                      data-bs-target="#carouselPostIndicators"
+                      data-bs-slide="prev"
+                    >
+                      <span
+                        className="carousel-control-prev-icon"
+                        aria-hidden="true"
+                      ></span>
+                      <span className="visually-hidden">Previous</span>
+                    </button>
+                    <button
+                      className="carousel-control-next"
+                      type="button"
+                      data-bs-target="#carouselPostIndicators"
+                      data-bs-slide="next"
+                    >
+                      <span
+                        className="carousel-control-next-icon"
+                        aria-hidden="true"
+                      ></span>
+                      <span className="visually-hidden">Next</span>
+                    </button>
+                  </div>
+
                   <div className="p-2">
-                    <p class="text-justify">
+                    <p className="text-justify">
                       Lorem ipsum dolor sit amet, consectetur adipiscing elit,
                       sed do eiusmod tempor incididunt.
                     </p>
@@ -89,14 +159,14 @@ export default function Page({ session }) {
                               d="M20.656 17.008a9.993 9.993 0 1 0-3.59 3.615L22 22Z"
                               fill="none"
                               stroke="currentColor"
-                              stroke-linejoin="round"
-                              stroke-width="2"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
                             ></path>
                           </svg>
                         </button>
                       </div>
-                      <div className="d-flex flex-row muted-color">
-                        <span>12 comentarios</span>
+                      <div className="d-flex flex-row fw-bold muted-color align-items-center">
+                        <span style={{ fontSize: "12px" }}>12 comentarios</span>
                       </div>
                     </div>
                     <div className="d-flex justify-content-between align-items-center">
@@ -104,17 +174,22 @@ export default function Page({ session }) {
                         className="d-flex flex-row icons d-flex align-items-center"
                         style={{ paddingTop: "5px", paddingLeft: "5px" }}
                       >
-                        <span className="fw-bold">35 Me gusta</span>
+                        <span className="fw-bold" style={{ fontSize: "12px" }}>
+                          35 Me gusta
+                        </span>
                       </div>
                     </div>
                     <div className="comments">
                       <div className="d-flex flex-row mt-2 mb-2">
-                        <img
-                          alt=""
-                          src="/9AZ2QX1.jpg"
-                          width="40"
-                          className="rounded-image"
-                        />
+                        <div className="d-flex flex-column">
+                          <Image
+                            alt=""
+                            src={"/9AZ2QX1.jpg"}
+                            width={40}
+                            height={40}
+                            className="rounded-image"
+                          />
+                        </div>
                         <div className="d-flex flex-column ms-2">
                           <span className="name">Daniel Frozer</span>{" "}
                           <small className="comment-text">
@@ -122,36 +197,91 @@ export default function Page({ session }) {
                           </small>
                           <div className="d-flex flex-row align-items-center status">
                             {" "}
-                            <small style={{fontWeight: "bold", cursor: "pointer"}}>Me gusta</small> 
-                            <small style={{fontWeight: "bold", cursor: "pointer"}}>Responder</small>{" "}
-                            <small style={{fontWeight: "bold", cursor: "pointer"}}>18 mins</small>{" "}
+                            <small
+                              style={{
+                                fontSize: "10px",
+                                fontWeight: "bold",
+                                cursor: "pointer",
+                              }}
+                            >
+                              Me gusta
+                            </small>
+                            <small
+                              style={{
+                                fontSize: "10px",
+                                fontWeight: "bold",
+                                cursor: "pointer",
+                              }}
+                            >
+                              Responder
+                            </small>{" "}
+                            <small
+                              style={{
+                                fontSize: "10px",
+                                fontWeight: "bold",
+                                cursor: "pointer",
+                              }}
+                            >
+                              18 min
+                            </small>{" "}
                           </div>
                         </div>
                       </div>
                       <div className="d-flex flex-row mt-2 mb-4">
-                        <img
-                          alt=""
-                          src="/1YrCKa1.jpg"
-                          width="40"
-                          className="rounded-image"
-                        />
+                        <div className="d-flex flex-column">
+                          <Image
+                            alt=""
+                            src={"/1YrCKa1.jpg"}
+                            width={40}
+                            height={40}
+                            className="rounded-image"
+                          />
+                        </div>
                         <div className="d-flex flex-column ms-2">
-                          {" "}
-                          <span className="name">Elizabeth goodmen</span>{" "}
-                          <small className="comment-text">
-                            Thanks for sharing!
-                          </small>
+                          <div className="d-flex flex-column">
+                            <span className="name">Elizabeth goodmen</span>
+                            <small className="comment-text">
+                              Thanks for sharing! bla, bla, bla, bla
+                            </small>
+                          </div>
                           <div className="d-flex flex-row align-items-center status">
-                            {" "}
-                            <small style={{fontWeight: "bold", cursor: "pointer"}}>Me gusta</small> 
-                            <small style={{fontWeight: "bold", cursor: "pointer"}}>Responder</small>{" "}
-                            <small style={{fontWeight: "bold", cursor: "pointer"}}>8 h</small>{" "}
+                            <small
+                              style={{
+                                fontSize: "10px",
+                                fontWeight: "bold",
+                                cursor: "pointer",
+                              }}
+                            >
+                              Me gusta
+                            </small>
+                            <small
+                              style={{
+                                fontSize: "10px",
+                                fontWeight: "bold",
+                                cursor: "pointer",
+                              }}
+                            >
+                              Responder
+                            </small>{" "}
+                            <small
+                              style={{
+                                fontSize: "10px",
+                                fontWeight: "bold",
+                                cursor: "pointer",
+                              }}
+                            >
+                              8 h
+                            </small>
                           </div>
                         </div>
                       </div>
                       <div className="d-flex flex-row mt-2 mb-4 ps-2">
                         <Link href={"#"}>
-                          <small style={{fontWeight: "bold", cursor: "pointer"}}>Ver más comentarios</small> 
+                          <small
+                            style={{ fontWeight: "bold", cursor: "pointer" }}
+                          >
+                            Ver más comentarios
+                          </small>
                         </Link>
                       </div>
                       <div className="comment-input">
@@ -173,64 +303,94 @@ export default function Page({ session }) {
             </div>
           </div>
           <div className="col-lg-4">
-            <div className="card">
-              <div className="card-body pb-0">
-                <h5 className="card-title">Sugerencias para tí</h5>
+            <div className="row justify-content-center">
+              <div className="col-8">
+                <div className="card">
+                  <div className="card-body pb-0">
+                    <h5 className="card-title">Sugerencias para tí</h5>
 
-                <div className="d-flex justify-content-between align-items-center mb-3">
-                  <div className="d-flex flex-row icons d-flex align-items-center">
-                    <img
-                      alt=""
-                      src="/9AZ2QX1.jpg"
-                      width="20"
-                      className="rounded-image"
-                    />
-                    <div className="d-flex flex-column ms-2">
-                      <span className="name">Daniel Frozer</span>
-                      <small className="comment-text">Sugerencia para tí</small>
+                    <div className="d-flex justify-content-between align-items-center mb-3">
+                      <div className="d-flex flex-row icons d-flex align-items-center">
+                        <Image
+                          alt=""
+                          src={"/9AZ2QX1.jpg"}
+                          width={40}
+                          height={40}
+                          className="rounded-image"
+                        />
+                        <div className="d-flex flex-column ms-2">
+                          <span className="name">Daniel Frozer</span>
+                          <small
+                            className="comment-text muted-color"
+                            style={{ fontSize: "10px" }}
+                          >
+                            Sugerencia para tí
+                          </small>
+                        </div>
+                      </div>
+                      <div
+                        className="d-flex flex-row muted-color fw-bold"
+                        style={{ fontSize: "10px" }}
+                      >
+                        <Link href={"#"}>Seguir</Link>
+                      </div>
+                    </div>
+
+                    <div className="d-flex justify-content-between align-items-center mb-3">
+                      <div className="d-flex flex-row icons d-flex align-items-center">
+                        <Image
+                          alt=""
+                          src={"/1YrCKa1.jpg"}
+                          width={40}
+                          height={40}
+                          className="rounded-image"
+                        />
+                        <div className="d-flex flex-column ms-2">
+                          <span className="name">Elizabeth goodmen</span>{" "}
+                          <small
+                            className="comment-text muted-color"
+                            style={{ fontSize: "10px" }}
+                          >
+                            Sugerencia para tí
+                          </small>
+                        </div>
+                      </div>
+                      <div
+                        className="d-flex flex-row muted-color fw-bold"
+                        style={{ fontSize: "10px" }}
+                      >
+                        <Link href={"#"}>Seguir</Link>
+                      </div>
+                    </div>
+
+                    <div className="d-flex justify-content-between align-items-center mb-3">
+                      <div className="d-flex flex-row icons d-flex align-items-center">
+                        <Image
+                          alt=""
+                          src={"/UXdKE3o.jpeg"}
+                          width={40}
+                          height={40}
+                          className="rounded-image"
+                        />
+                        <div className="d-flex flex-column ms-2">
+                          <span className="name">Jeanette Sun</span>{" "}
+                          <small
+                            className="comment-text muted-color"
+                            style={{ fontSize: "10px" }}
+                          >
+                            Sugerencia para tí
+                          </small>
+                        </div>
+                      </div>
+                      <div
+                        className="d-flex flex-row muted-color fw-bold"
+                        style={{ fontSize: "10px" }}
+                      >
+                        <Link href={"#"}>Seguir</Link>
+                      </div>
                     </div>
                   </div>
-                  <div className="d-flex flex-row muted-color">
-                    <Link href={"#"}>Seguir</Link>
-                  </div>
                 </div>
-
-                <div className="d-flex justify-content-between align-items-center mb-3">
-                  <div className="d-flex flex-row icons d-flex align-items-center">
-                    <img
-                      alt=""
-                      src="/1YrCKa1.jpg"
-                      width="20"
-                      className="rounded-image"
-                    />
-                    <div className="d-flex flex-column ms-2">
-                      <span className="name">Elizabeth goodmen</span>{" "}
-                      <small className="comment-text">Sugerencia para tí</small>
-                    </div>
-                  </div>
-                  <div className="d-flex flex-row muted-color">
-                    <Link href={"#"}>Seguir</Link>
-                  </div>
-                </div>
-
-                <div className="d-flex justify-content-between align-items-center mb-3">
-                  <div className="d-flex flex-row icons d-flex align-items-center">
-                    <img
-                      alt=""
-                      src="/UXdKE3o.jpeg"
-                      width="20"
-                      className="rounded-image"
-                    />
-                    <div className="d-flex flex-column ms-2">
-                      <span className="name">Jeanette Sun</span>{" "}
-                      <small className="comment-text">Sugerencia para tí</small>
-                    </div>
-                  </div>
-                  <div className="d-flex flex-row muted-color">
-                    <Link href={"#"}>Seguir</Link>
-                  </div>
-                </div>
-
               </div>
             </div>
           </div>

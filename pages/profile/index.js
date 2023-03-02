@@ -141,6 +141,9 @@ export default function Profile({ session }) {
       if (data.success) {
         setLoading(true);
         setReload(true)
+        
+        sessionStorage.setItem('avatar', profile.photo);
+
         Swal.fire({
           icon: "success",
           title: "Guardando Pérfil",

@@ -73,6 +73,7 @@ export default function Edit({ session, profile, setProfile, handleChange, handl
                     style={{ color: "white" }}
                     onClick={(e) => {
                       setProfile({ ...profile, photo: "/user-vector.jpg" });
+                      sessionStorage.setItem('avatar', "/user-vector.jpg");
                       setImage(null);
                       setCreateObjectURL(null);
                     }}
@@ -267,14 +268,16 @@ export default function Edit({ session, profile, setProfile, handleChange, handl
                 Fecha de Nacimiento
               </Label>
               <Col sm={8}>
-                <Input
-                  id="birthdate"
-                  name="birthdate"
-                  placeholder="Fecha de Nacimiento"
-                  type="date"
-                  defaultValue={profile.birthdate}
-                  onChange={handleChange("birthdate")}
-                />
+                <InputGroup size="sm">
+                  <Input
+                    id="birthdate"
+                    name="birthdate"
+                    placeholder="Fecha de Nacimiento"
+                    type="date"
+                    defaultValue={profile.birthdate}
+                    onChange={handleChange("birthdate")}
+                  />
+                </InputGroup>
               </Col>
             </FormGroup>
           </Row>
