@@ -15,42 +15,41 @@ export default function AuthFooter() {
   return (
     <footer className="bg-white p-3 text-muted mt-auto">
       <div className="container">
-        <div className="row">
-          <div className="col-4">
-            <InputGroup size="sm">
-              <Input
-                id="languaje"
-                name="select"
-                type="select"
-                defaultValue={languageSelected}
-                onClick={handleChange}
-              >
-                <option value="en">English</option>
-                <option value="es">Español</option>
-              </Input>
-            </InputGroup>
+
+        <div className="d-flex justify-content-between p-2 px-3">
+          <div className="d-flex flex-row align-items-center">
+              <InputGroup size="sm">
+                <Input
+                  id="languaje"
+                  name="select"
+                  type="select"
+                  defaultValue={languageSelected}
+                  onClick={handleChange}
+                >
+                  <option value="en">English</option>
+                  <option value="es">Español</option>
+                </Input>
+              </InputGroup>
           </div>
-          <div className="col-8 pt-2">
-            <div className="row justify-content-end">
-              <div className="col-4 text-end align-middle">
-                <a className="text-dark" href="#">
-                  {t.help}
-                </a>
-              </div>
-              <div className="col-4 text-end">
-                <a className="text-dark" href="#">
-                  {t.privacy}
-                </a>
-              </div>
-              <div className="col-4 text-end">
-                <a className="text-dark" href="#">
-                  {t.term}
-                </a>
-              </div>
-            </div>
+          <div className="flex-grow-1"></div>
+          <div className="d-flex flex-row mt-1 ellipsis">
+            <a className="text-dark ps-3 pe-2" href="#">
+                {t.help}
+            </a>
+          </div>
+          <div className="d-flex flex-row mt-1 ellipsis">
+            <a className="text-dark ps-2 pe-2" href="#">
+                {t.privacy}
+            </a>
+          </div>
+          <div className="d-flex flex-row mt-1 ellipsis">
+            <a className="text-dark ps-2 pe-2" href="#">
+                {t.term}
+            </a>
           </div>
         </div>
-        <hr />
+
+        {/* <hr /> */}
         <div className="text-center">
           <p className="fs-7">&copy; 2023, Dominó</p>
         </div>

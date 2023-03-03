@@ -30,10 +30,17 @@ h6 {
 }
 
 .fs-0 {
-  font-size: 4rem;
+  font-size: 4rem !important;
 }
 .fs-7 {
-  font-size: 0.8rem;
+  font-size: 0.8rem !important;
+}
+
+.fs-10 {
+  font-size: 10px !important;;
+}
+.fs-12 {
+  font-size: 12px !important;;
 }
 
 /*--------------------------------------------------------------
@@ -1048,9 +1055,38 @@ h6 {
 }
 
 .btn-like:hover {
-  transform: scale(0.8);
+  transform: scale(1.3);
+}
+
+.btn-comment:hover {
+  transform: scale(1.3);
 }
 
 .icon-red {
   color: red;
+}
+
+.post-option {
+  font-size: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.post-option:hover {
+  transform: scale(1.1);
+}
+
+.fallow-option {
+  font-size: 11px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.fallow-option:hover {
+  transform: scale(1.1);
+}
+
+.suggestions-players {
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
 }
