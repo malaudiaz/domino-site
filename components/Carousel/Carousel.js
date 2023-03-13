@@ -1,60 +1,81 @@
 import Image from "next/image";
+import { useState } from "react";
+import {
+  Carousel,
+  CarouselIndicators,
+  CarouselControl,
+  CarouselItem,
+} from "reactstrap";
 
-export default function Carousel({ post }) {
+export default function ImgCarousel({ post }) {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [animating, setAnimating] = useState(false);
+
+  const next = () => {
+    if (animating) return;
+    const nextIndex =
+      activeIndex === post.photos.length - 1 ? 0 : activeIndex + 1;
+    setActiveIndex(nextIndex);
+  };
+
+  const previous = () => {
+    if (animating) return;
+    const nextIndex =
+      activeIndex === 0 ? post.photos.length - 1 : activeIndex - 1;
+    setActiveIndex(nextIndex);
+  };
+
+  const goToIndex = (newIndex) => {
+    if (animating) return;
+    setActiveIndex(newIndex);
+  };
+
+  const slides = post.photos.map((photo, idx) => {
+    return (
+      <CarouselItem
+        onExiting={() => setAnimating(true)}
+        onExited={() => setAnimating(false)}
+        key={idx}
+      >
+        <Image 
+          src={photo.path} 
+          alt={""} 
+          width={"600"} 
+          height={"600"} 
+          quality={50}
+          priority
+          layout='intrinsic'
+          sizes="(max-width:3000px) 10vw"
+        />
+      </CarouselItem>
+    );
+  });
+
   return (
-    <div
+    <Carousel
       id={"carousel-"+post.id}
       className="carousel slide"
-      data-bs-touch="false"
-      data-bs-interval="false"
+      activeIndex={activeIndex}
+      interval={null}
+      next={next}
+      previous={previous}
     >
-      <div className="carousel-indicators">
-        {post.photos.map((photo, idx) => (
-          <button
-            key={idx}
-            type="button"
-            data-bs-target={"#carousel-"+post.id}
-            data-bs-slide-to={idx}
-            className={idx == 0 ? "active" : ""}
-            aria-current="true"
-            aria-label={"Slide " + (idx + 1)}
-          ></button>
-        ))}
-      </div>
-      <div className="carousel-inner">
-        {post.photos.map((photo, idx) => (
-          <div
-            key={idx}
-            className={idx == 0 ? "carousel-item active" : "carousel-item"}
-          >
-            <Image
-              alt=""
-              src={photo.path}
-              width={1000}
-              height={1000}
-              className="d-block w-100 h-100"
-            />
-          </div>
-        ))}
-      </div>
-      <button
-        className="carousel-control-prev"
-        type="button"
-        data-bs-target={"#carousel-"+post.id}
-        data-bs-slide="prev"
-      >
-        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span className="visually-hidden">Previous</span>
-      </button>
-      <button
-        className="carousel-control-next"
-        type="button"
-        data-bs-target={"#carousel-"+post.id}
-        data-bs-slide="next"
-      >
-        <span className="carousel-control-next-icon" aria-hidden="true"></span>
-        <span className="visually-hidden">Next</span>
-      </button>
-    </div>
+      <CarouselIndicators
+        items={post.photos}
+        activeIndex={activeIndex}
+        onClickHandler={goToIndex}
+      />
+      {slides}
+      <CarouselControl
+        direction="prev"
+        directionText="Previous"
+        onClickHandler={previous}
+      />
+      <CarouselControl
+        direction="next"
+        directionText="Next"
+        onClickHandler={next}
+      />
+    </Carousel>
   );
 }

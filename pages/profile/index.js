@@ -27,6 +27,7 @@ import {
 
 export default function Profile({ session }) {
   const value = useContext(AppContext);
+  const avatar = value.state.avatar;
 
   const [createObjectURL, setCreateObjectURL] = useState(null);
   const [image, setImage] = useState(null);
@@ -140,10 +141,7 @@ export default function Profile({ session }) {
       const { data } = await axios.put(url, profile, config);
       if (data.success) {
         setLoading(true);
-        setReload(true)
-        
-        sessionStorage.setItem('avatar', profile.photo);
-
+        setReload(true);      
         Swal.fire({
           icon: "success",
           title: "Guardando Pérfil",
@@ -170,8 +168,10 @@ export default function Profile({ session }) {
 
     const {status, data} = await axios.post("/api/avatar/upload", body);
     if (status == 200) {
-      profile.photo = image ? `/profile/${profile.id}/`+data.files.file.originalFilename : "/user-vector.jpg";
-      setProfile(profile);
+      const photo = image ? `/profile/${profile.id}/`+data.files.file.originalFilename : "/user-vector.jpg";
+      value.setAvatar(photo);
+      profile.photo = photo;
+      setProfile(profile);    
       saveProfile();
     } else {
       Swal.fire({
@@ -197,7 +197,7 @@ export default function Profile({ session }) {
               <CardBody className="card-body profile-card pt-4 d-flex flex-column align-items-center">
                 {profile.photo && (
                   <Image
-                    src={profile.photo}
+                    src={avatar}
                     alt="Pérfil"
                     priority="true"
                     width="100%"

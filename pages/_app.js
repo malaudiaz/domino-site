@@ -15,8 +15,9 @@ import "../styles/globals.css";
 function App({ Component, pageProps }) {
   const router = useRouter();
 
-  const [languageSelected, setLanguageSelected] = useState("en");
+  const [languageSelected, setLanguageSelected] = useState("es");
   const languageObject = languagesObject;
+  const [avatar, setAvatar] = useState("/user-vector.jpg");
 
   useEffect(() => {
     require("bootstrap/dist/js/bootstrap.bundle.min.js");
@@ -48,8 +49,10 @@ function App({ Component, pageProps }) {
           state: {
             languages: languageObject[languageSelected],
             languageSelected: languageSelected,
+            avatar: avatar
           },
           setLanguageSelected: setLanguageSelected,
+          setAvatar: setAvatar
         }}
       >
         <Component {...pageProps} />

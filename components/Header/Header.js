@@ -9,11 +9,7 @@ import Notification from "../Notifications/Notifications";
 const Header = ({ session }) => {
   const value = useContext(AppContext);
   const t = value.state.languages.header;
-  const [avatar, setAvatar] = useState(null);
-
-  useEffect(() => {
-    setAvatar(sessionStorage.getItem("avatar"));
-  }, []);
+  const avatar = value.state.avatar;
 
   const logOut = (e) => {
     e.preventDefault();

@@ -201,7 +201,7 @@ export default function Edit({ session, profile, setProfile, handleChange, handl
                     value={profile.email}
                     onChange={handleChange("email")}
                     onKeyPress={(event) => {
-                      if (!/^[a-zA-Z\s]*$/.test(event.key)) {
+                      if (!/^[a-z_@\s]*$/.test(event.key)) {
                         event.preventDefault();
                       }
                     }}

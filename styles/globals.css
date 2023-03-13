@@ -1090,3 +1090,50 @@ h6 {
   font-weight: bold;
   cursor: pointer;
 }
+
+.btn-circle.btn-xl {
+  width: 70px;
+  height: 70px;
+  padding: 10px 16px;
+  border-radius: 35px;
+  font-size: 24px;
+  line-height: 1.33;
+}
+
+.btn-circle {
+  width: 30px;
+  height: 30px;
+  padding: 6px 0px;
+  border-radius: 15px;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.42857;
+}
+
+.image-container {
+  position: relative;
+  padding: 4px;
+}
+
+.image-container img {
+  width: 100%;
+  height: auto;
+}
+
+.image-container .btn {
+  position: absolute;
+  top: 20%;
+  left: 80%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  background-color: red;
+  color: white;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+}
+
+.image-container .btn:hover {
+  background-color: rgb(82, 76, 241);
+}
