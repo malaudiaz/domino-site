@@ -45,7 +45,6 @@ export default function ImgCarousel({ post }) {
           quality={50}
           priority
           layout='intrinsic'
-          sizes="(max-width:3000px) 10vw"
         />
       </CarouselItem>
     );

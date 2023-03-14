@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 import {
   Modal,
@@ -13,8 +14,10 @@ import {
   InputGroup,
 } from "reactstrap";
 
+
 export default function NewPost({ session, newPost, setNewPost, avatar }) {
   const [reload, setReload] = useState(false);
+   
   const [start, setStart] = useState(0);
   const [post, setPost] = useState({
     comment: "",
@@ -26,13 +29,13 @@ export default function NewPost({ session, newPost, setNewPost, avatar }) {
     if (start > 0) {
       setStart(start - 1);
     }
-  }
+  };
 
   const next = () => {
     if (start + 3 < post.objUrl.length) {
       setStart(start + 1);
     }
-  }
+  };
 
   return (
     <Modal
@@ -79,96 +82,126 @@ export default function NewPost({ session, newPost, setNewPost, avatar }) {
 
         {post.objUrl.length > 0 && (
           <Row className="pt-2 ps-2 pe-2">
-            
             <div className="d-flex flex-row w-100 d-inline-block border border-ligth rounded p-2">
-                <Col
-                  md={1}
-                  className="d-flex justify-content-left align-items-center"
+              <Col
+                md={1}
+                className="d-flex justify-content-left align-items-center"
+              >
+                <Label
+                  className="btn btn-circle"
+                  title="Anterior"
+                  style={
+                    start + 3 > 3
+                      ? { cursor: "pointer", background: "#198754" }
+                      : { background: "#c7c7c7" }
+                  }
+                  onClick={prev}
                 >
-
-                  <Label
-                    className="btn btn-circle" 
-                    title="Anterior"
-                    style={start+3 > 3 ? {cursor: "pointer", background: "#198754"} : {background: "#c7c7c7"}}
-                    onClick={prev} 
-                  >
-                    <i className="bi bi-caret-left-fill" style={{ color: "white", fontSize: "12px", fontWeight: "bold" }} />
-                  </Label>
-
-                </Col>
-                <Col className="d-flex flex-grow-1 justify-content-center align-items-center">
-                  {post.objUrl.slice(start, start+3).map((obj, idx) => (
-                    <div key={idx} className="image-container">
-                      <Image
-                        className="rounded"
-                        src={obj}
-                        alt=""
-                        width="150"
-                        height="150"
-                        quality={50}
-                        priority
-                        layout='intrinsic'
-                        sizes="(max-width:3000px) 10vw"
-                      />
-                      <Label
-                        href="#"
-                        className="btn btn-danger btn-circle"
-                        title="Eliminar"
-                        style={{ color: "white" }}
-                      >
-                        <i className="bi bi-trash"></i>
-                      </Label>
-                    </div>
-                  ))}
-                </Col>
-                <Col
-                  md={1}
-                  className="d-flex justify-content-right align-items-center"
+                  <i
+                    className="bi bi-caret-left-fill"
+                    style={{
+                      color: "white",
+                      fontSize: "12px",
+                      fontWeight: "bold",
+                    }}
+                  />
+                </Label>
+              </Col>
+              <Col className="d-flex flex-grow-1 justify-content-center align-items-center">
+                {post.objUrl.slice(start, start + 3).map(({type, url}, idx) => (
+                  <div key={idx} className="image-container">
+                    {type.includes("image") && (
+                        <Image
+                          className="rounded"
+                          src={url}
+                          alt=""
+                          width="150"
+                          height="150"
+                          quality={50}
+                          priority
+                          layout="intrinsic"
+                        />
+                    )}
+                    {type.includes("video") && (
+                        <video className="rounded" width="150" controls>
+                          <source src={url} type="video/mp4" />
+                        </video>
+                    )}
+                    <Label
+                      href="#"
+                      className="btn btn-danger btn-circle"
+                      title="Eliminar"
+                      style={{ color: "white" }}
+                    >
+                      <i className="bi bi-trash"></i>
+                    </Label>
+                  </div>
+                ))}
+              </Col>
+              <Col
+                md={1}
+                className="d-flex justify-content-right align-items-center"
+              >
+                <Label
+                  className="btn btn-circle"
+                  title="Siguiente"
+                  style={
+                    start + 3 < post.objUrl.length
+                      ? { cursor: "pointer", background: "#198754" }
+                      : { background: "#c7c7c7" }
+                  }
+                  onClick={next}
                 >
-
-                  <Label
-                    className="btn btn-circle" 
-                    title="Siguiente"
-                    style={start+3 < post.objUrl.length ? {cursor: "pointer", background: "#198754"} : {background: "#c7c7c7"}}
-                    onClick={next} 
-                  >
-                      <i className="bi bi-caret-right-fill" style={{ color: "white", fontSize: "12px", fontWeight: "bold" }} />
-                  </Label>
-
-
-                </Col>
+                  <i
+                    className="bi bi-caret-right-fill"
+                    style={{
+                      color: "white",
+                      fontSize: "12px",
+                      fontWeight: "bold",
+                    }}
+                  />
+                </Label>
+              </Col>
             </div>
           </Row>
         )}
 
         <Row className="h-25 p-2">
           <div className="d-flex justify-content-between border border-ligth rounded p-2 px-3">
-            <div className="d-flex flex-row align-items-center">
+            <div className="d-flex flex-grow-1 align-items-center">
               <a>Añadir a tu Publicación</a>
             </div>
-            <div className="d-flex flex-row mt-1 ellipsis align-items-center">
+            <div className="d-flex flex-row justify-content-center align-items-center">
               <Label
-                className="btn btn-primary btn-circle"
+                className="btn-circle"
                 title="Añadir foto/video a la publicación"
-                style={{ color: "white" }}
+                style={{ fontSize: "20px", fontWeight: "bold", cursor: "pointer"}}
               >
-                <i className="bi bi-images"></i>
+                <i className="bi bi-images" style={{color: '#00A400'}}></i>
                 <Input
                   type="file"
                   hidden
                   onChange={(event) => {
                     if (event.target.files && event.target.files[0]) {
                       const i = event.target.files[0];
-                      if (i.type.includes("image")) {
+
+                      if (
+                        i.type.includes("image") ||
+                        i.type.includes("video")
+                      ) {
                         post.image.push(i);
-                        post.objUrl.push(URL.createObjectURL(i));
-                        setNewPost(post);
+                        post.objUrl.push({
+                          type: i.type,
+                          url: URL.createObjectURL(i),
+                        });
+
+                        setPost(post);
                         setReload(!reload);
                       } else {
                         Swal.fire({
                           icon: "error",
                           title: "Cargando Imagen",
-                          text: "Ha ocurrido un error al cargar la imagen, debe ser un jpg menor de 6 kb",
+                          text: "Ha ocurrido un error al cargar la imagen",
                           showConfirmButton: true,
                         });
                       }
@@ -176,7 +209,20 @@ export default function NewPost({ session, newPost, setNewPost, avatar }) {
                   }}
                 />
               </Label>
+
+              <Label
+                className="btn-circle"
+                title="Sentimiento / Actividad"
+                style={{ fontSize: "20px", fontWeight: "bold", cursor: "pointer" }}
+              >
+                <i class="bi bi-emoji-neutral" style={{color: "#F5C33B", fontWeight: "bold"}}></i>
+              </Label>
+
+
             </div>
+
+
+
           </div>
         </Row>
         <Row className="p-2">

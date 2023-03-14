@@ -27,11 +27,15 @@ export default function Post({ session, posts }) {
               <input
                 type="text"
                 className="form-control"
-                disabled
+                onClick={(e) => {
+                  e.preventDefault;
+                  setNewPost(true);
+                }}
+                readOnly={true}
                 placeholder={
                   "¿ Que estas pensando, " + session.firstName + " ?"
                 }
-                style={{ fontSize: "0.8rem" }}
+                style={{ fontSize: "0.8rem", background: "#e9ecef" }}
               />
             </div>
           </div>
