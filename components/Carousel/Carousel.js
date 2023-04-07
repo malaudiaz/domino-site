@@ -76,15 +76,15 @@ export default function ImgCarousel({
         style={{position: "relative"}}
       >
         {photo.type.includes("image") ? (
-          <Image
-            src={photo[url]}
-            alt={""}
-            height={"600"}
-            width={"600"}
-            quality={75}
-            priority
-            layout="intrinsic"
-          />
+            <Image
+              src={photo[url]}
+              alt={""}
+              height={"750"}
+              width={"750"}
+              quality={75}
+              priority
+              layout="intrinsic"
+            />
         ) : (
           <div className="video-container">
             <video

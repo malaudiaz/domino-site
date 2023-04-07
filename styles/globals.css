@@ -1067,9 +1067,22 @@ h6 {
 }
 
 .post-option {
-  font-size: 10px;
+  color: black;
+  margin-right: 8px;
   font-weight: bold;
   cursor: pointer;
+}
+
+.like-comment {
+  color: blue;
+  margin-right: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.info-option {
+  margin-right: 5px;
+  font-weight: bold;
 }
 
 .post-option:hover {
@@ -1407,10 +1420,3 @@ h6 {
   border-radius: 50px; 
   cursor: pointer;
 }
-
-/* .carousel-item {
-  position: relative;
-}
-.carousel-item .btn{
-  position: absolute; 
-} */

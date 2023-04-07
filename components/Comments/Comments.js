@@ -3,6 +3,7 @@ import { useState, useContext } from "react";
 import EmojiPicker from "../EmojiPicker/EmojiPicker";
 import { PopoverBody, UncontrolledPopover } from "reactstrap";
 import AppContext from "../../AppContext";
+import Answer from "./Answer";
 import axios from "axios";
 import Swal from "sweetalert2";
 
@@ -11,6 +12,8 @@ export default function Comments({ session, post }) {
   const avatar = value.state.avatar;
 
   const [comment, setComment] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [answerComment, setAnswerComment] = useState();
 
   const emotiClick = ({ id, value }) => {
     setComment(comment + value);
@@ -50,37 +53,48 @@ export default function Comments({ session, post }) {
         const {data} = await axios.post(url, {post_id: post.id, summary: comment}, config);
         if (data.success) {
 
-          console.log(data);
-
-          comments.push({
-            id: 0,
-            user_id: session.id,
-            name: session.firstName,
-            avatar: avatar,
-            comment: comment,
-            elapsed: "1s",
-          });
-    
+          comments = data.data; 
+          post.comments = data.data;
           setComment("");
+          document.getElementById(`btnPush_${post.id}`).style.display = "none";
+          document.getElementById(`btnEmoji_${post.id}`).style.display = "none";
+    
         }
-      } catch (errors) {
-        console.log(errors);
-
-        // const { detail } = response.data;
-        // Swal.fire({
-        //   title: "Me gusta la Publicación",
-        //   text: detail,
-        //   icon: "error",
-        //   showCancelButton: false,
-        //   allowOutsideClick: false,
-        //   confirmButtonColor: "#3085d6",
-        //   confirmButtonText: "Aceptar",
-        // });
-      }
-  
-
+      } catch ({response}) {
+        const { detail } = response.data;
+        Swal.fire({
+          title: "Me gusta la Publicación",
+          text: detail,
+          icon: "error",
+          showCancelButton: false,
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Aceptar",
+        });
+      } 
     }
   };
+
+  const likeComment = async (comm) => {
+
+    const url = `/api/comment/like`;
+    try {
+      const {data} = await axios.post(url, {comment_id: comm.id}, config);
+      if (data.success) {
+      }
+    } catch ({response}) {
+      const { detail } = response.data;
+      Swal.fire({
+        title: "Me gusta el Comentario",
+        text: detail,
+        icon: "error",
+        showCancelButton: false,
+        allowOutsideClick: false,
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "Aceptar",
+      });
+    }  
+  }
 
   const handleKeyDown = (event) => {
     if (event.code === "Enter") {
@@ -88,29 +102,34 @@ export default function Comments({ session, post }) {
     }
   };
 
+  const showAnswer = (answer) => {
+    setAnswerComment(answer);
+    setIsOpen(true);
+  }
+
   return (
     <div className="comments">
       <div id="viewComment">
-        {post.comments.map((comment, idx) => (
+        {post.comments.map((comm, idx) => (
           <div key={idx} className="d-flex flex-row mt-2 mb-2">
             <div className="d-flex flex-column">
               <Image
                 alt=""
-                src={comment.avatar}
+                src={comm.avatar}
                 width={40}
                 height={40}
                 className="rounded-image"
               />
             </div>
             <div className="d-flex flex-column ms-2">
-              <span className="name">{comment.name}</span>{" "}
-              <small className="comment-text">{comment.comment}</small>
-              <div className="d-flex flex-row align-items-center status">
-                <small className="post-option">Me gusta</small>
-                <small className="post-option">Responder</small>
-                <small className="post-option">{comment.elapsed}</small>
+              <span className="name">{comm.name}</span>{" "}
+              <small className="comment-text">{comm.comment}</small>
+              <div className="d-flex flex-row align-items-center">
+                <small onClick={()=>likeComment(comm)} className={comm.like ? "like-comment" : "post-option"}>Me gusta</small>
+                <small onClick={()=>showAnswer(comm)} className="post-option">Responder</small>
+                <small className="info-option">{comm.elapsed}</small>
               </div>
-            </div>
+            </div>         
           </div>
         ))}
       </div>
@@ -127,7 +146,7 @@ export default function Comments({ session, post }) {
         <div className="d-flex flex-column">
           <Image
             alt=""
-            src={post.avatar}
+            src={avatar}
             width={40}
             height={40}
             className="rounded-image"
@@ -179,6 +198,9 @@ export default function Comments({ session, post }) {
           </div>
         </div>
       </div>
+
+      <Answer session={session} isOpen={isOpen} setIsOpen={setIsOpen} comment={answerComment} />
+
     </div>
   );
 }

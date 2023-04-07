@@ -166,27 +166,33 @@ export default function NewPost({ session, newPost, setNewPost, setRefresh }) {
       <ModalHeader
         toggle={(e) => {
 
-          Swal.fire({
-            title: "¿ Descartar publicación ?",
-            text: "Si continuas, no se guardán los cambios",
-            icon: "question",
-            showCancelButton: false,
-            allowOutsideClick: false,
-            confirmButtonColor: "#3085d6",
-            confirmButtonText: "Aceptar",
-          }).then((result) => {
-            if (result.isConfirmed) {
-              setPost({
-                id: "",
-                summary: "",
-                files: [],
-                media: [],
-                objUrl: [],
-              });
-              setDisabled(false);
-              setNewPost(false);    
-            }
-          });
+          if (post.summary != "" || post.objUrl.length > 0) {
+            Swal.fire({
+              title: "¿ Descartar publicación ?",
+              text: "Si continuas, no se guardán los cambios",
+              icon: "question",
+              showCancelButton: true,
+              cancelButtonText: "Cancelar",
+              allowOutsideClick: false,
+              confirmButtonColor: "#3085d6",
+              confirmButtonText: "Descartar",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                setPost({
+                  id: "",
+                  summary: "",
+                  files: [],
+                  media: [],
+                  objUrl: [],
+                });
+                setDisabled(false);
+                setNewPost(false);    
+              }
+            });
+          } else {
+            setDisabled(false);
+            setNewPost(false);    
+          }          
         }}
       >
         Crear Publicación
