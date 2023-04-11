@@ -2,15 +2,13 @@ import Image from "next/image";
 import { useState, useContext } from "react";
 import AppContext from "../../AppContext";
 import EmojiPicker from "../EmojiPicker/EmojiPicker";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 import {
   Modal,
   ModalHeader,
   ModalBody,
-  Input,
-  Row,
-  Button,
-  InputGroup,
   PopoverBody,
   UncontrolledPopover,
 } from "reactstrap";
@@ -20,6 +18,15 @@ export default function Answer({ session, isOpen, setIsOpen, comment }) {
   const value = useContext(AppContext);
   const avatar = value.state.avatar;
   const [answer, setAnswer] = useState("");
+
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "accept-Language": "es-ES,es;",
+      "Authorization": `Bearer ${session.token}`,
+    },
+  };  
 
   const handleChange = (event) => {
     const value =
@@ -42,9 +49,9 @@ export default function Answer({ session, isOpen, setIsOpen, comment }) {
   const pushAnswer = async () => {
     if (answer !== "") {
 
-        const url = `/api/comment/like`;
+        const url = `/api/comment/comment`;
         try {
-          const {data} = await axios.post(url, {comment_id: comm.id}, config);
+          const {data} = await axios.post(url, {comment_id: comment.id, summary: answer}, config);
           if (data.success) {
             setAnswer("");
             document.getElementById("btnPush").style.display = "none";

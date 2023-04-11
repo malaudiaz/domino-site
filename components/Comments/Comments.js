@@ -129,7 +129,12 @@ export default function Comments({ session, post }) {
                 <small onClick={()=>showAnswer(comm)} className="post-option">Responder</small>
                 <small className="info-option">{comm.elapsed}</small>
               </div>
-            </div>         
+              {comm.comments.length > 0 && 
+                <div className="d-flex flex-row align-items-center">
+                  <i class="bi bi-arrow-return-right"/>&nbsp;&nbsp;
+                  <small className="post-option"> Ver {comm.comments.length} Respuestas</small> 
+                </div>}
+            </div>  
           </div>
         ))}
       </div>

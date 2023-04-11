@@ -1067,7 +1067,7 @@ h6 {
 }
 
 .post-option {
-  color: black;
+  color: #7e7c6b;
   margin-right: 8px;
   font-weight: bold;
   cursor: pointer;
@@ -1081,6 +1081,7 @@ h6 {
 }
 
 .info-option {
+  color: #7e7c6b;
   margin-right: 5px;
   font-weight: bold;
 }
