@@ -77,6 +77,9 @@ let languagesObject = {
     home: {
       title: "Home"
     },
+    events: {
+      title: "Events"
+    },
     tournaments: {
       title: "Tournaments",
     },
@@ -145,6 +148,7 @@ let languagesObject = {
     breadcrumb: {
       Home: "Inicio",
       Profile: "Pérfil",
+      Events: "Eventos",
       Tournaments: "Torneos",
       Players: "Jugadores",
       Private: "Privado",
@@ -170,6 +174,9 @@ let languagesObject = {
     },
     home: {
       title: "Inicio"
+    },
+    events: {
+      title: "Eventos"
     },
     tournaments: {
       title: "Torneos",

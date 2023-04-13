@@ -1421,3 +1421,159 @@ h6 {
   border-radius: 50px; 
   cursor: pointer;
 }
+
+.folder__links__list {
+  display: inline-block;
+  width: 100%;
+}
+
+.folder__links__list .folder__link__item {
+  position: relative;
+  display: inline-block;
+  float: left;
+  padding-left: 7.5px;
+  padding-right: 7.5px;
+  box-sizing: border-box;
+}
+
+.folder__card__link__button {
+  display: block;
+  background-color: unset;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+}
+
+.folder__card {
+  max-width: 300px;
+  width: 260px;
+  height: 400px;
+  background-color: #fff;
+  border: 1px solid #e3e3e3;
+  border-radius: 6px;
+  box-sizing: border-box;
+  box-shadow: 0 2px 6px 1px rgba(189,189,189,.3);
+}
+
+.folder__card__link__button {
+  display: block;
+  background-color: unset;
+  width: 300px;
+  height: 100%;
+  padding: 0;
+  border-style: dotted;
+}
+
+.folder__card .folder__card__logo {
+  width: 100%;
+  height: calc(100% - 30px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  text-align: center;
+}
+
+.folder__card__link__button .folder__card__logo {
+  background-image: url("../public/images/svg/plus.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: auto;
+}
+
+.folder__card .folder__card__text {
+  height: 30px;
+  line-height: 30px;
+  width: 100%;
+  text-align: center;
+  font-size: 14px !important;
+  font-weight: 400;
+}
+
+.pagination {
+  float: right;
+  margin: 0 0 5px;
+}
+.pagination li a {
+  border: none;
+  font-size: 13px;
+  min-width: 30px;
+  min-height: 30px;
+  color: #999;
+  margin: 0 2px;
+  line-height: 30px;
+  border-radius: 2px !important;
+  text-align: center;
+  padding: 0 6px;
+}
+.pagination li a:hover {
+  color: #e84f4f;
+  background: #a3d6eb;
+}	
+.pagination li.active a, .pagination li.active a.page-link {
+  background: #03A9F4;
+}
+.pagination li.active a:hover {        
+  background: #0397d6;
+  color: red
+}
+.pagination li.disabled i {
+  color: #ccc;
+}
+.pagination li i {
+  font-size: 14px;
+  padding-top: 4px
+}
+.page-item {
+  cursor: pointer
+}
+
+.page-item-dots {
+  display: flex;
+  align-items: center;
+  cursor: default;
+}
+
+.hint-text {
+  float: left;
+  margin-top: 5px;
+  font-size: 12px;
+}    
+
+.img-event-container {
+  position: "relative";
+}
+
+.img-event-container .img-container{
+  width: 100%; 
+  height: 98%; 
+}
+
+.img-event-container .img-button{
+  position: absolute; 
+  top: 85%; 
+  left:50%; 
+  transform: translate(-50%, -50%); 
+  text-align:center;
+}
+
+.img-svg{
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: rotate(180deg);
+  transform: translate(-50%, -50%); 
+  text-align: center;
+}
+
+.img-event-container .img-button button{
+  background-color: #0095f6; 
+  border:none; color: white; 
+  font-size: 14px; 
+  font-weight: 600;
+  padding: 5px 40px; 
+  transition: .5s;
+  border-radius: 10px; 
+}

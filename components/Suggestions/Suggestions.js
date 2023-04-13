@@ -26,7 +26,7 @@ export default function Suggestions({ props }) {
 
         {players.map( (player, idx) => (
           <div key={idx} className="d-flex justify-content-between align-items-center mb-3">
-            <div className="d-flex flex-row icons d-flex align-items-center">
+            <div className="d-flex flex-row icons align-items-center">
               <Image
                 alt=""
                 src={player.avatar}
