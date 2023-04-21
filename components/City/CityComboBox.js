@@ -8,6 +8,7 @@ export default function CityComboBox({
   country_id,
   name,
   cmbText,
+  invalid,
   valueDefault,
   onChange,
 }) {
@@ -31,8 +32,10 @@ export default function CityComboBox({
         if (data.success) {
           setRecords(data.data);
         }
-      } catch ({ response }) {
-        const { detail } = response.data;
+      } catch (errors) {
+        console.log(errors);
+
+        const { detail } = errors.response.data;
         Swal.fire({
           icon: "error",
           title: "Cargando Ciudades",
@@ -42,7 +45,9 @@ export default function CityComboBox({
       }
     };
 
-    fetchData();
+    if (country_id) {
+      fetchData();
+    }
   }, [country_id]);
 
   return (
@@ -50,6 +55,7 @@ export default function CityComboBox({
       id={name}
       name={name}
       type="select"
+      invalid={invalid}
       value={valueDefault}
       onChange={(e) => {
         onChange(e);

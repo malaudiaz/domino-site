@@ -5,11 +5,24 @@ import TBar from "../Comments/TBar";
 import { useContext, useState } from "react";
 import AppContext from "../../AppContext";
 import NewPost from "./New";
+import DropDownMenu from "../DropDownMenu/Menu";
 
 export default function Post({ session, posts, setRefresh }) {
   const [newPost, setNewPost] = useState(false);
   const value = useContext(AppContext);
   const avatar = value.state.avatar;
+
+  const ctxMenu = [
+    { text: "Dejar de Seguir", key: "mnuFollow", icon: "" },
+  ];  
+
+  const onMenuSelection = (key, index) => {
+    switch (key) {
+      case "mnuFollow":
+        break;
+    }
+  }
+
 
   return (
     <div className="col-8">
@@ -77,7 +90,11 @@ export default function Post({ session, posts, setRefresh }) {
             </div>
             <div className="d-flex flex-row mt-1 ellipsis align-items-center">
               <small className="me-2">{post.elapsed}</small>
-              <i className="bi bi-three-dots"></i>
+              <DropDownMenu
+                  idx={idx}
+                  items={ctxMenu}
+                  onMenuSelection={onMenuSelection}
+              />
             </div>
           </div>
 

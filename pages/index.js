@@ -9,6 +9,7 @@ import Suggestions from "../components/Suggestions/Suggestions";
 import axios from "axios";
 import Swal from "sweetalert2";
 
+
 const mock = [
   {
     id: 1,
@@ -66,6 +67,7 @@ const mock = [
 ];
 
 export default function Page({ session }) {
+
   const value = useContext(AppContext);
   const [posts, setPosts] = useState([]);
   const [refresh, setRefresh] = useState(false);

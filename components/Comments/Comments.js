@@ -131,7 +131,7 @@ export default function Comments({ session, post }) {
               </div>
               {comm.comments.length > 0 && 
                 <div className="d-flex flex-row align-items-center">
-                  <i class="bi bi-arrow-return-right"/>&nbsp;&nbsp;
+                  <i className="bi bi-arrow-return-right"/>&nbsp;&nbsp;
                   <small className="post-option"> Ver {comm.comments.length} Respuestas</small> 
                 </div>}
             </div>  

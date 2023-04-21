@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 export default function CountryComboBox({
   name,
   cmbText,
+  invalid,
   valueDefault,
   onChange,
 }) {
@@ -14,7 +15,7 @@ export default function CountryComboBox({
   const config = {
     headers: {
       "Content-Type": "application/json",
-      Accept: "application/json",
+      "Accept": "application/json",
     },
   };
 
@@ -40,13 +41,14 @@ export default function CountryComboBox({
     };
 
     fetchData();
-  }, []);
+  },[]);
 
   return (
     <Input
       id={name}
       name={name}
       type="select"
+      invalid={invalid}
       value={valueDefault}
       onChange={(e) => {
         onChange(e);

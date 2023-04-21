@@ -73,6 +73,8 @@ h6 {
 --------------------------------------------------------------*/
 .pagetitle {
   margin-bottom: 10px;
+  margin-right: 40px;
+  margin-left: 20px;  
 }
 
 .pagetitle h1 {
@@ -628,7 +630,7 @@ h6 {
 
   #main,
   #footer {
-    margin-left: 300px;
+    margin-left: 350px;
   }
 }
 
@@ -1425,12 +1427,13 @@ h6 {
 .folder__links__list {
   display: inline-block;
   width: 100%;
+  text-align: center;
 }
 
 .folder__links__list .folder__link__item {
   position: relative;
   display: inline-block;
-  float: left;
+  float: inherit;
   padding-left: 7.5px;
   padding-right: 7.5px;
   box-sizing: border-box;
@@ -1446,7 +1449,7 @@ h6 {
 
 .folder__card {
   max-width: 300px;
-  width: 260px;
+  width: 300px;
   height: 400px;
   background-color: #fff;
   border: 1px solid #e3e3e3;
@@ -1563,7 +1566,6 @@ h6 {
   position: absolute;
   top: 40%;
   left: 50%;
-  transform: rotate(180deg);
   transform: translate(-50%, -50%); 
   text-align: center;
 }
@@ -1571,9 +1573,17 @@ h6 {
 .img-event-container .img-button button{
   background-color: #0095f6; 
   border:none; color: white; 
-  font-size: 14px; 
+  font-size: 12px; 
   font-weight: 600;
   padding: 5px 40px; 
   transition: .5s;
   border-radius: 10px; 
+}
+
+.img-event-container .img-clear{
+  position: absolute; 
+  top: 15%; 
+  left:90%; 
+  transform: translate(-50%, -50%); 
+  text-align:center;
 }
