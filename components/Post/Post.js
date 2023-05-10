@@ -12,17 +12,45 @@ export default function Post({ session, posts, setRefresh }) {
   const value = useContext(AppContext);
   const avatar = value.state.avatar;
 
-  const ctxMenu = [
-    { text: "Dejar de Seguir", key: "mnuFollow", icon: "" },
-  ];  
+  const ctxMenu = (user_id) => {
+    if (user_id === session.id) {
+      return [
+        { text: "Editar", key: "mnuEdit", icon: "bi bi-pencil-square" },
+        { text: "Eliminar", key: "mnuDel", icon: "bi bi-trash" },
+        {
+          text: "Desactivar Comentarios",
+          key: "mnuDisabledComment",
+          icon: "bi bi-chat",
+        },
+        {
+          text: "Ocultar recuento Me Gusta",
+          key: "mnuHideLike",
+          icon: "bi bi-eye-slash",
+        },
+      ];
+    } else {
+      return [
+        { text: "Reportar", key: "mnuReport", icon: "" },
+        { text: "Deja de Seguir", key: "mnuFollow", icon: "" },
+        {
+          text: "Información sobre esta Cuenta",
+          key: "mnuInfoAccount",
+          icon: "",
+        },
+      ];
+    }
+  };
 
   const onMenuSelection = (key, index) => {
     switch (key) {
+      case "mnuEdit":
+        break;
+      case "mnuDel":
+        break;
       case "mnuFollow":
         break;
     }
-  }
-
+  };
 
   return (
     <div className="col-8">
@@ -91,9 +119,9 @@ export default function Post({ session, posts, setRefresh }) {
             <div className="d-flex flex-row mt-1 ellipsis align-items-center">
               <small className="me-2">{post.elapsed}</small>
               <DropDownMenu
-                  idx={idx}
-                  items={ctxMenu}
-                  onMenuSelection={onMenuSelection}
+                idx={idx}
+                items={ctxMenu(post.user_id)}
+                onMenuSelection={() => onMenuSelection(ctxMenu.key, idx)}
               />
             </div>
           </div>

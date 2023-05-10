@@ -111,6 +111,7 @@ export default function Login(session) {
                         type="text"
                         name="username"
                         id="username"
+                        autoComplete="off"
                         placeholder={t.userLabel}
                         onChange={handleChange("username")}
                         invalid={validate.username === "error"}

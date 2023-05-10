@@ -1587,3 +1587,25 @@ h6 {
   transform: translate(-50%, -50%); 
   text-align:center;
 }
+
+.container {
+	width: 90%;
+	max-width: 1200px;
+	margin: auto;
+	/* padding: 40px 0; */
+
+  display: grid;
+}
+
+.container-events {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.card .textos {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+  justify-content: space-between;
+}

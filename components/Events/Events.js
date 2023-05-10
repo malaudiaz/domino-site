@@ -1,30 +1,23 @@
-import Image from "next/image";
 import { useState, useContext, useEffect } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
 import AppContext from "../../AppContext";
+import EventImage from "./EventImage";
+import Tourney from "../Tourney/Tourney";
 
-import {
-  Modal,
-  ModalHeader,
-  ModalBody,
-  Form,
-  FormGroup,
-  InputGroup,
-  Input,
-  FormFeedback,
-  Button,
-  Row,
-  Col,
-  Label,
-  ModalFooter,
-} from "reactstrap";
+import { Modal, ModalHeader, ModalBody, Button, ModalFooter } from "reactstrap";
 
-import CountryComboBox from "../Country/CountryComboBox";
-import CityComboBox from "../City/CityComboBox";
+import EventData from "./EventData";
 
-export default function NewEvent({ session, openEvent, setOpenEvent, record }) {
+export default function NewEvent({
+  session,
+  openEvent,
+  setOpenEvent,
+  record,
+  setRefresh,
+}) {
   const value = useContext(AppContext);
+  const [reload, setReload] = useState(false);
   const avatar = value.state.avatar;
   const [event, setEvent] = useState({
     id: "",
@@ -37,6 +30,7 @@ export default function NewEvent({ session, openEvent, setOpenEvent, record }) {
     summary: "",
     image: "",
     file: "",
+    tourney: [],
   });
 
   const [error, setError] = useState({
@@ -65,11 +59,58 @@ export default function NewEvent({ session, openEvent, setOpenEvent, record }) {
         city: record.city,
         campus: record.campus,
         image: record.photo,
+        tourney: record.tourney,
       });
-      setMode(true);
       setImage(record.photo);
+    } else {
+      setEvent({
+        id: "",
+        name: "",
+        startDate: "",
+        endDate: "",
+        country: "",
+        city: "",
+        campus: "",
+        summary: "",
+        image: "",
+        file: "",
+        tourney: [],
+      });
+      setImage(null);
     }
-  }, [record]);
+    setError({
+      ...error,
+      name: null,
+      startDate: null,
+      endDate: null,
+      country: null,
+      city: null,
+      campus: null,
+      tourney: null
+    });
+    setStep(0);
+  }, [record, reload]);
+
+  const isValid = () => {
+    if (step == 1) {
+      setError({
+        ...error,
+        name: event.name === "",
+        startDate: event.startDate === "",
+        endDate: event.endDate === "",
+        country: event.country === "",
+        city: event.city === "",
+        campus: event.campus === "",
+      });
+      return (event.name != "" && event.startDate != "" && event.endDate != "" && event.city != "" && event.campus != "");
+    } else if (step == 2) {
+      let tourneyValid=false;
+      event.tourney.map( (record, i) => (
+        tourneyValid = (record.name != "" && record.startDate >= event.startDate && record.startDate <= event.endDate && record.modality != "")
+      ));
+      return tourneyValid
+    }
+  };
 
   const handleChange = (prop) => (e) => {
     const value =
@@ -81,47 +122,46 @@ export default function NewEvent({ session, openEvent, setOpenEvent, record }) {
 
   const config = {
     headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
       "accept-Language": session.locale,
-      Authorization: `Bearer ${session.token}`,
+      "Authorization": `Bearer ${session.token}`,
     },
   };
 
   const handleCreate = async () => {
+    const body = new FormData();
+    body.append("image", event.file);
+
+    const url = `${process.env.NEXT_PUBLIC_API_URL}event?name=${event.name}&summary=${event.summary}&city_id=${event.city}&main_location=${event.campus}&start_date=${event.startDate}&close_date=${event.endDate}&tourney=${JSON.stringify(event.tourney)}`;
+
     try {
-      const { data } = await axios.post("/api/events/create", event, config);
-
+      const { data } = await axios.post(url, body, config);
       if (data.success) {
-        setEvent({ ...event, id: data.data.id });
 
-        const body = new FormData();
-        body.append("user_id", session.id);
-        body.append("event_id", data.data.id);
-        body.append("file", event.file);
+        setOpenEvent(false);
+        setRefresh(true);
 
-        const { status } = await axios.post("/api/events/file", body);
-        if (status == 200) {
-          setEvent({
-            id: "",
-            name: "",
-            startDate: "",
-            endDate: "",
-            country: "",
-            city: "",
-            campus: "",
-            summary: "",
-            image: "",
-            file: "",
-          });
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: "Ha ocurrido un error, su imagen no ha subido al servidor.",
-            showConfirmButton: true,
-          });
-        }
+        Swal.fire({
+          title: "Creando Evento",
+          text: data.detail,
+          icon: "success",
+          showCancelButton: false,
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Aceptar",
+        });
+
+      } else {
+
+        Swal.fire({
+          title: "Creando Evento",
+          text: data.detail,
+          icon: "info",
+          showCancelButton: false,
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Aceptar",
+        });
+
       }
     } catch (errors) {
       console.log(errors);
@@ -136,53 +176,50 @@ export default function NewEvent({ session, openEvent, setOpenEvent, record }) {
         confirmButtonColor: "#3085d6",
         confirmButtonText: "Aceptar",
       });
+
     }
   };
 
   const handleUpdate = async () => {
-    try {
-      const { data } = await axios.put(
-          `/api/events/update?id=${event.id}`,
-          event,
-          config
-      );
+    const body = new FormData();
+    body.append("image", event.file);
 
+    const url = `${process.env.NEXT_PUBLIC_API_URL}event/${event.id}?name=${event.name}&summary=${event.summary}&city_id=${event.city}&main_location=${event.campus}&start_date=${event.startDate}&close_date=${event.endDate}&tourney=${JSON.stringify(event.tourney)}`;
+
+    try {
+      const { data } = await axios.put(url, body, config);
       if (data.success) {
 
-        const body = new FormData();
-        body.append("user_id", session.id);
-        body.append("event_id", event.id);
-        body.append("file", event.file);
+        setOpenEvent(false);
+        setRefresh(true);
 
-        const { status } = await axios.post("/api/events/file", body);
-        if (status == 200) {
-          setEvent({
-            id: "",
-            name: "",
-            startDate: "",
-            endDate: "",
-            country: "",
-            city: "",
-            campus: "",
-            summary: "",
-            image: "",
-            file: "",
-          });
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: "Ha ocurrido un error, su imagen no ha subido al servidor.",
-            showConfirmButton: true,
-          });
-        }
+        Swal.fire({
+          title: "Modificando Evento",
+          text: data.detail,
+          icon: "success",
+          showCancelButton: false,
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Aceptar",
+        });
+
+      } else {
+        Swal.fire({
+          title: "Modificando Evento",
+          text: data.detail,
+          icon: "error",
+          showCancelButton: false,
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Aceptar",
+        });
       }
     } catch (errors) {
       console.log(errors);
 
       const { detail } = errors.response;
       Swal.fire({
-        title: "Creando Evento",
+        title: "Modificando Evento",
         text: detail,
         icon: "error",
         showCancelButton: false,
@@ -194,24 +231,7 @@ export default function NewEvent({ session, openEvent, setOpenEvent, record }) {
   };
 
   const handleSubmit = async (e) => {
-    setError({
-      ...error,
-      name: event.name === "",
-      startDate: event.startDate === "",
-      endDate: event.endDate === "",
-      country: event.country === "",
-      city: event.city === "",
-      campus: event.campus === "",
-    });
-
-    if (
-      !error.name &&
-      !error.startDate &&
-      !error.endDate &&
-      !error.country &&
-      !error.city &&
-      !error.campus
-    ) {
+    if (isValid()) {
       if (Object.entries(record).length === 0) {
         handleCreate();
       } else {
@@ -241,7 +261,13 @@ export default function NewEvent({ session, openEvent, setOpenEvent, record }) {
   };
 
   const next = () => {
-    setStep(step + 1);
+    if (step === 1) {    
+      if (isValid()) {
+        setStep(step + 1);
+      }
+    } else {
+      setStep(step + 1);
+    }
   };
 
   const back = () => {
@@ -250,8 +276,8 @@ export default function NewEvent({ session, openEvent, setOpenEvent, record }) {
 
   const clearImage = () => {
     setEvent({ ...event, image: "", file: "" });
-    setMode(false);
     setImage(null);
+    setMode(!mode);
   };
 
   const close = () => {
@@ -289,9 +315,11 @@ export default function NewEvent({ session, openEvent, setOpenEvent, record }) {
           setStep(0);
           setOpenEvent(false);
           setMode(false);
+          setReload(!reload);
         }
       });
     } else {
+      setStep(0);
       setOpenEvent(false);
     }
   };
@@ -313,232 +341,21 @@ export default function NewEvent({ session, openEvent, setOpenEvent, record }) {
       </ModalHeader>
       <ModalBody>
         {step == 0 ? (
-          <div
-            className="img-event-container"
-            style={{
-              backgroundImage: `url(${image})`,
-              height: "50vh",
-              backgroundRepeat: "no-repeat",
-              backgroundSize: "100% 100%",
-            }}
-          >
-            <div className="img-container">
-              {event.image != "" && (
-                <div className="img-clear">
-                  <Button
-                    className="btn btn-danger btn-circle bi bi-trash"
-                    onClick={(e) => {
-                      clearImage(e);
-                    }}
-                    style={{
-                      border: "none",
-                      color: "white",
-                      fontSize: "14px",
-                      fontWeight: "700",
-                    }}
-                    title="Aceptar"
-                  />
-                </div>
-              )}
-
-              {event.image == "" && (
-                <>
-                  <div className="img-svg">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="56"
-                      height="56"
-                      fill="#e2e5ec"
-                      className="bi bi-image"
-                      viewBox="0 0 16 16"
-                    >
-                      <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
-                      <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z" />
-                    </svg>
-                    <h6 className="pt-4" style={{ fontWeight: 600 }}>
-                      Imagen del Evento
-                    </h6>
-                  </div>
-                  <div className="img-button">
-                    <div
-                      className="file-input-wrapper"
-                      style={{ height: "60px" }}
-                    >
-                      <button className="success" title="Añadir foto al Evento">
-                        Añadir foto al Evento
-                      </button>
-                      <input
-                        type="file"
-                        name="image"
-                        id="image"
-                        value=""
-                        onChange={(e) => handleAddPhoto(e)}
-                      />
-                    </div>
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
+          <EventImage
+            event={event}
+            image={image}
+            handleAddPhoto={handleAddPhoto}
+            clearImage={clearImage}
+          />
+        ) : step == 1 ? (
+          <EventData
+            session={session}
+            event={event}
+            error={error}
+            handleChange={handleChange}
+          />
         ) : (
-          <Form>
-            <Col md={12}>
-              <FormGroup>
-                <Label>Nombre del Evento</Label>
-                <InputGroup size="sm">
-                  <Input
-                    type="text"
-                    name="name"
-                    id="name"
-                    placeholder={"Nombre del Evento"}
-                    invalid={error.name}
-                    onChange={handleChange("name")}
-                    autoComplete="off"
-                    value={event.name}
-                    onKeyPress={(event) => {
-                      if (!/^[A-Za-z_0-9.áéíóúÑñ\s]*$/.test(event.key)) {
-                        event.preventDefault();
-                      }
-                    }}
-                  />
-                  <FormFeedback>
-                    Por favor, teclee el nombre del evento
-                  </FormFeedback>
-                </InputGroup>
-              </FormGroup>
-            </Col>
-            <Row>
-              <Col xs="6">
-                <FormGroup>
-                  <Label for="startDate">Fecha Inicial</Label>
-                  <InputGroup size="sm">
-                    <Input
-                      id="startDate"
-                      name="startDate"
-                      invalid={error.startDate}
-                      placeholder="Fecha Inicial"
-                      type="date"
-                      value={event.startDate}
-                      onChange={handleChange("startDate")}
-                    />
-                    <FormFeedback>
-                      Por favor, teclee la fecha de inicio
-                    </FormFeedback>
-                  </InputGroup>
-                </FormGroup>
-              </Col>
-              <Col xs="6">
-                <FormGroup>
-                  <Label for="endDate">Fecha Final</Label>
-                  <InputGroup size="sm">
-                    <Input
-                      id="endDate"
-                      name="endDate"
-                      invalid={error.endDate}
-                      placeholder="Fecha Final"
-                      value={event.endDate}
-                      type="date"
-                      onChange={handleChange("endDate")}
-                    />
-                    <FormFeedback>
-                      Por favor, teclee la fecha final
-                    </FormFeedback>
-                  </InputGroup>
-                </FormGroup>
-              </Col>
-            </Row>
-
-            <Row>
-              <Col xs="6">
-                <FormGroup>
-                  <Label for="country" size="sm" sm={4}>
-                    País
-                  </Label>
-                  <InputGroup size="sm">
-                    <CountryComboBox
-                      name={"country"}
-                      cmbText="Seleccione país..."
-                      invalid={error.country}
-                      value={event.country}
-                      valueDefault={event.country}
-                      onChange={handleChange("country")}
-                    />
-                    <FormFeedback>Por favor, seleccione el país</FormFeedback>
-                  </InputGroup>
-                </FormGroup>
-              </Col>
-              <Col xs="6">
-                <FormGroup>
-                  <Label for="city" size="sm" sm={4}>
-                    Ciudad
-                  </Label>
-                  <InputGroup size="sm">
-                    <CityComboBox
-                      session={session}
-                      country_id={event.country}
-                      name="city"
-                      cmbText="Seleccione ciudad..."
-                      value={event.city}
-                      invalid={error.city}
-                      valueDefault={event.city}
-                      onChange={handleChange("city")}
-                    />
-                    <FormFeedback>Por favor, seleccione la ciudad</FormFeedback>
-                  </InputGroup>
-                </FormGroup>
-              </Col>
-            </Row>
-            <Col md={12}>
-              <FormGroup>
-                <Label>Sede del Evento</Label>
-                <InputGroup size="sm">
-                  <Input
-                    type="text"
-                    name="campus"
-                    id="campus"
-                    placeholder={"Sede del Evento"}
-                    onChange={handleChange("campus")}
-                    autoComplete="off"
-                    invalid={error.campus}
-                    value={event.campus}
-                    onKeyPress={(event) => {
-                      if (!/^[A-Za-z_0-9.áéíóúÑñ\s]*$/.test(event.key)) {
-                        event.preventDefault();
-                      }
-                    }}
-                  />
-                  <FormFeedback>
-                    Por favor, teclee la sede del evento
-                  </FormFeedback>
-                </InputGroup>
-              </FormGroup>
-            </Col>
-
-            <Col md={12}>
-              <FormGroup>
-                <Label>Resumen</Label>
-                <InputGroup size="sm">
-                  <Input
-                    type="text"
-                    name="summary"
-                    id="summary"
-                    placeholder={"Resumen"}
-                    onChange={handleChange("summary")}
-                    autoComplete="off"
-                    value={event.summary}
-                    onKeyPress={(event) => {
-                      if (!/^[A-Za-z_0-9.áéíóúÑñ\s]*$/.test(event.key)) {
-                        event.preventDefault();
-                      }
-                    }}
-                  />
-                  <FormFeedback>
-                    Por favor, teclee el resumen del evento
-                  </FormFeedback>
-                </InputGroup>
-              </FormGroup>
-            </Col>
-          </Form>
+          <Tourney session={session} records={event.tourney} startDate={event.startDate} endDate={event.endDate} />
         )}
       </ModalBody>
       <ModalFooter
@@ -546,7 +363,7 @@ export default function NewEvent({ session, openEvent, setOpenEvent, record }) {
           step == 0 ? "modal-footer" : "modal-footer justify-content-between"
         }
       >
-        {step == 1 && (
+        {(step == 1 || step == 2) && (
           <Button
             className="btn-circle bi bi-arrow-left mr-auto"
             style={{
@@ -562,7 +379,7 @@ export default function NewEvent({ session, openEvent, setOpenEvent, record }) {
           />
         )}
 
-        {step == 1 && (
+        {step == 2 && (
           <Button
             className="bi-check2-circle"
             style={{
@@ -575,14 +392,14 @@ export default function NewEvent({ session, openEvent, setOpenEvent, record }) {
             onClick={(e) => {
               handleSubmit(e);
             }}
-            // disabled={event.image != "" ? false : true}
+            disabled={event.image != "" ? false : true}
             title="Aceptar"
           >
             Aceptar
           </Button>
         )}
 
-        {step == 0 && (
+        {(step == 0 || step == 1) && (
           <Button
             className="btn-circle bi bi-arrow-right"
             style={{

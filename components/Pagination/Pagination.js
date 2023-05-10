@@ -121,95 +121,93 @@ const Pagination = (props) => {
             <b>{totalCount}</b> Registros
           </div>
         )}
-        {totalCount > 0 &&
-          <ul className="pagination">
+        <ul className="pagination">
 
-            {showAddButton && 
-              <li className={"page-item"} onClick={() => onAdd()}>
-                <a className="page-link">
-                  <i
-                    className="bi bi-plus-lg"
-                    data-toggle="tooltip"
-                    title="Nuevo"
-                  ></i>
-                </a>
-              </li>
-            }
-
-            <li
-              onClick={() => onFirts()}
-              className={currentPage == 1 ? "page-item disabled" : "page-item"}
-            >
+          {showAddButton && 
+            <li className={"page-item"} onClick={() => onAdd()}>
               <a className="page-link">
                 <i
-                  className="bi bi-chevron-bar-left"
+                  className="bi bi-plus-lg"
                   data-toggle="tooltip"
-                  title="Primera Página"
+                  title="Nuevo"
                 ></i>
               </a>
             </li>
-            <li
-              onClick={() => onPrevious()}
-              className={currentPage == 1 ? "page-item disabled" : "page-item"}
-            >
-              <a className="page-link">
-                <i
-                  className="bi bi-chevron-left"
-                  data-toggle="tooltip"
-                  title="Página Anterior"
-                ></i>
-              </a>
-            </li>
-  
-            {paginationRange.map((page, i) => {
-              if (page === DOTS) {
-                return (
-                  <li key={i} className="page-item-dots">
-                    &#8230;
-                  </li>
-                );
-              }
+          }
+
+          <li
+            onClick={() => onFirts()}
+            className={currentPage == 1 ? "page-item disabled" : "page-item"}
+          >
+            <a className="page-link">
+              <i
+                className="bi bi-chevron-bar-left"
+                data-toggle="tooltip"
+                title="Primera Página"
+              ></i>
+            </a>
+          </li>
+          <li
+            onClick={() => onPrevious()}
+            className={currentPage == 1 ? "page-item disabled" : "page-item"}
+          >
+            <a className="page-link">
+              <i
+                className="bi bi-chevron-left"
+                data-toggle="tooltip"
+                title="Página Anterior"
+              ></i>
+            </a>
+          </li>
+
+          {paginationRange.map((page, i) => {
+            if (page === DOTS) {
               return (
-                <li
-                  onClick={() => onChangePage(page)}
-                  key={i}
-                  className={currentPage == page ? "page-item active" : "page-item"}
-                >
-                  <a className="page-link">{page}</a>
+                <li key={i} className="page-item-dots">
+                  &#8230;
                 </li>
               );
-            })}
-  
-            <li
-              onClick={() => onNext()}
-              className={
-                currentPage == totalPage ? "page-item disabled" : "page-item"
-              }
-            >
-              <a className="page-link">
-                <i
-                  className="bi bi-chevron-right"
-                  data-toggle="tooltip"
-                  title="Siguiente Página"
-                ></i>
-              </a>
-            </li>
-            <li
-              onClick={() => onLast()}
-              className={
-                currentPage == totalPage ? "page-item disabled" : "page-item"
-              }
-            >
-              <a className="page-link">
-                <i
-                  className="bi bi-chevron-bar-right"
-                  data-toggle="tooltip"
-                  title="Última Página"
-                ></i>
-              </a>
-            </li>
-          </ul>
-        }
+            }
+            return (
+              <li
+                onClick={() => onChangePage(page)}
+                key={i}
+                className={currentPage == page ? "page-item active" : "page-item"}
+              >
+                <a className="page-link">{page}</a>
+              </li>
+            );
+          })}
+
+          <li
+            onClick={() => onNext()}
+            className={
+              currentPage == totalPage ? "page-item disabled" : "page-item"
+            }
+          >
+            <a className="page-link">
+              <i
+                className="bi bi-chevron-right"
+                data-toggle="tooltip"
+                title="Siguiente Página"
+              ></i>
+            </a>
+          </li>
+          <li
+            onClick={() => onLast()}
+            className={
+              currentPage == totalPage ? "page-item disabled" : "page-item"
+            }
+          >
+            <a className="page-link">
+              <i
+                className="bi bi-chevron-bar-right"
+                data-toggle="tooltip"
+                title="Última Página"
+              ></i>
+            </a>
+          </li>
+        </ul>
       </div>
     );
   };

@@ -98,6 +98,14 @@ const Header = ({ session }) => {
                 </Link>
               </li>
               <li>
+                <Link href="/events">
+                  <a className="dropdown-item d-flex align-items-center">
+                    <i className="bi bi-calendar3"></i>
+                    <span>Mis Eventos</span>
+                  </a>
+                </Link>
+              </li>
+              <li>
                 <hr className="dropdown-divider" />
               </li>
 

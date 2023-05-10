@@ -104,40 +104,52 @@ export default function NewPost({ session, newPost, setNewPost, setRefresh }) {
     event.preventDefault();
     setDisabled(true);
 
+    const url = `${process.env.NEXT_PUBLIC_API_URL}post?summary=${post.summary}`;
+
+    const body = new FormData();
+    body.append("files", post.media);
+
+
+
     try {
-      const { data } = await axios.post("/api/post/create", post, config);
+      const { data } = await axios.post(url, body, config);
 
       if (data.success) {
-        setPost({ ...post, id: data.data.post_id });
 
-        const body = new FormData();
-        body.append("id", data.data.post_id);
+        setDisabled(false);
+        setRefresh(true);
+        setNewPost(false);
 
-        post.media.map((file, idx) => {
-          body.append("file_" + idx, file);
-        });
+        // setPost({ ...post, id: data.data.post_id });
 
-        const { status } = await axios.post("/api/post/file", body);
-        if (status == 200) {
-          setPost({
-            id: "",
-            summary: "",
-            files: [],
-            media: [],
-            objUrl: [],
-          });
+        // const body = new FormData();
+        // body.append("id", data.data.post_id);
 
-          setDisabled(false);
-          setRefresh(true);
-          setNewPost(false);
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: "Ha ocurrido un error, su imagen no ha subido al servidor.",
-            showConfirmButton: true,
-          });
-        }
+        // post.media.map((file, idx) => {
+        //   body.append("file_" + idx, file);
+        // });
+
+        // const { status } = await axios.post("/api/post/file", body);
+        // if (status == 200) {
+        //   setPost({
+        //     id: "",
+        //     summary: "",
+        //     files: [],
+        //     media: [],
+        //     objUrl: [],
+        //   });
+
+        //   setDisabled(false);
+        //   setRefresh(true);
+        //   setNewPost(false);
+        // } else {
+        //   Swal.fire({
+        //     icon: "error",
+        //     title: "Error",
+        //     text: "Ha ocurrido un error, su imagen no ha subido al servidor.",
+        //     showConfirmButton: true,
+        //   });
+        // }
       }
     } catch (errors) {
       console.log(errors);
