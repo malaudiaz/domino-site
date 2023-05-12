@@ -49,7 +49,7 @@ export default function Answer({ session, isOpen, setIsOpen, comment }) {
   const pushAnswer = async () => {
     if (answer !== "") {
 
-        const url = `/api/comment/comment`;
+        const url = `${process.env.NEXT_PUBLIC_API_URL}commentcomment`;
         try {
           const {data} = await axios.post(url, {comment_id: comment.id, summary: answer}, config);
           if (data.success) {

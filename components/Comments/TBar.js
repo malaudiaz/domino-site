@@ -19,7 +19,8 @@ export default function TBar({ session, post }) {
   };  
 
   const toggle = async () => {
-    const url = `/api/post/like`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}postlike`;
+
     try {
       const {data} = await axios.post(url, {post_id: post.id}, config);
       if (data.success) {
@@ -27,7 +28,7 @@ export default function TBar({ session, post }) {
         setLike(!like);    
       }
     } catch (errors) {
-      const { detail } = response.data;
+      const { detail } = errors.response;
       Swal.fire({
         title: "Me gusta la Publicación",
         text: detail,
