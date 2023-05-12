@@ -67,7 +67,7 @@ export default NextAuth({
   pages: {
     signIn: "/login",
   },
-  site: process.env.NEXTAUTH_URL || "http://localhost:3000",
+  site: process.env.SERVER_URL || "http://localhost:3000",
   callbacks: {
     jwt: async ({ token, user }) => {
       if (user) {

@@ -9,63 +9,6 @@ import Suggestions from "../components/Suggestions/Suggestions";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-
-const mock = [
-  {
-    id: 1,
-    user_id: "c62a5843-2628-48a4-8c1e-639501c79d22",
-    name: "Jeanette Sun",
-    avatar: "/profile/user-vector.jpg",
-    elapsed: "20 min",
-    comment:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.",
-    amountLike: 2,
-    amountComment: 12,
-    allowComment: true,
-    showCountLike: true,
-    comments: [
-      {
-        id: 1,
-        user_id: "95bfd91e-6f24-4c68-8309-a77f0946ef46",
-        name: "Daniel Frozer",
-        avatar: "/profile/user-vector.jpg",
-        comment: "I like this alot! thanks alot",
-        elapsed: "18 min",
-      },
-      {
-        id: 2,
-        user_id: "95bfd91e-6f24-4c68-8309-a77f0946ef46",
-        name: "Elizabeth goodmen",
-        avatar: "/profile/user-vector.jpg",
-        comment: "Thanks for sharing! bla, bla, bla, bla",
-        elapsed: "8 h",
-      },
-    ],
-    photos: [
-      { path: "/10000000_873713417029313_6641622374433675244_n.mp4", type: "video" },
-    ],
-    like: true
-  },
-  {
-    id: 2,
-    user_id: "c62a5843-2628-48a4-8c1e-639501c79d22",
-    name: "Pedro Sánchez",
-    avatar: "/profile/user-vector.jpg",
-    elapsed: "3 d",
-    comment:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet",
-    allowComment: true,
-    amountLike: 1500,
-    amountComment: 0,
-    showCountLike: true,
-    comments: [],
-    photos: [
-      { path: "/320999405_878476469880787_1097986021636655536_n.mp4", type: "video" },
-    ],
-    like: false
-  },
-];
-
 export default function Page({ session }) {
 
   const value = useContext(AppContext);

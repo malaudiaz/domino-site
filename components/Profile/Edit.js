@@ -50,9 +50,10 @@ export default function Edit({ session, profile, setProfile, handleChange, handl
                       onChange={(event) => {
                         if (event.target.files && event.target.files[0]) {
                           const i = event.target.files[0];
-                          if (i.type.includes("image/jpeg") && i.size <= 6000) {
+                          if (i.type.includes("image/jpeg")) {
                             setImage(i);
                             setCreateObjectURL(URL.createObjectURL(i));
+                            setProfile({ ...profile, file: i });
                           } else {
                             Swal.fire({
                               icon: "error",

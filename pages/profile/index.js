@@ -51,6 +51,7 @@ export default function Profile({ session }) {
     photo: "",
     sex: "M",
     username: "",
+    file: "",
   });
 
   const toggleTab = (tab) => {
@@ -62,9 +63,9 @@ export default function Profile({ session }) {
   const config = {
     headers: {
       "Content-Type": "application/json",
-      "Accept": "application/json",
+      Accept: "application/json",
       "accept-Language": session.locale,
-      "Authorization": `Bearer ${session.token}`,
+      Authorization: `Bearer ${session.token}`,
     },
   };
 
@@ -72,7 +73,7 @@ export default function Profile({ session }) {
     value.setLanguageSelected(session.locale);
 
     const fetchData = async () => {
-      const url = `/api/users/profile?id=${session.id}`;
+      const url = `${process.env.NEXT_PUBLIC_API_URL}profile/${session.id}`;
       setLoading(true);
 
       try {
@@ -93,7 +94,9 @@ export default function Profile({ session }) {
           profile.sex = respObj.sex ? respObj.sex : "";
           profile.city_id = respObj.city_id ? respObj.city_id : "";
           profile.country_id = respObj.country_id ? respObj.country_id : "";
-          profile.photo = !respObj.photo ? "/profile/user-vector.jpg" : respObj.photo;
+          profile.photo = !respObj.photo
+            ? "/profile/user-vector.jpg"
+            : respObj.photo;
 
           setProfile(profile);
           setLoading(false);
@@ -135,13 +138,25 @@ export default function Profile({ session }) {
   };
 
   const saveProfile = async () => {
-    const url = `/api/users/profile?id=${profile.id}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}users/${profile.id}?first_name=${profile.first_name}&last_name=${profile.last_name}&email=${profile.email}&phone=${profile.phone}&sex=${profile.sex}&birthdate=${profile.birthdate}&alias=${profile.alias}&job=${profile.job}&city_id=${profile.city_id}`;
+
+    const body = new FormData();
+    body.append("avatar", profile.file);
 
     try {
-      const { data } = await axios.put(url, profile, config);
+      const { data } = await axios.put(url, body, {
+        headers: {
+          "accept-Language": session.locale,
+          Authorization: `Bearer ${session.token}`,
+        },
+      });
       if (data.success) {
+        value.setAvatar(data.data);
+        profile.photo = data.data;
+        setProfile(profile);
+
         setLoading(true);
-        setReload(true);      
+        setReload(true);
         Swal.fire({
           icon: "success",
           title: "Guardando Pérfil",
@@ -161,28 +176,8 @@ export default function Profile({ session }) {
 
   const handleUpload = async (event) => {
     event.preventDefault();
-
-    const body = new FormData();
-    body.append("id", session.id);
-    body.append("file", image);
-
-    const {status, data} = await axios.post("/api/avatar/upload", body);
-    if (status == 200) {
-      const photo = image ? `/profile/${session.id}/`+data.files.file.originalFilename : "/user-vector.jpg";
-      value.setAvatar(photo);
-      profile.photo = photo;
-      setProfile(profile);    
-      saveProfile();
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "Ha ocurrido un error, su imagen no ha subido al servidor.",
-        showConfirmButton: true,
-      });
-    }
+    saveProfile();
   };
-
 
   return (
     <Layout session={session} title={"Profile"}>
