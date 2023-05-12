@@ -17,15 +17,18 @@ export default function CityComboBox({
   const config = {
     headers: {
       "Content-Type": "application/json",
-      "Accept": "application/json",
+      Accept: "application/json",
       "accept-Language": session.locale,
-      "Authorization": `Bearer ${session.token}`,
+      Authorization: `Bearer ${session.token}`,
     },
   };
 
   useEffect(() => {
     const fetchData = async () => {
-      const url = `/api/cities/services?page=0&per_page=0&criteria_key=country_id&criteria_value=${country_id}`;
+      const url = `${
+        process.env.NEXT_PUBLIC_API_URL
+      }city?page=${0}&per_page=${0}&criteria_key=${"country_id"}&criteria_value=${country_id}`;
+
       try {
         const { data } = await axios.get(url, config);
 

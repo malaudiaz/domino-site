@@ -63,9 +63,9 @@ export default function Profile({ session }) {
   const config = {
     headers: {
       "Content-Type": "application/json",
-      Accept: "application/json",
+      "Accept": "application/json",
       "accept-Language": session.locale,
-      Authorization: `Bearer ${session.token}`,
+      "Authorization": `Bearer ${session.token}`,
     },
   };
 
@@ -123,20 +123,6 @@ export default function Profile({ session }) {
     fetchData();
   }, [reload]);
 
-  const handleChange = (prop) => (event) => {
-    const value =
-      event.target.type === "checkbox"
-        ? event.target.checked
-        : event.target.value;
-
-    // setValidate({
-    //   ...validate,
-    //   [prop]: event.target.value != "" ? "success" : "error",
-    // });
-
-    setProfile({ ...profile, [prop]: value });
-  };
-
   const saveProfile = async () => {
     const url = `${process.env.NEXT_PUBLIC_API_URL}users/${profile.id}?first_name=${profile.first_name}&last_name=${profile.last_name}&email=${profile.email}&phone=${profile.phone}&sex=${profile.sex}&birthdate=${profile.birthdate}&alias=${profile.alias}&job=${profile.job}&city_id=${profile.city_id}`;
 
@@ -147,7 +133,7 @@ export default function Profile({ session }) {
       const { data } = await axios.put(url, body, {
         headers: {
           "accept-Language": session.locale,
-          Authorization: `Bearer ${session.token}`,
+          "Authorization": `Bearer ${session.token}`,
         },
       });
       if (data.success) {
@@ -256,7 +242,6 @@ export default function Profile({ session }) {
                         session={session}
                         profile={profile}
                         setProfile={setProfile}
-                        handleChange={handleChange}
                         handleUpload={handleUpload}
                         createObjectURL={createObjectURL}
                         setCreateObjectURL={setCreateObjectURL}

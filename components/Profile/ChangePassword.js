@@ -67,7 +67,7 @@ export default function ChangePassword({ session }) {
       validate.currentpassword === "success" &&
       validate.renewpassword === "success"
     ) {
-      const url = "/api/users/profile";
+      const url = `${process.env.NEXT_PUBLIC_API_URL}users/password`;
 
       try {
 
@@ -75,9 +75,9 @@ export default function ChangePassword({ session }) {
           url,
           {
             id: session.id,
-            currentpassword: values.currentpassword,
-            newpassword: values.newpassword,
-            renewpassword: values.renewpassword
+            current_password: values.currentpassword,
+            new_password: values.newpassword,
+            renew_password: values.renewpassword
           },
           config
         );

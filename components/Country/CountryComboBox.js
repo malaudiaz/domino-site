@@ -21,13 +21,13 @@ export default function CountryComboBox({
 
   useEffect(() => {
     const fetchData = async () => {
-      const url = `/api/countries/services?page=0&per_page=0`;
+      const url = `${process.env.NEXT_PUBLIC_API_URL}countries?page=${0}&per_page=${0}`;
+
       try {
         const { data } = await axios.get(url, config);
-        const { result } = data;
 
-        if (result.success) {
-          setRecords(result.data);
+        if (data.success) {
+          setRecords(data.data);
         }
       } catch ({ response }) {
         const { detail } = response.data;

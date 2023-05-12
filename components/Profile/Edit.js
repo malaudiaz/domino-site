@@ -1,4 +1,4 @@
-// import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import CountryComboBox from "../../components/Country/CountryComboBox";
 import CityComboBox from "../City/CityComboBox";
@@ -17,7 +17,42 @@ import {
 
 import Swal from "sweetalert2";
 
-export default function Edit({ session, profile, setProfile, handleChange, handleUpload, createObjectURL, setCreateObjectURL, setImage }) {
+export default function Edit({
+  session,
+  profile,
+  setProfile,
+  handleUpload,
+  createObjectURL,
+  setCreateObjectURL,
+  setImage,
+}) {
+  const [validate, setValidate] = useState({
+    alias: "",
+    birthdate: "",
+    city_id: "",
+    email: "",
+    first_name: "",
+    job: "",
+    last_name: "",
+    phone: "",
+    sex: "",
+    username: "",
+  });
+
+  const handleChange = (prop) => (event) => {
+    const value =
+      event.target.type === "checkbox"
+        ? event.target.checked
+        : event.target.value;
+
+    setValidate({
+      ...validate,
+      [prop]: event.target.value != "" ? "success" : "error",
+    });
+
+    setProfile({ ...profile, [prop]: value });
+  };
+
   return (
     <Form onSubmit={handleUpload} encType="multipart/form-data">
       <Row>
@@ -74,7 +109,7 @@ export default function Edit({ session, profile, setProfile, handleChange, handl
                     style={{ color: "white" }}
                     onClick={(e) => {
                       setProfile({ ...profile, photo: "/user-vector.jpg" });
-                      sessionStorage.setItem('avatar', "/user-vector.jpg");
+                      sessionStorage.setItem("avatar", "/user-vector.jpg");
                       setImage(null);
                       setCreateObjectURL(null);
                     }}
@@ -99,6 +134,7 @@ export default function Edit({ session, profile, setProfile, handleChange, handl
                     name="first_name"
                     id="first_name"
                     placeholder="Nombre"
+                    invalid={validate.first_name === "error"}
                     value={profile.first_name}
                     onChange={handleChange("first_name")}
                     onKeyPress={(event) => {
@@ -107,7 +143,7 @@ export default function Edit({ session, profile, setProfile, handleChange, handl
                       }
                     }}
                   />
-                  <FormFeedback>Teclee su nombre.</FormFeedback>
+                  <FormFeedback>Por favor, teclee su nombre.</FormFeedback>
                 </InputGroup>
               </Col>
             </FormGroup>
@@ -132,7 +168,6 @@ export default function Edit({ session, profile, setProfile, handleChange, handl
                       }
                     }}
                   />
-                  <FormFeedback>Teclee su apellido.</FormFeedback>
                 </InputGroup>
               </Col>
             </FormGroup>
@@ -181,7 +216,6 @@ export default function Edit({ session, profile, setProfile, handleChange, handl
                       }
                     }}
                   />
-                  <FormFeedback>Teclee sus ocupación.</FormFeedback>
                 </InputGroup>
               </Col>
             </FormGroup>
@@ -207,7 +241,6 @@ export default function Edit({ session, profile, setProfile, handleChange, handl
                       }
                     }}
                   />
-                  <FormFeedback>Teclee sus correo.</FormFeedback>
                 </InputGroup>
               </Col>
             </FormGroup>
@@ -233,7 +266,6 @@ export default function Edit({ session, profile, setProfile, handleChange, handl
                       }
                     }}
                   />
-                  <FormFeedback>Teclee su teléfono.</FormFeedback>
                 </InputGroup>
               </Col>
             </FormGroup>
@@ -257,7 +289,6 @@ export default function Edit({ session, profile, setProfile, handleChange, handl
                     <option value="M">Mascúlino</option>
                     <option value="F">Femenio</option>
                   </Input>
-                  <FormFeedback>Seleccione su Sexo.</FormFeedback>
                 </InputGroup>
               </Col>
             </FormGroup>

@@ -93,8 +93,6 @@ export default function NewPost({ session, newPost, setNewPost, setRefresh }) {
 
   const config = {
     headers: {
-      "Content-Type": "application/json",
-      "Accept": "application/json",
       "accept-Language": session.locale,
       "Authorization": `Bearer ${session.token}`,
     },
@@ -107,54 +105,32 @@ export default function NewPost({ session, newPost, setNewPost, setRefresh }) {
     const url = `${process.env.NEXT_PUBLIC_API_URL}post?summary=${post.summary}`;
 
     const body = new FormData();
-    body.append("files", post.media);
-
-
+    for (let i=0; i<post.media.length; i++) {
+      body.append("files", post.media[i]);
+    }
 
     try {
       const { data } = await axios.post(url, body, config);
 
       if (data.success) {
 
+        setPost({
+          id: "",
+          summary: "",
+          files: [],
+          media: [],
+          objUrl: [],
+        });
+
         setDisabled(false);
         setRefresh(true);
         setNewPost(false);
 
-        // setPost({ ...post, id: data.data.post_id });
-
-        // const body = new FormData();
-        // body.append("id", data.data.post_id);
-
-        // post.media.map((file, idx) => {
-        //   body.append("file_" + idx, file);
-        // });
-
-        // const { status } = await axios.post("/api/post/file", body);
-        // if (status == 200) {
-        //   setPost({
-        //     id: "",
-        //     summary: "",
-        //     files: [],
-        //     media: [],
-        //     objUrl: [],
-        //   });
-
-        //   setDisabled(false);
-        //   setRefresh(true);
-        //   setNewPost(false);
-        // } else {
-        //   Swal.fire({
-        //     icon: "error",
-        //     title: "Error",
-        //     text: "Ha ocurrido un error, su imagen no ha subido al servidor.",
-        //     showConfirmButton: true,
-        //   });
-        // }
       }
     } catch (errors) {
       console.log(errors);
 
-      const { detail } = response;
+      const { detail } = errors.response;
       Swal.fire({
         title: "Creando Publicación",
         text: detail,
