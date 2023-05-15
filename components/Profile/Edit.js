@@ -93,7 +93,7 @@ export default function Edit({
                             Swal.fire({
                               icon: "error",
                               title: "Cargando Imagen",
-                              text: "Ha ocurrido un error al cargar la imagen, debe ser un jpg menor de 6 kb",
+                              text: "Ha ocurrido un error al cargar la imagen",
                               showConfirmButton: true,
                             });
                           }
