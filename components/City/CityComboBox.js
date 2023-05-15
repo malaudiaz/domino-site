@@ -17,9 +17,9 @@ export default function CityComboBox({
   const config = {
     headers: {
       "Content-Type": "application/json",
-      Accept: "application/json",
+      "Accept": "application/json",
       "accept-Language": session.locale,
-      Authorization: `Bearer ${session.token}`,
+      "Authorization": `Bearer ${session.token}`,
     },
   };
 

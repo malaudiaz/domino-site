@@ -17,7 +17,7 @@ export default function View({ session, profile }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const urlCountries = `/api/countries/services?page=0&per_page=0`;
+      const urlCountries = `${process.env.NEXT_PUBLIC_API_URL}countries?page=${0}&per_page=${0}`;
 
       try {
         const { data } = await axios.get(urlCountries, config);
@@ -36,7 +36,10 @@ export default function View({ session, profile }) {
         });
       }
 
-      const urlCities = `/api/cities/services?page=0&per_page=0&criteria_key=country_id&criteria_value=${profile.country_id}`;
+      const urlCities = `${
+        process.env.NEXT_PUBLIC_API_URL
+      }city?page=${0}&per_page=${0}&criteria_key=${"country_id"}&criteria_value=${profile.country_id}`;
+
 
       try {
         const { data } = await axios.get(urlCities, config);
