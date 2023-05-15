@@ -52,6 +52,7 @@ export default function Profile({ session }) {
     sex: "M",
     username: "",
     file: "",
+    receive_notifications: false,
   });
 
   const toggleTab = (tab) => {
@@ -63,9 +64,9 @@ export default function Profile({ session }) {
   const config = {
     headers: {
       "Content-Type": "application/json",
-      "Accept": "application/json",
+      Accept: "application/json",
       "accept-Language": session.locale,
-      "Authorization": `Bearer ${session.token}`,
+      Authorization: `Bearer ${session.token}`,
     },
   };
 
@@ -97,6 +98,7 @@ export default function Profile({ session }) {
           profile.photo = !respObj.photo
             ? "/profile/user-vector.jpg"
             : respObj.photo;
+          profile.receive_notifications = respObj.receive_notifications;
 
           setProfile(profile);
           setLoading(false);
@@ -124,7 +126,7 @@ export default function Profile({ session }) {
   }, [reload]);
 
   const saveProfile = async () => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}users/${profile.id}?first_name=${profile.first_name}&last_name=${profile.last_name}&email=${profile.email}&phone=${profile.phone}&sex=${profile.sex}&birthdate=${profile.birthdate}&alias=${profile.alias}&job=${profile.job}&city_id=${profile.city_id}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}users/${profile.id}?first_name=${profile.first_name}&last_name=${profile.last_name}&email=${profile.email}&phone=${profile.phone}&sex=${profile.sex}&birthdate=${profile.birthdate}&alias=${profile.alias}&job=${profile.job}&city_id=${profile.city_id}&receive_notifications=${profile.receive_notifications}`;
 
     const body = new FormData();
     body.append("avatar", profile.file);

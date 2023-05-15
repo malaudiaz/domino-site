@@ -9,15 +9,17 @@ export default function View({ session, profile }) {
   const config = {
     headers: {
       "Content-Type": "application/json",
-      "Accept": "application/json",
+      Accept: "application/json",
       "accept-Language": session.locale,
-      "Authorization": `Bearer ${session.token}`,
+      Authorization: `Bearer ${session.token}`,
     },
   };
 
   useEffect(() => {
     const fetchData = async () => {
-      const urlCountries = `${process.env.NEXT_PUBLIC_API_URL}countries?page=${0}&per_page=${0}`;
+      const urlCountries = `${
+        process.env.NEXT_PUBLIC_API_URL
+      }countries?page=${0}&per_page=${0}`;
 
       try {
         const { data } = await axios.get(urlCountries, config);
@@ -39,8 +41,9 @@ export default function View({ session, profile }) {
 
       const urlCities = `${
         process.env.NEXT_PUBLIC_API_URL
-      }city?page=${0}&per_page=${0}&criteria_key=${"country_id"}&criteria_value=${profile.country_id}`;
-
+      }city?page=${0}&per_page=${0}&criteria_key=${"country_id"}&criteria_value=${
+        profile.country_id
+      }`;
 
       try {
         const { data } = await axios.get(urlCities, config);
@@ -130,6 +133,13 @@ export default function View({ session, profile }) {
               return record.name;
             }
           })}
+        </div>
+      </div>
+
+      <div className="row">
+        <div className="col-lg-3 col-md-4 label">Notificaciones</div>
+        <div className="col-lg-9 col-md-8">
+          {profile.receive_notifications ? "Encendido, Recibe notificaciones" : "Apagado, No recibe notificaciones."}
         </div>
       </div>
     </div>

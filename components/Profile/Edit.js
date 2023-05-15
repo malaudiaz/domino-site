@@ -39,6 +39,8 @@ export default function Edit({
     username: "",
   });
 
+  const [state, setState] = useState(true);
+
   const handleChange = (prop) => (event) => {
     const value =
       event.target.type === "checkbox"
@@ -351,10 +353,26 @@ export default function Edit({
               </Col>
             </FormGroup>
           </Row>
+
+          <Row>
+            <Col sm={4}></Col>
+            <Col sm={8}>
+              <FormGroup switch>
+                <Input
+                  id="receive_notifications"
+                  name="receive_notifications"
+                  type="switch"
+                  checked={profile.receive_notifications}
+                  onClick={handleChange("receive_notifications")}
+                />
+                <Label check>{profile.receive_notifications ? "Recibir Notificaciones" : "No Recibe Notificaciones"}</Label>
+              </FormGroup>
+            </Col>
+          </Row>
         </Col>
       </Row>
 
-      <div className="text-center">
+      <div className="text-center pt-4">
         <Button
           type="submit"
           color="primary"
