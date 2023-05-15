@@ -21,12 +21,13 @@ export default function View({ session, profile }) {
 
       try {
         const { data } = await axios.get(urlCountries, config);
-        const { result } = data;
 
-        if (result.success) {
-          setCountry(result.data);
+        if (data.success) {
+          setCountry(data.data);
         }
       } catch ({ response }) {
+        console.log(response);
+
         const { detail } = response.data;
         Swal.fire({
           icon: "error",
