@@ -16,6 +16,7 @@ import {
 } from "reactstrap";
 
 import Swal from "sweetalert2";
+import Role from "./Role";
 
 export default function Edit({
   session,
@@ -363,12 +364,20 @@ export default function Edit({
                   name="receive_notifications"
                   type="switch"
                   checked={profile.receive_notifications}
-                  onClick={handleChange("receive_notifications")}
+                  onChange={handleChange("receive_notifications")}
                 />
-                <Label check>{profile.receive_notifications ? "Recibir Notificaciones" : "No Recibe Notificaciones"}</Label>
+                <Label check>
+                  {profile.receive_notifications
+                    ? "Recibir Notificaciones como:"
+                    : "No Recibe Notificaciones"}
+                </Label>
               </FormGroup>
             </Col>
           </Row>
+
+          {profile.receive_notifications && (
+            <Role session={session} profile={profile} setProfile={setProfile} />
+          )}
         </Col>
       </Row>
 
