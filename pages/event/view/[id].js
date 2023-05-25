@@ -133,7 +133,7 @@ export default function View({ session }) {
                   </CardBody>
                   <CardFooter style={{textAlign: "center"}}>
                     <button className="btn btn-primary btn-sm">
-                      <i class="bi bi-envelope"></i>{" "}
+                      <i className="bi bi-envelope"></i>{" "}
                         Enviar Invitación
                     </button>    
 
