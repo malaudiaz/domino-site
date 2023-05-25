@@ -7,8 +7,6 @@ import Head from "next/head";
 import {
   Card,
   CardBody,
-  CardTitle,
-  CardSubtitle
 } from "reactstrap";
 
 import Image from "next/image";

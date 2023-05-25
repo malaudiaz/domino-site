@@ -23,22 +23,24 @@ export default function DropDownMenu({ idx, items, onMenuSelection }) {
       <DropdownToggle tag="a">
         <i className="bi bi-three-dots-vertical"></i>
       </DropdownToggle>
-      <DropdownMenu>
-        {items.map(({ text, key, icon }, index) =>
-          text !== "-" ? (
-            <DropdownItem
-              key={index}
-              onClick={() => onMenuSelection(key, idx)}
-              className={icon !== "" ? icon : ""}
-            >
-              {" "}
-              {text}
-            </DropdownItem>
-          ) : (
-            <DropdownItem key={index} divider />
-          )
-        )}
-      </DropdownMenu>
+      {items.length > 0 &&
+        <DropdownMenu>
+          {items.map(({ text, key, icon }, index) =>
+            text !== "-" ? (
+              <DropdownItem
+                key={index}
+                onClick={() => onMenuSelection(key, idx)}
+                className={icon !== "" ? icon : ""}
+              >
+                {" "}
+                {text}
+              </DropdownItem>
+            ) : (
+              <DropdownItem key={index} divider />
+            )
+          )}
+        </DropdownMenu>
+      }
     </Dropdown>
   );
 }

@@ -46,6 +46,7 @@ const Header = ({ session }) => {
   return (
     <header id="header" className="header fixed-top d-flex align-items-center">
       <div className="d-flex align-items-center justify-content-between">
+        <Link href={"/"}>
         <a className="logo d-flex align-items-center">
           <Image src="/domino.png" alt="" width="25%" height="25%" />
           <span
@@ -55,6 +56,7 @@ const Header = ({ session }) => {
             <b>{t.title}</b>
           </span>
         </a>
+        </Link>
         <i className="bi bi-list toggle-sidebar-btn" onClick={toggle} />
       </div>
 

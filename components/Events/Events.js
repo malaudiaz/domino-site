@@ -131,27 +131,53 @@ export default function NewEvent({
     const body = new FormData();
     body.append("image", event.file);
 
-    const url = `${process.env.NEXT_PUBLIC_API_URL}event?name=${event.name}&summary=${event.summary}&city_id=${event.city}&main_location=${event.campus}&start_date=${event.startDate}&close_date=${event.endDate}&tourney=${JSON.stringify(event.tourney)}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}event?name=${event.name}&summary=${event.summary}&city_id=${event.city}&main_location=${event.campus}&start_date=${event.startDate}&close_date=${event.endDate}`;
 
     try {
       const { data } = await axios.post(url, body, config);
       if (data.success) {
 
-        setOpenEvent(false);
-        setRefresh(true);
+          const event_id = data.data.id;
 
-        Swal.fire({
-          title: "Creando Evento",
-          text: data.detail,
-          icon: "success",
-          showCancelButton: false,
-          allowOutsideClick: false,
-          confirmButtonColor: "#3085d6",
-          confirmButtonText: "Aceptar",
-        });
+          const config = {
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+              "accept-Language": "es-ES,es;",
+              Authorization: `Bearer ${session.token}`,
+            },
+          };
+       
+          const url = `${process.env.NEXT_PUBLIC_API_URL}tourney?event_id=${event_id}`;
+  
+          const response = await axios.post(url, event.tourney, config);
+ 
+          if (response.data.success) {
 
+            setOpenEvent(false);
+            setRefresh(true);
+    
+            Swal.fire({
+              title: "Creando Evento",
+              text: response.data.detail,
+              icon: "success",
+              showCancelButton: false,
+              allowOutsideClick: false,
+              confirmButtonColor: "#3085d6",
+              confirmButtonText: "Aceptar",
+            });
+          } else {
+            Swal.fire({
+              title: "Creando Evento",
+              text: response.data.detail,
+              icon: "info",
+              showCancelButton: false,
+              allowOutsideClick: false,
+              confirmButtonColor: "#3085d6",
+              confirmButtonText: "Aceptar",
+            });    
+          }
       } else {
-
         Swal.fire({
           title: "Creando Evento",
           text: data.detail,
@@ -161,7 +187,6 @@ export default function NewEvent({
           confirmButtonColor: "#3085d6",
           confirmButtonText: "Aceptar",
         });
-
       }
     } catch (errors) {
       console.log(errors);
@@ -184,25 +209,51 @@ export default function NewEvent({
     const body = new FormData();
     body.append("image", event.file);
 
-    const url = `${process.env.NEXT_PUBLIC_API_URL}event/${event.id}?name=${event.name}&summary=${event.summary}&city_id=${event.city}&main_location=${event.campus}&start_date=${event.startDate}&close_date=${event.endDate}&tourney=${JSON.stringify(event.tourney)}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}event/${event.id}?name=${event.name}&summary=${event.summary}&city_id=${event.city}&main_location=${event.campus}&start_date=${event.startDate}&close_date=${event.endDate}`;
 
     try {
       const { data } = await axios.put(url, body, config);
       if (data.success) {
 
-        setOpenEvent(false);
-        setRefresh(true);
 
-        Swal.fire({
-          title: "Modificando Evento",
-          text: data.detail,
-          icon: "success",
-          showCancelButton: false,
-          allowOutsideClick: false,
-          confirmButtonColor: "#3085d6",
-          confirmButtonText: "Aceptar",
-        });
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "accept-Language": "es-ES,es;",
+            Authorization: `Bearer ${session.token}`,
+          },
+        };
+     
+        const url = `${process.env.NEXT_PUBLIC_API_URL}tourney?event_id=${event.id}`;
 
+        const response = await axios.post(url, event.tourney, config);
+
+        if (response.data.success) {
+
+          setOpenEvent(false);
+          setRefresh(true);
+
+          Swal.fire({
+            title: "Modificando Evento",
+            text: response.data.detail,
+            icon: "success",
+            showCancelButton: false,
+            allowOutsideClick: false,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Aceptar",
+          });
+        } else {
+          Swal.fire({
+            title: "Modificando Evento",
+            text: data.detail,
+            icon: "error",
+            showCancelButton: false,
+            allowOutsideClick: false,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Aceptar",
+          });  
+        }
       } else {
         Swal.fire({
           title: "Modificando Evento",
@@ -217,7 +268,7 @@ export default function NewEvent({
     } catch (errors) {
       console.log(errors);
 
-      const { detail } = errors.response;
+      const { detail } = errors.response.data;
       Swal.fire({
         title: "Modificando Evento",
         text: detail,

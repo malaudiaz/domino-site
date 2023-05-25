@@ -219,7 +219,7 @@ h6 {
 
 /* Card */
 .card {
-  margin-bottom: 30px;
+  margin-bottom: 15px;
   border: none;
   border-radius: 5px;
   box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
@@ -630,7 +630,7 @@ h6 {
 
   #main,
   #footer {
-    margin-left: 350px;
+    margin-left: 300px;
   }
 }
 
@@ -717,13 +717,13 @@ h6 {
   color: #4154f1;
 }
 
-.sidebar-nav .nav-link .bi-chevron-right {
+.sidebar-nav .nav-link .bi-chevron-down {
   margin-right: 0;
   transition: transform 0.2s ease-in-out;
 }
 
-.sidebar-nav .nav-link:not(.collapsed) .bi-chevron-right {
-  transform: rotate(-270deg);
+.sidebar-nav .nav-link:not(.collapsed) .bi-chevron-down {
+  transform: rotate(-180deg);
 }
 
 .sidebar-nav .nav-content {
@@ -744,7 +744,7 @@ h6 {
 }
 
 .sidebar-nav .nav-content a i {
-  font-size: 6px;
+  /* font-size: 6px; */
   margin-right: 8px;
   line-height: 0;
   border-radius: 50%;
@@ -1427,7 +1427,7 @@ h6 {
 .folder__links__list {
   display: inline-block;
   width: 100%;
-  text-align: center;
+  /* text-align: center; */
 }
 
 .folder__links__list .folder__link__item {
@@ -1437,6 +1437,7 @@ h6 {
   padding-left: 7.5px;
   padding-right: 7.5px;
   box-sizing: border-box;
+  cursor: pointer;
 }
 
 .folder__card__link__button {
@@ -1448,8 +1449,8 @@ h6 {
 }
 
 .folder__card {
-  max-width: 300px;
-  width: 300px;
+  max-width: 400px;
+  width: 350px;
   height: 400px;
   background-color: #fff;
   border: 1px solid #e3e3e3;
@@ -1599,7 +1600,7 @@ h6 {
 
 .container-events {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 20px;
 }
 
@@ -1608,4 +1609,12 @@ h6 {
 	display: flex;
 	flex-direction: column;
   justify-content: space-between;
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 70vh;
+  place-items: center;
+  /* border: 2px solid; */
 }
