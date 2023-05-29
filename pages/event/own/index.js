@@ -148,7 +148,7 @@ export default function Own({ session }) {
   return (
     <EventLayout session={session}>
       <Head>
-        <link rel="shortcut icon" href="/domino.ico" />
+        <link rel="shortcut icon" href="/smartdomino.ico" />
         <title>Eventos que has organizado</title>
       </Head>
 
@@ -242,7 +242,6 @@ export default function Own({ session }) {
                     )
                   )}
                 </div>
-
               ) : (
                 <div className="wrapper">
                   <div style={{ textAlign: "center" }}>

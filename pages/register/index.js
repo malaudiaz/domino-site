@@ -135,7 +135,7 @@ export default function Register(props) {
   return (
     <>
       <Head>
-        <link rel="shortcut icon" href="/domino.ico" />
+        <link rel="shortcut icon" href="/smartdomino.ico" />
         <title>{t.pageTitle}</title>
       </Head>
 

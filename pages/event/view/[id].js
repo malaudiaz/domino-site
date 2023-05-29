@@ -9,6 +9,9 @@ import Swal from "sweetalert2";
 import Image from "next/image";
 
 export default function View({ session }) {
+
+  console.log(session);
+
   const router = useRouter();
   const [events, setEvents] = useState({});
   const [records, setRecords] = useState([]);
@@ -22,17 +25,18 @@ export default function View({ session }) {
     return cadena;
   };
 
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      "accept-Language": "es-ES,es;",
+      Authorization: `Bearer ${session.token}`,
+    },
+  };
+
+  console.log("==>", config);
 
   const fetchData = async () => {
-
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        "accept-Language": "es-ES,es;",
-        Authorization: `Bearer ${session.token}`,
-      },
-    };
 
     const url = `${
       process.env.NEXT_PUBLIC_API_URL
@@ -62,14 +66,49 @@ export default function View({ session }) {
 
   useEffect(() => {
     fetchData();
-    console.log(events);
   }, []);
 
+  const sendInvitations = async (torneyId) => {
+    const url = `${
+      process.env.NEXT_PUBLIC_API_URL
+    }invitation?tourney_id=${torneyId}`;
+
+    console.log(url);
+
+    try {
+      const { data } = await axios.post(url, config);
+      if (data.success) {
+        Swal.fire({
+          title: "Enviar Invitaciones",
+          text: data.detail,
+          icon: "error",
+          showCancelButton: false,
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Aceptar",
+        });
+  
+      }
+    } catch (errors) {
+      console.log(errors);
+      const { response } = errors;
+      const { detail } = response.data;
+      Swal.fire({
+        title: "Enviar Invitaciones",
+        text: detail,
+        icon: "error",
+        showCancelButton: false,
+        allowOutsideClick: false,
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "Aceptar",
+      });
+    }    
+  };
 
   return (
     <EventLayout session={session}>
       <Head>
-        <link rel="shortcut icon" href="/domino.ico" />
+        <link rel="shortcut icon" href="/smartdomino.ico" />
         <title>Evento</title>
       </Head>
       <div
@@ -98,7 +137,7 @@ export default function View({ session }) {
 
           <div className="row pt-2 px-4">
             <div className="container-events">
-              {records.map(({name, modality, summary, startDate}, idx)=>(
+              {records.map(({id, name, modality, summary, startDate}, idx)=>(
                 <Card className="folder__card" key={idx}>
                   <div className="d-flex justify-content-between p-2">
                     <div className="d-flex flex-row align-items-center">
@@ -120,7 +159,7 @@ export default function View({ session }) {
 
                   <CardBody>
                     <div className="col-12 pt-4">
-                      <h6 className="mb-2 text-muted">{summary}</h6>
+                      <h6 className="mb-2 teviewxt-muted">{summary}</h6>
                     </div>
                     <div className="col-12 pt-2">
                         <span>Modalidad: </span>
@@ -132,7 +171,7 @@ export default function View({ session }) {
                     </div>
                   </CardBody>
                   <CardFooter style={{textAlign: "center"}}>
-                    <button className="btn btn-primary btn-sm">
+                    <button className="btn btn-primary btn-sm" onClick={(e)=>{e.preventDefault(); sendInvitations(id)}}>
                       <i className="bi bi-envelope"></i>{" "}
                         Enviar Invitación
                     </button>    

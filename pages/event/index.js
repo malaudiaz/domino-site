@@ -75,7 +75,7 @@ export default function Events({ session }) {
   return (
     <EventLayout session={session}>
       <Head>
-        <link rel="shortcut icon" href="/domino.ico" />
+        <link rel="shortcut icon" href="/smartdomino.ico" />
         <title>{t.title}</title>
       </Head>
 
@@ -104,7 +104,7 @@ export default function Events({ session }) {
             </button> 
             <button 
               type="button" 
-              style={{background: "#e4e6eb"}}
+              style={{ background: "#e4e6eb", color: "blue", fontWeight: "500" }}
               className="btn btn-sm"> 
                 Destacados
             </button> 

@@ -148,7 +148,7 @@ export default function Events({ session }) {
   return (
     <Layout session={session} title={t.title}>
       <Head>
-        <link rel="shortcut icon" href="/domino.ico" />
+        <link rel="shortcut icon" href="/smartdomino.ico" />
         <title>{t.title}</title>
       </Head>
 

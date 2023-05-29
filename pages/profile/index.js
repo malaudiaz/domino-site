@@ -172,7 +172,7 @@ export default function Profile({ session }) {
   return (
     <Layout session={session} title={"Profile"}>
       <Head>
-        <link rel="shortcut icon" href="/domino.ico" />
+        <link rel="shortcut icon" href="/smartdomino.ico" />
         <title>Pérfil</title>
       </Head>
       <section className="section profile">
