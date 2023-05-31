@@ -10,8 +10,6 @@ import Image from "next/image";
 
 export default function View({ session }) {
 
-  console.log(session);
-
   const router = useRouter();
   const [events, setEvents] = useState({});
   const [records, setRecords] = useState([]);
@@ -28,13 +26,13 @@ export default function View({ session }) {
   const config = {
     headers: {
       "Content-Type": "application/json",
-      Accept: "application/json",
+      "Accept": "application/json",
       "accept-Language": "es-ES,es;",
-      Authorization: `Bearer ${session.token}`,
+      "Authorization": `Bearer ${session.token}`,
     },
   };
 
-  console.log("==>", config);
+  console.log("==>", config.headers);
 
   const fetchData = async () => {
 
@@ -73,15 +71,13 @@ export default function View({ session }) {
       process.env.NEXT_PUBLIC_API_URL
     }invitation?tourney_id=${torneyId}`;
 
-    console.log(url);
-
     try {
-      const { data } = await axios.post(url, config);
+      const { data } = await axios.post(url, {}, config);
       if (data.success) {
         Swal.fire({
           title: "Enviar Invitaciones",
           text: data.detail,
-          icon: "error",
+          icon: "success",
           showCancelButton: false,
           allowOutsideClick: false,
           confirmButtonColor: "#3085d6",

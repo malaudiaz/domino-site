@@ -8,24 +8,34 @@ import { Card, CardBody } from "reactstrap";
 
 import Image from "next/image";
 import DropDownMenu from "../../components/DropDownMenu/Menu";
+import {
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+  Button
+} from 'reactstrap';
 
 import axios from "axios";
 import Swal from "sweetalert2";
 
 export default function Events({ session }) {
   const value = useContext(AppContext);
-  const [page, setPage] = useState(1);
   const [events, setEvents] = useState([]);
   const [refresh, setRefresh] = useState(false);
+  const [ubication, setUbication] = useState(false);
+  const [period, setPeriod] = useState(false);
+
+  const [filter, setFilter] = useState("");
 
   const ctxMenu = [];
 
   const config = {
     headers: {
       "Content-Type": "application/json",
-      Accept: "application/json",
+      "Accept": "application/json",
       "accept-Language": "es-ES,es;",
-      Authorization: `Bearer ${session.token}`,
+      "Authorization": `Bearer ${session.token}`,
     },
   };
 
@@ -59,7 +69,7 @@ export default function Events({ session }) {
   useEffect(() => {
     value.setLanguageSelected(session.locale);
     fetchData();
-  }, [session.locale, value, page, refresh]);
+  }, [session.locale, value, refresh]);
 
   const t = value.state.languages.events;
 
@@ -70,6 +80,12 @@ export default function Events({ session }) {
       case "mnuDel":
         break;
     }
+  };
+
+  const toggleUbication = () => setUbication((prevState) => !prevState);
+  const togglePeriod = () => setPeriod((prevState) => !prevState);
+  const changePeriod = (text) => {
+    document.getElementById("period").innerHTML = text;
   };
 
   return (
@@ -87,33 +103,34 @@ export default function Events({ session }) {
         </div>
 
         <div className="d-flex gap-2 px-4">
-            <button 
-              className="btn btn-sm dropdown-toggle" 
-              type="button" 
-              style={{background: "#e4e6eb"}}
-              id="dropdownMenuButton1" 
-              data-bs-toggle="dropdown" 
-              aria-expanded="false">
-                <i className="bi bi-geo-alt"></i> Mi ubicación
-            </button>
-            <button 
-              type="button" 
-              style={{background: "#e4e6eb"}}
-              className="btn btn-sm dropdown-toggle"> 
-                <i className="bi bi-calendar-week"></i> Cualquier fecha
-            </button> 
-            <button 
-              type="button" 
-              style={{ background: "#e4e6eb", color: "blue", fontWeight: "500" }}
-              className="btn btn-sm"> 
+            <Dropdown isOpen={ubication} toggle={toggleUbication} direction={"down"}>
+              <DropdownToggle caret><i className="bi bi-geo-alt"></i> Mí ubicación</DropdownToggle>
+              <DropdownMenu>
+                <DropdownItem>Mi país</DropdownItem>
+                <DropdownItem>Mi ciudad</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+
+            <Dropdown isOpen={period} toggle={togglePeriod} direction={"down"}>
+              <DropdownToggle id="period" caret><i className="bi bi-calendar-week"></i> Cualquier fecha</DropdownToggle>
+              <DropdownMenu>
+                <DropdownItem onClick={(e)=>{e.preventDefault(); changePeriod("Cualquier fecha")}}>Cualquier fecha</DropdownItem>
+                <DropdownItem divider />
+                <DropdownItem onClick={(e)=>{e.preventDefault(); changePeriod("Hoy")}}>Hoy</DropdownItem>
+                <DropdownItem onClick={(e)=>{e.preventDefault(); changePeriod("Mañana")}}>Mañana</DropdownItem>
+                <DropdownItem onClick={(e)=>{e.preventDefault(); changePeriod("Este fin de semana")}}>Este fin de semana</DropdownItem>
+                <DropdownItem onClick={(e)=>{e.preventDefault(); changePeriod("Esta semana")}}>Esta semana</DropdownItem>
+                <DropdownItem onClick={(e)=>{e.preventDefault(); changePeriod("Próxima semana")}}>Próxima semana</DropdownItem>
+                <DropdownItem onClick={(e)=>{e.preventDefault(); changePeriod("Este mes")}}>Este mes</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+
+            <Button size="sm" color="primary"> 
                 Destacados
-            </button> 
-            <button 
-              type="button" 
-              style={{background: "#e4e6eb"}}
-              className="btn btn-sm"> 
+            </Button> 
+            <Button size="sm"> 
                 Siguiendo
-            </button> 
+            </Button> 
         </div>
 
         <div className="row pt-4 px-4">
@@ -122,7 +139,7 @@ export default function Events({ session }) {
 
           <div className="container-events">
             {events.map(
-              ({ name, summary, photo, startDate, city_name, campus }, idx) => (
+              ({ name, summary, photo, startDate, city_name, campus, amount_people }, idx) => (
                 <Card className="folder__card" style={{cursor: "pointer"}} key={idx}>
                   <div className="d-flex justify-content-between p-2">
                     <div className="d-flex flex-row align-items-center">
@@ -173,6 +190,11 @@ export default function Events({ session }) {
                         <b>{campus}</b>
                       </div>
                     </div>
+                    {amount_people > 0 &&
+                      <div className="col-12 pt-2">
+                        <span className="mb-2 text-muted">{amount_people === 1 ? amount_people + " persona asistira" : amount_people + " personas asistirán"}</span>
+                      </div>
+                    }
                   </CardBody>
                 </Card>
               )

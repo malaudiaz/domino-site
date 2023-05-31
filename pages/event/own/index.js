@@ -193,7 +193,7 @@ export default function Own({ session }) {
                 <div className="container-events">
                   {events.map(
                     (
-                      { id, name, summary, photo, startDate, endDate, city_name, campus },
+                      { id, name, summary, photo, startDate, endDate, city_name, campus, amount_people },
                       idx
                     ) => (
                       <Card
@@ -223,6 +223,7 @@ export default function Own({ session }) {
                           onClick={(e)=>{e.preventDefault(); handleClick(id)}}
                           priority
                           layout="intrinsic"
+                          style={{cursor: "pointer"}}
                         />
                         <CardBody>
                           <div className="col-12 pt-2">
@@ -234,9 +235,11 @@ export default function Own({ session }) {
                           <div className="col-12">
                             <span><b>{campus+", "+city_name}</b></span>
                           </div>
-                          <div className="col-12">
-                            <span className="mb-2 text-muted">{"150 personas asistirán"}</span>
-                          </div>
+                          {amount_people > 0 &&
+                            <div className="col-12 pt-2">
+                              <span className="mb-2 text-muted">{amount_people === 1 ? amount_people + " persona asistira" : amount_people + " personas asistirán"}</span>
+                            </div>
+                          }
                         </CardBody>
                       </Card>
                     )
