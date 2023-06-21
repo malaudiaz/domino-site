@@ -10,6 +10,7 @@ import { Card, CardBody } from "reactstrap";
 import DropDownMenu from "../../../components/DropDownMenu/Menu";
 import NewEvent from "../../../components/Events/Events";
 import Image from "next/image";
+import { eventDate } from "../../_functions";
 
 export default function Own({ session }) {
   const value = useContext(AppContext);
@@ -31,7 +32,7 @@ export default function Own({ session }) {
   };
 
   const handleClick = (id) => {
-    router.push(`/event/view/${id}`);
+    router.push(`/tourney/${id}`);
   };
 
   const config = {
@@ -136,15 +137,6 @@ export default function Own({ session }) {
     }
   };
 
-  const eventDate = (startDate, endDate) => {
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-
-    const cadena = start.toLocaleString('default', { weekday: 'short' }).toUpperCase() + ", " + start.getDate() + " " + start.toLocaleString('default', { month: 'short' }).toUpperCase() + " - " + end.getDate() + " " + end.toLocaleString('default', { month: 'short' }).toUpperCase();
-
-    return cadena;
-  };
-
   return (
     <EventLayout session={session}>
       <Head>
@@ -152,10 +144,7 @@ export default function Own({ session }) {
         <title>Eventos que has organizado</title>
       </Head>
 
-        <div
-          className="card"
-          style={{ border: "1px solid", borderColor: "#c7c7c7" }}
-        >
+        <div className="card" style={{border: "1px solid", borderColor: "#c7c7c7"}}>
           <div className="row pt-3 px-4">
             <h1
               style={{ fontSize: "24px", fontWeight: "600", color: "#012970" }}
@@ -163,7 +152,7 @@ export default function Own({ session }) {
               Eventos que has organizado
             </h1>
           </div>
-          <div className="d-flex gap-2 px-4 pb-4">
+          <div className="px-4 pb-4" style={{display: "flex", flexWrap: "wrap", gap:"10px"}}>
 
             <button className="btn btn-primary btn-sm" onClick={handleAddEvents}>
                 <i className="bi bi-plus-lg"></i>{" "}
@@ -186,8 +175,7 @@ export default function Own({ session }) {
             </button>
           </div>
 
-          <div className="row px-4">
-
+          <div className="pt-4 px-4" style={{display: "grid"}}>
 
               {events.length > 0 ? (
                 <div className="container-events">
@@ -196,10 +184,8 @@ export default function Own({ session }) {
                       { id, name, summary, photo, startDate, endDate, city_name, campus, amount_people },
                       idx
                     ) => (
-                      <Card
-                        className="folder__card"
-                        key={idx}
-                      >
+                      <Card style={{cursor: "pointer", borderRadius: "10px"}} key={idx}>
+
                         <div className="d-flex justify-content-between p-2">
                           <div className="d-flex flex-row align-items-center">
                             <div className="d-flex flex-column ms-2">
@@ -215,7 +201,7 @@ export default function Own({ session }) {
                           </div>
                         </div>
                         <Image
-                          alt="Events Image"
+                          alt={summary}
                           src={photo}
                           width={400}
                           height={400}

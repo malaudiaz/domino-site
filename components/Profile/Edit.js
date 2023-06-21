@@ -127,7 +127,7 @@ export default function Edit({
         <Col md={9}>
           <Row>
             <FormGroup row>
-              <Label for="first_name" size="sm" sm={4}>
+              <Label size="sm" sm={4}>
                 Nombre
               </Label>
               <Col sm={8}>
@@ -153,7 +153,7 @@ export default function Edit({
           </Row>
           <Row>
             <FormGroup row>
-              <Label for="last_name" size="sm" sm={4}>
+              <Label size="sm" sm={4}>
                 Apellido
               </Label>
               <Col sm={8}>
@@ -177,7 +177,7 @@ export default function Edit({
           </Row>
           <Row>
             <FormGroup row>
-              <Label for="alias" size="sm" sm={4}>
+              <Label size="sm" sm={4}>
                 Alias
               </Label>
               <Col sm={8}>
@@ -201,7 +201,7 @@ export default function Edit({
           </Row>
           <Row>
             <FormGroup row>
-              <Label for="job" size="sm" sm={4}>
+              <Label size="sm" sm={4}>
                 Ocupación
               </Label>
               <Col sm={8}>
@@ -226,7 +226,7 @@ export default function Edit({
 
           <Row>
             <FormGroup row>
-              <Label for="email" size="sm" sm={4}>
+              <Label size="sm" sm={4}>
                 Correo
               </Label>
               <Col sm={8}>
@@ -251,7 +251,7 @@ export default function Edit({
 
           <Row>
             <FormGroup row>
-              <Label for="phone" size="sm" sm={4}>
+              <Label size="sm" sm={4}>
                 Teléfono
               </Label>
               <Col sm={8}>
@@ -276,7 +276,7 @@ export default function Edit({
 
           <Row>
             <FormGroup row>
-              <Label for="sex" size="sm" sm={4}>
+              <Label size="sm" sm={4}>
                 Sexo
               </Label>
               <Col sm={8}>
@@ -299,7 +299,7 @@ export default function Edit({
 
           <Row>
             <FormGroup row>
-              <Label for="birthdate" size="sm" sm={4}>
+              <Label size="sm" sm={4}>
                 Fecha de Nacimiento
               </Label>
               <Col sm={8}>
@@ -319,7 +319,7 @@ export default function Edit({
 
           <Row>
             <FormGroup row>
-              <Label for="country_id" size="sm" sm={4}>
+              <Label size="sm" sm={4}>
                 País
               </Label>
               <Col sm={8}>
@@ -337,7 +337,7 @@ export default function Edit({
 
           <Row>
             <FormGroup row>
-              <Label for="city_id" size="sm" sm={4}>
+              <Label size="sm" sm={4}>
                 Ciudad
               </Label>
               <Col sm={8}>

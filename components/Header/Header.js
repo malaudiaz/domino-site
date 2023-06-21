@@ -54,7 +54,7 @@ const Header = ({ session }) => {
 
       <nav className="header-nav ms-auto">
         <ul className="d-flex align-items-center">
-          <Notification />
+          <Notification session={session}/>
 
           <li className="nav-item dropdown pe-3">
             <a
@@ -86,11 +86,24 @@ const Header = ({ session }) => {
               <li>
                 <Link href="/profile">
                   <a className="dropdown-item d-flex align-items-center">
-                    <i className="bi bi-person"></i>
+                    <i className="bi bi-person-vcard"></i>
                     <span>Mi Perfil</span>
                   </a>
                 </Link>
               </li>
+              <li>
+                <Link href="/profile">
+                  <a className="dropdown-item d-flex align-items-center">
+                    <i className="bi bi-person-plus"></i>
+                    <span>Crear Perfíl</span>
+                  </a>
+                </Link>
+              </li>
+
+              <li>
+                <hr className="dropdown-divider" />
+              </li>
+
               <li>
                 <Link href="/event">
                   <a className="dropdown-item d-flex align-items-center">

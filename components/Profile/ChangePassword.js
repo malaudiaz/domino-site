@@ -113,7 +113,7 @@ export default function ChangePassword({ session }) {
     <Form onSubmit={handleSubmit}>
       <Row>
         <FormGroup row>
-          <Label for="currentPassword" size="sm" sm={3}>
+          <Label size="sm" sm={3}>
             Contraseña Actual:
           </Label>
           <Col sm={9}>
@@ -136,7 +136,7 @@ export default function ChangePassword({ session }) {
 
       <Row>
         <FormGroup row>
-          <Label for="newpassword" size="sm" sm={3}>
+          <Label size="sm" sm={3}>
             Nueva Contraseña:
           </Label>
           <Col sm={9}>
@@ -159,7 +159,7 @@ export default function ChangePassword({ session }) {
 
       <Row>
         <FormGroup row>
-          <Label for="renewpassword" size="sm" sm={3}>
+          <Label size="sm" sm={3}>
             Confirmar Contraseña:
           </Label>
           <Col sm={9}>

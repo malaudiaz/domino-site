@@ -24,7 +24,6 @@ export default function Page({ session }) {
     },
   };
   
-
   const fetchData = async () => {
     const url = `${process.env.NEXT_PUBLIC_API_URL}post`;
   

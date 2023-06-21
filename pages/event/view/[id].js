@@ -7,21 +7,13 @@ import { Card, CardBody, CardFooter } from "reactstrap";
 import axios from "axios";
 import Swal from "sweetalert2";
 import Image from "next/image";
+import { eventDate } from "../../_functions";
 
 export default function View({ session }) {
 
   const router = useRouter();
   const [events, setEvents] = useState({});
   const [records, setRecords] = useState([]);
-
-  const eventDate = (startDate, endDate) => {
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-
-    const cadena = start.toLocaleString('default', { weekday: 'long' }).toUpperCase() + ", " + start.getDate() + " " + start.toLocaleString('default', { month: 'long' }).toUpperCase() + " - " + end.getDate() + " " + end.toLocaleString('default', { month: 'long' }).toUpperCase();
-
-    return cadena;
-  };
 
   const config = {
     headers: {
@@ -31,8 +23,6 @@ export default function View({ session }) {
       "Authorization": `Bearer ${session.token}`,
     },
   };
-
-  console.log("==>", config.headers);
 
   const fetchData = async () => {
 
@@ -101,6 +91,11 @@ export default function View({ session }) {
     }    
   };
 
+  const handleClick = (id) => {
+    router.push(`/tourney/view/${id}`);
+  };
+
+
   return (
     <EventLayout session={session}>
       <Head>
@@ -131,11 +126,11 @@ export default function View({ session }) {
             <hr></hr>
           </div>
 
-          <div className="row pt-2 px-4">
+          <div className="pt-4 px-4" style={{display: "grid"}}>
             <div className="container-events">
               {records.map(({id, name, modality, summary, startDate}, idx)=>(
-                <Card className="folder__card" key={idx}>
-                  <div className="d-flex justify-content-between p-2">
+                <Card style={{cursor: "pointer", borderRadius: "10px"}} key={idx}>
+                    <div className="d-flex justify-content-between p-2">
                     <div className="d-flex flex-row align-items-center">
                       <div className="d-flex flex-column ms-2">
                         <span className="fw-bold">{name}</span>
@@ -143,10 +138,11 @@ export default function View({ session }) {
                     </div>
                   </div>
                   <Image
-                    alt="Events Image"
-                    src={events.photo}
-                    width={400}
-                    height={400}
+                    alt="Tourney Image"
+                    // src={events.photo}
+                    src={"/Logo-V.png"}
+                    width={200}
+                    height={200}
                     quality={50}
                     onClick={(e)=>{e.preventDefault(); handleClick(id)}}
                     priority
@@ -171,7 +167,6 @@ export default function View({ session }) {
                       <i className="bi bi-envelope"></i>{" "}
                         Enviar Invitación
                     </button>    
-
                   </CardFooter>
                 </Card>
               ))}

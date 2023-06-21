@@ -88,6 +88,21 @@ const EventSideBar = () => {
           </Link>
         </li>
 
+        <li className="nav-item">
+          <Link href={"/"}>
+            <a
+              className={
+                router.asPath === "/"
+                  ? "nav-link active"
+                  : "nav-link collapsed"
+              }
+            >
+              <i className={"bi bi-arrow-left"}></i>
+              <span>Salir</span>
+            </a>
+          </Link>
+        </li>
+
       </ul>
 
     </aside>

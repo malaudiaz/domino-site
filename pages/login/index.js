@@ -90,9 +90,8 @@ export default function Login(session) {
         <title>{t.pageTitle}</title>
       </Head>
       <div className="d-flex flex-column min-vh-100">
-        <div className="container mt-5 pt-5 d-flex flex-column flex-lg-row justify-content-evenly" style={{maxWidth: "960px"}}>
+        <div className="container mt-6 pt-6 d-flex flex-column flex-lg-row justify-content-evenly" style={{maxWidth: "960px"}}>
           <div className="text-center text-lg-start mt-0 pt-0 mt-lg-5 pt-lg-5">
-            {/* <h1 className="text-primary fw-bold fs-0">{t.appTitle}</h1> */}
             <Image alt="SmartDomino" src="/Logo-H.png" width={300} height={60} />
             <p className="w-75 mx-auto fs-4 mx-lg-0 d-none d-sm-block">{t.appComment}</p>
           </div>

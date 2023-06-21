@@ -8,21 +8,13 @@ import { Card, CardBody, CardFooter } from "reactstrap";
 import Image from "next/image";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { eventDate } from "../../_functions";
 
 export default function Invitations({ session }) {
   const ctxMenu = [];
   const [events, setEvents] = useState([]);
   const [status, setStatus] = useState("SEND")
   const [refresh, setRefresh] = useState(false);
-
-  const eventDate = (startDate, endDate) => {
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-
-    const cadena = start.toLocaleString('default', { weekday: 'short' }).toUpperCase() + ", " + start.getDate() + " " + start.toLocaleString('default', { month: 'short' }).toUpperCase() + " - " + end.getDate() + " " + end.toLocaleString('default', { month: 'short' }).toUpperCase();
-
-    return cadena;
-  };
 
   const config = {
     headers: {
@@ -132,7 +124,7 @@ export default function Invitations({ session }) {
           </h1>
         </div>
 
-        <div className="d-flex gap-2 px-4">
+        <div className="px-4" style={{display: "flex", flexWrap: "wrap", gap:"10px"}}>
             <button 
               type="button" 
               style={status==="SEND" ? { background: "#e4e6eb", color: "blue", fontWeight: "600" } : {background: "#e4e6eb", fontWeight: "500"}}
@@ -157,14 +149,14 @@ export default function Invitations({ session }) {
         </div>
 
 
-        <div className="row pt-4 px-4">
+        <div className="pt-4 px-4" style={{display: "grid"}}>
 
           {events.length > 0 ? (
             <div className="container-events">
 
               {events.map(
                 ({ id, event_name, photo, startDate, endDate, tourney_name, modality, campus, city_name, country, rolevent_name }, idx) => (
-                  <Card className="folder__card" key={idx}>
+                  <Card style={{cursor: "pointer", borderRadius: "10px"}} key={idx}>
                     <Image
                       alt="Events Image"
                       src={photo}
@@ -194,16 +186,16 @@ export default function Invitations({ session }) {
                     <CardFooter style={{textAlign: "center"}}>
                       {status==="SEND" && <>
                       <button className="btn btn-sm btn-light" onClick={(e)=>{e.preventDefault(); handlerInvitation(id, "ACCEPTED")}}>
-                        <i class="bi bi-check2-circle"></i>{" "}
+                        <i className="bi bi-check2-circle"></i>{" "}
                           Aceptar
                       </button>&nbsp;&nbsp;&nbsp;
                       <button className="btn btn-sm btn-light" onClick={(e)=>{e.preventDefault(); handlerInvitation(id, "REJECTED")}}>
-                        <i class="bi bi-x-circle"></i>{" "}
+                        <i className="bi bi-x-circle"></i>{" "}
                           Rechazar
                       </button></>}
                       {status!="SEND" && 
                         <button className="btn btn-sm btn-light" onClick={(e)=>{e.preventDefault(); handlerInvitation(id, "REJECTED")}}>
-                          <i class="bi bi-reply"></i>{" "}
+                          <i className="bi bi-reply"></i>{" "}
                             Deshacer
                         </button>
                       }

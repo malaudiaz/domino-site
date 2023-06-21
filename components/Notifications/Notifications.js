@@ -1,10 +1,64 @@
 import Link from "next/link";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import AppContext from "../../AppContext";
+import axios from "axios";
+import Swal from "sweetalert2";
 
-const Notifications = () => {
+const Notifications = ({session}) => {
     const value = useContext(AppContext);
     const t = value.state.languages.notification;
+    const [notification, setNotification] = useState([]);
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "accept-Language": "es-ES,es;",
+        "Authorization": `Bearer ${session.token}`,
+      },
+    };
+
+    const fetchData = async () => {
+      const url = `${
+        process.env.NEXT_PUBLIC_API_URL
+      }invitation?status_name=${"SEND"}`;
+  
+      try {
+        const { data } = await axios.get(url, config);
+        if (data.success) {
+          setNotification(data.data);
+        } else {
+          Swal.fire({
+            title: "Cargando Invitaciones",
+            text: detail,
+            icon: "info",
+            showCancelButton: false,
+            allowOutsideClick: false,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Aceptar",
+          });
+        }
+      } catch (errors) {
+        console.log(errors);
+        const { response } = errors;
+        const { detail } = response.data;
+        Swal.fire({
+          title: "Cargando Invitaciones",
+          text: detail,
+          icon: "error",
+          showCancelButton: false,
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Aceptar",
+        });
+      }
+    };  
+
+    useEffect(() => {
+      value.setLanguageSelected(session.locale);
+      fetchData();
+    }, [session.locale, value]);
+  
     
     const notifications = [
         {
@@ -41,7 +95,7 @@ const Notifications = () => {
           data-bs-toggle="dropdown"
         >
           <i className="bi bi-bell"></i>
-          <span className="badge bg-primary badge-number">{notifications.length}</span>
+          <span className="badge bg-primary badge-number">{notification.length}</span>
         </a>
   
         <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">

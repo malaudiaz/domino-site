@@ -44,7 +44,7 @@ export default function EventData({session, event, error, handleChange}) {
         <Row>
           <Col xs="6">
             <FormGroup>
-              <Label for="startDate">Fecha Inicial</Label>
+              <Label>Fecha Inicial</Label>
               <InputGroup size="sm">
                 <Input
                   id="startDate"
@@ -63,7 +63,7 @@ export default function EventData({session, event, error, handleChange}) {
           </Col>
           <Col xs="6">
             <FormGroup>
-              <Label for="endDate">Fecha Final</Label>
+              <Label>Fecha Final</Label>
               <InputGroup size="sm">
                 <Input
                   id="endDate"
@@ -85,7 +85,7 @@ export default function EventData({session, event, error, handleChange}) {
         <Row>
           <Col xs="6">
             <FormGroup>
-              <Label for="country" size="sm" sm={4}>
+              <Label size="sm" sm={4}>
                 País
               </Label>
               <InputGroup size="sm">
@@ -103,7 +103,7 @@ export default function EventData({session, event, error, handleChange}) {
           </Col>
           <Col xs="6">
             <FormGroup>
-              <Label for="city" size="sm" sm={4}>
+              <Label size="sm" sm={4}>
                 Ciudad
               </Label>
               <InputGroup size="sm">

@@ -258,7 +258,7 @@ export default function Tourney({ session, records, startDate, endDate }) {
             </Col>
             <Col md="12">
               <FormGroup>
-                <Label for="startDate">Fecha</Label>
+                <Label>Fecha</Label>
                 <InputGroup size="sm">
                   <Input
                     id="startDate"

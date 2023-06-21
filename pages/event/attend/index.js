@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 import { Card, CardBody } from "reactstrap";
 import Image from "next/image";
 import DropDownMenu from "../../../components/DropDownMenu/Menu";
+import { eventDate } from "../../_functions";
 
 export default function Attend({ session }) {
 
@@ -75,13 +76,13 @@ export default function Attend({ session }) {
           </h1>
         </div>
 
-        <div className="row pt-4 px-4">
+        <div className="pt-4 px-4" style={{display: "grid"}}>
 
         {events.length > 0 ? (
           <div className="container-events">
             {events.map(
-              ({ name, summary, photo, startDate, city_name, campus }, idx) => (
-                <Card className="folder__card" style={{cursor: "pointer"}} key={idx}>
+              ({ name, summary, photo, startDate, endDate, city_name, campus, amount_people }, idx) => (
+                <Card style={{cursor: "pointer", borderRadius: "10px"}} key={idx}>
                   <div className="d-flex justify-content-between p-2">
                     <div className="d-flex flex-row align-items-center">
                       <div className="d-flex flex-column ms-2">
@@ -97,7 +98,7 @@ export default function Attend({ session }) {
                     </div>
                   </div>
                   <Image
-                    alt="Events Image"
+                    alt={summary}
                     src={photo}
                     width={400}
                     height={400}
@@ -106,31 +107,20 @@ export default function Attend({ session }) {
                     layout="intrinsic"
                   />
                   <CardBody>
-                    <div className="col-12 pt-4">
+                    <div className="col-12 pt-4" style={{textAlign: "center"}}>
                       <h6 className="mb-2 text-muted">{summary}</h6>
                     </div>
-                    <div className="row pt-2">
-                      <div className="col-6" style={{ textAlign: "left" }}>
-                        <span>Inicio: </span>
-                        <b>{startDate}</b>
-                      </div>
-                      <div className="col-6" style={{ textAlign: "left" }}>
-                        <span>Fin: </span>
-                        <b>{startDate}</b>
-                      </div>
+                    <div className="row pt-2" style={{textAlign: "center"}}>
+                      <span className="mb-2 text-muted"><b>{eventDate(startDate, endDate)}</b></span>
                     </div>
-                    <div className="row pt-2">
-                      <div className="col-12" style={{ textAlign: "left" }}>
-                        <span>Ciudad: </span>
-                        <b>{city_name}</b>
-                      </div>
+                    <div className="row pt-2" style={{textAlign: "center"}}>
+                        <b>{campus}, {city_name}</b>
                     </div>
-                    <div className="row pt-2">
-                      <div className="col-12" style={{ textAlign: "left" }}>
-                        <span>Sede: </span>
-                        <b>{campus}</b>
+                    {amount_people > 0 &&
+                      <div className="col-12 pt-2" style={{textAlign: "center"}}>
+                        <span className="mb-2 text-muted">{amount_people === 1 ? amount_people + " persona asistira" : amount_people + " personas asistirán"}</span>
                       </div>
-                    </div>
+                    }
                   </CardBody>
                 </Card>
               )

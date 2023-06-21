@@ -137,47 +137,21 @@ export default function NewEvent({
       const { data } = await axios.post(url, body, config);
       if (data.success) {
 
-          const event_id = data.data.id;
+          setOpenEvent(false);
+          setRefresh(true);
 
-          const config = {
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-              "accept-Language": "es-ES,es;",
-              Authorization: `Bearer ${session.token}`,
-            },
-          };
-       
-          const url = `${process.env.NEXT_PUBLIC_API_URL}tourney?event_id=${event_id}`;
-  
-          const response = await axios.post(url, event.tourney, config);
- 
-          if (response.data.success) {
+          Swal.fire({
+            title: "Creando Evento",
+            text: data.detail,
+            icon: "success",
+            showCancelButton: false,
+            allowOutsideClick: false,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Aceptar",
+          });
 
-            setOpenEvent(false);
-            setRefresh(true);
-    
-            Swal.fire({
-              title: "Creando Evento",
-              text: response.data.detail,
-              icon: "success",
-              showCancelButton: false,
-              allowOutsideClick: false,
-              confirmButtonColor: "#3085d6",
-              confirmButtonText: "Aceptar",
-            });
-          } else {
-            Swal.fire({
-              title: "Creando Evento",
-              text: response.data.detail,
-              icon: "info",
-              showCancelButton: false,
-              allowOutsideClick: false,
-              confirmButtonColor: "#3085d6",
-              confirmButtonText: "Aceptar",
-            });    
-          }
       } else {
+
         Swal.fire({
           title: "Creando Evento",
           text: data.detail,
@@ -187,8 +161,10 @@ export default function NewEvent({
           confirmButtonColor: "#3085d6",
           confirmButtonText: "Aceptar",
         });
+
       }
     } catch (errors) {
+
       console.log(errors);
 
       const { detail } = errors.response;
@@ -213,48 +189,24 @@ export default function NewEvent({
 
     try {
       const { data } = await axios.put(url, body, config);
+
       if (data.success) {
 
+        setOpenEvent(false);
+        setRefresh(true);
 
-        const config = {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            "accept-Language": "es-ES,es;",
-            Authorization: `Bearer ${session.token}`,
-          },
-        };
-     
-        const url = `${process.env.NEXT_PUBLIC_API_URL}tourney?event_id=${event.id}`;
+        Swal.fire({
+          title: "Modificando Evento",
+          text: data.detail,
+          icon: "success",
+          showCancelButton: false,
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Aceptar",
+        });
 
-        const response = await axios.post(url, event.tourney, config);
-
-        if (response.data.success) {
-
-          setOpenEvent(false);
-          setRefresh(true);
-
-          Swal.fire({
-            title: "Modificando Evento",
-            text: response.data.detail,
-            icon: "success",
-            showCancelButton: false,
-            allowOutsideClick: false,
-            confirmButtonColor: "#3085d6",
-            confirmButtonText: "Aceptar",
-          });
-        } else {
-          Swal.fire({
-            title: "Modificando Evento",
-            text: data.detail,
-            icon: "error",
-            showCancelButton: false,
-            allowOutsideClick: false,
-            confirmButtonColor: "#3085d6",
-            confirmButtonText: "Aceptar",
-          });  
-        }
       } else {
+
         Swal.fire({
           title: "Modificando Evento",
           text: data.detail,
@@ -264,20 +216,21 @@ export default function NewEvent({
           confirmButtonColor: "#3085d6",
           confirmButtonText: "Aceptar",
         });
+
       }
     } catch (errors) {
       console.log(errors);
 
-      const { detail } = errors.response.data;
       Swal.fire({
         title: "Modificando Evento",
-        text: detail,
+        text: "Error modificando evento",
         icon: "error",
         showCancelButton: false,
         allowOutsideClick: false,
         confirmButtonColor: "#3085d6",
         confirmButtonText: "Aceptar",
       });
+
     }
   };
 
@@ -398,23 +351,22 @@ export default function NewEvent({
             handleAddPhoto={handleAddPhoto}
             clearImage={clearImage}
           />
-        ) : step == 1 ? (
+        ) : (
           <EventData
             session={session}
             event={event}
             error={error}
             handleChange={handleChange}
           />
-        ) : (
-          <Tourney session={session} records={event.tourney} startDate={event.startDate} endDate={event.endDate} />
         )}
+
       </ModalBody>
       <ModalFooter
         className={
           step == 0 ? "modal-footer" : "modal-footer justify-content-between"
         }
       >
-        {(step == 1 || step == 2) && (
+        {(step == 1) && (
           <Button
             className="btn-circle bi bi-arrow-left mr-auto"
             style={{
@@ -430,7 +382,7 @@ export default function NewEvent({
           />
         )}
 
-        {step == 2 && (
+        {step == 1 && (
           <Button
             className="bi-check2-circle"
             style={{
@@ -450,7 +402,7 @@ export default function NewEvent({
           </Button>
         )}
 
-        {(step == 0 || step == 1) && (
+        {(step == 0) && (
           <Button
             className="btn-circle bi bi-arrow-right"
             style={{
