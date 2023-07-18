@@ -13,7 +13,7 @@ export async function middleware(req) {
     const { payload } = await jwtVerify(jwt, new TextEncoder().encode(process.env.NEXT_PUBLIC_TOKEN_SECRET));
     return NextResponse.next();
   } catch (error) {
-    console.log(error);
+    console.log("===>", error);
     return NextResponse.redirect(new URL("/login", req.url));
   }
 
