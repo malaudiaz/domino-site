@@ -1,10 +1,7 @@
-import { useState } from "react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import NProgress from "nprogress";
-import { SessionProvider } from "next-auth/react";
-import AppContext from "../AppContext";
-import languagesObject from "../languagesObject";
+import {AppContextProvider} from "../AppContext";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -14,10 +11,6 @@ import "../styles/globals.css";
 
 function App({ Component, pageProps }) {
   const router = useRouter();
-
-  const [languageSelected, setLanguageSelected] = useState("es");
-  const languageObject = languagesObject;
-  const [avatar, setAvatar] = useState("/profile/user-vector.jpg");
 
   useEffect(() => {
     require("bootstrap/dist/js/bootstrap.bundle.min.js");
@@ -43,21 +36,9 @@ function App({ Component, pageProps }) {
   }, [router]);
 
   return (
-    <SessionProvider session={pageProps.session}>
-      <AppContext.Provider
-        value={{
-          state: {
-            languages: languageObject[languageSelected],
-            languageSelected: languageSelected,
-            avatar: avatar
-          },
-          setLanguageSelected: setLanguageSelected,
-          setAvatar: setAvatar
-        }}
-      >
-        <Component {...pageProps} />
-      </AppContext.Provider>
-    </SessionProvider>
+    <AppContextProvider>
+      <Component {...pageProps} />
+    </AppContextProvider>
   );
 }
 export default App;

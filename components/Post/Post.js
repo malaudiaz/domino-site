@@ -2,18 +2,19 @@ import Image from "next/image";
 import ImgCarousel from "../Carousel/Carousel";
 import Comments from "../Comments/Comments";
 import TBar from "../Comments/TBar";
-import { useContext, useState } from "react";
-import AppContext from "../../AppContext";
+import { useState } from "react";
+import {useAppContext} from "../../AppContext";
 import NewPost from "./New";
 import DropDownMenu from "../DropDownMenu/Menu";
 
-export default function Post({ session, posts, setRefresh }) {
+export default function Post({ posts, setRefresh }) {
+  const {profile} = useAppContext();
+
   const [newPost, setNewPost] = useState(false);
-  const value = useContext(AppContext);
-  const avatar = value.state.avatar;
+  const avatar = profile.photo;
 
   const ctxMenu = (user_id) => {
-    if (user_id === session.id) {
+    if (user_id === profile.id) {
       return [
         { text: "Editar", key: "mnuEdit", icon: "bi bi-pencil-square" },
         { text: "Eliminar", key: "mnuDel", icon: "bi bi-trash" },
@@ -74,7 +75,7 @@ export default function Post({ session, posts, setRefresh }) {
                 }}
                 readOnly={true}
                 placeholder={
-                  "¿ Que estas pensando, " + session.firstName + " ?"
+                  "¿ Que estas pensando, " + profile.name + " ?"
                 }
                 style={{ fontSize: "0.8rem", background: "#e9ecef" }}
               />
@@ -137,15 +138,14 @@ export default function Post({ session, posts, setRefresh }) {
           <div className="p-2">
             <p className="text-justify">{post.comment}</p>
 
-            {post.showCountLike && <TBar session={session} post={post} />}
+            {post.showCountLike && <TBar post={post} />}
 
-            {post.allowComment && <Comments session={session} post={post} />}
+            {post.allowComment && <Comments post={post} />}
           </div>
         </div>
       ))}
 
       <NewPost
-        session={session}
         newPost={newPost}
         setNewPost={setNewPost}
         setRefresh={setRefresh}

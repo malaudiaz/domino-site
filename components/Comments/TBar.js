@@ -1,10 +1,10 @@
-import { useState, useContext } from "react";
-import AppContext from "../../AppContext";
+import { useState } from "react";
+import {useAppContext} from "../../AppContext";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-export default function TBar({ session, post }) {
-  const value = useContext(AppContext);
+export default function TBar({ post }) {
+  const {profile, lang, token} = useAppContext();
 
   const [like, setLike] = useState(post.like);
   const [amountLike, setAmountLike] = useState(post.amountLike);
@@ -13,8 +13,8 @@ export default function TBar({ session, post }) {
     headers: {
       "Content-Type": "application/json",
       "Accept": "application/json",
-      "accept-Language": "es-ES,es;",
-      "Authorization": `Bearer ${session.token}`,
+      "accept-Language": lang,
+      "Authorization": `Bearer ${token}`,
     },
   };  
 

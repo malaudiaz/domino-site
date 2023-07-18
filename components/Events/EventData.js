@@ -13,7 +13,7 @@ import CountryComboBox from "../Country/CountryComboBox";
 import CityComboBox from "../City/CityComboBox";
   
 
-export default function EventData({session, event, error, handleChange}) {
+export default function EventData({event, error, handleChange}) {
     return (
         <>
         <Col md={12}>
@@ -108,7 +108,6 @@ export default function EventData({session, event, error, handleChange}) {
               </Label>
               <InputGroup size="sm">
                 <CityComboBox
-                  session={session}
                   country_id={event.country}
                   name="city"
                   cmbText="Seleccione ciudad..."

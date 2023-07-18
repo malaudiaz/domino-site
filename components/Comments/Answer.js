@@ -1,6 +1,6 @@
 import Image from "next/image";
-import { useState, useContext } from "react";
-import AppContext from "../../AppContext";
+import { useState } from "react";
+import {useAppContext} from "../../AppContext";
 import EmojiPicker from "../EmojiPicker/EmojiPicker";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -13,18 +13,18 @@ import {
   UncontrolledPopover,
 } from "reactstrap";
 
-export default function Answer({ session, isOpen, setIsOpen, comment }) {
+export default function Answer({ isOpen, setIsOpen, comment }) {
   
-  const value = useContext(AppContext);
-  const avatar = value.state.avatar;
+  const {profile, lang, token} = useAppContext();
+  const avatar = profile.photo;
   const [answer, setAnswer] = useState("");
 
   const config = {
     headers: {
       "Content-Type": "application/json",
       "Accept": "application/json",
-      "accept-Language": "es-ES,es;",
-      "Authorization": `Bearer ${session.token}`,
+      "accept-Language": lang,
+      "Authorization": `Bearer ${token}`,
     },
   };  
 

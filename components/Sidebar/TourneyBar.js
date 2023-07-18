@@ -1,21 +1,23 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { useAppContext } from "../../AppContext";
 import Link from "next/link";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { Card, CardBody, CardFooter } from "reactstrap";
 import { eventDate } from "../../pages/_functions";
 
-const TourneySideBar = ({ session }) => {
+const TourneySideBar = () => {
+  const {lang, token} = useAppContext();
   const router = useRouter();
   const [events, setEvents] = useState([]);
 
   const config = {
     headers: {
       "Content-Type": "application/json",
-      Accept: "application/json",
-      "accept-Language": "es-ES,es;",
-      Authorization: `Bearer ${session.token}`,
+      "Accept": "application/json",
+      "accept-Language": lang,
+      "Authorization": `Bearer ${token}`,
     },
   };
 

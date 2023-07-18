@@ -1,5 +1,4 @@
 import { useContext, useState } from "react";
-import AppContext from "../../AppContext";
 import {
   Dropdown,
   DropdownToggle,
@@ -8,7 +7,6 @@ import {
 } from "reactstrap";
 
 export default function DropDownMenu({ idx, items, onMenuSelection }) {
-  const value = useContext(AppContext);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const toggle = () => setDropdownOpen((prevState) => !prevState);

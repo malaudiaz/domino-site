@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useAppContext } from "../../AppContext";
 
 import {} from "reactstrap";
 import {
@@ -19,7 +20,8 @@ import axios from "axios";
 import Swal from "sweetalert2";
 
 
-export default function Tournament({ session, open, setClose, record, event }) {
+export default function Tournament({ open, setClose, record, event }) {
+  const {token, lang} = useAppContext();
 
   const [tourney, setTourney] = useState({
     event_id: "",
@@ -85,8 +87,8 @@ export default function Tournament({ session, open, setClose, record, event }) {
     headers: {
       "Content-Type": "application/json",
       "Accept": "application/json",
-      "accept-Language": "es-ES,es;",
-      "Authorization": `Bearer ${session.token}`,
+      "accept-Language": lang,
+      "Authorization": `Bearer ${token}`,
     }
   };
 

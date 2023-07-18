@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { getSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useAppContext } from "../../AppContext";
 import TourneyLayout from "../../layouts/TouneyLayout";
 import Tournament from "../../components/Tourney/Tournament";
 import Head from "next/head";
@@ -11,7 +11,8 @@ import Swal from "sweetalert2";
 import Image from "next/image";
 import { eventDate } from "../_functions";
 
-export default function Tourneys({ session }) {
+export default function Tourneys() {
+  const {token, lang} = useAppContext();
   const router = useRouter();
 
   const [events, setEvents] = useState({});
@@ -30,9 +31,9 @@ export default function Tourneys({ session }) {
   const config = {
     headers: {
       "Content-Type": "application/json",
-      Accept: "application/json",
-      "accept-Language": "es-ES,es;",
-      Authorization: `Bearer ${session.token}`,
+      "Accept": "application/json",
+      "accept-Language": lang,
+      "Authorization": `Bearer ${token}`,
     },
   };
 
@@ -173,7 +174,7 @@ export default function Tourneys({ session }) {
   };
 
   return (
-    <TourneyLayout session={session}>
+    <TourneyLayout>
       <Head>
         <link rel="shortcut icon" href="/smartdomino.ico" />
         <title>Torneos</title>
@@ -286,24 +287,8 @@ export default function Tourneys({ session }) {
         </div>
       </div>
 
-      <Tournament session={session} open={open} setClose={setClose} record={record} event={events} eventId={router.query.id}/>
+      <Tournament open={open} setClose={setClose} record={record} event={events} eventId={router.query.id}/>
 
     </TourneyLayout>
   );
 }
-
-export const getServerSideProps = async (context) => {
-  const session = await getSession(context);
-  if (!session)
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  return {
-    props: {
-      session,
-    },
-  };
-};

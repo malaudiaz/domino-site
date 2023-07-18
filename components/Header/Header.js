@@ -1,15 +1,18 @@
-import { useContext, useEffect, useState } from "react";
-import { signOut } from "next-auth/react";
-import AppContext from "../../AppContext";
+import {useAppContext} from "../../AppContext";
+import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
 import Swal from "sweetalert2";
 import Notification from "../Notifications/Notifications";
+import { deleteCookie } from 'cookies-next';
 
-const Header = ({ session }) => {
-  const value = useContext(AppContext);
-  const t = value.state.languages.header;
-  const avatar = value.state.avatar;
+
+const Header = () => {
+  const router = useRouter();
+  const {profile, i18n} = useAppContext();
+
+  const t = i18n.header;
+  const avatar = profile.photo;
 
   const logOut = (e) => {
     e.preventDefault();
@@ -26,7 +29,9 @@ const Header = ({ session }) => {
       cancelButtonText: t.cancelButtonText,
     }).then((result) => {
       if (result.isConfirmed) {
-        signOut();
+        deleteCookie('SmartDomino-Token');
+        localStorage.removeItem("profile");
+        router.push("/");
       }
     });
   };
@@ -54,7 +59,7 @@ const Header = ({ session }) => {
 
       <nav className="header-nav ms-auto">
         <ul className="d-flex align-items-center">
-          <Notification session={session}/>
+          <Notification/>
 
           <li className="nav-item dropdown pe-3">
             <a
@@ -70,14 +75,20 @@ const Header = ({ session }) => {
                 className="rounded-circle"
               />
               <span className="d-none d-md-block dropdown-toggle ps-2">
-                {session.firstName}
+                {profile.firtsName}
               </span>
             </a>
 
             <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
               <li className="dropdown-header">
-                <h6>{session.firstName}</h6>
-                <span>{session.lastName}</span>
+                <h6>{profile.name}</h6>
+                {profile.type === "USER" && <span>Usuario</span>}
+                {profile.type === "SINGLE_PLAYER" && <span>Jugador individual</span>}
+                {profile.type === "PAIR_PLAYER" && <span>Jugador en pareja</span>}
+                {profile.type === "TEAM_PLAYER" && <span>Jugador de equipo</span>}
+                {profile.type === "REFEREE" && <span>Arbitro</span>}
+
+
               </li>
               <li>
                 <hr className="dropdown-divider" />

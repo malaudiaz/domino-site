@@ -1,6 +1,6 @@
 import React from "react";
-import { useContext, useEffect, useState } from "react";
-import AppContext from "../../../AppContext";
+import { useEffect, useState } from "react";
+import {useAppContext} from "../../../AppContext";
 import EventLayout from "../../../layouts/EventLayout";
 import Head from "next/head";
 import { getSession } from "next-auth/react";
@@ -10,7 +10,9 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { eventDate } from "../../_functions";
 
-export default function Invitations({ session }) {
+export default function Invitations() {
+  const {lang, token} = useAppContext();
+
   const ctxMenu = [];
   const [events, setEvents] = useState([]);
   const [status, setStatus] = useState("SEND")
@@ -20,8 +22,8 @@ export default function Invitations({ session }) {
     headers: {
       "Content-Type": "application/json",
       "Accept": "application/json",
-      "accept-Language": "es-ES,es;",
-      "Authorization": `Bearer ${session.token}`,
+      "accept-Language": lang,
+      "Authorization": `Bearer ${token}`,
     },
   };
 
@@ -111,7 +113,7 @@ export default function Invitations({ session }) {
   };
 
   return (
-    <EventLayout session={session}>
+    <EventLayout>
       <Head>
         <link rel="shortcut icon" href="/smartdomino.ico" />
         <title>Asistiré</title>
@@ -232,20 +234,4 @@ export default function Invitations({ session }) {
       </div>
     </EventLayout>
   );
-}
-
-export const getServerSideProps = async (context) => {
-  const session = await getSession(context);
-  if (!session)
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  return {
-    props: {
-      session,
-    },
-  };
 };

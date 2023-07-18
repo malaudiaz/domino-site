@@ -8,7 +8,7 @@ import Footer from "../components/Footers/Footer";
 import Breadcrumb from "../components/Breadcrumbs/Breadcrumbs";
 import BreadcrumbItem from "../components/Breadcrumbs/BreadcrumbItem";
 
-export default function Layout({ children, session, title }) {
+export default function Layout({ children, title }) {
   const router = useRouter();
   const [breadcrumbs, setBreadcrumbs] = useState();
 
@@ -33,13 +33,13 @@ export default function Layout({ children, session, title }) {
 
   return (
     <>
-      <Header session={session} />
+      <Header />
 
       <SideBar />
 
       <main id="main" className="main">
         <div className="pagetitle">
-          <h1>{title}</h1>
+          {/* <h1>{title}</h1>
           <Breadcrumb>
             <BreadcrumbItem
               isCurrent={router.pathname === "/"}
@@ -59,7 +59,7 @@ export default function Layout({ children, session, title }) {
                   {breadcrumb.label}
                 </BreadcrumbItem>
               ))}
-          </Breadcrumb>
+          </Breadcrumb> */}
         </div>
         {children}
       </main>

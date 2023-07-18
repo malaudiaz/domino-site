@@ -1,15 +1,12 @@
-import { useContext } from "react";
-import AppContext from "../../AppContext";
-
+import {useAppContext} from "../../AppContext";
 import { Input, InputGroup } from "reactstrap";
 
 export default function AuthFooter() {
-  const value = useContext(AppContext);
-  let { languageSelected } = value.state;
-  const t = value.state.languages.footer;
+  const {lang, setLang, i18n} = useAppContext();
+  const t = i18n.auth;
 
   const handleChange = (event) => {
-    value.setLanguageSelected(event.target.value);
+    setLang(event.target.value);
   };
 
   return (
@@ -22,7 +19,7 @@ export default function AuthFooter() {
                 id="languaje"
                 name="select"
                 type="select"
-                defaultValue={languageSelected}
+                defaultValue={lang}
                 onClick={handleChange}
               >
                 <option value="en">English</option>
@@ -31,7 +28,7 @@ export default function AuthFooter() {
             </InputGroup>
           </div>
 
-          <p className="fs-7 ps-4 pt-3">&copy; 2023, Dominó</p>
+          <p className="fs-7 ps-4 pt-3">&copy; 2023, SmartDomino</p>
         </div>
       </div>
     </footer>

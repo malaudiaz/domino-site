@@ -1,24 +1,21 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
-import AppContext from "../../AppContext";
+import {useAppContext} from "../../AppContext";
 import EventImage from "./EventImage";
-import Tourney from "../Tourney/Tourney";
 
 import { Modal, ModalHeader, ModalBody, Button, ModalFooter } from "reactstrap";
 
 import EventData from "./EventData";
 
 export default function NewEvent({
-  session,
   openEvent,
   setOpenEvent,
   record,
   setRefresh,
 }) {
-  const value = useContext(AppContext);
+  const {profile, lang, token} = useAppContext();
   const [reload, setReload] = useState(false);
-  const avatar = value.state.avatar;
   const [event, setEvent] = useState({
     id: "",
     name: "",
@@ -122,8 +119,8 @@ export default function NewEvent({
 
   const config = {
     headers: {
-      "accept-Language": session.locale,
-      "Authorization": `Bearer ${session.token}`,
+      "accept-Language": lang,
+      "Authorization": `Bearer ${token}`,
     },
   };
 
@@ -131,7 +128,7 @@ export default function NewEvent({
     const body = new FormData();
     body.append("image", event.file);
 
-    const url = `${process.env.NEXT_PUBLIC_API_URL}event?name=${event.name}&summary=${event.summary}&city_id=${event.city}&main_location=${event.campus}&start_date=${event.startDate}&close_date=${event.endDate}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}event/${profile.id}?name=${event.name}&summary=${event.summary}&city_id=${event.city}&main_location=${event.campus}&start_date=${event.startDate}&close_date=${event.endDate}`;
 
     try {
       const { data } = await axios.post(url, body, config);
@@ -353,7 +350,6 @@ export default function NewEvent({
           />
         ) : (
           <EventData
-            session={session}
             event={event}
             error={error}
             handleChange={handleChange}

@@ -1,12 +1,12 @@
 import Link from "next/link";
-import { useContext, useEffect, useState } from "react";
-import AppContext from "../../AppContext";
+import { useEffect, useState } from "react";
+import {useAppContext} from "../../AppContext";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-const Notifications = ({session}) => {
-    const value = useContext(AppContext);
-    const t = value.state.languages.notification;
+const Notifications = () => {
+    const {profile, i18n, token} = useAppContext();
+    const t = i18n.notification;
     const [notification, setNotification] = useState([]);
 
     const config = {
@@ -14,7 +14,7 @@ const Notifications = ({session}) => {
         "Content-Type": "application/json",
         "Accept": "application/json",
         "accept-Language": "es-ES,es;",
-        "Authorization": `Bearer ${session.token}`,
+        "Authorization": `Bearer ${token}`,
       },
     };
 
@@ -43,7 +43,7 @@ const Notifications = ({session}) => {
         const { response } = errors;
         const { detail } = response.data;
         Swal.fire({
-          title: "Cargando Invitaciones",
+          title: "Cargando Notificaciones",
           text: detail,
           icon: "error",
           showCancelButton: false,
@@ -55,9 +55,8 @@ const Notifications = ({session}) => {
     };  
 
     useEffect(() => {
-      value.setLanguageSelected(session.locale);
       fetchData();
-    }, [session.locale, value]);
+    }, [profile]);
   
     
     const notifications = [

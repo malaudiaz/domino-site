@@ -1,13 +1,11 @@
 import React from "react";
-import { useContext } from "react";
-import AppContext from "../../AppContext";
-import { getSession } from "next-auth/react";
+import { useAppContext } from "../../AppContext";
 import TourneyLayout from "../../layouts/TouneyLayout";
 import Head from "next/head";
 
 export default function Touneys({ session }) {
-  const value = useContext(AppContext);
-  const t = value.state.languages.events;
+  const {i18n} = useAppContext();
+  const t = i18n.events;
   return (
     <TourneyLayout session={session}>
       <Head>
@@ -17,19 +15,3 @@ export default function Touneys({ session }) {
     </TourneyLayout>
   );
 }
-
-export const getServerSideProps = async (context) => {
-  const session = await getSession(context);
-  if (!session)
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  return {
-    props: {
-      session,
-    },
-  };
-};

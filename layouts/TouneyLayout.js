@@ -3,13 +3,12 @@ import Header from "../components/Header/Header";
 import Footer from "../components/Footers/Footer";
 import TorneySideBar from "../components/Sidebar/TourneyBar";
 
-
-export default function TourneyLayout({ children, session }) {
+export default function TourneyLayout({ children }) {
   return (
     <>
-      <Header session={session} />
+      <Header />
 
-      <TorneySideBar session={session} />
+      <TorneySideBar />
 
       <main id="main" className="main">
        {children}

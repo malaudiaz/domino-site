@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import { Input } from "reactstrap";
 import axios from "axios";
 import Swal from "sweetalert2";
+import {useAppContext} from "../../AppContext";
 
 export default function CityComboBox({
-  session,
   country_id,
   name,
   cmbText,
@@ -12,14 +12,15 @@ export default function CityComboBox({
   valueDefault,
   onChange,
 }) {
+  const {token, lang} = useAppContext();
   const [records, setRecords] = useState([]);
 
   const config = {
     headers: {
       "Content-Type": "application/json",
       "Accept": "application/json",
-      "accept-Language": session.locale,
-      "Authorization": `Bearer ${session.token}`,
+      "accept-Language": lang,
+      "Authorization": `Bearer ${token}`,
     },
   };
 

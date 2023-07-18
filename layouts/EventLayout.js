@@ -4,12 +4,12 @@ import Footer from "../components/Footers/Footer";
 import EventSideBar from "../components/Sidebar/EventBar";
 
 
-export default function EventLayout({ children, session }) {
+export default function EventLayout({ children }) {
   return (
     <>
-      <Header session={session} />
+      <Header />
 
-      <EventSideBar session={session} />
+      <EventSideBar />
 
       <main id="main" className="main">
        {children}

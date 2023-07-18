@@ -1,15 +1,15 @@
 import Image from "next/image";
-import { useState, useContext } from "react";
+import { useState } from "react";
 import EmojiPicker from "../EmojiPicker/EmojiPicker";
 import { PopoverBody, UncontrolledPopover } from "reactstrap";
-import AppContext from "../../AppContext";
+import {useAppContext} from "../../AppContext";
 import Answer from "./Answer";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-export default function Comments({ session, post }) {
-  const value = useContext(AppContext);
-  const avatar = value.state.avatar;
+export default function Comments({ post }) {
+  const {profile, lang, token} = useAppContext();
+  const avatar = profile.photo;
 
   const [comment, setComment] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -37,8 +37,8 @@ export default function Comments({ session, post }) {
     headers: {
       "Content-Type": "application/json",
       "Accept": "application/json",
-      "accept-Language": "es-ES,es;",
-      "Authorization": `Bearer ${session.token}`,
+      "accept-Language": lang,
+      "Authorization": `Bearer ${token}`,
     },
   };  
 
@@ -206,7 +206,7 @@ export default function Comments({ session, post }) {
         </div>
       </div>
 
-      <Answer session={session} isOpen={isOpen} setIsOpen={setIsOpen} comment={answerComment} />
+      <Answer isOpen={isOpen} setIsOpen={setIsOpen} comment={answerComment} />
 
     </div>
   );

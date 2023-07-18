@@ -113,7 +113,6 @@ const Pagination = (props) => {
   
     return (
       <div className="d-flex justify-content-center">
-      {/* <div className="d-flex flex-row justify-content-left" style={{paddingLeft: "22px"}}> */}
         {(showInfo && totalCount > 0) && (
           <div className="hint-text d-none d-sm-block" style={{paddingRight: "10px", paddingLeft: "10px"}}>
             Mostrando registros <b>{currentPage * rowsPerPage - rowsPerPage + 1}</b> -{" "}

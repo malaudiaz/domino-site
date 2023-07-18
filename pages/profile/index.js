@@ -1,14 +1,12 @@
 import React from "react";
-import { useContext, useEffect, useState } from "react";
-import AppContext from "../../AppContext";
-import { getSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import {useAppContext} from "../../AppContext";
 import Layout from "../../layouts/Layout";
 import Head from "next/head";
 import axios from "axios";
 import Swal from "sweetalert2";
 import classnames from "classnames";
 import Image from "next/image";
-import { signOut } from "next-auth/react";
 import View from "../../components/Profile/View";
 import Edit from "../../components/Profile/Edit";
 import ChangePassword from "../../components/Profile/ChangePassword";
@@ -25,9 +23,9 @@ import {
   CardBody,
 } from "reactstrap";
 
-export default function Profile({ session }) {
-  const value = useContext(AppContext);
-  const avatar = value.state.avatar;
+export default function Profile() {
+  const {profile, createProfile, lang, token} = useAppContext();
+  const avatar = profile.photo;
 
   const [createObjectURL, setCreateObjectURL] = useState(null);
   const [image, setImage] = useState(null);
@@ -36,13 +34,15 @@ export default function Profile({ session }) {
   const [loading, setLoading] = useState(false);
 
   const [reload, setReload] = useState(false);
+  const [title, setTile] = useState("");
 
-  const [profile, setProfile] = useState({
+  const [record, setRecord] = useState({
     alias: "",
     birthdate: "",
     city_id: "",
     country_id: 1,
     email: "",
+    level: "",
     first_name: "",
     id: "",
     job: "",
@@ -53,7 +53,10 @@ export default function Profile({ session }) {
     username: "",
     file: "",
     receive_notifications: false,
-    roles: ""
+    profile_type_description: "",
+    profile_type_name: "",
+    elo: "",
+    ranking: ""
   });
 
   const toggleTab = (tab) => {
@@ -66,16 +69,34 @@ export default function Profile({ session }) {
     headers: {
       "Content-Type": "application/json",
       "Accept": "application/json",
-      "accept-Language": session.locale,
-      "Authorization": `Bearer ${session.token}`,
+      "accept-Language": lang,
+      "Authorization": `Bearer ${token}`,
     },
   };
 
   useEffect(() => {
-    value.setLanguageSelected(session.locale);
-
-    const fetchData = async () => {
-      const url = `${process.env.NEXT_PUBLIC_API_URL}profile/${session.id}`;
+    const fetchData = async () => {     
+      let url = `${process.env.NEXT_PUBLIC_API_URL}profile/default/${profile.id}`;
+      switch (profile.type) {
+        case "SINGLE_PLAYER":
+          url = `${process.env.NEXT_PUBLIC_API_URL}profile/single/${profile.id}`;
+          setTile("Jugador");
+          break;
+        case "PAIR_PLAYER":
+            url = `${process.env.NEXT_PUBLIC_API_URL}profile/pair/${profile.id}`;
+            setTile("Jugador en Pareja");
+            break;
+        case "TEAM_PLAYER":
+          url = `${process.env.NEXT_PUBLIC_API_URL}profile/team/${profile.id}`;
+          setTile("Jugador en Equipo");
+          break;
+        case "REFEREE":
+          url = `${process.env.NEXT_PUBLIC_API_URL}profile/referee/${profile.id}`;
+          setTile("Arbitro");
+          break;
+        default:
+          break;
+      }
       setLoading(true);
 
       try {
@@ -84,33 +105,39 @@ export default function Profile({ session }) {
         if (data.success) {
           const respObj = data.data;
 
-          profile.id = respObj.id;
-          profile.username = respObj.username;
-          profile.first_name = respObj.first_name;
-          profile.last_name = respObj.last_name;
-          profile.alias = respObj.alias ? respObj.alias : "";
-          profile.birthdate = respObj.birthdate ? respObj.birthdate : "";
-          profile.email = respObj.email;
-          profile.phone = respObj.phone;
-          profile.job = respObj.job;
-          profile.sex = respObj.sex ? respObj.sex : "";
-          profile.city_id = respObj.city_id ? respObj.city_id : "";
-          profile.country_id = respObj.country_id ? respObj.country_id : "";
-          profile.photo = !respObj.photo
+          record.id = respObj.id;
+          record.username = respObj.username;
+          record.name = respObj.name;
+          record.first_name = respObj.first_name;
+          record.last_name = respObj.last_name;
+          record.alias = respObj.alias ? respObj.alias : "";
+          record.birthdate = respObj.birthdate ? respObj.birthdate : "";
+          record.email = respObj.email;
+          record.level = respObj.level;
+          record.phone = respObj.phone;
+          record.job = respObj.job;
+          record.sex = respObj.sex ? respObj.sex : "";
+          record.city_id = respObj.city_id ? respObj.city_id : "";
+          record.country_id = respObj.country_id ? respObj.country_id : "";
+          record.photo = !respObj.photo
             ? "/profile/user-vector.jpg"
             : respObj.photo;
-          profile.receive_notifications = respObj.receive_notifications;
-          profile.roles = respObj.roles;
+          record.receive_notifications = respObj.receive_notifications;
+          record.profile_type_name = respObj.profile_type_name;
+          record.profile_type_description = respObj.profile_type_description;
+          record.elo = respObj.elo;
+          record.ranking = respObj.ranking;
 
-          setProfile(profile);
+          setRecord(record);
           setLoading(false);
           setReload(false);
         }
-      } catch ({ response }) {
-        const { detail } = response.data;
+      } catch (error) {
+        console.log(error);
+        const { detail } = error.response.data;
         Swal.fire({
           title: "Pérfil",
-          text: detail,
+          text: "detail",
           icon: "info",
           showCancelButton: false,
           allowOutsideClick: false,
@@ -118,32 +145,58 @@ export default function Profile({ session }) {
           confirmButtonText: "Aceptar",
         }).then((result) => {
           if (result.isConfirmed) {
-            signOut();
           }
         });
       }
     };
-
-    fetchData();
-  }, [reload]);
+    if (Object.entries(profile).length > 0) {
+      fetchData();
+    }
+  }, [profile, reload]);
 
   const saveProfile = async () => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}users/${profile.id}?first_name=${profile.first_name}&last_name=${profile.last_name}&email=${profile.email}&phone=${profile.phone}&sex=${profile.sex}&birthdate=${profile.birthdate}&alias=${profile.alias}&job=${profile.job}&city_id=${profile.city_id}&receive_notifications=${profile.receive_notifications}&roles=${profile.roles}`;
+    let url = `${process.env.NEXT_PUBLIC_API_URL}profile/default/${record.id}?first_name=${record.first_name}&last_name=${record.last_name}&email=${record.email}&phone=${record.phone}&sex=${record.sex}&birthdate=${record.birthdate}&alias=${record.alias}&job=${record.job}&city_id=${record.city_id}&receive_notifications=${record.receive_notifications}`;
+
+    switch (profile.type) {
+      case "SINGLE_PLAYER":
+        url = `${process.env.NEXT_PUBLIC_API_URL}profile/single/${record.id}?name=${record.name}&email=${record.email}&level=${record.level}&city_id=${record.city_id}&receive_notifications=${record.receive_notifications}`;
+        break;
+      case "PAIR_PLAYER":
+        url = `${process.env.NEXT_PUBLIC_API_URL}profile/pair/${record.id}?name=${record.name}&email=${record.email}&level=${record.level}&city_id=${record.city_id}&receive_notifications=${record.receive_notifications}`;
+        break;
+      case "TEAM_PLAYER":
+        url = `${process.env.NEXT_PUBLIC_API_URL}profile/team/${record.id}?name=${record.name}&email=${record.email}&level=${record.level}&city_id=${record.city_id}&receive_notifications=${record.receive_notifications}`;
+        break;
+      case "REFEREE":
+        url = `${process.env.NEXT_PUBLIC_API_URL}profile/referee/${record.id}?name=${record.name}&email=${record.email}&level=${record.level}&city_id=${record.city_id}&receive_notifications=${record.receive_notifications}`;
+        break;
+      default:
+        break;
+    }
+
 
     const body = new FormData();
-    body.append("avatar", profile.file);
+    body.append("image", record.file);
 
     try {
       const { data } = await axios.put(url, body, {
         headers: {
-          "accept-Language": session.locale,
-          "Authorization": `Bearer ${session.token}`,
+          "accept-Language": lang,
+          "Authorization": `Bearer ${token}`,
         },
       });
       if (data.success) {
-        value.setAvatar(data.data);
-        profile.photo = data.data;
-        setProfile(profile);
+        record.photo = data.data;
+        setRecord(record);
+
+        const user = {
+          id: record.id,
+          name: record.profile_type === "USER" ? record.first_name + " " + record.last_name : record.name,
+          photo: record.photo ? record.photo : "/profile/user-vector.jpg",
+          type: record.profile_type_name
+        };
+        
+        createProfile(user.id, user.name, user.photo, user.type);
 
         setLoading(true);
         setReload(true);
@@ -170,17 +223,23 @@ export default function Profile({ session }) {
   };
 
   return (
-    <Layout session={session} title={"Profile"}>
+    <Layout title={"Profile"}>
       <Head>
         <link rel="shortcut icon" href="/smartdomino.ico" />
-        <title>Pérfil</title>
+        <title>
+          Pérfil
+        </title>
       </Head>
       <section className="section profile">
+        <div className="pagetitle" style={{paddingBottom: "8px"}}>
+          <h1>Pérfil de {record.profile_type_description}</h1>
+        </div>
+
         <Row>
           <Col xl={4}>
             <Card>
               <CardBody className="card-body profile-card pt-4 d-flex flex-column align-items-center">
-                {profile.photo && (
+                {record.photo && (
                   <Image
                     src={avatar}
                     alt="Pérfil"
@@ -190,8 +249,17 @@ export default function Profile({ session }) {
                     className="rounded-circle"
                   />
                 )}
-                <h2>{profile.first_name + " " + profile.last_name}</h2>
-                <h3>{profile.job}</h3>
+                {record.profile_type_name === "USER" ? ( 
+                  <>
+                    <h2>{record.first_name + " " + record.last_name}</h2>
+                    <h3>{record.job}</h3>
+                  </>
+                ) : (
+                  <>
+                    <h2>{record.name}</h2>
+                    <h3>{title}</h3>
+                  </>
+                )}
               </CardBody>
             </Card>
           </Col>
@@ -222,30 +290,31 @@ export default function Profile({ session }) {
                       Editar Pérfil
                     </NavLink>
                   </NavItem>
-                  <NavItem>
-                    <NavLink
-                      href="#"
-                      className={classnames({ active: activeTab === "3" })}
-                      onClick={() => {
-                        toggleTab("3");
-                      }}
-                    >
-                      Cambio de Contraseña
-                    </NavLink>
-                  </NavItem>
+                  {record.profile_type_name === "USER" &&
+                    <NavItem>
+                      <NavLink
+                        href="#"
+                        className={classnames({ active: activeTab === "3" })}
+                        onClick={() => {
+                          toggleTab("3");
+                        }}
+                      >
+                        Cambio de Contraseña
+                      </NavLink>
+                    </NavItem>
+                  }
                 </Nav>
                 <TabContent activeTab={activeTab}>
                   <TabPane tabId="1">
                     <div className="tab-content pt-2">
-                      <View session={session} profile={profile} />
+                      <View record={record} />
                     </div>
                   </TabPane>
                   <TabPane tabId="2">
                     <div className="profile-edit pt-3" id="profile-edit">
                       <Edit
-                        session={session}
-                        profile={profile}
-                        setProfile={setProfile}
+                        record={record}
+                        setRecord={setRecord}
                         handleUpload={handleUpload}
                         createObjectURL={createObjectURL}
                         setCreateObjectURL={setCreateObjectURL}
@@ -253,11 +322,13 @@ export default function Profile({ session }) {
                       />
                     </div>
                   </TabPane>
-                  <TabPane tabId="3">
-                    <div className="tab-pane pt-3" id="profile-change-password">
-                      <ChangePassword session={session} />
-                    </div>
-                  </TabPane>
+                  {record.profile_type_name === "USER" &&
+                    <TabPane tabId="3">
+                      <div className="tab-pane pt-3" id="profile-change-password">
+                        <ChangePassword />
+                      </div>
+                    </TabPane>
+                  }
                 </TabContent>
               </CardBody>
             </Card>
@@ -268,18 +339,3 @@ export default function Profile({ session }) {
   );
 }
 
-export const getServerSideProps = async (context) => {
-  const session = await getSession(context);
-  if (!session)
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  return {
-    props: {
-      session,
-    },
-  };
-};

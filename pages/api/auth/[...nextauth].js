@@ -21,7 +21,7 @@ export default NextAuth({
         },
       },
       async authorize(credentials) {
-        const url = `${process.env.API_URL}login`;
+        const url = `${process.env.NEXT_PUBLIC_API_URL}login`;
 
         const response = await axios.post(
           url,
@@ -45,6 +45,7 @@ export default NextAuth({
             id: response.data.user_id,
             firstName: response.data.first_name,
             lastName: response.data.last_name,
+            profileType: response.data.profile_type,
             photo: response.data.photo,
             token: response.data.token,
             token_type: response.data.token_type,
@@ -53,6 +54,7 @@ export default NextAuth({
 
           if (user) {
             // return user
+
             return Promise.resolve(user);
           } else {
             // return null
@@ -67,7 +69,7 @@ export default NextAuth({
   pages: {
     signIn: "/login",
   },
-  site: process.env.SERVER_URL || "http://localhost:3000",
+  site: process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000",
   callbacks: {
     jwt: async ({ token, user }) => {
       if (user) {
@@ -79,9 +81,9 @@ export default NextAuth({
       return seshProps.token;
     },
   },
-  secret: process.env.TOKEN_SECRET,
+  secret: process.env.NEXT_PUBLIC_TOKEN_SECRET,
   jwt: {
-    secret: process.env.TOKEN_SECRET,
+    secret: process.env.NEXT_PUBLIC_TOKEN_SECRET,
     maxAge: 60 * 60 * 24 * 30,
   },
 });

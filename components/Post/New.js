@@ -1,8 +1,8 @@
 import Image from "next/image";
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
-import AppContext from "../../AppContext";
+import {useAppContext} from "../../AppContext";
 
 import {
   Modal,
@@ -19,9 +19,9 @@ import {
 import EmojiPicker from "../EmojiPicker/EmojiPicker";
 import ImgCarousel from "../Carousel/Carousel";
 
-export default function NewPost({ session, newPost, setNewPost, setRefresh }) {
-  const value = useContext(AppContext);
-  const avatar = value.state.avatar;
+export default function NewPost({ newPost, setNewPost, setRefresh }) {
+  const {profile, lang, token} = useAppContext();
+  const avatar = profile.photo;
 
   const [reload, setReload] = useState(false);
   const [disabled, setDisabled] = useState(false);
@@ -93,8 +93,8 @@ export default function NewPost({ session, newPost, setNewPost, setRefresh }) {
 
   const config = {
     headers: {
-      "accept-Language": session.locale,
-      "Authorization": `Bearer ${session.token}`,
+      "accept-Language": lang,
+      "Authorization": `Bearer ${token}`,
     },
   };
 
@@ -196,7 +196,7 @@ export default function NewPost({ session, newPost, setNewPost, setRefresh }) {
               className="rounded-image"
             />
             <div className="d-flex flex-column ms-2">
-              <span className="fw-bold">{session.firstName}</span>
+              <span className="fw-bold">{profile.firtsName}</span>
             </div>
           </div>
         </Row>
@@ -209,7 +209,7 @@ export default function NewPost({ session, newPost, setNewPost, setRefresh }) {
               value={post.summary}
               onChange={handleChange("summary")}
               rows="3"
-              placeholder={"¿ Que estas pensando, " + session.firstName + " ?"}
+              placeholder={"¿ Que estas pensando, " + profile.firtsName + " ?"}
               style={{ border: 0, resize: "none" }}
             />
           </InputGroup>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import {useAppContext} from "../../AppContext";
 
 import {
   Form,
@@ -15,7 +16,8 @@ import {
 import axios from "axios";
 import Swal from "sweetalert2";
 
-export default function ChangePassword({ session }) {
+export default function ChangePassword() {
+  const {lang, token} = useAppContext();
 
   const [values, setValues] = useState({
     currentpassword: "",
@@ -34,8 +36,8 @@ export default function ChangePassword({ session }) {
     headers: {
       "Content-Type": "application/json",
       "Accept": "application/json",
-      "accept-Language": session.locale,
-      "Authorization": `Bearer ${session.token}`,
+      "accept-Language": lang,
+      "Authorization": `Bearer ${token}`,
     },
   };
 

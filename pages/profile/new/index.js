@@ -1,30 +1,25 @@
-import { getSession } from "next-auth/react";
+import { useState } from "react";
 import Layout from "../../../layouts/Layout";
 import Head from "next/head";
 
-export default function CreateProfile({ session }) {
-    return (
-        <Layout session={session} title={"Profile"}>
-          <Head>
-            <link rel="shortcut icon" href="/smartdomino.ico" />
-            <title>Pérfil</title>
-          </Head>
-        </Layout>
-    );
+import SelectProfile from "../../../components/Profile/SelectProfile";
+import NewProfile from "../../../components/Profile/New";
+
+export default function CreateProfile() {
+  const [profileType, setProfileType] = useState(null);
+
+  return (
+    <Layout title={"Profile"}>
+      <Head>
+        <link rel="shortcut icon" href="/smartdomino.ico" />
+        <title>Crear Nuevo Pérfil</title>
+      </Head>
+
+        {!profileType && <SelectProfile setProfileType={setProfileType} />}
+
+        {profileType && <NewProfile profileType={profileType} setProfileType={setProfileType} />}
+
+    </Layout>
+  );
 };
 
-export const getServerSideProps = async (context) => {
-    const session = await getSession(context);
-    if (!session)
-      return {
-        redirect: {
-          destination: "/login",
-          permanent: false,
-        },
-      };
-    return {
-      props: {
-        session,
-      },
-    };
-};

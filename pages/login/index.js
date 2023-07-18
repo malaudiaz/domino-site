@@ -1,11 +1,12 @@
-import { useState, useContext } from "react";
-import { signIn, getSession } from "next-auth/react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import AppContext from "../../AppContext";
+import {useAppContext} from "../../AppContext";
 import Link from "next/link";
 import Swal from "sweetalert2";
 import Image from "next/image";
+import axios from "axios";
+import { setCookie } from 'cookies-next';
 
 import {
   Label,
@@ -22,10 +23,10 @@ import {
 
 import AuthFooter from "../../components/Footers/AuthFooter";
 
-export default function Login(session) {
+export default function Login() {
   const router = useRouter();
-  const value = useContext(AppContext);
-  const t = value.state.languages.auth;
+  const {lang, i18n, createProfile} = useAppContext();
+  const t = i18n.auth;
 
   const [values, setValues] = useState({
     username: "",
@@ -51,10 +52,9 @@ export default function Login(session) {
     setValues({ ...values, showPassword: !values.showPassword });
   };
 
-  const handleLoginUser = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-
-    const { languageSelected } = value.state;
+    const { languageSelected } = lang;
 
     setValidate({
       ...validate,
@@ -63,22 +63,39 @@ export default function Login(session) {
     });
 
     if (validate.username === "success" && validate.password === "success") {
-      const res = await signIn("credentials", {
-        redirect: false,
-        locale: languageSelected,
-        username: values.username,
-        password: values.password,
-      });
 
-      if (res?.error) {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          "accept-Language": languageSelected
+        },
+      };    
+  
+      const url = `${process.env.NEXT_PUBLIC_API_URL}login`;
+
+      try {
+        const { data } = await axios.post(url, values, config);
+
+        if (data.success) {
+          const {user_id, first_name, last_name, photo, profile_type, token} = data.profile;
+          setCookie('SmartDomino-Token', token);
+          createProfile(user_id, first_name + " " + last_name, photo, profile_type);
+
+          router.push("/");
+        }
+      } catch ({response}) {
+        console.log(response);
+        const { detail } = response.data;
         Swal.fire({
+          title: "Autentificar",
+          text: detail,
           icon: "error",
-          title: t.logIn,
-          text: t.logInFail,
-          showConfirmButton: true,
+          showCancelButton: false,
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Aceptar",
         });
-      } else {
-        router.push("/");
       }
     }
   };
@@ -100,7 +117,7 @@ export default function Login(session) {
             <div className="bg-white shadow rounded p-3 input-group-lg">
               <h3>{t.signIn}</h3>
               <hr />
-              <Form onSubmit={handleLoginUser}>
+              <Form onSubmit={handleLogin}>
                 <Col md={12}>
                   <FormGroup>
                     <Label>{t.userLabel}</Label>
@@ -190,19 +207,4 @@ export default function Login(session) {
       </div>
     </>
   );
-}
-
-export const getServerSideProps = async (context) => {
-  const session = await getSession(context);
-  if (session) return {
-    redirect: {
-      destination: "/",
-      permanent: false
-    }
-  }  
-  return {
-    props: {
-      session,
-    },
-  };
 };

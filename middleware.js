@@ -1,14 +1,24 @@
 import { NextResponse } from 'next/server';
-import { getToken } from 'next-auth/jwt';
+import { jwtVerify } from 'jose';
 
 export async function middleware(req) {
-  const session = await getToken({ req: req, secret: process.env.TOKEN_SECRET }); 
 
-  if (!session) return NextResponse.redirect(new URL("/login", req.url))
+  const jwt = req.cookies.get('SmartDomino-Token');
 
-  return NextResponse.next()
+  if (jwt === undefined) {
+    return NextResponse.redirect(new URL("/login", req.url));
+  }
+
+  try {
+    const { payload } = await jwtVerify(jwt, new TextEncoder().encode(process.env.NEXT_PUBLIC_TOKEN_SECRET));
+    return NextResponse.next();
+  } catch (error) {
+    console.log(error);
+    return NextResponse.redirect(new URL("/login", req.url));
+  }
+
 }
 
 export const config = {
-  matcher: ["/"],
+  matcher: ["/", "/profile/:path*", "/event/:path*", "/tourney/:path*"],
 };

@@ -1,7 +1,6 @@
 import React from "react";
-import { useContext, useEffect, useState } from "react";
-import AppContext from "../../AppContext";
-import { getSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import {useAppContext} from "../../AppContext";
 import EventLayout from "../../layouts/EventLayout";
 import Head from "next/head";
 import { Card, CardBody } from "reactstrap";
@@ -20,8 +19,8 @@ import {
 import axios from "axios";
 import Swal from "sweetalert2";
 
-export default function Events({ session }) {
-  const value = useContext(AppContext);
+export default function Events() {
+  const {profile, createProfile, lang, token, i18n} = useAppContext();
   const [events, setEvents] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [ubication, setUbication] = useState(false);
@@ -35,8 +34,8 @@ export default function Events({ session }) {
     headers: {
       "Content-Type": "application/json",
       "Accept": "application/json",
-      "accept-Language": "es-ES,es;",
-      "Authorization": `Bearer ${session.token}`,
+      "accept-Language": lang,
+      "Authorization": `Bearer ${token}`,
     },
   };
 
@@ -68,11 +67,10 @@ export default function Events({ session }) {
   };
 
   useEffect(() => {
-    value.setLanguageSelected(session.locale);
     fetchData();
-  }, [session.locale, value, refresh]);
+  }, [refresh]);
 
-  const t = value.state.languages.events;
+  const t = i18n.events;
 
   const onMenuSelection = (key, index) => {
     switch (key) {
@@ -90,7 +88,7 @@ export default function Events({ session }) {
   };
 
   return (
-    <EventLayout session={session}>
+    <EventLayout>
       <Head>
         <link rel="shortcut icon" href="/smartdomino.ico" />
         <title>{t.title}</title>
@@ -215,19 +213,3 @@ export default function Events({ session }) {
     </EventLayout>
   );
 }
-
-export const getServerSideProps = async (context) => {
-  const session = await getSession(context);
-  if (!session)
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  return {
-    props: {
-      session,
-    },
-  };
-};

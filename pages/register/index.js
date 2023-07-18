@@ -1,7 +1,6 @@
-import { useState, useContext } from "react";
-import { getSession } from "next-auth/react";
-import Head from "next/head";
+import { useState } from "react";
 import { useRouter } from "next/router";
+import Head from "next/head";
 import Link from "next/link";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -18,15 +17,15 @@ import {
   Button,
 } from "reactstrap";
 
-import AppContext from "../../AppContext";
+import {useAppContext} from "../../AppContext";
 import AuthFooter from "../../components/Footers/AuthFooter";
 import CountryComboBox from "../../components/Country/CountryComboBox";
 
 export default function Register(props) {
   const router = useRouter();
+  const {lang, i18n} = useAppContext();
   const [loading, setLoading] = useState(false);
-  const value = useContext(AppContext);
-  const t = value.state.languages.register;
+  const t = i18n.register;
 
   const [values, setValues] = useState({
     firts_name: "",
@@ -94,18 +93,27 @@ export default function Register(props) {
       validate.newpassword === "success" &&
       validate.confirmpassword === "success"
     ) {
-      const url = `${process.env.NEXT_PUBLIC_API_URL}register?username=${values.username}&first_name=${values.firts_name}&last_name=${values.last_name}&email=${values.email}&phone=${values.phone}&country_id=${values.country}&password=${values.newpassword}`;
+      const url = `${process.env.NEXT_PUBLIC_API_URL}register`;
 
       const config = {
         headers: {
           "Content-Type": "application/json",
-          Accept: "application/json",
+          "Accept": "application/json",
         },
       };
 
       try {
         const { data } = await axios.post(
           url,
+          {
+            username: values.username,
+            first_name: values.firts_name,
+            last_name: values.last_name,
+            email: values.email,
+            phone: values.phone,
+            country_id: values.country,
+            password: values.newpassword
+          },
           config
         );
 
@@ -171,8 +179,8 @@ export default function Register(props) {
                             onChange={handleChange("firts_name")}
                             placeholder={t.firtsName}
                             value={values.firts_name}
-                            onKeyPress={(event) => {
-                              if (!/^[a-zA-ZñÑáéíóú\s]*$/.test(event.key)) {
+                            onKeyDown={(event) => {
+                              if (!/^[a-zA-ZñÑáéíóú.\s]*$/.test(event.key)) {
                                 event.preventDefault();
                               }
                             }}
@@ -195,8 +203,8 @@ export default function Register(props) {
                             onChange={handleChange("last_name")}
                             placeholder={t.lastName}
                             value={values.last_name}
-                            onKeyPress={(event) => {
-                              if (!/^[a-zA-ZñÑáéíóú\s]*$/.test(event.key)) {
+                            onKeyDown={(event) => {
+                              if (!/^[a-zA-ZñÑáéíóú.\s]*$/.test(event.key)) {
                                 event.preventDefault();
                               }
                             }}
@@ -220,10 +228,15 @@ export default function Register(props) {
                             onChange={handleChange("email")}
                             placeholder={t.email}
                             value={values.email}
-                            onKeyPress={(event) => {
-                              if (!/^[a-z@_.\s]*$/.test(event.key)) {
+                            onKeyDown={(event) => {
+                              // if (!/^[a-z@_.0-9\s]*$/.test(event.key)) {
+                              //   event.preventDefault();
+                              // }
+
+                              if (!/^[a-zA-Z@_.0-9\s]*$/.test(event.key)) {
                                 event.preventDefault();
                               }
+
                             }}
                           />
                           <FormFeedback>{t.emailFeed}</FormFeedback>
@@ -245,7 +258,7 @@ export default function Register(props) {
                             onChange={handleChange("phone")}
                             placeholder={t.phone}
                             value={values.phone}
-                            onKeyPress={(event) => {
+                            onKeyDown={(event) => {
                               if (!/[0-9]/.test(event.key)) {
                                 event.preventDefault();
                               }
@@ -271,8 +284,8 @@ export default function Register(props) {
                             onChange={handleChange("username")}
                             placeholder={t.userName}
                             value={values.username}
-                            onKeyPress={(event) => {
-                              if (!/^[a-z_.\s]*$/.test(event.key)) {
+                            onKeyDown={(event) => {
+                              if (!/^[a-zA-Z_0-9.\s]*$/.test(event.key)) {
                                 event.preventDefault();
                               }
                             }}
@@ -374,19 +387,3 @@ export default function Register(props) {
     </>
   );
 }
-
-export const getServerSideProps = async (context) => {
-  const session = await getSession(context);
-  if (session)
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  return {
-    props: {
-      session,
-    },
-  };
-};

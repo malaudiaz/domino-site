@@ -1,9 +1,8 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from 'next/router';
 import EventLayout from "../../../layouts/EventLayout";
-import AppContext from "../../../AppContext";
+import {useAppContext} from "../../../AppContext";
 import Head from "next/head";
-import { getSession } from "next-auth/react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { Card, CardBody } from "reactstrap";
@@ -13,7 +12,7 @@ import Image from "next/image";
 import { eventDate } from "../../_functions";
 
 export default function Own({ session }) {
-  const value = useContext(AppContext);
+  const {lang, token, i18n} = useAppContext();
   const router = useRouter();
 
   const [openEvent, setOpenEvent] = useState(false);
@@ -38,9 +37,9 @@ export default function Own({ session }) {
   const config = {
     headers: {
       "Content-Type": "application/json",
-      Accept: "application/json",
-      "accept-Language": "es-ES,es;",
-      Authorization: `Bearer ${session.token}`,
+      "Accept": "application/json",
+      "accept-Language": lang,
+      "Authorization": `Bearer ${token}`,
     },
   };
 
@@ -72,11 +71,10 @@ export default function Own({ session }) {
   };
 
   useEffect(() => {
-    value.setLanguageSelected(session.locale);
     fetchData();
-  }, [session.locale, value, refresh]);
+  }, [refresh]);
 
-  const t = value.state.languages.events;
+  const t = i18n.events;
 
   const mnuEdit = (index) => {
     setRecord(events[index]);
@@ -138,7 +136,7 @@ export default function Own({ session }) {
   };
 
   return (
-    <EventLayout session={session}>
+    <EventLayout>
       <Head>
         <link rel="shortcut icon" href="/smartdomino.ico" />
         <title>Eventos que has organizado</title>
@@ -256,7 +254,6 @@ export default function Own({ session }) {
         </div>
 
       <NewEvent
-        session={session}
         openEvent={openEvent}
         setOpenEvent={setOpenEvent}
         record={record}
@@ -264,20 +261,4 @@ export default function Own({ session }) {
       />
     </EventLayout>
   );
-}
-
-export const getServerSideProps = async (context) => {
-  const session = await getSession(context);
-  if (!session)
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  return {
-    props: {
-      session,
-    },
-  };
 };
