@@ -9,8 +9,11 @@ export async function middleware(req) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 
+  console.log(process.env.NEXT_PUBLIC_TOKEN_SECRET);
+
   try {
     const { payload } = await jwtVerify(jwt, new TextEncoder().encode(process.env.NEXT_PUBLIC_TOKEN_SECRET));
+    console.log(payload);
     return NextResponse.next();
   } catch (error) {
     console.log("===>", error);
