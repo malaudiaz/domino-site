@@ -185,7 +185,7 @@ export default function FindForm({isOpen, setClose, setPlayer, changePlayer}) {
             <ModalBody>
                 <FormGroup row>
                     <Label size="sm" sm={1}>
-                    Buscar
+                        Buscar
                     </Label>
                     <Col sm={11}>
                     <InputGroup size="sm">
@@ -236,7 +236,7 @@ export default function FindForm({isOpen, setClose, setPlayer, changePlayer}) {
                                     <small className="comment-text fs-12">{item.city_name}</small>
                                 </div>
                                 <div className="ps-4">
-                                    {mark && <i className="bi bi-check2-circle"></i>}
+                                    {(mark && item.profile_id===record.profile_id) && <i className="bi bi-check2-circle"></i>}
                                 </div>
                             </div>
                         </div>
@@ -246,15 +246,15 @@ export default function FindForm({isOpen, setClose, setPlayer, changePlayer}) {
 
                 {records.length > 0 && 
                     <div className="row">
-                    <Pagination
-                        onChangePage={onChangePage}
-                        currentPage={page}
-                        totalPage={totalPages}
-                        totalCount={total}
-                        rowsPerPage={rowsPerPage}
-                        siblingCount={1}
-                        showInfo={false}
-                    />
+                        <Pagination
+                            onChangePage={onChangePage}
+                            currentPage={page}
+                            totalPage={totalPages}
+                            totalCount={total}
+                            rowsPerPage={rowsPerPage}
+                            siblingCount={1}
+                            showInfo={false}
+                        />
                     </div>
                 }
 

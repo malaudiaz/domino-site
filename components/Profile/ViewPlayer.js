@@ -46,11 +46,11 @@ export default function ViewPlayer({ record, city }) {
         </div>
       )}
 
-
       {record.profile_type_name === "PAIR_PLAYER" && 
         <div className="row">
             <div className="col-lg-2 col-md-3 label">Pareja</div>
             <div className="col-lg-10 col-md-9">
+              <a className="player-link">{record.lst_users.name}</a>
             </div>
         </div>
       }

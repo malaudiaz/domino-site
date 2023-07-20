@@ -1695,3 +1695,13 @@ h6 {
   font-size: 13px;
   font-weight: bold;
 }
+
+.player-link {
+  color: #444444;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.player-link:hover {
+  color: blue;
+}

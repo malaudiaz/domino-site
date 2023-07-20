@@ -56,7 +56,8 @@ export default function Profile() {
     profile_type_description: "",
     profile_type_name: "",
     elo: "",
-    ranking: ""
+    ranking: "",
+    lst_users: {}
   });
 
   const toggleTab = (tab) => {
@@ -127,6 +128,7 @@ export default function Profile() {
           record.profile_type_description = respObj.profile_type_description;
           record.elo = respObj.elo;
           record.ranking = respObj.ranking;
+          record.lst_users = respObj.lst_users;
 
           setRecord(record);
           setLoading(false);

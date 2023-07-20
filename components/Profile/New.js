@@ -94,11 +94,7 @@ export default function NewProfile({ profileType, setProfileType}) {
         url = `${process.env.NEXT_PUBLIC_API_URL}profile/pair?name=${profile.username}&email=${profile.email}&level=${profile.level}&city_id=${profile.city_id}&receive_notifications=${profile.receive_notifications}&other_profile_id=${profile.player.profile_id}`;
         break;
       case "TEAM_PLAYER":
-        let team = [];
-        for (let i=0; i<profile.players.length; i++) {
-          team.push(profile.players[i].profile_id);
-        }
-        url = `${process.env.NEXT_PUBLIC_API_URL}profile/team?name=${profile.username}&email=${profile.email}&level=${profile.level}&city_id=${profile.city_id}&receive_notifications=${profile.receive_notifications}&others_profile_id=${team}`;
+        url = `${process.env.NEXT_PUBLIC_API_URL}profile/team?name=${profile.username}&email=${profile.email}&level=${profile.level}&city_id=${profile.city_id}&receive_notifications=${profile.receive_notifications}`;
         break;
       case "REFEREE": 
         url = `${process.env.NEXT_PUBLIC_API_URL}profile/referee?name=${profile.username}&email=${profile.email}&level=${profile.level}&city_id=${profile.city_id}&receive_notifications=${profile.receive_notifications}`;
@@ -107,6 +103,17 @@ export default function NewProfile({ profileType, setProfileType}) {
 
     const body = new FormData();
     body.append("avatar", profile.file);
+    if (profileType === "TEAM_PLAYER") {
+      let team = "";
+      for (let i=0; i<profile.players.length; i++) {
+        if (i===0) {
+          team = team + profile.players[i].profile_id;
+        } else {
+          team = team + "," + profile.players[i].profile_id;
+        }
+      }
+      body.append("other_profile_id", team);
+    }
 
     try {
       const { data } = await axios.post(url, body, {
