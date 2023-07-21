@@ -8,7 +8,7 @@ import { Card, CardBody, CardFooter } from "reactstrap";
 import { eventDate } from "../../pages/_functions";
 
 const TourneySideBar = () => {
-  const {lang, token} = useAppContext();
+  const {profile, lang, token} = useAppContext();
   const router = useRouter();
   const [events, setEvents] = useState([]);
 
@@ -24,7 +24,7 @@ const TourneySideBar = () => {
   const fetchData = async () => {
     const url = `${
       process.env.NEXT_PUBLIC_API_URL
-    }event?page=${0}&per_page=${0}`;
+    }event?profile_id=${profile.id}&page=${0}&per_page=${0}`;
 
     try {
       const { data } = await axios.get(url, config);

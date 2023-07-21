@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 import { useAppContext } from "../../AppContext";
 import { shortDate } from "../../pages/_functions";
 import ViewPlayer from "./ViewPlayer";
+import Image from "next/image";
 
 import {
   Accordion,
@@ -188,7 +189,28 @@ export default function View({ record }) {
               <AccordionItem>
                 <AccordionHeader targetId="2">Equipo</AccordionHeader>
                 <AccordionBody accordionId="2">
+                  <div className="row container-players p-2">
+                    {record.lst_users.map((item, idx)=>(
+                        <div key={idx} className="d-flex align-items-center rounded mb-3 p-2 hover-effect">
+                            <div className="d-flex flex-row justify-content-between icons align-items-center" style={{width: "98%"}}>
+                              <Image
+                                  alt=""
+                                  src={item.photo}
+                                  width={40}
+                                  height={40}
+                                  className="rounded-image"
+                              />
+                              <div className="d-flex flex-column flex-fill ms-2">
+                                  <span className="gamer-couple">{item.name}</span>
+                                  <small className="comment-text fs-12">{item.city_name}</small>
+                              </div>
 
+
+                            </div>
+                        </div>
+                    ))}
+
+                  </div>
                 </AccordionBody>
               </AccordionItem>
             </Accordion>

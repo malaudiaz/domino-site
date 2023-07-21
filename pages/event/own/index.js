@@ -12,7 +12,7 @@ import Image from "next/image";
 import { eventDate } from "../../_functions";
 
 export default function Own({ session }) {
-  const {lang, token, i18n} = useAppContext();
+  const {profile, lang, token, i18n} = useAppContext();
   const router = useRouter();
 
   const [openEvent, setOpenEvent] = useState(false);
@@ -46,7 +46,7 @@ export default function Own({ session }) {
   const fetchData = async () => {
     const url = `${
       process.env.NEXT_PUBLIC_API_URL
-    }event?page=${0}&per_page=${0}`;
+    }event?profile_id=${profile.id}&page=${0}&per_page=${0}`;
 
     try {
       const { data } = await axios.get(url, config);

@@ -42,7 +42,7 @@ export default function Events() {
   const fetchData = async () => {
     const url = `${
       process.env.NEXT_PUBLIC_API_URL
-    }event?page=${0}&per_page=${0}`;
+    }event?profile_id=${profile.id}&page=${0}&per_page=${0}`;
 
     try {
       const { data } = await axios.get(url, config);

@@ -10,7 +10,7 @@ import DropDownMenu from "../../../components/DropDownMenu/Menu";
 import { eventDate } from "../../_functions";
 
 export default function Attend() {
-  const {lang, token} = useAppContext();
+  const {profile, lang, token} = useAppContext();
 
   const [events, setEvents] = useState([]);
   const ctxMenu = [];
@@ -27,7 +27,7 @@ export default function Attend() {
   const fetchData = async () => {
     const url = `${
       process.env.NEXT_PUBLIC_API_URL
-    }event?page=${0}&per_page=${0}`;
+    }event?profile_id=${profile.id}&page=${0}&per_page=${0}`;
 
     try {
       const { data } = await axios.get(url, config);

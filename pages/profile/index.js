@@ -57,7 +57,7 @@ export default function Profile() {
     profile_type_name: "",
     elo: "",
     ranking: "",
-    lst_users: {}
+    lst_users: null
   });
 
   const toggleTab = (tab) => {
@@ -164,10 +164,19 @@ export default function Profile() {
         url = `${process.env.NEXT_PUBLIC_API_URL}profile/single/${record.id}?name=${record.name}&email=${record.email}&level=${record.level}&city_id=${record.city_id}&receive_notifications=${record.receive_notifications}`;
         break;
       case "PAIR_PLAYER":
-        url = `${process.env.NEXT_PUBLIC_API_URL}profile/pair/${record.id}?name=${record.name}&email=${record.email}&level=${record.level}&city_id=${record.city_id}&receive_notifications=${record.receive_notifications}`;
+
+        url = `${process.env.NEXT_PUBLIC_API_URL}profile/pair/${record.id}?name=${record.name}&email=${record.email}&level=${record.level}&city_id=${record.city_id}&receive_notifications=${record.receive_notifications}&other_profile_id=${record.lst_users.profile_id}`;
         break;
       case "TEAM_PLAYER":
-        url = `${process.env.NEXT_PUBLIC_API_URL}profile/team/${record.id}?name=${record.name}&email=${record.email}&level=${record.level}&city_id=${record.city_id}&receive_notifications=${record.receive_notifications}`;
+        let team = "";
+        for (let i=0; i<record.lst_users.length; i++) {
+          if (i===0) {
+            team = team + record.lst_users[i].profile_id;
+          } else {
+            team = team + "," + record.lst_users[i].profile_id;
+          }
+        }
+        url = `${process.env.NEXT_PUBLIC_API_URL}profile/team/${record.id}?name=${record.name}&email=${record.email}&level=${record.level}&city_id=${record.city_id}&receive_notifications=${record.receive_notifications}&others_profile_id=${team}`;
         break;
       case "REFEREE":
         url = `${process.env.NEXT_PUBLIC_API_URL}profile/referee/${record.id}?name=${record.name}&email=${record.email}&level=${record.level}&city_id=${record.city_id}&receive_notifications=${record.receive_notifications}`;
