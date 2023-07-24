@@ -26,7 +26,7 @@ export default function Page() {
   };
   
   const fetchData = async () => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}post`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}post?profile_id=${profile.id}`;
   
     try {
       const { data } = await axios.get(url, config);

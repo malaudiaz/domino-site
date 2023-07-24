@@ -102,7 +102,7 @@ export default function NewPost({ newPost, setNewPost, setRefresh }) {
     event.preventDefault();
     setDisabled(true);
 
-    const url = `${process.env.NEXT_PUBLIC_API_URL}post?summary=${post.summary}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}post?profile_id=${profile.id}&summary=${post.summary}`;
 
     const body = new FormData();
     for (let i=0; i<post.media.length; i++) {
@@ -196,7 +196,7 @@ export default function NewPost({ newPost, setNewPost, setRefresh }) {
               className="rounded-image"
             />
             <div className="d-flex flex-column ms-2">
-              <span className="fw-bold">{profile.firtsName}</span>
+              <span className="fw-bold">{profile.name}</span>
             </div>
           </div>
         </Row>
@@ -209,7 +209,7 @@ export default function NewPost({ newPost, setNewPost, setRefresh }) {
               value={post.summary}
               onChange={handleChange("summary")}
               rows="3"
-              placeholder={"¿ Que estas pensando, " + profile.firtsName + " ?"}
+              placeholder={"¿ Que estas pensando, " + profile.name + " ?"}
               style={{ border: 0, resize: "none" }}
             />
           </InputGroup>

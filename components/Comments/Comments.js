@@ -48,7 +48,7 @@ export default function Comments({ post }) {
     
       // Salvar el comentario y la api me devuelve los tres ultimos commentarios
 
-      const url = `${process.env.NEXT_PUBLIC_API_URL}postcomment`;
+      const url = `${process.env.NEXT_PUBLIC_API_URL}postcomment?profile_id=${profile.id}`;
 
       try {
         const {data} = await axios.post(url, {post_id: post.id, summary: comment}, config);
@@ -78,7 +78,7 @@ export default function Comments({ post }) {
 
   const likeComment = async (comm) => {
 
-    const url = `${process.env.NEXT_PUBLIC_API_URL}commentlike`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}commentlike?profile_id=${profile.id}`;
 
     try {
       const {data} = await axios.post(url, {comment_id: comm.id}, config);

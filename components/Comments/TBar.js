@@ -19,7 +19,7 @@ export default function TBar({ post }) {
   };  
 
   const toggle = async () => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}postlike`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}postlike?profile_id=${profile.id}`;
 
     try {
       const {data} = await axios.post(url, {post_id: post.id}, config);
