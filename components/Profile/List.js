@@ -61,7 +61,8 @@ export default function ListProfile() {
           <div className="card-body pb-0">
             <h5 className="card-title">Tus Pérfiles</h5>
               {items.map((item) => (
-                <div className="d-flex justify-content-between align-items-center mb-3" key={item.profile_id}>
+
+              <div className="d-flex justify-content-between align-items-center mb-3" key={item.profile_id}>
                   <div className="d-flex flex-row icons align-items-center">
                     <Image
                       alt="Profile Avatar"
@@ -86,6 +87,11 @@ export default function ListProfile() {
                         {item.profile_description}
                       </small>
                     </div>
+                  </div>
+                  <div className="d-flex flex-row muted-color">
+                      <a className="trash-effect" title="Cerrar pérfil">
+                        <i class="bi bi-x-circle"></i>
+                      </a>
                   </div>
                 </div>
               ))}
