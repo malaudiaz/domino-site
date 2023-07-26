@@ -54,6 +54,25 @@ export default function ListProfile() {
     createProfile(profile_id, name, photo, profile_name);
   };
 
+  const closeProfile = (e) => {
+    e.preventDefault();
+
+    Swal.fire({
+      title: "Cerrar Pérfil",
+      text: "¿ Desea cerrar este pérfil ? Esta opción no se puede deshacer",
+      icon: "question",
+      showCancelButton: true,
+      allowOutsideClick: false,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Aceptar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+      }
+    });
+  };
+
   return (
     <>
       {show ? (
@@ -66,7 +85,7 @@ export default function ListProfile() {
                   <div className="d-flex flex-row icons align-items-center">
                     <Image
                       alt="Profile Avatar"
-                      src={"/profile/user-vector.jpg"}
+                      src={item.photo}
                       width={40}
                       height={40}
                       className="rounded-image"
@@ -89,7 +108,7 @@ export default function ListProfile() {
                     </div>
                   </div>
                   <div className="d-flex flex-row muted-color">
-                      <a className="trash-effect" title="Cerrar pérfil">
+                      <a className="trash-effect" title="Cerrar pérfil" onClick={(e)=>closeProfile(e)}>
                         <i class="bi bi-x-circle"></i>
                       </a>
                   </div>
