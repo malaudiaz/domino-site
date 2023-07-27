@@ -1,13 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {useAppContext} from "../../AppContext";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-export default function TBar({ post }) {
+export default function TBar({ post, setRefresh }) {
   const {profile, lang, token} = useAppContext();
 
   const [like, setLike] = useState(post.like);
   const [amountLike, setAmountLike] = useState(post.amountLike);
+
+  useEffect(()=>{
+    setLike(post.like);
+    setAmountLike(post.amountLike);
+  },[post]);
 
   const config = {
     headers: {
@@ -26,6 +31,7 @@ export default function TBar({ post }) {
       if (data.success) {
         setAmountLike(!like ? amountLike + 1 : amountLike - 1);
         setLike(!like);    
+        setRefresh(true);
       }
     } catch (errors) {
       const { detail } = errors.response;

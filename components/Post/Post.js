@@ -138,7 +138,7 @@ export default function Post({ posts, setRefresh }) {
           <div className="p-2">
             <p className="text-justify">{post.comment}</p>
 
-            {post.showCountLike && <TBar post={post} />}
+            {post.showCountLike && <TBar post={post} setRefresh={setRefresh} />}
 
             {post.allowComment && <Comments post={post} setRefresh={setRefresh}/>}
           </div>
