@@ -9,6 +9,7 @@ export default function ListProfile() {
 
   const [show, setShow] = useState(false);
   const [items, setItems] = useState([]);
+  const [reload, setReload] = useState(false);
 
   const config = {
     headers: {
@@ -48,13 +49,55 @@ export default function ListProfile() {
     if (Object.entries(profile).length > 0) {
       fetchData();
     }
-  }, [profile]);
+  }, [profile, reload]);
 
   const changeProfile = ({ profile_id, profile_name, name, photo }) => {
     createProfile(profile_id, name, photo, profile_name);
   };
 
-  const closeProfile = (e) => {
+  const removeProfile = async (item) => {
+    let url = `${process.env.NEXT_PUBLIC_API_URL}profile/single/${item.profile_id}`;
+    switch (item.profile_name) {
+      case "PAIR_PLAYER":
+        url = `${process.env.NEXT_PUBLIC_API_URL}profile/pair/${item.profile_id}`;
+        break;
+      case "TEAM_PLAYER":
+        url = `${process.env.NEXT_PUBLIC_API_URL}profile/team/${item.profile_id}`;
+        break;
+      case "REFEREE": 
+        url = `${process.env.NEXT_PUBLIC_API_URL}profile/referee/${item.profile_id}`;
+        break;
+    }
+
+    try {
+      const { data } = await axios.delete(url, {
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          "accept-Language": lang,
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+      if (data.success) {
+        setReload(!reload);
+        Swal.fire({
+          icon: "success",
+          title: "Cerrar Pérfil",
+          text: data.detail,
+          showConfirmButton: true,
+        });
+      }
+    } catch (errors) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: errors.response.data.detail,
+        showConfirmButton: true,
+      });
+    }
+  };
+
+  const closeProfile = (e, item) => {
     e.preventDefault();
 
     Swal.fire({
@@ -69,6 +112,7 @@ export default function ListProfile() {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
+        removeProfile(item);
       }
     });
   };
@@ -108,8 +152,8 @@ export default function ListProfile() {
                     </div>
                   </div>
                   <div className="d-flex flex-row muted-color">
-                      <a className="trash-effect" title="Cerrar pérfil" onClick={(e)=>closeProfile(e)}>
-                        <i class="bi bi-x-circle"></i>
+                      <a className="trash-effect" title="Cerrar pérfil" onClick={(e)=>closeProfile(e, item)}>
+                        <i className="bi bi-x-circle"></i>
                       </a>
                   </div>
                 </div>

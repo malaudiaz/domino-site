@@ -140,7 +140,7 @@ export default function Post({ posts, setRefresh }) {
 
             {post.showCountLike && <TBar post={post} />}
 
-            {post.allowComment && <Comments post={post} />}
+            {post.allowComment && <Comments post={post} setRefresh={setRefresh}/>}
           </div>
         </div>
       ))}

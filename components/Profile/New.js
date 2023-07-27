@@ -112,9 +112,7 @@ export default function NewProfile({ profileType, setProfileType}) {
     }
 
     const body = new FormData();
-    body.append("avatar", profile.file);
-
-    console.log(url);
+    body.append("image", profile.file);
 
     try {
       const { data } = await axios.post(url, body, {

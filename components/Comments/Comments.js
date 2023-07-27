@@ -7,7 +7,7 @@ import Answer from "./Answer";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-export default function Comments({ post }) {
+export default function Comments({ post, setRefresh }) {
   const {profile, lang, token} = useAppContext();
   const avatar = profile.photo;
 
@@ -59,6 +59,8 @@ export default function Comments({ post }) {
           setComment("");
           document.getElementById(`btnPush_${post.id}`).style.display = "none";
           document.getElementById(`btnEmoji_${post.id}`).style.display = "none";
+
+          setRefresh(true);
     
         }
       } catch ({response}) {
@@ -83,6 +85,7 @@ export default function Comments({ post }) {
     try {
       const {data} = await axios.post(url, {comment_id: comm.id}, config);
       if (data.success) {
+        setRefresh(true);      
       }
     } catch ({response}) {
       const { detail } = response.data;
@@ -206,7 +209,7 @@ export default function Comments({ post }) {
         </div>
       </div>
 
-      <Answer isOpen={isOpen} setIsOpen={setIsOpen} comment={answerComment} />
+      <Answer isOpen={isOpen} setIsOpen={setIsOpen} comment={answerComment} setRefresh={setRefresh} />
 
     </div>
   );

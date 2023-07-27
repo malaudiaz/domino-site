@@ -13,7 +13,7 @@ import {
   UncontrolledPopover,
 } from "reactstrap";
 
-export default function Answer({ isOpen, setIsOpen, comment }) {
+export default function Answer({ isOpen, setIsOpen, comment, setRefresh }) {
   
   const {profile, lang, token} = useAppContext();
   const avatar = profile.photo;
@@ -56,11 +56,14 @@ export default function Answer({ isOpen, setIsOpen, comment }) {
             setAnswer("");
             document.getElementById("btnPush").style.display = "none";
             document.getElementById("btnEmoji").style.display = "none";   
+            setAnswer("");
+            setIsOpen(false);
+            setRefresh(true);
           }
         } catch ({response}) {
           const { detail } = response.data;
           Swal.fire({
-            title: "Me gusta el Comentario",
+            title: "Responder Comentario",
             text: detail,
             icon: "error",
             showCancelButton: false,

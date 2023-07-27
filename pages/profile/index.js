@@ -157,7 +157,7 @@ export default function Profile() {
   }, [profile, reload]);
 
   const saveProfile = async () => {
-    let url = `${process.env.NEXT_PUBLIC_API_URL}profile/default/${record.id}?first_name=${record.first_name}&last_name=${record.last_name}&email=${record.email}&phone=${record.phone}&sex=${record.sex}&birthdate=${record.birthdate}&alias=${record.alias}&job=${record.job}&city_id=${record.city_id}&receive_notifications=${record.receive_notifications}`;
+    let url = `${process.env.NEXT_PUBLIC_API_URL}profile/default/${record.id}?first_name=${record.first_name}&last_name=${record.last_name}&email=${record.email}&phone=${record.phone}&sex=${record.sex}&birthdate=${record.birthdate ? record.birthdate : ""}&alias=${record.alias}&job=${record.job}&city_id=${record.city_id}&receive_notifications=${record.receive_notifications}`;
 
     switch (profile.type) {
       case "SINGLE_PLAYER":
