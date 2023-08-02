@@ -9,7 +9,7 @@ import DropDownMenu from "../../components/DropDownMenu/Menu";
 import axios from "axios";
 import Swal from "sweetalert2";
 import Image from "next/image";
-import { eventDate } from "../_functions";
+import { eventDate } from "../../_functions";
 
 export default function Tourneys() {
   const {token, lang} = useAppContext();

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useAppContext } from "../../AppContext";
-import { shortDate } from "../../pages/_functions";
+import { shortDate } from "../../_functions";
 import ViewPlayer from "./ViewPlayer";
 import Image from "next/image";
 

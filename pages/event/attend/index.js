@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import { Card, CardBody } from "reactstrap";
 import Image from "next/image";
 import DropDownMenu from "../../../components/DropDownMenu/Menu";
-import { eventDate } from "../../_functions";
+import { eventDate } from "../../../_functions";
 
 export default function Attend() {
   const {profile, lang, token} = useAppContext();

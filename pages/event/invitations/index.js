@@ -8,7 +8,7 @@ import { Card, CardBody, CardFooter } from "reactstrap";
 import Image from "next/image";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { eventDate } from "../../_functions";
+import { eventDate } from "../../../_functions";
 
 export default function Invitations() {
   const {lang, token} = useAppContext();

@@ -5,7 +5,7 @@ import Link from "next/link";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { Card, CardBody, CardFooter } from "reactstrap";
-import { eventDate } from "../../pages/_functions";
+import { eventDate } from "../../_functions";
 
 const TourneySideBar = () => {
   const {profile, lang, token} = useAppContext();

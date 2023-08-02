@@ -7,7 +7,7 @@ import { Card, CardBody, CardFooter } from "reactstrap";
 import axios from "axios";
 import Swal from "sweetalert2";
 import Image from "next/image";
-import { eventDate } from "../../_functions";
+import { eventDate } from "../../../_functions";
 
 export default function View({ session }) {
 

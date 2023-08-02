@@ -4,7 +4,7 @@ import {useAppContext} from "../../AppContext";
 import EventLayout from "../../layouts/EventLayout";
 import Head from "next/head";
 import { Card, CardBody } from "reactstrap";
-import { eventDate } from "../_functions";
+import { eventDate } from "../../_functions";
 
 import Image from "next/image";
 import DropDownMenu from "../../components/DropDownMenu/Menu";

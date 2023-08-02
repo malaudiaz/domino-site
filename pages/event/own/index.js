@@ -9,7 +9,7 @@ import { Card, CardBody } from "reactstrap";
 import DropDownMenu from "../../../components/DropDownMenu/Menu";
 import NewEvent from "../../../components/Events/Events";
 import Image from "next/image";
-import { eventDate } from "../../_functions";
+import { eventDate } from "../../../_functions";
 
 export default function Own({ session }) {
   const {profile, lang, token, i18n} = useAppContext();
