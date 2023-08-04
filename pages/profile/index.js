@@ -234,7 +234,7 @@ export default function Profile() {
   };
 
   return (
-    <Layout title={"Profile"}>
+    <Layout>
       <Head>
         <link rel="shortcut icon" href="/smartdomino.ico" />
         <title>

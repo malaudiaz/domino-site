@@ -4,7 +4,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import Image from "next/image";
 
-export default function Suggestions() {
+export default function Following() {
   const { profile, lang, token } = useAppContext();
   const [items, setItems] = useState([]);
   const [reload, setReload] = useState(false);
@@ -21,7 +21,7 @@ export default function Suggestions() {
   };
 
   const fetchData = async () => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}profile/suggestions/${profile.id}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}profile/followers/?profile_id=${profile.id}`;
 
     try {
       const { data } = await axios.get(url, config);
@@ -35,7 +35,7 @@ export default function Suggestions() {
       const { response } = errors;
       const { detail } = response.data;
       Swal.fire({
-        title: "Cargando Sugerencias",
+        title: "Cargando seguidos",
         text: detail,
         icon: "error",
         showCancelButton: false,
@@ -66,7 +66,7 @@ export default function Suggestions() {
         Swal.fire({
           icon: "success",
           title: "Siguiendo",
-          text: "Ahora estas siguiendo a " + item.name,
+          text: "Ahora dejas de seguir a: " + item.name,
           showConfirmButton: true,
         });
       }
@@ -91,7 +91,7 @@ export default function Suggestions() {
       {show ? (  
         <div className="card">
           <div className="card-body pb-0">
-            <h5 className="card-title">Sugerencias para tí</h5>
+            <h5 className="card-title">Siguiendo</h5>
 
             {items.map((item, idx) => (
               <div
@@ -109,7 +109,7 @@ export default function Suggestions() {
                   <div className="d-flex flex-column ms-2">
                     <span className="suggestions-players">{item.name}</span>
                     <small className="comment-text muted-color fs-12">
-                      {item.followyou ? "Te sigue" : "Sugerencia para tí"}
+                      Siguiendo
                     </small>
                   </div>
                 </div>
@@ -121,7 +121,7 @@ export default function Suggestions() {
                       followyou(item);
                     }}
                   >
-                    Seguir
+                    Dejar de Seguir
                   </a>
                 </div>
               </div>
@@ -129,7 +129,7 @@ export default function Suggestions() {
           </div>
           {pages > 1 && 
             <div className="suggestions-players py-2" style={{ textAlign: "center" }}>
-              <strong>Ver más sugerencias</strong>
+              <strong>Ver más</strong>
             </div>
           }
         </div> ) : (

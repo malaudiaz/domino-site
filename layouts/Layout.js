@@ -8,7 +8,7 @@ import Footer from "../components/Footers/Footer";
 import Breadcrumb from "../components/Breadcrumbs/Breadcrumbs";
 import BreadcrumbItem from "../components/Breadcrumbs/BreadcrumbItem";
 
-export default function Layout({ children, title }) {
+export default function Layout({ children }) {
   const router = useRouter();
   const [breadcrumbs, setBreadcrumbs] = useState();
 

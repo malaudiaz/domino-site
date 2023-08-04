@@ -9,7 +9,7 @@ export default function CreateProfile() {
   const [profileType, setProfileType] = useState(null);
 
   return (
-    <Layout title={"Profile"}>
+    <Layout>
       <Head>
         <link rel="shortcut icon" href="/smartdomino.ico" />
         <title>Crear Nuevo Pérfil</title>

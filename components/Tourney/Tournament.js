@@ -302,6 +302,7 @@ export default function Tournament({ open, setClose, record, event }) {
       </ModalBody>
       <ModalFooter className="modal-footer">
           <Button
+            className="btn-sm"
             style={{
               backgroundColor: "#0095f6",
               border: "none",
@@ -319,6 +320,7 @@ export default function Tournament({ open, setClose, record, event }) {
         </Button>
 
         <Button
+            className="btn-sm"
             style={{
               border: "none",
               fontSize: "14px",

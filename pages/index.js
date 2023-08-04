@@ -8,6 +8,7 @@ import Suggestions from "../components/Suggestions/Suggestions";
 import axios from "axios";
 import Swal from "sweetalert2";
 import ListProfile from "../components/Profile/List";
+import Following from "../components/Following/Following";
 
 export default function Page() {
 
@@ -81,6 +82,13 @@ export default function Page() {
                 <Suggestions />
               </div>
             </div>
+
+            <div className="row justify-content-center">
+              <div className="col-8">
+                <Following />
+              </div>
+            </div>
+
 
           </div>
         </div>

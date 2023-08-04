@@ -848,6 +848,7 @@ export default function Edit({
           color="primary"
           data-toggle="tooltip"
           title="Guardar Cambios"
+          className="btn-sm"
         >
           <i className="bi bi-check2-circle"></i> Guardar Cambios
         </Button>

@@ -94,7 +94,7 @@ export default function Events() {
         <title>{t.title}</title>
       </Head>
 
-        <div className="card" style={{border: "1px solid", borderColor: "#c7c7c7"}}>
+      <div className="card" style={{border: "1px solid", borderColor: "#c7c7c7"}}>
           <div className="row pt-3 px-4">
             <h1 style={{ fontSize: "24px", fontWeight: "600", color: "#012970" }}>
               Descubrir eventos
@@ -208,7 +208,7 @@ export default function Events() {
 
           </div>
 
-        </div>
+      </div>
 
     </EventLayout>
   );
