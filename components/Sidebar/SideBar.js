@@ -89,16 +89,16 @@ const Sidebar = () => {
         </li>
 
         <li className="nav-item">
-          <Link href={"/invitations"}>
+          <Link href={"/solicitude"}>
             <a
               className={
-                router.asPath === "/invitations"
+                router.asPath === "/solicitude"
                   ? "nav-link active"
                   : "nav-link collapsed"
               }
             >
-              <i className="bi bi-envelope"></i>
-              <span>Invitaciones</span>
+              <i class="bi bi-link-45deg" />              
+              <span>Solicitudes</span>
             </a>
           </Link>
         </li>
