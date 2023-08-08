@@ -157,15 +157,18 @@ export default function Profile() {
   }, [profile, reload]);
 
   const saveProfile = async () => {
-    let url = `${process.env.NEXT_PUBLIC_API_URL}profile/default/${record.id}?first_name=${record.first_name}&last_name=${record.last_name}&email=${record.email}&phone=${record.phone}&sex=${record.sex}&birthdate=${record.birthdate ? record.birthdate : ""}&alias=${record.alias}&job=${record.job}&city_id=${record.city_id}&receive_notifications=${record.receive_notifications}`;
+
+    let params = [];
+    let url = `${process.env.NEXT_PUBLIC_API_URL}profile/`;
 
     switch (profile.type) {
       case "SINGLE_PLAYER":
-        url = `${process.env.NEXT_PUBLIC_API_URL}profile/single/${record.id}?name=${record.name}&email=${record.email}&level=${record.level}&city_id=${record.city_id}&receive_notifications=${record.receive_notifications}`;
+        url = url + "single/" + record.id;
+        params = ["name", "email", "level", "city_id", "receive_notifications"];
         break;
       case "PAIR_PLAYER":
-
-        url = `${process.env.NEXT_PUBLIC_API_URL}profile/pair/${record.id}?name=${record.name}&email=${record.email}&level=${record.level}&city_id=${record.city_id}&receive_notifications=${record.receive_notifications}&other_profile_id=${record.lst_users.profile_id}`;
+        url = url + "pair/" + record.id;
+        params = ["name", "email", "level", "city_id", "receive_notifications"];
         break;
       case "TEAM_PLAYER":
         let team = "";
@@ -176,15 +179,36 @@ export default function Profile() {
             team = team + "," + record.lst_users[i].profile_id;
           }
         }
-        url = `${process.env.NEXT_PUBLIC_API_URL}profile/team/${record.id}?name=${record.name}&email=${record.email}&level=${record.level}&city_id=${record.city_id}&receive_notifications=${record.receive_notifications}&others_profile_id=${team}`;
+        url = url + "team/" + record.id;
+        params = ["name", "email", "level", "city_id", "receive_notifications"];
         break;
       case "REFEREE":
-        url = `${process.env.NEXT_PUBLIC_API_URL}profile/referee/${record.id}?name=${record.name}&email=${record.email}&level=${record.level}&city_id=${record.city_id}&receive_notifications=${record.receive_notifications}`;
+        url = url + "referee/" + record.id;
+        params = ["name", "email", "level", "city_id", "receive_notifications"];
         break;
       default:
+        url = url + "default/" + record.id;
+        params = ["first_name", "last_name", "email", "phone", "sex", "birthdate", "alias", "job", "city_id", "receive_notifications"];
         break;
     }
 
+    let signo = "?";
+    for (let i=0; i<params.length; i++) {
+      if (record[params[i]] !== "") {
+        url = url + signo + params[i] + "=" + record[params[i]];
+        signo = "&";
+      }
+    }
+
+    if (profile.type === "PAIR_PLAYER") {
+      if (record.lst_users.profile_id !== "") {
+        url = url + "&" + "other_profile_id=" + record.lst_users.profile_id;
+      }
+    } else if (profile.type === "TEAM_PLAYER") {
+      if (team !== "") {
+        url = url + "&" + "other_profile_id=" + team;
+      }
+    }
 
     const body = new FormData();
     body.append("image", record.file);

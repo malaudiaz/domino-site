@@ -97,7 +97,7 @@ const Sidebar = () => {
                   : "nav-link collapsed"
               }
             >
-              <i class="bi bi-link-45deg" />              
+              <i className="bi bi-link-45deg" />              
               <span>Solicitudes</span>
             </a>
           </Link>

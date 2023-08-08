@@ -73,20 +73,6 @@ const EventSideBar = () => {
           </ul>          
 
         </li>
-        <li className="nav-item">
-          <Link href={"#"}>
-            <a
-              className={
-                router.asPath === "/notifications"
-                  ? "nav-link active"
-                  : "nav-link collapsed"
-              }
-            >
-              <i className={"bi bi-bell"}></i>
-              <span>Notificaciones</span>
-            </a>
-          </Link>
-        </li>
 
         <li className="nav-item">
           <Link href={"/"}>

@@ -19,7 +19,7 @@ export default function Solicitude() {
     },
   };
 
-  const [invitations, setInvitations] = useState([]);
+  const [solicitude, setSolicitude] = useState([]);
   const [refresh, setRefresh] = useState(false);
 
   const fetchData = async () => {
@@ -29,7 +29,7 @@ export default function Solicitude() {
       const { data } = await axios.get(url, config);
       if (data.success) {
         setRefresh(false);
-        setInvitations(data.data);
+        setSolicitude(data.data);
       }
     } catch (errors) {
       console.log(errors);
@@ -105,9 +105,9 @@ export default function Solicitude() {
         </div>
 
         <div className="pt-4 px-4" style={{ display: "grid" }}>
-          {invitations.length > 0 ? (
+          {solicitude.length > 0 ? (
             <div className="container-events">
-              {invitations.map(
+              {solicitude.map(
                 (
                   {
                     owner_name,
@@ -183,7 +183,7 @@ export default function Solicitude() {
                   width="56"
                   height="46"
                   fill="#0d6efd"
-                  class="bi bi-link-45deg"
+                  className="bi bi-link-45deg"
                   viewBox="0 0 16 16"
                 >
                   <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z" />
