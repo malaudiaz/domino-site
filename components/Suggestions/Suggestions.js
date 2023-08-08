@@ -29,6 +29,7 @@ export default function Suggestions() {
         setItems(data.data);
         setPages(data.total_pages);
         setShow(data.data.length > 0);
+        setReload(false);
       }
     } catch (errors) {
       console.log(errors);
@@ -62,7 +63,7 @@ export default function Suggestions() {
         config
       );
       if (data.success) {
-        setReload(!reload);
+        setReload(true);
         Swal.fire({
           icon: "success",
           title: "Siguiendo",

@@ -50,7 +50,9 @@ export default function Page() {
   };
 
   useEffect(() => {
-    fetchData();
+    if (Object.entries(profile).length > 0) {
+      fetchData();
+    }
   }, [profile, refresh]);
 
   const t = i18n.home;

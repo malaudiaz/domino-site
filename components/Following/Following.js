@@ -29,6 +29,7 @@ export default function Following() {
         setItems(data.data);
         setPages(data.total_pages);
         setShow(data.data.length > 0);
+        setReload(false);
       }
     } catch (errors) {
       console.log(errors);
@@ -53,16 +54,16 @@ export default function Following() {
   }, [profile, reload]);
 
   const followyou = async (item) => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}profile/followers`;
+    
+    const url = `${process.env.NEXT_PUBLIC_API_URL}profile/followers/?profile_id=${profile.id}&profile_follower_id=${item.profile_id}`;
 
     try {
-      const { data } = await axios.post(
+      const { data } = await axios.delete(
         url,
-        { profile_id: profile.id, profile_follow_id: item.profile_id },
         config
       );
       if (data.success) {
-        setReload(!reload);
+        setReload(true);
         Swal.fire({
           icon: "success",
           title: "Siguiendo",
