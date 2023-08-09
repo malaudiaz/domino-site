@@ -1,14 +1,13 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import {useAppContext} from "../../../AppContext";
-import EventLayout from "../../../layouts/EventLayout";
+import { useAppContext } from "../../AppContext";
+import Layout from "../../layouts/Layout";
 import Head from "next/head";
-import { getSession } from "next-auth/react";
 import { Card, CardBody, CardFooter } from "reactstrap";
 import Image from "next/image";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { eventDate } from "../../../_functions";
+import { eventDate } from "../../_functions";
 
 export default function Invitations() {
   const {lang, token} = useAppContext();
@@ -113,16 +112,16 @@ export default function Invitations() {
   };
 
   return (
-    <EventLayout>
+    <Layout>
       <Head>
         <link rel="shortcut icon" href="/smartdomino.ico" />
-        <title>Asistiré</title>
+        <title>Invitaciones recibidas</title>
       </Head>
 
       <div className="card" style={{border: "1px solid", borderColor: "#c7c7c7"}}>
         <div className="row pt-3 px-4">
           <h1 style={{ fontSize: "24px", fontWeight: "600", color: "#012970" }}>
-            Invitaciones
+            Invitaciones Recibidas
           </h1>
         </div>
 
@@ -231,6 +230,6 @@ export default function Invitations() {
           )}
         </div>
       </div>
-    </EventLayout>
+    </Layout>
   );
 };

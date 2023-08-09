@@ -179,7 +179,6 @@ export default function Solicitude() {
             <div className="wrapper">
               <div style={{ textAlign: "center" }}>
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
                   width="56"
                   height="46"
                   fill="#0d6efd"

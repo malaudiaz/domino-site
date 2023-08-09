@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import {useAppContext} from "../../AppContext";
-import EventLayout from "../../layouts/EventLayout";
+import Layout from "../../layouts/Layout";
 import Head from "next/head";
 import { Card, CardBody } from "reactstrap";
 import { eventDate } from "../../_functions";
@@ -20,7 +20,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 
 export default function Events() {
-  const {profile, createProfile, lang, token, i18n} = useAppContext();
+  const {profile, lang, token, i18n} = useAppContext();
   const [events, setEvents] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [ubication, setUbication] = useState(false);
@@ -88,7 +88,7 @@ export default function Events() {
   };
 
   return (
-    <EventLayout>
+    <Layout>
       <Head>
         <link rel="shortcut icon" href="/smartdomino.ico" />
         <title>{t.title}</title>
@@ -188,7 +188,6 @@ export default function Events() {
             <div className="wrapper">
               <div style={{ textAlign: "center" }}>
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
                   width="56"
                   height="56"
                   fill="#0d6efd"
@@ -210,6 +209,6 @@ export default function Events() {
 
       </div>
 
-    </EventLayout>
+    </Layout>
   );
 }

@@ -63,8 +63,7 @@ export default function Register(props) {
     setValues({ ...values, [prop]: value });
   };
 
-  const handleRegisterUser = async (e) => {
-    e.preventDefault();
+  const handleRegisterUser = async () => {
     setLoading(true);
 
     setValidate({

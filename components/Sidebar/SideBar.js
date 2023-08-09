@@ -22,34 +22,34 @@ const Sidebar = () => {
             </a>
           </Link>
         </li>
+
         <li className="nav-item">
           <a
-            className="nav-link collapsed"
+            className="nav-link"
             data-bs-target="#MyProfile"
             data-bs-toggle="collapse"
           >
             <i className={"bi bi-person"}></i>
-            <span>Perfíl</span>
+            <span>Pérfíl</span>
             <i className="bi bi-chevron-down ms-auto"></i>
           </a>
 
           <ul
               id="MyProfile"
               className="nav-content"
-              data-bs-parent="#sidebar-nav"
           >
             <li>
                 <Link href={"/profile"}>
                     <a href="#">
                         <i className={"bi bi-person-vcard"}></i>
-                        <span>Mí Perfíl</span>
+                        <span>Mí Pérfíl</span>
                     </a>
                 </Link>
             </li>
 
             <li>
                 <Link href={"/profile/new"}>
-                    <a href="#">
+                    <a>
                         <i className="bi bi-person-plus"></i>
                         <span>Crear Perfíl</span>
                     </a>
@@ -57,22 +57,42 @@ const Sidebar = () => {
             </li>
 
           </ul>          
+        </li>
 
-        </li>
         <li className="nav-item">
-          <Link href={"/event"}>
-            <a
-              className={
-                router.asPath === "/event"
-                  ? "nav-link active"
-                  : "nav-link collapsed"
-              }
-            >
-              <i className={"bi bi-calendar3"}></i>
-              <span>Eventos</span>
-            </a>
-          </Link>
+          <a
+            className="nav-link"
+            data-bs-target="#Events"
+            data-bs-toggle="collapse"
+          >
+            <i className={"bi bi-calendar3"}></i>
+            <span>Eventos</span>
+            <i className="bi bi-chevron-down ms-auto"></i>
+          </a>
+
+          <ul
+              id="Events"
+              className="nav-content"
+          >
+            <li>
+              <Link href={"/event"}>
+                  <a>
+                    <i className="bi bi-calendar3-week"></i>
+                    <span>Descubrir Eventos</span>
+                  </a>
+              </Link>
+            </li>
+            <li>
+              <Link href={"/event/own"}>
+                <a>
+                  <i className={"bi bi-calendar2-heart"}></i>
+                  <span>Mís Eventos</span>
+                </a>
+              </Link>
+            </li>
+          </ul>          
         </li>
+
         <li className="nav-item">
           <Link href={"/tourney"}>
             <a
@@ -99,6 +119,21 @@ const Sidebar = () => {
             >
               <i className="bi bi-link-45deg" />              
               <span>Solicitudes</span>
+            </a>
+          </Link>
+        </li>
+
+        <li className="nav-item">
+          <Link href={"/invitations"}>
+            <a
+              className={
+                router.asPath === "/invitations"
+                  ? "nav-link active"
+                  : "nav-link collapsed"
+              }
+            >
+              <i className="bi bi-link-45deg" />              
+              <span>Invitaciones</span>
             </a>
           </Link>
         </li>

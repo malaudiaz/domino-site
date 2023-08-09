@@ -81,13 +81,13 @@ export default function Page() {
 
             <div className="row justify-content-center">
               <div className="col-8">
-                <Suggestions />
+                <Suggestions refresh={refresh} setRefresh={setRefresh}/>
               </div>
             </div>
 
             <div className="row justify-content-center">
               <div className="col-8">
-                <Following />
+                <Following refresh={refresh} setRefresh={setRefresh}/>
               </div>
             </div>
 

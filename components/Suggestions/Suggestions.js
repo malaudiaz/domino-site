@@ -4,7 +4,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import Image from "next/image";
 
-export default function Suggestions() {
+export default function Suggestions({refresh, setRefresh}) {
   const { profile, lang, token } = useAppContext();
   const [items, setItems] = useState([]);
   const [reload, setReload] = useState(false);
@@ -51,7 +51,7 @@ export default function Suggestions() {
     if (Object.entries(profile).length > 0) {
       fetchData();
     }
-  }, [profile, reload]);
+  }, [profile, reload, refresh]);
 
   const followyou = async (item) => {
     const url = `${process.env.NEXT_PUBLIC_API_URL}profile/followers`;
@@ -64,6 +64,7 @@ export default function Suggestions() {
       );
       if (data.success) {
         setReload(true);
+        setRefresh(true);
         Swal.fire({
           icon: "success",
           title: "Siguiendo",

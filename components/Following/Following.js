@@ -4,7 +4,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import Image from "next/image";
 
-export default function Following() {
+export default function Following({refresh, setRefresh}) {
   const { profile, lang, token } = useAppContext();
   const [items, setItems] = useState([]);
   const [reload, setReload] = useState(false);
@@ -51,7 +51,7 @@ export default function Following() {
     if (Object.entries(profile).length > 0) {
       fetchData();
     }
-  }, [profile, reload]);
+  }, [profile, reload, refresh]);
 
   const followyou = async (item) => {
     
@@ -63,6 +63,7 @@ export default function Following() {
         config
       );
       if (data.success) {
+        setRefresh(true);
         setReload(true);
         Swal.fire({
           icon: "success",

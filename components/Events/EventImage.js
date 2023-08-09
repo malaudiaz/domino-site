@@ -46,7 +46,6 @@ export default function EventImage({
           <>
             <div className="img-svg">
               <svg
-                xmlns="http://www.w3.org/2000/svg"
                 width="56"
                 height="56"
                 fill="#e2e5ec"

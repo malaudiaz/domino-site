@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from 'next/router';
-import EventLayout from "../../../layouts/EventLayout";
+import Layout from "../../../layouts/Layout";
 import {useAppContext} from "../../../AppContext";
 import Head from "next/head";
 import axios from "axios";
@@ -136,7 +136,7 @@ export default function Own({ session }) {
   };
 
   return (
-    <EventLayout>
+    <Layout>
       <Head>
         <link rel="shortcut icon" href="/smartdomino.ico" />
         <title>Eventos que has organizado</title>
@@ -233,7 +233,6 @@ export default function Own({ session }) {
                 <div className="wrapper">
                   <div style={{ textAlign: "center" }}>
                     <svg
-                      xmlns="http://www.w3.org/2000/svg"
                       width="56"
                       height="56"
                       fill="#0d6efd"
@@ -259,6 +258,6 @@ export default function Own({ session }) {
         record={record}
         setRefresh={setRefresh}
       />
-    </EventLayout>
+    </Layout>
   );
 };
