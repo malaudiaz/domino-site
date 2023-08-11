@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 import { eventDate } from "../../_functions";
 
 export default function Invitations() {
-  const {lang, token} = useAppContext();
+  const {profile, lang, token} = useAppContext();
 
   const ctxMenu = [];
   const [events, setEvents] = useState([]);
@@ -29,7 +29,7 @@ export default function Invitations() {
   const fetchData = async () => {
     const url = `${
       process.env.NEXT_PUBLIC_API_URL
-    }invitation?status_name=${status}`;
+    }invitation?profile_id=${profile.id}&status_name=${status}`;
 
     try {
       const { data } = await axios.get(url, config);
@@ -63,7 +63,9 @@ export default function Invitations() {
   };
 
   useEffect(() => {
-    fetchData();
+    if (Object.entries(profile).length > 0) {
+      fetchData();
+    }
   }, [status, refresh]);
 
   const handlerInvitation = async (id, status) => {

@@ -95,6 +95,17 @@ const Header = () => {
               </li>
 
               <li>
+                <Link href="/">
+                  <a className="dropdown-item d-flex align-items-center">
+                    <i className="bi bi-house-door"></i>
+                    <span>Inicio</span>
+                  </a>
+                </Link>
+              </li>
+              <li>
+                <hr className="dropdown-divider" />
+              </li>
+              <li>
                 <Link href="/profile">
                   <a className="dropdown-item d-flex align-items-center">
                     <i className="bi bi-person-vcard"></i>
@@ -103,7 +114,7 @@ const Header = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/profile">
+                <Link href="/profile/new">
                   <a className="dropdown-item d-flex align-items-center">
                     <i className="bi bi-person-plus"></i>
                     <span>Crear Perfíl</span>
@@ -117,6 +128,14 @@ const Header = () => {
 
               <li>
                 <Link href="/event">
+                  <a className="dropdown-item d-flex align-items-center">
+                    <i className="bi bi-calendar3-week"></i>
+                    <span>Descubrir Eventos</span>
+                  </a>
+                </Link>
+              </li>
+              <li>
+                <Link href="/event/own">
                   <a className="dropdown-item d-flex align-items-center">
                     <i className="bi bi-calendar3"></i>
                     <span>Mis Eventos</span>

@@ -55,7 +55,7 @@ const Notifications = () => {
     };  
 
     useEffect(() => {
-      fetchData();
+      // fetchData();
     }, [profile]);
   
     
