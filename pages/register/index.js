@@ -24,7 +24,7 @@ import CountryComboBox from "../../components/Country/CountryComboBox";
 export default function Register(props) {
   const router = useRouter();
   const {lang, i18n} = useAppContext();
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const t = i18n.register;
 
   const [values, setValues] = useState({
@@ -32,7 +32,7 @@ export default function Register(props) {
     last_name: "",
     email: "",
     phone: "",
-    country: "1",
+    country: "",
     username: "",
     newpassword: "",
     confirmpassword: "",
@@ -63,8 +63,9 @@ export default function Register(props) {
     setValues({ ...values, [prop]: value });
   };
 
-  const handleRegisterUser = async () => {
-    setLoading(true);
+  const handleRegisterUser = async (e) => {
+    e.preventDefault();
+    // setLoading(true);
 
     setValidate({
       ...validate,
@@ -98,6 +99,7 @@ export default function Register(props) {
         headers: {
           "Content-Type": "application/json",
           "Accept": "application/json",
+          "accept-Language": lang
         },
       };
 
@@ -117,7 +119,7 @@ export default function Register(props) {
         );
 
         if (data.success) {
-          setLoading(false);
+          // setLoading(false);
           Swal.fire({
             icon: "success",
             title: "Registro",
@@ -126,9 +128,12 @@ export default function Register(props) {
           });
           router.push("/login");
         }
-      } catch ({ response }) {
+      } catch (errors) {
+        console.log(errors);
+        
+        const {response} = errors;
         const { detail } = response.data;
-        setLoading(false);
+        // setLoading(false);
         Swal.fire({
           icon: "error",
           title: "Registro",
