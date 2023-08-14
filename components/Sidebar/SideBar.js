@@ -94,21 +94,6 @@ const Sidebar = () => {
         </li>
 
         <li className="nav-item">
-          <Link href={"/tourney"}>
-            <a
-              className={
-                router.asPath === "/tourney"
-                  ? "nav-link active"
-                  : "nav-link collapsed"
-              }
-            >
-              <i className={"bi bi-trophy"}></i>
-              <span>Torneos</span>
-            </a>
-          </Link>
-        </li>
-
-        <li className="nav-item">
           <Link href={"/solicitude"}>
             <a
               className={
@@ -117,7 +102,7 @@ const Sidebar = () => {
                   : "nav-link collapsed"
               }
             >
-              <i className="bi bi-link-45deg" />              
+              <i className="bi bi-box-arrow-in-up-right" />              
               <span>Solicitudes</span>
             </a>
           </Link>
@@ -132,7 +117,7 @@ const Sidebar = () => {
                   : "nav-link collapsed"
               }
             >
-              <i className="bi bi-link-45deg" />              
+              <i className="bi bi-envelope" />              
               <span>Invitaciones</span>
             </a>
           </Link>

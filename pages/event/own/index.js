@@ -183,7 +183,6 @@ export default function Own({ session }) {
                       idx
                     ) => (
                       <Card style={{cursor: "pointer", borderRadius: "10px"}} key={idx}>
-
                         <div className="d-flex justify-content-between p-2">
                           <div className="d-flex flex-row align-items-center">
                             <div className="d-flex flex-column ms-2">
@@ -198,33 +197,34 @@ export default function Own({ session }) {
                             />
                           </div>
                         </div>
-                        <Image
-                          alt={summary}
-                          src={photo}
-                          width={400}
-                          height={400}
-                          quality={50}
-                          onClick={(e)=>{e.preventDefault(); handleClick(id)}}
-                          priority
-                          layout="intrinsic"
-                          style={{cursor: "pointer"}}
-                        />
-                        <CardBody>
-                          <div className="col-12 pt-2">
-                            <span><b>{eventDate(startDate, endDate)}</b></span>
-                          </div>
-                          <div className="col-12" style={{fontSize: "14px"}}>
-                            <span><b>{summary}</b></span>
-                          </div>
-                          <div className="col-12">
-                            <span><b>{campus+", "+city_name}</b></span>
-                          </div>
-                          {amount_people > 0 &&
+                        <div onClick={(e)=>{e.preventDefault(); handleClick(id)}}>
+                          <Image
+                            alt={summary}
+                            src={photo}
+                            width={400}
+                            height={400}
+                            quality={50}
+                            priority
+                            layout="intrinsic"
+                            style={{cursor: "pointer"}}
+                          />
+                          <CardBody>
                             <div className="col-12 pt-2">
-                              <span className="mb-2 text-muted">{amount_people === 1 ? amount_people + " persona asistira" : amount_people + " personas asistirán"}</span>
+                              <span><b>{eventDate(startDate, endDate)}</b></span>
                             </div>
-                          }
-                        </CardBody>
+                            <div className="col-12" style={{fontSize: "14px"}}>
+                              <span><b>{summary}</b></span>
+                            </div>
+                            <div className="col-12">
+                              <span><b>{campus+", "+city_name}</b></span>
+                            </div>
+                            {amount_people > 0 &&
+                              <div className="col-12 pt-2">
+                                <span className="mb-2 text-muted">{amount_people === 1 ? amount_people + " persona asistira" : amount_people + " personas asistirán"}</span>
+                              </div>
+                            }
+                          </CardBody>
+                        </div>
                       </Card>
                     )
                   )}

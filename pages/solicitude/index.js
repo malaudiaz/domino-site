@@ -122,13 +122,12 @@ export default function Solicitude() {
                   <Card style={{ borderRadius: "10px" }} key={idx}>
                     <CardHeader>
                       <h5>
-                        Invitación para formar{" "}
-                        {profile_type === "PAIR_PLAYER" ? "Pareja" : "Equipo"}
+                        Invitación
                       </h5>
                     </CardHeader>
                     <CardBody className="d-flex align-items-center pt-2">
                       <Image
-                        alt="Foto de Pérfil"
+                        alt="Foto del Evento"
                         src={photo}
                         width={60}
                         height={60}
@@ -185,10 +184,9 @@ export default function Solicitude() {
                   className="bi bi-link-45deg"
                   viewBox="0 0 16 16"
                 >
-                  <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z" />
-                  <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z" />
+                  <path d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5z" />
+                  <path d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0v-5z" />
                 </svg>
-
                 <div className="pt-4 fs-5">
                   Las solicitudes recibidas aparecerán aquí.
                 </div>

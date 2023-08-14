@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useAppContext } from "../../AppContext";
-import TourneyLayout from "../../layouts/TouneyLayout";
 import Tournament from "../../components/Tourney/Tournament";
 import Head from "next/head";
 import { Card, CardBody, CardFooter } from "reactstrap";
@@ -10,12 +9,15 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import Image from "next/image";
 import { eventDate } from "../../_functions";
+import Header from "../../components/Header/Header";
+import Footer from "../../components/Footers/Footer";
+import Link from "next/link";
 
 export default function Tourneys() {
   const {token, lang} = useAppContext();
   const router = useRouter();
 
-  const [events, setEvents] = useState({});
+  const [event, setEvent] = useState({});
   const [records, setRecords] = useState([]);
   const [record, setRecord] = useState({});
 
@@ -43,7 +45,7 @@ export default function Tourneys() {
     try {
       const { data } = await axios.get(url, config);
       if (data.success) {
-        setEvents(data.data);
+        setEvent(data.data);
         setRecords(data.data.tourney);
         setReload(false);        
       }
@@ -174,121 +176,182 @@ export default function Tourneys() {
   };
 
   return (
-    <TourneyLayout>
-      <Head>
-        <link rel="shortcut icon" href="/smartdomino.ico" />
-        <title>Torneos</title>
-      </Head>
-      <div
-        className="card"
-        style={{ border: "1px solid", borderColor: "#c7c7c7" }}
-      >
-        <div className="row pt-3 px-4">
-          <span style={{ color: "red" }}>
-            <b>{eventDate(events.startDate, events.endDate)}</b>
-          </span>
-        </div>
+    <>
+      <Header />
 
-        <div className="row pt-2 px-4">
-          <h1 style={{ fontSize: "24px", fontWeight: "600", color: "#012970" }}>
-            {events.name}
+      <aside id="sidebar" className="sidebar">
+        <div className="row">
+          <h1 style={{ fontSize: "20px", fontWeight: "600", color: "#012970" }}>
+            Evento
           </h1>
         </div>
 
-        <div className="row px-4" style={{ fontSize: "14px" }}>
-          <span className="mb-2 text-muted">
-            {events.campus}, {events.city_name}
-          </span>
-        </div>
+        <ul className="sidebar-nav" id="sidebar-nav">
 
-        <div className="row px-4">
-          <hr></hr>
-        </div>
-
-        <div
-          className="px-4 pb-2"
-          style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
-        >
-          <button
-            type="button"
-            className="btn btn-sm btn-primary"
-            onClick={(e) => {
-              e.preventDefault();
-              addTorney();
-            }}
-          >
-            <i className="bi bi-plus-circle"></i> Crear Torneo
-          </button>
-        </div>
-
-        <div className="pt-3 px-4" style={{ display: "grid" }}>
-          <div className="container-events">
-            {records.map(({ id, name, modality, summary, startDate }, idx) => (
-              <Card
-                style={{ cursor: "pointer", borderRadius: "10px" }}
-                key={idx}
-              >
-                <div className="d-flex justify-content-between p-2">
-                  <div className="d-flex flex-row align-items-center">
-                    <div className="d-flex flex-column ms-2">
-                      <span className="fw-bold">{name}</span>
-                    </div>
-                  </div>
-                  <div className="d-flex flex-row ellipsis align-items-center">
-                    <DropDownMenu
-                      idx={idx}
-                      items={ctxMenu}
-                      onMenuSelection={onMenuSelection}
-                    />
+          <li className="nav-item">
+            <Card
+              style={{
+                borderRadius: "10px",
+              }}
+            >
+              <div className="d-flex justify-content-between p-2">
+                <div className="d-flex flex-row align-items-center">
+                  <div className="d-flex flex-column ms-2">
+                    <span>
+                      {event.name}
+                    </span>
                   </div>
                 </div>
-                <Image
-                  alt="Tourney Image"
-                  // src={events.photo}
-                  src={"/Logo-V.png"}
-                  width={150}
-                  height={150}
-                  quality={50}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleClick(id);
-                  }}
-                  priority
-                  layout="intrinsic"
-                />
+              </div>
+              <Image
+                alt={""}
+                src={event.photo}
+                width={150}
+                height={150}
+                quality={80}
+                priority
+                layout="intrinsic"
+              />
+              <CardFooter style={{ textAlign: "center" }}>
+                <span className="mb-2 text-muted">
+                    <b>{eventDate(event.startDate, event.endDate)}</b>
+                </span>
+              </CardFooter>
+            </Card>
+          </li>
 
-                <CardBody>
-                  <div className="col-12 pt-4" style={{textAlign: "center"}}>
-                    <h6 className="mb-2 teviewxt-muted">{summary}</h6>
+          <li className="nav-item">
+              <a
+                className={
+                  router.asPath === "/"
+                    ? "nav-link active"
+                    : "nav-link collapsed"
+                }
+                onClick={() => router.back()}
+                style={{cursor: "pointer"}}
+              >
+                <i className={"bi bi-arrow-left"}></i>
+                <span>Salir</span>
+              </a>
+          </li>
+        </ul>
+      </aside>
+
+      <main id="main" className="main">
+
+        <Head>
+          <link rel="shortcut icon" href="/smartdomino.ico" />
+          <title>Torneos</title>
+        </Head>
+        <div
+          className="card"
+          style={{ border: "1px solid", borderColor: "#c7c7c7" }}
+        >
+          <div className="row pt-3 px-4">
+            <span style={{ color: "red" }}>
+              <b>{eventDate(event.startDate, event.endDate)}</b>
+            </span>
+          </div>
+
+          <div className="row pt-2 px-4">
+            <h1 style={{ fontSize: "24px", fontWeight: "600", color: "#012970" }}>
+              {event.name}
+            </h1>
+          </div>
+
+          <div className="row px-4" style={{ fontSize: "14px" }}>
+            <span className="mb-2 text-muted">
+              {event.campus}, {event.city_name}
+            </span>
+          </div>
+
+          <div className="row px-4">
+            <hr></hr>
+          </div>
+
+          <div
+            className="px-4 pb-2"
+            style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
+          >
+            <button
+              type="button"
+              className="btn btn-sm btn-primary"
+              onClick={(e) => {
+                e.preventDefault();
+                addTorney();
+              }}
+            >
+              <i className="bi bi-plus-circle"></i> Crear Torneo
+            </button>
+          </div>
+
+          <div className="pt-3 px-4" style={{ display: "grid" }}>
+            <div className="container-events">
+              {records.map(({ id, name, modality, summary, startDate }, idx) => (
+                <Card
+                  style={{ cursor: "pointer", borderRadius: "10px" }}
+                  key={idx}
+                >
+                  <div className="d-flex justify-content-between p-2">
+                    <div className="d-flex flex-row align-items-center">
+                      <div className="d-flex flex-column ms-2">
+                        <span className="fw-bold">{name}</span>
+                      </div>
+                    </div>
+                    <div className="d-flex flex-row ellipsis align-items-center">
+                      <DropDownMenu
+                        idx={idx}
+                        items={ctxMenu}
+                        onMenuSelection={onMenuSelection}
+                      />
+                    </div>
                   </div>
-                  <div className="col-12 pt-2">
-                    <span>Modalidad: </span>
-                    <b>{modality}</b>
-                  </div>
-                  <div className="col-12 pt-2">
-                    <span>Fecha: </span>
-                    <b>{eventDate(startDate, "")}</b>
-                  </div>
-                </CardBody>
-                <CardFooter style={{ textAlign: "center" }}>
-                  <button
-                    className="btn btn-primary btn-sm"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      sendInvitations(id);
-                    }}
-                  >
-                    <i className="bi bi-envelope"></i> Enviar Invitación
-                  </button>
-                </CardFooter>
-              </Card>
-            ))}
+                  <CardBody onClick={(e) => {e.preventDefault();handleClick(id);}}>
+                    <Image
+                      alt="Tourney Image"
+                      src={"/Logo-V.png"}
+                      width={350}
+                      height={150}
+                      quality={50}
+                      priority
+                      layout="intrinsic"
+                    />
+                    <div className="col-12 pt-4" style={{textAlign: "center"}}>
+                      <h6 className="mb-2 teviewxt-muted">{summary}</h6>
+                    </div>
+                    <div className="col-12 pt-2">
+                      <span>Modalidad: </span>
+                      <b>{modality}</b>
+                    </div>
+                    <div className="col-12 pt-2">
+                      <span>Fecha: </span>
+                      <b>{eventDate(startDate, "")}</b>
+                    </div>
+
+                  </CardBody>
+                  <CardFooter style={{ textAlign: "center" }}>
+                    <button
+                      className="btn btn-primary btn-sm"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        sendInvitations(id);
+                      }}
+                    >
+                      <i className="bi bi-envelope"></i> Enviar Invitación
+                    </button>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
 
-      <Tournament open={open} setClose={setClose} record={record} event={events} eventId={router.query.id}/>
+        <Tournament open={open} setClose={setClose} record={record} event={event} eventId={router.query.id}/>
 
-    </TourneyLayout>
+      </main>
+
+      <Footer/>
+
+    </>
   );
 }
