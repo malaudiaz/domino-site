@@ -1685,10 +1685,18 @@ h6 {
   cursor: pointer;
 }
 
+.accept-effect:hover {
+  color: green;
+  font-weight: 500;
+  cursor: pointer;
+  transform: scale(1.05);
+}
+
 .trash-effect:hover {
   color: red;
   font-weight: 500;
   cursor: pointer;
+  transform: scale(1.05);
 }
 
 .gamer-couple {

@@ -777,9 +777,7 @@ export default function Edit({
                   <AccordionItem>
                     <AccordionHeader targetId="2">Equipo</AccordionHeader>
                     <AccordionBody accordionId="2">
-
-
-                    <div className="row container-team p-4">
+                      <div className="row container-team p-4">
 
                       {record.lst_users.map((item, idx)=>(
 
@@ -823,8 +821,6 @@ export default function Edit({
 
 
                       </div>
-
-
                     </AccordionBody>
                   </AccordionItem>
                 </Accordion>
