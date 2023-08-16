@@ -63,17 +63,17 @@ export default function Response({tourneyId, menu}) {
         fetchData();
     };
 
-    const approbePlayer = async(id, value) => {
-        const url = `${process.env.NEXT_PUBLIC_API_URL}invitation/${id}`;
+    const approbePlayer = async(id) => {
+        const url = `${process.env.NEXT_PUBLIC_API_URL}player/${id}`;
     
         try {
-          const { data } = await axios.put(url, {"accept": value}, config);
+          const { data } = await axios.put(url, config);
           if (data.success) {
             setRefresh(true);
             Swal.fire({
                 icon: "success",
-                title: value ? "Aceptar Jugadores" : "Rechazar Jugadores",
-                text: value ? "El jugador, ahora forma parte de este torneo" : "Este jugador ha sido rechazado, no será parte de esté torneo",
+                title: "Aceptar Jugadores",
+                text: "El jugador, ahora forma parte de este torneo",
                 showConfirmButton: true,
             });      
           }
@@ -82,7 +82,7 @@ export default function Response({tourneyId, menu}) {
           const { response } = errors;
           const { detail } = response.data;
           Swal.fire({
-            title: "Cargando Invitaciones",
+            title: "Torneo/Jugadores",
             text: detail,
             icon: "error",
             showCancelButton: false,

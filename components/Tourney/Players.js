@@ -23,7 +23,7 @@ export default function Players({tourneyId, menu}) {
     };
 
     const fetchData = async () => {
-        const url = `${process.env.NEXT_PUBLIC_API_URL}invitation/tourney/?tourney_id=${tourneyId}&page=${page}&per_page=${rowsPerPage}`;
+        const url = `${process.env.NEXT_PUBLIC_API_URL}player?tourney_id=${tourneyId}&page=${page}&per_page=${rowsPerPage}`;
     
         try {
           const { data } = await axios.get(url, config);
