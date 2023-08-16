@@ -63,8 +63,8 @@ export default function Response({tourneyId, menu}) {
         fetchData();
     };
 
-    const approbePlayer = async(id) => {
-        const url = `${process.env.NEXT_PUBLIC_API_URL}player/${id}`;
+    const approbePlayer = async(id, value) => {
+        const url = value ? `${process.env.NEXT_PUBLIC_API_URL}player/confirmed/${id}` : `${process.env.NEXT_PUBLIC_API_URL}player/rejected/${id}`;
     
         try {
           const { data } = await axios.put(url, config);
@@ -107,45 +107,45 @@ export default function Response({tourneyId, menu}) {
                         className="d-flex flex-row justify-content-between icons align-items-center"
                         style={{ width: "98%" }}
                         >
-                        <Image
-                            alt=""
-                            src={item.photo}
-                            width={40}
-                            height={40}
-                            className="rounded-image"
-                        />
-                        <div className="d-flex flex-column flex-fill ms-2">
-                            <span className="gamer-couple">{item.name}</span>
-                            <small className="comment-text fs-12">
-                            {item.city_name + ", " + item.country}
-                            </small>
-                        </div>
-
-                        <div className="ps-4">
-                            <div
-                                className="rounded p-2 accept-effect"
-                                title="Aprobar jugador"
-                                onClick={(e) => {approbePlayer(item.id, true)}}
-                            >
-                            <i
-                                className="bi bi-person-check"
-                                style={{ fontSize: "24px" }}
-                            ></i>
+                            <Image
+                                alt="Photo Profile"
+                                src={item.photo}
+                                width={40}
+                                height={40}
+                                className="rounded-image"
+                            />
+                            <div className="d-flex flex-column flex-fill ms-2">
+                                <span className="gamer-couple">{item.name}</span>
+                                <small className="comment-text fs-12">
+                                {item.city_name + ", " + item.country}
+                                </small>
                             </div>
-                        </div>
 
-                        <div>
-                            <div
-                                className="rounded p-2 trash-effect"
-                                title="Rechazar jugador"
-                                onClick={(e) => {approbePlayer(item.id, false)}}
-                            >
-                            <i
-                                className="bi bi-person-dash"
-                                style={{ fontSize: "24px" }}
-                            ></i>
+                            <div className="ps-4">
+                                <div
+                                    className="rounded p-2 accept-effect"
+                                    title="Aprobar jugador"
+                                    onClick={(e) => {approbePlayer(item.id, true)}}
+                                >
+                                <i
+                                    className="bi bi-person-check"
+                                    style={{ fontSize: "24px" }}
+                                ></i>
+                                </div>
                             </div>
-                        </div>
+
+                            <div>
+                                <div
+                                    className="rounded p-2 trash-effect"
+                                    title="Rechazar jugador"
+                                    onClick={(e) => {approbePlayer(item.id, false)}}
+                                >
+                                <i
+                                    className="bi bi-person-dash"
+                                    style={{ fontSize: "24px" }}
+                                ></i>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 ))}
