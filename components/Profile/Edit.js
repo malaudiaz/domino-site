@@ -240,7 +240,8 @@ export default function Edit({
             </FormGroup>
           </Row>
         </Col>
-        {record.profile_type_name === "USER" ? (
+
+        {record.profile_type_name === "USER" && 
           <Col md={9}>
             <Row>
               <FormGroup row>
@@ -490,9 +491,198 @@ export default function Edit({
                 </FormGroup>
               </Col>
             </Row>
-          </Col>
-        ) : 
-          record.profile_type_name !== "TEAM_PLAYER" ? (
+          </Col>      
+        }
+        {record.profile_type_name === "TEAM_PLAYER" && 
+          <Col md={9}>
+            <Accordion open={open} toggle={toggle}>
+              <AccordionItem>
+                <AccordionHeader targetId="1">Información del Pérfil</AccordionHeader>
+                <AccordionBody accordionId="1">
+
+                  <Row>
+                    <FormGroup row>
+                      <Label size="sm" sm={2}>
+                        Nombre
+                      </Label>
+                      <Col sm={10}>
+                        <InputGroup size="sm">
+                          <Input
+                            type="text"
+                            name="name"
+                            id="name"
+                            placeholder="Nombre"
+                            invalid={validate.name === "error"}
+                            value={record.name}
+                            onChange={handleChange("name")}
+                            onKeyDown={(event) => {
+                              if (!/^[a-zA-Z.0-9_-\s]*$/.test(event.key)) {
+                                event.preventDefault();
+                              }
+                            }}
+                          />
+                          <FormFeedback>Por favor, teclee su nombre.</FormFeedback>
+                        </InputGroup>
+                      </Col>
+                    </FormGroup>
+                  </Row>
+
+                  <Row>
+                    <FormGroup row>
+                      <Label size="sm" sm={2}>
+                        Correo
+                      </Label>
+                      <Col sm={10}>
+                        <InputGroup size="sm">
+                          <Input
+                            type="email"
+                            name="email"
+                            id="email"
+                            placeholder="Correo"
+                            value={record.email}
+                            onChange={handleChange("email")}
+                            onKeyDown={(event) => {
+                              if (!/^[a-z_@\s0-9]*$/.test(event.key)) {
+                                event.preventDefault();
+                              }
+                            }}
+                          />
+                        </InputGroup>
+                      </Col>
+                    </FormGroup>
+                  </Row>
+
+                  <Row>
+                    <FormGroup row>
+                      <Label size="sm" sm={2}>
+                          Nivel
+                        </Label>
+                        <Col sm={10}>
+                          <InputGroup size="sm">
+                            <Level 
+                              name={"level"} 
+                              cmbText={"Seleccione su Nivel..."} 
+                              valueDefault={record.level}
+                              records={record.profile_type_name != "REFEREE" ? playerLevel : refereeLevel}
+                              onChange={handleChange("level")}
+                            />
+                          </InputGroup>
+                        </Col>
+                    </FormGroup>
+                  </Row>
+
+                  <Row>
+                    <FormGroup row>
+                      <Label size="sm" sm={2}>
+                        País
+                      </Label>
+                      <Col sm={10}>
+                        <InputGroup size="sm">
+                          <CountryComboBox
+                            name={"country_id"}
+                            cmbText="Seleccione..."
+                            valueDefault={record.country_id}
+                            onChange={handleChange("country_id")}
+                          />
+                        </InputGroup>
+                      </Col>
+                    </FormGroup>
+                  </Row>
+
+                  <Row>
+                    <FormGroup row>
+                      <Label size="sm" sm={2}>
+                        Ciudad
+                      </Label>
+                      <Col sm={10}>
+                        <InputGroup size="sm">
+                          <CityComboBox
+                            country_id={record.country_id}
+                            name="city"
+                            cmbText="Seleccione..."
+                            valueDefault={record.city_id}
+                            onChange={handleChange("city_id")}
+                          />
+                        </InputGroup>
+                      </Col>
+                    </FormGroup>
+                  </Row>
+
+                  <Row>
+                    <Col sm={2}></Col>
+                    <Col sm={10}>
+                      <FormGroup switch>
+                        <Input
+                          id="receive_notifications"
+                          name="receive_notifications"
+                          type="switch"
+                          checked={record.receive_notifications}
+                          onChange={handleChange("receive_notifications")}
+                        />
+                        <Label check>
+                          {profile.receive_notifications
+                            ? "Recibir Notificaciones"
+                            : "No Recibe Notificaciones"}
+                        </Label>
+                      </FormGroup>
+                    </Col>
+                  </Row>
+
+                </AccordionBody>
+              </AccordionItem>
+              <AccordionItem>
+                <AccordionHeader targetId="2">Equipo</AccordionHeader>
+                <AccordionBody accordionId="2">
+                  <div className="row container-team p-4">
+
+                  {record.lst_users.map((item, idx)=>(
+
+                    <div 
+                      key={idx} 
+                      className="d-flex align-items-center rounded p-2" 
+                      style={{height: "70px", background: "#ebebeb"}}>
+                      <div className="d-flex flex-row justify-content-between icons align-items-center" style={{width: "98%"}}>
+                        <Image
+                          alt=""
+                          src={item.photo}
+                          width={40}
+                          height={40}
+                          className="rounded-image"
+                        />
+                        <div className="d-flex flex-column flex-fill ms-2">
+                          <span className="gamer-couple">{item.name}</span>
+                          <small className="comment-text fs-12">{item.city_name}</small>
+                        </div>
+                        <div className="ps-4">
+                            {!item.is_principal ? ( 
+                              <div className="rounded p-2 trash-effect" onClick={(e)=>{handleRemove(e, item.profile_id)}}>
+                                <i className="bi bi-trash" style={{fontSize: "16px"}}></i>
+                              </div>
+                            ) : (
+                              <div className="rounded p-2 trash-effect">
+                                <i className="bi bi-star" style={{fontSize: "16px"}}></i>
+                              </div>
+                            )}
+                        </div>
+                      </div>
+                    </div>
+
+                  ))}
+
+                  <div className="d-flex justify-content-center rounded mb-3 hover-effect" onClick={handleAddPlayer} style={{height: "70px"}}>
+                      <div className="d-flex justify-content-center icons align-items-center">
+                        <i className="bi bi-person-plus" style={{fontSize: "32px"}}></i>
+                      </div>
+                  </div>
+
+
+                  </div>
+                </AccordionBody>
+              </AccordionItem>
+            </Accordion>
+          </Col>        
+        }
+        { (record.profile_type_name === "PAIR_PLAYER" ) && 
             <Col md={9}>
               <Row>
                 <FormGroup row>
@@ -565,18 +755,16 @@ export default function Edit({
                 </FormGroup>
               </Row>
 
-
               <Row>
                 <FormGroup row>
                   <Label size="sm" sm={2}>Pareja</Label>
                   <Col sm={10}>
                     <InputGroup size="sm">
-                      <FinderPlayer id={"twoPlayer"} changePlayer={selectPlayer}/>
+                      <FinderPlayer id={"twoPlayer"} changePlayer={selectPlayer} record={record}/>
                     </InputGroup>
                   </Col>
                 </FormGroup>
               </Row>
-
 
               <Row>
                 <FormGroup row>
@@ -635,199 +823,138 @@ export default function Edit({
                 </Col>
               </Row>
 
-            </Col>) : (
+            </Col>
+        }
+        { (record.profile_type_name === "SINGLE_PLAYER"|| record.profile_type_name === "REFEREE") &&
+            <Col md={9}>
+              <Row>
+                <FormGroup row>
+                  <Label size="sm" sm={2}>
+                    Nombre
+                  </Label>
+                  <Col sm={10}>
+                    <InputGroup size="sm">
+                      <Input
+                        type="text"
+                        name="name"
+                        id="name"
+                        placeholder="Nombre"
+                        invalid={validate.name === "error"}
+                        value={record.name}
+                        onChange={handleChange("name")}
+                        onKeyDown={(event) => {
+                          if (!/^[a-zA-Z.0-9_-\s]*$/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
+                      />
+                      <FormFeedback>Por favor, teclee su nombre.</FormFeedback>
+                    </InputGroup>
+                  </Col>
+                </FormGroup>
+              </Row>
 
-              <Col md={9}>
+              <Row>
+                <FormGroup row>
+                  <Label size="sm" sm={2}>
+                    Correo
+                  </Label>
+                  <Col sm={10}>
+                    <InputGroup size="sm">
+                      <Input
+                        type="email"
+                        name="email"
+                        id="email"
+                        placeholder="Correo"
+                        value={record.email}
+                        onChange={handleChange("email")}
+                        onKeyDown={(event) => {
+                          if (!/^[a-z_@\s0-9]*$/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
+                      />
+                    </InputGroup>
+                  </Col>
+                </FormGroup>
+              </Row>
 
-                <Accordion open={open} toggle={toggle}>
-                  <AccordionItem>
-                    <AccordionHeader targetId="1">Información del Pérfil</AccordionHeader>
-                    <AccordionBody accordionId="1">
+              <Row>
+                <FormGroup row>
+                  <Label size="sm" sm={2}>
+                      Nivel
+                    </Label>
+                    <Col sm={10}>
+                      <InputGroup size="sm">
+                        <Level 
+                          name={"level"} 
+                          cmbText={"Seleccione su Nivel..."} 
+                          valueDefault={record.level}
+                          records={record.profile_type_name != "REFEREE" ? playerLevel : refereeLevel}
+                          onChange={handleChange("level")}
+                        />
+                      </InputGroup>
+                    </Col>
+                </FormGroup>
+              </Row>
 
-                      <Row>
-                        <FormGroup row>
-                          <Label size="sm" sm={2}>
-                            Nombre
-                          </Label>
-                          <Col sm={10}>
-                            <InputGroup size="sm">
-                              <Input
-                                type="text"
-                                name="name"
-                                id="name"
-                                placeholder="Nombre"
-                                invalid={validate.name === "error"}
-                                value={record.name}
-                                onChange={handleChange("name")}
-                                onKeyDown={(event) => {
-                                  if (!/^[a-zA-Z.0-9_-\s]*$/.test(event.key)) {
-                                    event.preventDefault();
-                                  }
-                                }}
-                              />
-                              <FormFeedback>Por favor, teclee su nombre.</FormFeedback>
-                            </InputGroup>
-                          </Col>
-                        </FormGroup>
-                      </Row>
+              <Row>
+                <FormGroup row>
+                  <Label size="sm" sm={2}>
+                    País
+                  </Label>
+                  <Col sm={10}>
+                    <InputGroup size="sm">
+                      <CountryComboBox
+                        name={"country_id"}
+                        cmbText="Seleccione..."
+                        valueDefault={record.country_id}
+                        onChange={handleChange("country_id")}
+                      />
+                    </InputGroup>
+                  </Col>
+                </FormGroup>
+              </Row>
 
-                      <Row>
-                        <FormGroup row>
-                          <Label size="sm" sm={2}>
-                            Correo
-                          </Label>
-                          <Col sm={10}>
-                            <InputGroup size="sm">
-                              <Input
-                                type="email"
-                                name="email"
-                                id="email"
-                                placeholder="Correo"
-                                value={record.email}
-                                onChange={handleChange("email")}
-                                onKeyDown={(event) => {
-                                  if (!/^[a-z_@\s0-9]*$/.test(event.key)) {
-                                    event.preventDefault();
-                                  }
-                                }}
-                              />
-                            </InputGroup>
-                          </Col>
-                        </FormGroup>
-                      </Row>
+              <Row>
+                <FormGroup row>
+                  <Label size="sm" sm={2}>
+                    Ciudad
+                  </Label>
+                  <Col sm={10}>
+                    <InputGroup size="sm">
+                      <CityComboBox
+                        country_id={record.country_id}
+                        name="city"
+                        cmbText="Seleccione..."
+                        valueDefault={record.city_id}
+                        onChange={handleChange("city_id")}
+                      />
+                    </InputGroup>
+                  </Col>
+                </FormGroup>
+              </Row>
 
-                      <Row>
-                        <FormGroup row>
-                          <Label size="sm" sm={2}>
-                              Nivel
-                            </Label>
-                            <Col sm={10}>
-                              <InputGroup size="sm">
-                                <Level 
-                                  name={"level"} 
-                                  cmbText={"Seleccione su Nivel..."} 
-                                  valueDefault={record.level}
-                                  records={record.profile_type_name != "REFEREE" ? playerLevel : refereeLevel}
-                                  onChange={handleChange("level")}
-                                />
-                              </InputGroup>
-                            </Col>
-                        </FormGroup>
-                      </Row>
-
-                      <Row>
-                        <FormGroup row>
-                          <Label size="sm" sm={2}>
-                            País
-                          </Label>
-                          <Col sm={10}>
-                            <InputGroup size="sm">
-                              <CountryComboBox
-                                name={"country_id"}
-                                cmbText="Seleccione..."
-                                valueDefault={record.country_id}
-                                onChange={handleChange("country_id")}
-                              />
-                            </InputGroup>
-                          </Col>
-                        </FormGroup>
-                      </Row>
-
-                      <Row>
-                        <FormGroup row>
-                          <Label size="sm" sm={2}>
-                            Ciudad
-                          </Label>
-                          <Col sm={10}>
-                            <InputGroup size="sm">
-                              <CityComboBox
-                                country_id={record.country_id}
-                                name="city"
-                                cmbText="Seleccione..."
-                                valueDefault={record.city_id}
-                                onChange={handleChange("city_id")}
-                              />
-                            </InputGroup>
-                          </Col>
-                        </FormGroup>
-                      </Row>
-
-                      <Row>
-                        <Col sm={2}></Col>
-                        <Col sm={10}>
-                          <FormGroup switch>
-                            <Input
-                              id="receive_notifications"
-                              name="receive_notifications"
-                              type="switch"
-                              checked={record.receive_notifications}
-                              onChange={handleChange("receive_notifications")}
-                            />
-                            <Label check>
-                              {profile.receive_notifications
-                                ? "Recibir Notificaciones"
-                                : "No Recibe Notificaciones"}
-                            </Label>
-                          </FormGroup>
-                        </Col>
-                      </Row>
-
-                    </AccordionBody>
-                  </AccordionItem>
-                  <AccordionItem>
-                    <AccordionHeader targetId="2">Equipo</AccordionHeader>
-                    <AccordionBody accordionId="2">
-                      <div className="row container-team p-4">
-
-                      {record.lst_users.map((item, idx)=>(
-
-                        <div 
-                          key={idx} 
-                          className="d-flex align-items-center rounded p-2" 
-                          style={{height: "70px", background: "#ebebeb"}}>
-                          <div className="d-flex flex-row justify-content-between icons align-items-center" style={{width: "98%"}}>
-                            <Image
-                              alt=""
-                              src={item.photo}
-                              width={40}
-                              height={40}
-                              className="rounded-image"
-                            />
-                            <div className="d-flex flex-column flex-fill ms-2">
-                              <span className="gamer-couple">{item.name}</span>
-                              <small className="comment-text fs-12">{item.city_name}</small>
-                            </div>
-                            <div className="ps-4">
-                                {!item.is_principal ? ( 
-                                  <div className="rounded p-2 trash-effect" onClick={(e)=>{handleRemove(e, item.profile_id)}}>
-                                    <i className="bi bi-trash" style={{fontSize: "16px"}}></i>
-                                  </div>
-                                ) : (
-                                  <div className="rounded p-2 trash-effect">
-                                    <i className="bi bi-star" style={{fontSize: "16px"}}></i>
-                                  </div>
-                                )}
-                            </div>
-                          </div>
-                        </div>
-
-                      ))}
-
-                      <div className="d-flex justify-content-center rounded mb-3 hover-effect" onClick={handleAddPlayer} style={{height: "70px"}}>
-                          <div className="d-flex justify-content-center icons align-items-center">
-                            <i className="bi bi-person-plus" style={{fontSize: "32px"}}></i>
-                          </div>
-                      </div>
-
-
-                      </div>
-                    </AccordionBody>
-                  </AccordionItem>
-                </Accordion>
-
-              </Col>
-
-            )         
+              <Row>
+                <Col sm={2}></Col>
+                <Col sm={10}>
+                  <FormGroup switch>
+                    <Input
+                      id="receive_notifications"
+                      name="receive_notifications"
+                      type="switch"
+                      checked={record.receive_notifications}
+                      onChange={handleChange("receive_notifications")}
+                    />
+                    <Label check>
+                      {profile.receive_notifications
+                        ? "Recibir Notificaciones"
+                        : "No Recibe Notificaciones"}
+                    </Label>
+                  </FormGroup>
+                </Col>
+              </Row>
+            </Col>        
         }
       </Row>
 
@@ -836,7 +963,6 @@ export default function Edit({
         setClose={setIsOpenFindPlayer} 
         changePlayer={selectPlayer} 
       />
-
 
       <div className="text-center pt-4">
         <Button

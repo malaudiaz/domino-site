@@ -110,6 +110,7 @@ export default function Solicitude() {
               {solicitude.map(
                 (
                   {
+                    name,
                     owner_name,
                     photo,
                     owner_elo,
@@ -121,38 +122,45 @@ export default function Solicitude() {
                 ) => (
                   <Card style={{ borderRadius: "10px" }} key={idx}>
                     <CardHeader>
-                      <h5>
-                        Invitación
-                      </h5>
+                      {profile_type === "PAIR_PLAYER" && <h5>Solicitud para formar Pareja</h5>}
                     </CardHeader>
-                    <CardBody className="d-flex align-items-center pt-2">
-                      <Image
-                        alt="Foto del Evento"
-                        src={photo}
-                        width={60}
-                        height={60}
-                        priority
-                        layout="intrinsic"
-                      />
-                      <div
-                        className="d-flex flex-column"
-                        style={{
-                          paddingLeft: "10px",
-                          paddingRight: "10px",
-                          width: "100%",
-                        }}
-                      >
-                        <div className="d-flex flex-row">
-                          <span>Nombre: </span>
-                          <strong>{owner_name}</strong>
-                        </div>
-                        <div className="d-flex flex-row">
-                          <span>ELO: </span>
-                          <strong>{owner_elo}</strong>
-                        </div>
-                        <div className="d-flex flex-row">
-                          <span>Ranking: </span>
-                          <strong>{owner_ranking}</strong>
+                    <CardBody>
+                      <div className="d-flex flex-row pt-4">
+                        <span>Nombre: </span>
+                        <strong>{name}</strong>
+                      </div>
+
+                      <hr/>
+
+                      <div className="d-flex align-items-center pt-2">
+                        <Image
+                          alt="Foto del Evento"
+                          src={photo}
+                          width={60}
+                          height={60}
+                          priority
+                          layout="intrinsic"
+                        />
+                        <div
+                          className="d-flex flex-column"
+                          style={{
+                            paddingLeft: "10px",
+                            paddingRight: "10px",
+                            width: "100%",
+                          }}
+                        >
+                          <div className="d-flex flex-row">
+                            <span>Nombre: </span>
+                            <strong>{owner_name}</strong>
+                          </div>
+                          <div className="d-flex flex-row">
+                            <span>ELO: </span>
+                            <strong>{owner_elo}</strong>
+                          </div>
+                          <div className="d-flex flex-row">
+                            <span>Ranking: </span>
+                            <strong>{owner_ranking}</strong>
+                          </div>
                         </div>
                       </div>
                     </CardBody>

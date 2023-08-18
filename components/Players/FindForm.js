@@ -20,7 +20,7 @@ import {
     Button
 } from "reactstrap";
 
-export default function FindForm({isOpen, setClose, setPlayer, changePlayer}) {
+export default function FindForm({isOpen, setClose, setPlayer, changePlayer, profileType}) {
 
     const {profile, lang, token} = useAppContext();
     const [page, setPage] = useState(1);
@@ -48,9 +48,7 @@ export default function FindForm({isOpen, setClose, setPlayer, changePlayer}) {
     
       const findPlayer = async () => {
         if (filter.criteria_value != "") {
-          const url = `${
-            process.env.NEXT_PUBLIC_API_URL
-          }profile/single/?profile_id=${profile.id}page=${page}&per_page=${rowsPerPage}&criteria_key=${filter.criteria_key}&criteria_value=${filter.criteria_value}`;
+          const url = process.env.NEXT_PUBLIC_API_URL + "profile/single/?profile_id=" + profile.id + "&page=" + page + "&per_page=" + rowsPerPage + "&criteria_key=" + filter.criteria_key + "&criteria_value=" + filter.criteria_value;
     
           try {
             const { data } = await axios.get(url, config);

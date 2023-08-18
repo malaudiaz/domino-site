@@ -68,7 +68,7 @@ const Header = () => {
               data-bs-toggle="dropdown"
             >
               <Image
-                src={avatar ? avatar : "/profile/user-vector.jpg"}
+                src={profile.photo ? profile.photo : "/profile/user-vector.jpg"}
                 alt="Perfil"
                 width={50}
                 height={50}

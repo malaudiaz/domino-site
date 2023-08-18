@@ -11,6 +11,7 @@ export default function Players({tourneyId, menu}) {
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [total, setTotal] = useState(0);
+    const [refresh, setRefresh] = useState(false);
     const rowsPerPage = 10;
 
     const config = {
@@ -31,6 +32,7 @@ export default function Players({tourneyId, menu}) {
             setTotal(data.total);
             setTotalPages(data.total_pages);   
             setPlayers(data.data);
+            setRefresh(false);
           }
         } catch (errors) {
           console.log(errors);
@@ -52,12 +54,42 @@ export default function Players({tourneyId, menu}) {
         if (menu === 1) {
           fetchData();
         }
-    }, [menu]);
+    }, [menu, refresh]);
 
     const onChangePage = (pageNumber) => {
         setPage(pageNumber);
         fetchData();
     };
+
+    const removePlayer = async (id) => {
+        const url = `${process.env.NEXT_PUBLIC_API_URL}player/${id}`
+    
+        try {
+          const { data } = await axios.delete(url, config);
+          if (data.success) {
+            setRefresh(true);
+            Swal.fire({
+                icon: "success",
+                title: "Eliminar Jugador",
+                text: "El jugador, ahora deja de forma parte de este torneo",
+                showConfirmButton: true,
+            });      
+          }
+        } catch (errors) {
+          console.log(errors);
+          const { response } = errors;
+          const { detail } = response.data;
+          Swal.fire({
+            title: "Eliminar Jugador",
+            text: detail,
+            icon: "error",
+            showCancelButton: false,
+            allowOutsideClick: false,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Aceptar",
+          });
+        }
+    }    
 
     return (
         <div className="pt-3 px-4 pb-4" style={{ display: "grid" }}>
@@ -66,12 +98,12 @@ export default function Players({tourneyId, menu}) {
                 {players.map((item, idx) => (
                     <div
                         key={idx}
-                        className="d-flex align-items-center rounded p-2"
-                        style={{ height: "70px", background: "#ebebeb" }}
+                        className="align-items-center rounded p-2"
+                        style={{ height: "90px", background: "#ebebeb" }}
                     >
                         <div
-                        className="d-flex flex-row justify-content-between icons align-items-center"
-                        style={{ width: "98%" }}
+                            className="d-flex flex-row justify-content-between icons align-items-center"
+                            style={{ width: "98%" }}
                         >
                             <Image
                                 alt="Photo Profile"
@@ -82,16 +114,14 @@ export default function Players({tourneyId, menu}) {
                             />
                             <div className="d-flex flex-column flex-fill ms-2">
                                 <span className="gamer-couple">{item.name}</span>
-                                <small className="comment-text fs-12">
-                                {item.city_name + ", " + item.country}
-                                </small>
+                                <small>{item.profile_type}. {item.city_name + ", " + item.country}</small>
                             </div>
 
                             <div>
                                 <div
                                 className="rounded p-2 trash-effect"
                                 title="Eliminar jugador"
-                                onClick={(e) => {}}
+                                onClick={(e) => {removePlayer(item.id)}}
                                 >
                                 <i
                                     className="bi bi-person-dash"
@@ -100,6 +130,13 @@ export default function Players({tourneyId, menu}) {
                                 </div>
                             </div>
                         </div>
+
+                        <div className="d-flex flex-row justify-content-between align-items-center px-2">
+                            <small className="comment-text fs-12">Nivel: <b>{item.level}</b></small>
+                            <small className="comment-text fs-12">ELO: <b>{item.elo}</b></small>
+                            <small className="comment-text fs-12">Ranking: <b>{item.ranking}</b></small>
+                        </div>
+
                     </div>
                 ))}
             </div>

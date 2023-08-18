@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import {
   InputGroup,
@@ -8,9 +8,18 @@ import {
 } from "reactstrap";
 import FindForm from "./FindForm";
 
-export default function FinderPlayer({ id, changePlayer }) {
+export default function FinderPlayer({ id, changePlayer, record }) {
+
   const [player, setPlayer] = useState("");
   const [openFinderPlayer, setOpenFinderPlayer] = useState(false);
+
+  useEffect(()=>{
+    if (Object.entries(record).length > 0) {
+      if (record.lst_users) {
+        setPlayer(record.lst_users.name);
+      }
+    }
+  })
 
   const onOpenFinder = () => {
     setOpenFinderPlayer(true);

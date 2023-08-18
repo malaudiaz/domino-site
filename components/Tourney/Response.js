@@ -67,7 +67,7 @@ export default function Response({tourneyId, menu}) {
         const url = value ? `${process.env.NEXT_PUBLIC_API_URL}player/confirmed/${id}` : `${process.env.NEXT_PUBLIC_API_URL}player/rejected/${id}`;
     
         try {
-          const { data } = await axios.put(url, config);
+          const { data } = await axios.post(url, {}, config);
           if (data.success) {
             setRefresh(true);
             Swal.fire({
@@ -100,12 +100,12 @@ export default function Response({tourneyId, menu}) {
                 {invitations.map((item, idx) => (
                     <div
                         key={idx}
-                        className="d-flex align-items-center rounded p-2"
-                        style={{ height: "70px", background: "#ebebeb" }}
+                        className="align-items-center rounded p-2"
+                        style={{ height: "90px", background: "#ebebeb" }}
                     >
                         <div
-                        className="d-flex flex-row justify-content-between icons align-items-center"
-                        style={{ width: "98%" }}
+                            className="d-flex flex-row justify-content-between icons align-items-center"
+                            style={{ width: "98%" }}
                         >
                             <Image
                                 alt="Photo Profile"
@@ -147,6 +147,13 @@ export default function Response({tourneyId, menu}) {
                                 </div>
                             </div>
                         </div>
+
+                        <div className="d-flex flex-row justify-content-between align-items-center px-2">
+                            <small className="comment-text fs-12">Nivel: <b>{item.level}</b></small>
+                            <small className="comment-text fs-12">ELO: <b>{item.elo}</b></small>
+                            <small className="comment-text fs-12">Ranking: <b>{item.ranking}</b></small>
+                        </div>
+
                     </div>
                 ))}
             </div>

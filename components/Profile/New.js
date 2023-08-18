@@ -225,6 +225,7 @@ export default function NewProfile({ profileType, setProfileType}) {
             {profileType === "PAIR_PLAYER" && <h5 className="card-sm-title">Jugador en Parejas</h5>}
             {profileType === "TEAM_PLAYER" && <h5 className="card-sm-title">Jugador de Equipo</h5>}
             {profileType === "REFEREE" && <h5 className="card-sm-title">Arbitro</h5>}
+            {profileType === "EVENTADMON" && <h5 className="card-sm-title">Administrador de Eventos</h5>}
             <hr />
             <Form onSubmit={handleSubmit} encType="multipart/form-data">
               <div className="container">
@@ -316,6 +317,19 @@ export default function NewProfile({ profileType, setProfileType}) {
                           </NavLink>
                         </NavItem>
                       }
+                      {profileType === "EVENTADMON" &&
+                        <NavItem>
+                          <NavLink
+                            href="#"
+                            className={classnames({ active: activeTab === "2" })}
+                            onClick={() => {
+                              toggleTab("2");
+                            }}
+                          >
+                            Colaboradores
+                          </NavLink>
+                        </NavItem>
+                      }
                     </Nav>
 
                     <TabContent activeTab={activeTab}>
@@ -371,20 +385,22 @@ export default function NewProfile({ profileType, setProfileType}) {
                             </FormGroup>
                           </Col>
 
-                          <Col className="col-12">
-                            <FormGroup>
-                              <Label>Nivel</Label>
-                              <InputGroup size="sm">
-                                <Level 
-                                  name={"level"} 
-                                  cmbText={"Seleccione su Nivel..."} 
-                                  valueDefault={profile.level}
-                                  records={profileType != "REFEREE" ? playerLevel : refereeLevel}
-                                  onChange={handleChange("level")}
-                                />
-                              </InputGroup>
-                            </FormGroup>
-                          </Col>
+                          {profileType !== "EVENTADMON" && 
+                            <Col className="col-12">
+                              <FormGroup>
+                                <Label>Nivel</Label>
+                                <InputGroup size="sm">
+                                  <Level 
+                                    name={"level"} 
+                                    cmbText={"Seleccione su Nivel..."} 
+                                    valueDefault={profile.level}
+                                    records={profileType != "REFEREE" ? playerLevel : refereeLevel}
+                                    onChange={handleChange("level")}
+                                  />
+                                </InputGroup>
+                              </FormGroup>
+                            </Col>
+                          }
 
                           {profileType=="PAIR_PLAYER" && 
                             <Col className="col-12">
@@ -412,22 +428,24 @@ export default function NewProfile({ profileType, setProfileType}) {
                             </FormGroup>
                           </Col>
 
-                          <Col sm={12}>
-                            <FormGroup switch>
-                              <Input
-                                id="receive_notifications"
-                                name="receive_notifications"
-                                type="switch"
-                                checked={profile.receive_notifications}
-                                onChange={handleChange("receive_notifications")}
-                              />
-                              <Label check>
-                                {profile.receive_notifications
-                                  ? "Recibir Notificaciones"
-                                  : "No Recibe Notificaciones"}
-                              </Label>
-                            </FormGroup>
-                          </Col>
+                          {profileType !== "EVENTADMON" && 
+                            <Col sm={12}>
+                              <FormGroup switch>
+                                <Input
+                                  id="receive_notifications"
+                                  name="receive_notifications"
+                                  type="switch"
+                                  checked={profile.receive_notifications}
+                                  onChange={handleChange("receive_notifications")}
+                                />
+                                <Label check>
+                                  {profile.receive_notifications
+                                    ? "Recibir Notificaciones"
+                                    : "No Recibe Notificaciones"}
+                                </Label>
+                              </FormGroup>
+                            </Col>
+                          }
 
                         </div>
 
@@ -469,7 +487,6 @@ export default function NewProfile({ profileType, setProfileType}) {
                               </div>
                           </div>
 
-
                         </div>
                       </TabPane>
                     </TabContent>
@@ -493,7 +510,8 @@ export default function NewProfile({ profileType, setProfileType}) {
           <FindForm 
             isOpen={isOpenFindPlayer} 
             setClose={setIsOpenFindPlayer} 
-            changePlayer={selectPlayer} 
+            changePlayer={selectPlayer}
+            profileType={profileType} 
           />
 
         </div>
