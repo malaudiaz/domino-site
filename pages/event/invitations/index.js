@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import {useAppContext} from "../../../AppContext";
-import EventLayout from "../../../layouts/EventLayout";
+import Layout from "../../../layouts/Layout";
 import Head from "next/head";
 import { getSession } from "next-auth/react";
 import { Card, CardBody, CardFooter } from "reactstrap";
@@ -113,7 +113,7 @@ export default function Invitations() {
   };
 
   return (
-    <EventLayout>
+    <Layout>
       <Head>
         <link rel="shortcut icon" href="/smartdomino.ico" />
         <title>Asistiré</title>
@@ -231,6 +231,6 @@ export default function Invitations() {
           )}
         </div>
       </div>
-    </EventLayout>
+    </Layout>
   );
 };

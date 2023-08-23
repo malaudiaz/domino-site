@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import EventLayout from "../../../layouts/EventLayout";
+import Layout from "../../../layouts/Layout";
 import Head from "next/head";
 import { Card, CardBody, CardFooter } from "reactstrap";
 import axios from "axios";
@@ -97,7 +97,7 @@ export default function View({ session }) {
 
 
   return (
-    <EventLayout session={session}>
+    <Layout session={session}>
       <Head>
         <link rel="shortcut icon" href="/smartdomino.ico" />
         <title>Evento</title>
@@ -174,7 +174,7 @@ export default function View({ session }) {
           </div>
 
       </div>
-    </EventLayout>
+    </Layout>
   );
 }
 

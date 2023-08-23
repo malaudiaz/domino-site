@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import {useAppContext} from "../../../AppContext";
-import EventLayout from "../../../layouts/EventLayout";
+import Layout from "../../../layouts/Layout";
 import Head from "next/head";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -64,7 +64,7 @@ export default function Attend() {
   };
 
   return (
-    <EventLayout>
+    <Layout>
       <Head>
         <link rel="shortcut icon" href="/smartdomino.ico" />
         <title>Asistiré</title>
@@ -148,6 +148,6 @@ export default function Attend() {
         )}
         </div>
       </div>
-    </EventLayout>
+    </Layout>
   );
 }
