@@ -87,6 +87,8 @@ export default function NewProfile({ profileType, setProfileType}) {
   },[players]);
 
   const saveProfile = async () => {
+    let team = "";
+
     let url = `${process.env.NEXT_PUBLIC_API_URL}profile/single?name=${profile.username}&email=${profile.email}&city_id=${profile.city_id}&receive_notifications=${profile.receive_notifications}`;
 
     switch (profileType) {
@@ -96,7 +98,6 @@ export default function NewProfile({ profileType, setProfileType}) {
         url = `${process.env.NEXT_PUBLIC_API_URL}profile/pair?name=${profile.username}&email=${profile.email}&level=${profile.level}&city_id=${profile.city_id}&receive_notifications=${profile.receive_notifications}&other_profile_id=${couple_profile_id}`;
         break;
       case "TEAM_PLAYER":
-        let team = "";
         for (let i=0; i<profile.players.length; i++) {
           if (i===0) {
             team = team + profile.players[i].profile_id;
@@ -109,7 +110,17 @@ export default function NewProfile({ profileType, setProfileType}) {
       case "REFEREE": 
         url = `${process.env.NEXT_PUBLIC_API_URL}profile/referee?name=${profile.username}&email=${profile.email}&level=${profile.level}&city_id=${profile.city_id}&receive_notifications=${profile.receive_notifications}`;
         break;
-    }
+      case "EVENTADMON":
+          for (let i=0; i<profile.players.length; i++) {
+            if (i===0) {
+              team = team + profile.players[i].profile_id;
+            } else {
+              team = team + "," + profile.players[i].profile_id;
+            }
+          }
+          url = `${process.env.NEXT_PUBLIC_API_URL}profile/eventadmon?name=${profile.username}&email=${profile.email}&city_id=${profile.city_id}&others_profile_id=${team}`;
+          break;
+      }
 
     const body = new FormData();
     body.append("image", profile.file);

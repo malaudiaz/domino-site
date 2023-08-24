@@ -825,7 +825,7 @@ export default function Edit({
 
             </Col>
         }
-        { (record.profile_type_name === "SINGLE_PLAYER"|| record.profile_type_name === "REFEREE") &&
+        { (record.profile_type_name === "SINGLE_PLAYER"|| record.profile_type_name === "REFEREE" || record.profile_type_name === "EVENTADMON") &&
             <Col md={9}>
               <Row>
                 <FormGroup row>
@@ -879,24 +879,26 @@ export default function Edit({
                 </FormGroup>
               </Row>
 
-              <Row>
-                <FormGroup row>
-                  <Label size="sm" sm={2}>
-                      Nivel
-                    </Label>
-                    <Col sm={10}>
-                      <InputGroup size="sm">
-                        <Level 
-                          name={"level"} 
-                          cmbText={"Seleccione su Nivel..."} 
-                          valueDefault={record.level}
-                          records={record.profile_type_name != "REFEREE" ? playerLevel : refereeLevel}
-                          onChange={handleChange("level")}
-                        />
-                      </InputGroup>
-                    </Col>
-                </FormGroup>
-              </Row>
+              {record.profile_type_name !== "EVENTADMON" &&
+                <Row>
+                  <FormGroup row>
+                    <Label size="sm" sm={2}>
+                        Nivel
+                      </Label>
+                      <Col sm={10}>
+                        <InputGroup size="sm">
+                          <Level 
+                            name={"level"} 
+                            cmbText={"Seleccione su Nivel..."} 
+                            valueDefault={record.level}
+                            records={record.profile_type_name != "REFEREE" ? playerLevel : refereeLevel}
+                            onChange={handleChange("level")}
+                          />
+                        </InputGroup>
+                      </Col>
+                  </FormGroup>
+                </Row>
+              }
 
               <Row>
                 <FormGroup row>
@@ -935,25 +937,27 @@ export default function Edit({
                 </FormGroup>
               </Row>
 
-              <Row>
-                <Col sm={2}></Col>
-                <Col sm={10}>
-                  <FormGroup switch>
-                    <Input
-                      id="receive_notifications"
-                      name="receive_notifications"
-                      type="switch"
-                      checked={record.receive_notifications}
-                      onChange={handleChange("receive_notifications")}
-                    />
-                    <Label check>
-                      {profile.receive_notifications
-                        ? "Recibir Notificaciones"
-                        : "No Recibe Notificaciones"}
-                    </Label>
-                  </FormGroup>
-                </Col>
-              </Row>
+              {record.profile_type_name !== "EVENTADMON" &&
+                <Row>
+                  <Col sm={2}></Col>
+                  <Col sm={10}>
+                    <FormGroup switch>
+                      <Input
+                        id="receive_notifications"
+                        name="receive_notifications"
+                        type="switch"
+                        checked={record.receive_notifications}
+                        onChange={handleChange("receive_notifications")}
+                      />
+                      <Label check>
+                        {profile.receive_notifications
+                          ? "Recibir Notificaciones"
+                          : "No Recibe Notificaciones"}
+                      </Label>
+                    </FormGroup>
+                  </Col>
+                </Row>
+              }
             </Col>        
         }
       </Row>

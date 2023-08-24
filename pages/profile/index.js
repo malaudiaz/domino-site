@@ -95,6 +95,10 @@ export default function Profile() {
           url = `${process.env.NEXT_PUBLIC_API_URL}profile/referee/${profile.id}`;
           setTile("Arbitro");
           break;
+        case "EVENTADMON":
+            url = `${process.env.NEXT_PUBLIC_API_URL}profile/eventadmon/${profile.id}`;
+            setTile("Administrador de Eventos");
+            break;
         default:
           break;
       }
@@ -160,6 +164,7 @@ export default function Profile() {
 
     let params = [];
     let url = `${process.env.NEXT_PUBLIC_API_URL}profile/`;
+    let team = "";
 
     switch (profile.type) {
       case "SINGLE_PLAYER":
@@ -171,7 +176,6 @@ export default function Profile() {
         params = ["name", "email", "level", "city_id", "receive_notifications"];
         break;
       case "TEAM_PLAYER":
-        let team = "";
         for (let i=0; i<record.lst_users.length; i++) {
           if (i===0) {
             team = team + record.lst_users[i].profile_id;
@@ -186,6 +190,17 @@ export default function Profile() {
         url = url + "referee/" + record.id;
         params = ["name", "email", "level", "city_id", "receive_notifications"];
         break;
+      case "EVENTADMON":
+          for (let i=0; i<record.lst_users.length; i++) {
+            if (i===0) {
+              team = team + record.lst_users[i].profile_id;
+            } else {
+              team = team + "," + record.lst_users[i].profile_id;
+            }
+          }
+          url = url + "eventadmon/" + record.id;
+          params = ["name", "email", "city_id"];
+          break;
       default:
         url = url + "default/" + record.id;
         params = ["first_name", "last_name", "email", "phone", "sex", "birthdate", "alias", "job", "city_id", "receive_notifications"];
@@ -204,7 +219,7 @@ export default function Profile() {
       if (record.lst_users.profile_id !== "") {
         url = url + "&" + "other_profile_id=" + record.lst_users.profile_id;
       }
-    } else if (profile.type === "TEAM_PLAYER") {
+    } else if (profile.type === "TEAM_PLAYER" || profile.type === "EVENTADMON") {
       if (team !== "") {
         url = url + "&" + "other_profile_id=" + team;
       }
