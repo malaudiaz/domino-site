@@ -40,6 +40,11 @@ export default function Setting({ tourneyId, menu }) {
       error:false,
       errorMessage:'Cantidad de mesas a bonificar requerida'
     },
+    amountBonusPoint:{
+      value:0,
+      error:false,
+      errorMessage:'Cantidad de puntos a bonificar requerida'
+    },
     roundBonus:{
       value:0,
       error:false,
@@ -138,7 +143,7 @@ export default function Setting({ tourneyId, menu }) {
 
     if (!formValues.smartTable.error) {
 
-      const url = `${process.env.NEXT_PUBLIC_API_URL}tourney/setting/${profile.id}?id=${tourneyId}&amount_tables=${formValues.amountTable.value}&amount_smart_tables=${formValues.smartTable.value}&amount_bonus_tables=${formValues.amountBonus.value}&amount_bonus_points=${1}&number_bonus_round=${formValues.roundBonus.value}&amount_rounds=${formValues.amountRound.value}&number_points_to_win=${formValues.pointRound.value}&time_to_win=${formValues.timeRound.value}&game_system=${formValues.playSystem.value}`;
+      const url = `${process.env.NEXT_PUBLIC_API_URL}tourney/setting/${profile.id}?id=${tourneyId}&amount_tables=${formValues.amountTable.value}&amount_smart_tables=${formValues.smartTable.value}&amount_bonus_tables=${formValues.amountBonus.value}&amount_bonus_points=${formValues.amountBonusPoint.value}&number_bonus_round=${formValues.roundBonus.value}&amount_rounds=${formValues.amountRound.value}&number_points_to_win=${formValues.pointRound.value}&time_to_win=${formValues.timeRound.value}&game_system=${formValues.playSystem.value}`;
 
       const body = new FormData();
       body.append("image", file);
@@ -308,6 +313,25 @@ export default function Setting({ tourneyId, menu }) {
                   </InputGroup>
                 </Col>
               </FormGroup>
+
+              <FormGroup row className="ps-4 pe-4">
+                <Label size="sm" sm={3}>
+                  Cantidad de Puntos a Bonificar
+                </Label>
+                <Col sm={3}>
+                  <InputGroup size="sm">
+                    <Input 
+                      type="text" 
+                      name="amountBonusPoint" 
+                      id="amountBonusPoint" 
+                      error={formValues.amountBonusPoint.error}                     
+                      value={formValues.amountBonusPoint.value}
+                      onChange={handleChange}
+                    />
+                  </InputGroup>
+                </Col>
+              </FormGroup>
+
 
               <FormGroup row className="ps-4 pe-4">
                 <Label size="sm" sm={3}>
