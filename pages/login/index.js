@@ -84,12 +84,12 @@ export default function Login() {
 
           router.push("/");
         }
-      } catch ({response}) {
-        console.log(response);
-        const { detail } = response.data;
+      } catch (error) {
+        console.log(error);
+        // const { detail } = response.data;
         Swal.fire({
           title: "Autentificar",
-          text: detail,
+          text: "dfddfsdfsd",
           icon: "error",
           showCancelButton: false,
           allowOutsideClick: false,

@@ -11,6 +11,7 @@ export default function Post({ posts, setRefresh }) {
   const {profile} = useAppContext();
 
   const [newPost, setNewPost] = useState(false);
+  
   const avatar = profile.photo;
 
   const ctxMenu = (user_id) => {
@@ -58,7 +59,7 @@ export default function Post({ posts, setRefresh }) {
       <div className="card">
         <div className="d-flex flex-row align-items-center p-3">
           <Image
-            alt=""
+            alt="Avatar"
             src={avatar}
             width={40}
             height={40}

@@ -67,8 +67,10 @@ export default function Events() {
   };
 
   useEffect(() => {
-    fetchData();
-  }, [refresh]);
+    if (Object.entries(profile).length > 0) {
+      fetchData();
+    }
+  }, [refresh, profile]);
 
   const t = i18n.events;
 

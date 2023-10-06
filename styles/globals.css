@@ -84,6 +84,12 @@ h6 {
   color: #012970;
 }
 
+.title {
+  font-size: 24px;
+  font-weight: 800;
+  color: #012970;
+}
+
 /*--------------------------------------------------------------
 # Override some default Bootstrap stylings
 --------------------------------------------------------------*/
@@ -1712,4 +1718,35 @@ h6 {
 
 .player-link:hover {
   color: blue;
+}
+
+.tourney-setting {
+  display: flex;
+  gap: 20px;
+  padding: 16px;
+}
+
+.tourney-setting .publicity-card {
+  padding-top: 10px;
+  padding-bottom: 4px;
+  text-align: center;
+  height: 250px;
+  width: 30%;
+}
+
+@media (max-width: 600px) {
+  .tourney-setting {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 16px;
+  }
+  .tourney-setting .publicity-card {
+    padding-top: 4px;
+    padding-bottom: 4px;
+    text-align: center;
+    height: 200px;
+    width: auto;
+  }  
 }

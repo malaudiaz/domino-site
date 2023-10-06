@@ -12,6 +12,7 @@ import Footer from "../../../components/Footers/Footer";
 import Response from "../../../components/Tourney/Response";
 import Players from "../../../components/Tourney/Players";
 import Tables from "../../../components/Tourney/Tables";
+import Setting from "../../../components/Tourney/Setting";
 
 export default function View() {
   const { token, lang } = useAppContext();
@@ -19,10 +20,10 @@ export default function View() {
   const router = useRouter();
   const [tourney, setToutney] = useState([]);
 
-  // const [invitations, setInvitations] = useState([]);
   const [players, setPlayers] = useState([]);
   const [tables, setTables] = useState([]);
 
+  const [disabled, setDisabled] = useState(false);
   const [menu, setMenu] = useState(0);
 
   const monthTourney = (startDate) => {
@@ -38,10 +39,10 @@ export default function View() {
   const config = {
     headers: {
       "Content-Type": "application/json",
-      Accept: "application/json",
+      "Accept": "application/json",
       "accept-Language": lang,
-      Authorization: `Bearer ${token}`,
-    },
+      "Authorization": `Bearer ${token}`,
+    }
   };
 
   const fetchData = async () => {
@@ -68,41 +69,31 @@ export default function View() {
     }
   };
 
-  // const fetchInvitations = async () => {
-  //   const url = `${process.env.NEXT_PUBLIC_API_URL}invitation/tourney/?tourney_id=${router.query.id}&status_name=ACCEPTED`;
-
-  //   try {
-  //     const { data } = await axios.get(url, config);
-  //     if (data.success) {
-  //       setInvitations(data.data);
-  //     }
-  //   } catch (errors) {
-  //     console.log(errors);
-  //     const { response } = errors;
-  //     const { detail } = response.data;
-  //     Swal.fire({
-  //       title: "Cargando Invitaciones",
-  //       text: detail,
-  //       icon: "error",
-  //       showCancelButton: false,
-  //       allowOutsideClick: false,
-  //       confirmButtonColor: "#3085d6",
-  //       confirmButtonText: "Aceptar",
-  //     });
-  //   }
-  // };
-
   useEffect(() => {
-    if (tourney.length === 0) {
+    if (router.query.id) {
       fetchData();
     }
-    // if (menu === 0) {
-    //   fetchInvitations();
-    // }
-  }, [menu]);
+  }, [menu, router.query.id]);
 
   const handleButton = (btn) => {
     setMenu(btn);
+  };
+
+  const playButton = () => {
+    Swal.fire({
+      title: "¿ Iniciar Torneo ?",
+      text: "Deseas iniciar esté torneo",
+      icon: "question",
+      showCancelButton: true,
+      cancelButtonText: "Cancelar",
+      allowOutsideClick: false,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Iniciar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setMenu(2);
+      }
+    });
   };
 
   return (
@@ -125,7 +116,7 @@ export default function View() {
               <div className="d-flex justify-content-between p-2">
                 <div className="d-flex flex-row align-items-center">
                   <div className="d-flex flex-column ms-2">
-                    <span>{tourney.name}</span>
+                    {/* <span>{tourney.name}</span> */}
                   </div>
                 </div>
               </div>
@@ -140,7 +131,7 @@ export default function View() {
               />
               <CardFooter style={{ textAlign: "center" }}>
                 <span className="mb-2 text-muted">
-                  <b>{eventDate(tourney.startDate, "")}</b>
+                  {/* <b>{eventDate(tourney.startDate, "")}</b> */}
                 </span>
               </CardFooter>
             </Card>
@@ -170,6 +161,7 @@ export default function View() {
           className="card"
           style={{ border: "1px solid", borderColor: "#c7c7c7" }}
         >
+
           <div className="pt-2 px-4" style={{ display: "flex" }}>
             <Card
               className="my-2"
@@ -249,6 +241,7 @@ export default function View() {
           >
             <button
               type="button"
+              disabled={disabled}
               style={
                 menu === 0
                   ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
@@ -262,8 +255,10 @@ export default function View() {
             >
               <i className="bi bi-envelope-check"></i> Invitaciones Aceptadas
             </button>
+
             <button
               type="button"
+              disabled={disabled}
               style={
                 menu === 1
                   ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
@@ -278,26 +273,46 @@ export default function View() {
               <i className="bi bi-people"></i> Jugadores
             </button>
 
-            <button
-              type="button"
+            <button 
+              type="button" 
+              // disabled={disabled}
               style={
                 menu === 2
+                ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
+                : { background: "#e4e6eb" }
+              }
+              className="btn btn-sm"
+              onClick={(e)=>{
+                e.preventDefault();
+                handleButton(2);
+              }}
+            >
+              <i className="bi bi-collection-play"></i> Iniciar Torneo
+            </button>
+
+            <button
+              type="button"
+              disabled={!disabled}
+              style={
+                menu === 3
                   ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
                   : { background: "#e4e6eb" }
               }
               className="btn btn-sm"
               onClick={(e) => {
                 e.preventDefault();
-                handleButton(2);
+                handleButton(3);
               }}
             >
               <i className="bi bi-bounding-box"></i> Mesas
             </button>
+
           </div>
 
           {menu === 0 && <Response tourneyId={router.query.id} menu={menu}/>}
           {menu === 1 && <Players tourneyId={router.query.id} menu={menu}/>}
-          {menu === 2 && <Tables tourneyId={router.query.id} menu={menu}/>}
+          {menu === 2 && <Setting tourneyId={router.query.id} menu={menu}/>}
+          {menu === 3 && <Tables tourneyId={router.query.id} menu={menu}/>}
 
           
         </div>

@@ -12,7 +12,6 @@ const Header = () => {
   const {profile, i18n} = useAppContext();
 
   const t = i18n.header;
-  const avatar = profile.photo;
 
   const logOut = (e) => {
     e.preventDefault();

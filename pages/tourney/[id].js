@@ -66,7 +66,9 @@ export default function Tourneys() {
   };
 
   useEffect(() => {
-    fetchData();
+    if (router.query.id) {
+      fetchData();
+    }
   }, [reload, router.query.id]);
 
   const sendInvitations = async (torneyId) => {

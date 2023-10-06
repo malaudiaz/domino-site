@@ -62,60 +62,60 @@ export default function Tables({tourneyId, menu}) {
     return (
         <div className="pt-3 px-4 pb-4" style={{ display: "grid" }}>
             {tables.length > 0 ? (
-            <div className="container-events">               
-                {tables.map((item, idx) => (
-                    <div
-                        key={idx}
-                        className="d-flex align-items-center rounded p-2"
-                        style={{ height: "70px", background: "#ebebeb" }}
-                    >
+                <div className="container-events">               
+                    {tables.map((item, idx) => (
                         <div
-                        className="d-flex flex-row justify-content-between icons align-items-center"
-                        style={{ width: "98%" }}
+                            key={idx}
+                            className="d-flex align-items-center rounded p-2"
+                            style={{ height: "70px", background: "#ebebeb" }}
                         >
-                        <Image
-                            alt=""
-                            src={item.photo}
-                            width={40}
-                            height={40}
-                            className="rounded-image"
-                        />
-                        <div className="d-flex flex-column flex-fill ms-2">
-                            <span className="gamer-couple">{item.name}</span>
-                            <small className="comment-text fs-12">
-                            {item.city_name + ", " + item.country}
-                            </small>
-                        </div>
-
-                        <div className="ps-4">
                             <div
-                            className="rounded p-2 accept-effect"
-                            title="Aprobar jugador"
-                            onClick={(e) => {}}
+                            className="d-flex flex-row justify-content-between icons align-items-center"
+                            style={{ width: "98%" }}
                             >
-                            <i
-                                className="bi bi-person-check"
-                                style={{ fontSize: "24px" }}
-                            ></i>
+                            <Image
+                                alt=""
+                                src={item.photo}
+                                width={40}
+                                height={40}
+                                className="rounded-image"
+                            />
+                            <div className="d-flex flex-column flex-fill ms-2">
+                                <span className="gamer-couple">{item.name}</span>
+                                <small className="comment-text fs-12">
+                                {item.city_name + ", " + item.country}
+                                </small>
+                            </div>
+
+                            <div className="ps-4">
+                                <div
+                                className="rounded p-2 accept-effect"
+                                title="Aprobar jugador"
+                                onClick={(e) => {}}
+                                >
+                                <i
+                                    className="bi bi-person-check"
+                                    style={{ fontSize: "24px" }}
+                                ></i>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div
+                                className="rounded p-2 trash-effect"
+                                title="Rechazar jugador"
+                                onClick={(e) => {}}
+                                >
+                                <i
+                                    className="bi bi-person-dash"
+                                    style={{ fontSize: "24px" }}
+                                ></i>
+                                </div>
+                            </div>
                             </div>
                         </div>
-
-                        <div>
-                            <div
-                            className="rounded p-2 trash-effect"
-                            title="Rechazar jugador"
-                            onClick={(e) => {}}
-                            >
-                            <i
-                                className="bi bi-person-dash"
-                                style={{ fontSize: "24px" }}
-                            ></i>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-                ))}
-            </div>
+                    ))}
+                </div>
             ) : (
                 <div className="wrapper">
                     <div style={{ textAlign: "center" }}>

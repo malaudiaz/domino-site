@@ -11,7 +11,7 @@ import NewEvent from "../../../components/Events/Events";
 import Image from "next/image";
 import { eventDate } from "../../../_functions";
 
-export default function Own({ session }) {
+export default function Own() {
   const {profile, lang, token, i18n} = useAppContext();
   const router = useRouter();
 
@@ -71,8 +71,10 @@ export default function Own({ session }) {
   };
 
   useEffect(() => {
-    fetchData();
-  }, [refresh]);
+    if (Object.entries(profile).length > 0) {
+      fetchData();
+    }
+  }, [refresh, profile]);
 
   const t = i18n.events;
 
