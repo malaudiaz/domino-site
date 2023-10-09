@@ -66,7 +66,7 @@ export default function Setting({ tourneyId, menu }) {
       errorMessage:'Tiempo por Rondas requerida'
     },
     playSystem:{
-      value:1,
+      value:"SUIZO",
       error:false,
       errorMessage:'Sistema de Juego'
     },
@@ -137,6 +137,7 @@ export default function Setting({ tourneyId, menu }) {
     setFormValues({
       ...formValues,
       smartTable: {
+        ...formValues["smartTable"],
         error: smartTable.value === ""
       }
     })
@@ -414,7 +415,7 @@ export default function Setting({ tourneyId, menu }) {
                 <Col sm={3}>
                   <InputGroup size="sm">
 
-                    <select className="form-select form-select-sm" onChange={handleChange}>
+                    <select name="playSystem" id="playSystem" className="form-select form-select-sm" onChange={handleChange}>
                       <option value="SUIZO">Sistema Suizo</option>
                       <option value="TRADICIONAL">Sistema Tradicional</option>
                     </select>

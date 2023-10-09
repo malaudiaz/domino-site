@@ -55,12 +55,11 @@ export default function Response({tourneyId, menu}) {
         if (menu === 0) {
           fetchData();
         }
-    }, [menu, refresh]);
+    }, [menu, refresh, page]);
     
 
     const onChangePage = (pageNumber) => {
         setPage(pageNumber);
-        fetchData();
     };
 
     const approbePlayer = async(id, value) => {

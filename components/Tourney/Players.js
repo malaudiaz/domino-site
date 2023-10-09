@@ -54,11 +54,10 @@ export default function Players({tourneyId, menu}) {
         if (menu === 1) {
           fetchData();
         }
-    }, [menu, refresh]);
+    }, [menu, refresh, page]);
 
     const onChangePage = (pageNumber) => {
         setPage(pageNumber);
-        fetchData();
     };
 
     const removePlayer = async (id) => {
