@@ -145,6 +145,8 @@ export default function Setting({ tourneyId, menu }) {
 
       const url = `${process.env.NEXT_PUBLIC_API_URL}tourney/setting/${profile.id}?id=${tourneyId}&amount_tables=${formValues.amountTable.value}&amount_smart_tables=${formValues.smartTable.value}&amount_bonus_tables=${formValues.amountBonus.value}&amount_bonus_points=${formValues.amountBonusPoint.value}&number_bonus_round=${formValues.roundBonus.value}&amount_rounds=${formValues.amountRound.value}&number_points_to_win=${formValues.pointRound.value}&time_to_win=${formValues.timeRound.value}&game_system=${formValues.playSystem.value}`;
 
+      console.log(url);
+
       const body = new FormData();
       body.append("image", file);
 
@@ -413,8 +415,8 @@ export default function Setting({ tourneyId, menu }) {
                   <InputGroup size="sm">
 
                     <select className="form-select form-select-sm" onChange={handleChange}>
-                      <option value="1">Sistema Suizo</option>
-                      <option value="2">Sistema Tradicional</option>
+                      <option value="SUIZO">Sistema Suizo</option>
+                      <option value="TRADICIONAL">Sistema Tradicional</option>
                     </select>
 
                   </InputGroup>
