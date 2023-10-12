@@ -7,12 +7,12 @@ import Swal from "sweetalert2";
 import Image from "next/image";
 import { useAppContext } from "../../../AppContext";
 import Header from "../../../components/Header/Header";
-import { eventDate } from "../../../_functions";
 import Footer from "../../../components/Footers/Footer";
 import Response from "../../../components/Tourney/Response";
 import Players from "../../../components/Tourney/Players";
 import Tables from "../../../components/Tourney/Tables";
 import Setting from "../../../components/Tourney/Setting";
+import Lottery from "../../../components/Tourney/Lottery";
 
 export default function View() {
   const { token, lang } = useAppContext();
@@ -20,10 +20,8 @@ export default function View() {
   const router = useRouter();
   const [tourney, setToutney] = useState([]);
 
-  const [players, setPlayers] = useState([]);
-  const [tables, setTables] = useState([]);
-
   const [disabled, setDisabled] = useState(false);
+  const [lottery, setLottery] = useState("MANUAL");
   const [menu, setMenu] = useState(0);
 
   const monthTourney = (startDate) => {
@@ -287,12 +285,29 @@ export default function View() {
                 handleButton(2);
               }}
             >
-              <i className="bi bi-collection-play"></i> Iniciar Torneo
+              <i className="bi bi-gear"></i> Configurar Torneo
             </button>
 
             <button
               type="button"
-              disabled={!disabled}
+              // disabled={!disabled}
+              style={
+                menu === 3
+                  ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
+                  : { background: "#e4e6eb" }
+              }
+              className="btn btn-sm"
+              onClick={(e) => {
+                e.preventDefault();
+                handleButton(3);
+              }}
+            >
+              <i className="bi bi-card-checklist"></i> Sorteo
+            </button>
+
+            <button
+              type="button"
+              // disabled={!disabled}
               style={
                 menu === 3
                   ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
@@ -311,8 +326,9 @@ export default function View() {
 
           {menu === 0 && <Response tourneyId={router.query.id} menu={menu}/>}
           {menu === 1 && <Players tourneyId={router.query.id} menu={menu}/>}
-          {menu === 2 && <Setting tourneyId={router.query.id} menu={menu}/>}
-          {menu === 3 && <Tables tourneyId={router.query.id} menu={menu}/>}
+          {menu === 2 && <Setting tourneyId={router.query.id} menu={menu} setLottery={setLottery}/>}
+          {menu === 3 && <Lottery tourneyId={router.query.id} menu={menu} lottery={lottery}/>}
+          {menu === 4 && <Tables tourneyId={router.query.id} menu={menu}/>}
 
           
         </div>

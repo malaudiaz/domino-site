@@ -17,7 +17,7 @@ import {
   Button,
 } from "reactstrap";
 
-export default function Setting({ tourneyId, menu }) {
+export default function Setting({ tourneyId, menu, setLottery }) {
   const { profile, token, lang } = useAppContext();
 
   const [createObjectURL, setCreateObjectURL] = useState(null);
@@ -34,21 +34,6 @@ export default function Setting({ tourneyId, menu }) {
       value:0,
       error:false,
       errorMessage:'Cantidad de mesas inteligentes requerida'
-    },
-    amountBonus:{
-      value:0,
-      error:false,
-      errorMessage:'Cantidad de mesas a bonificar requerida'
-    },
-    amountBonusPoint:{
-      value:0,
-      error:false,
-      errorMessage:'Cantidad de puntos a bonificar requerida'
-    },
-    roundBonus:{
-      value:0,
-      error:false,
-      errorMessage:'Ronda a bonificar requerida'
     },
     amountRound:{
       value:0,
@@ -68,8 +53,23 @@ export default function Setting({ tourneyId, menu }) {
     playSystem:{
       value:"SUIZO",
       error:false,
-      errorMessage:'Sistema de Juego'
+      errorMessage:'Sistema de Juegoes requerido'
     },
+    lottery:{
+      value:"MANUAL",
+      error:false,
+      errorMessage:'Tipo de Sorteo es requerido'
+    },
+    bonus: {
+      value:"YES",
+      error:false,
+      errorMessage:"Seleccione si se usa o no la bonificación"
+    },
+    limitPenaltyPoints: {
+      value:0,
+      error:false,
+      errorMessage:"Límite de puntos por penalización es requerido"
+    }
   })    
 
   const config = {
@@ -96,19 +96,31 @@ export default function Setting({ tourneyId, menu }) {
           }
         })      
       }
-    } catch (errors) {
-      console.log(errors);
-      const { response } = errors;
-      const { detail } = response.data;
-      Swal.fire({
-        title: "Configurando Torneo",
-        text: detail,
-        icon: "error",
-        showCancelButton: false,
-        allowOutsideClick: false,
-        confirmButtonColor: "#3085d6",
-        confirmButtonText: "Aceptar",
-      });
+    } catch ({code, message, name, request}) {
+      if (code === "ERR_NETWORK") {
+        Swal.fire({
+          title: "Configurando Torneo",
+          text: "Error en su red, consulte a su proveedor de servicio",
+          icon: "error",
+          showCancelButton: false,
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Aceptar",
+        });
+      } else {
+        if (code === "ERR_BAD_REQUEST") {
+          const {detail} = JSON.parse(request.response)
+          Swal.fire({
+            title: "Configurando Torneo",
+            text: detail,
+            icon: "error",
+            showCancelButton: false,
+            allowOutsideClick: false,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Aceptar",
+          });  
+        }
+      }
     }
   };
 
@@ -144,9 +156,7 @@ export default function Setting({ tourneyId, menu }) {
 
     if (!formValues.smartTable.error) {
 
-      const url = `${process.env.NEXT_PUBLIC_API_URL}tourney/setting/${profile.id}?id=${tourneyId}&amount_tables=${formValues.amountTable.value}&amount_smart_tables=${formValues.smartTable.value}&amount_bonus_tables=${formValues.amountBonus.value}&amount_bonus_points=${formValues.amountBonusPoint.value}&number_bonus_round=${formValues.roundBonus.value}&amount_rounds=${formValues.amountRound.value}&number_points_to_win=${formValues.pointRound.value}&time_to_win=${formValues.timeRound.value}&game_system=${formValues.playSystem.value}`;
-
-      console.log(url);
+      const url = `${process.env.NEXT_PUBLIC_API_URL}tourney/setting/${profile.id}?id=${tourneyId}&amount_tables=${formValues.amountTable.value}&amount_smart_tables=${formValues.smartTable.value}&amount_rounds=${formValues.amountRound.value}&number_points_to_win=${formValues.pointRound.value}&time_to_win=${formValues.timeRound.value}&game_system=${formValues.playSystem.value}&lottery=${formValues.lottery.value}&bonus=${formValues.bonus.value}&limitPenaltyPoints=${formValues.limitPenaltyPoints.value}`;
 
       const body = new FormData();
       body.append("image", file);
@@ -159,6 +169,7 @@ export default function Setting({ tourneyId, menu }) {
           },
         });
         if (data.success) {
+          setLottery(formValues.lottery.value);
           Swal.fire({
             icon: "success",
             title: "Configurando Torneo",
@@ -167,6 +178,7 @@ export default function Setting({ tourneyId, menu }) {
           });
         }
       } catch (errors) {
+        setLottery("");
         console.log(errors);
 
         Swal.fire({
@@ -273,7 +285,6 @@ export default function Setting({ tourneyId, menu }) {
                       name="amountTtable"
                       id="amountTable"
                       value={formValues.amountTable.value}
-                      error={formValues.amountTable.error}                     
                       disabled
                     />
                   </InputGroup>
@@ -301,61 +312,6 @@ export default function Setting({ tourneyId, menu }) {
 
               <FormGroup row className="ps-4 pe-4">
                 <Label size="sm" sm={3}>
-                  Cantidad de Mesas a Bonificar
-                </Label>
-                <Col sm={3}>
-                  <InputGroup size="sm">
-                    <Input 
-                      type="text" 
-                      name="amountBonus" 
-                      id="amountBonus" 
-                      error={formValues.amountBonus.error}                     
-                      value={formValues.amountBonus.value}
-                      onChange={handleChange}
-                    />
-                  </InputGroup>
-                </Col>
-              </FormGroup>
-
-              <FormGroup row className="ps-4 pe-4">
-                <Label size="sm" sm={3}>
-                  Cantidad de Puntos a Bonificar
-                </Label>
-                <Col sm={3}>
-                  <InputGroup size="sm">
-                    <Input 
-                      type="text" 
-                      name="amountBonusPoint" 
-                      id="amountBonusPoint" 
-                      error={formValues.amountBonusPoint.error}                     
-                      value={formValues.amountBonusPoint.value}
-                      onChange={handleChange}
-                    />
-                  </InputGroup>
-                </Col>
-              </FormGroup>
-
-
-              <FormGroup row className="ps-4 pe-4">
-                <Label size="sm" sm={3}>
-                  Bonificar a partir de la Ronda
-                </Label>
-                <Col sm={3}>
-                  <InputGroup size="sm">
-                    <Input 
-                      type="text" 
-                      name="roundBonus" 
-                      id="roundBonus" 
-                      error={formValues.roundBonus.error}                     
-                      value={formValues.roundBonus.value}
-                      onChange={handleChange}
-                    />
-                  </InputGroup>
-                </Col>
-              </FormGroup>
-
-              <FormGroup row className="ps-4 pe-4">
-                <Label size="sm" sm={3}>
                   Cantidad de Rondas
                 </Label>
                 <Col sm={3}>
@@ -364,7 +320,7 @@ export default function Setting({ tourneyId, menu }) {
                       type="text" 
                       name="amountRound" 
                       id="amountRound" 
-                      error={formValues.amountRound.error}                     
+                      invalid={formValues.amountRound.error}                     
                       value={formValues.amountRound.value}
                       onChange={handleChange}
                     />
@@ -382,7 +338,7 @@ export default function Setting({ tourneyId, menu }) {
                       type="text" 
                       name="pointRound" 
                       id="pointRound" 
-                      error={formValues.pointRound.error}                     
+                      invalid={formValues.pointRound.error}                     
                       value={formValues.pointRound.value}
                       onChange={handleChange}
                     />
@@ -400,7 +356,7 @@ export default function Setting({ tourneyId, menu }) {
                       type="text" 
                       name="timeRound" 
                       id="timeRound" 
-                      error={formValues.timeRound.error}                     
+                      invalid={formValues.timeRound.error}                     
                       value={formValues.timeRound.value}
                       onChange={handleChange}
                     />
@@ -423,6 +379,60 @@ export default function Setting({ tourneyId, menu }) {
                   </InputGroup>
                 </Col>
               </FormGroup>
+
+              <FormGroup row className="ps-4 pe-4">
+                <Label size="sm" sm={3}>
+                  Tipo de Sorteo
+                </Label>
+                <Col sm={3}>
+                  <InputGroup size="sm">
+
+                    <select name="lottery" id="lottery" className="form-select form-select-sm" onChange={handleChange}>
+                      <option value="MANUAL">Manual</option>
+                      <option value="AUTOMATIC">Automático</option>
+                    </select>
+
+                  </InputGroup>
+                </Col>
+              </FormGroup>
+
+
+              <FormGroup row className="ps-4 pe-4">
+                <Label size="sm" sm={3}>
+                  Usar Bonificación
+                </Label>
+                <Col sm={3}>
+                  <InputGroup size="sm">
+
+                    <select name="bonus" id="bonus" className="form-select form-select-sm" onChange={handleChange}>
+                      <option value="YES">Sí</option>
+                      <option value="NO">No</option>
+                    </select>
+
+                  </InputGroup>
+                </Col>
+              </FormGroup>
+
+
+              <FormGroup row className="ps-4 pe-4">
+                <Label size="sm" sm={3}>
+                  Límite de Puntos por Penalización
+                </Label>
+                <Col sm={3}>
+                  <InputGroup size="sm">
+                    <Input 
+                      type="text" 
+                      name="limitPenaltyPoints" 
+                      id="limitPenaltyPoints" 
+                      invalid={formValues.limitPenaltyPoints.error}                     
+                      value={formValues.limitPenaltyPoints.value}
+                      onChange={handleChange}
+                    />
+                  </InputGroup>
+                </Col>
+              </FormGroup>
+
+
             </CardBody>
           </Card>
         </div>

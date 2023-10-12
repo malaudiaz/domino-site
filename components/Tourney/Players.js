@@ -12,7 +12,7 @@ export default function Players({tourneyId, menu}) {
     const [totalPages, setTotalPages] = useState(0);
     const [total, setTotal] = useState(0);
     const [refresh, setRefresh] = useState(false);
-    const rowsPerPage = 10;
+    const rowsPerPage = 12;
 
     const config = {
         headers: {
@@ -34,19 +34,31 @@ export default function Players({tourneyId, menu}) {
             setPlayers(data.data);
             setRefresh(false);
           }
-        } catch (errors) {
-          console.log(errors);
-          const { response } = errors;
-          const { detail } = response.data;
-          Swal.fire({
-            title: "Cargando Jugadores del Torneo",
-            text: detail,
-            icon: "error",
-            showCancelButton: false,
-            allowOutsideClick: false,
-            confirmButtonColor: "#3085d6",
-            confirmButtonText: "Aceptar",
-          });
+        } catch ({code, message, name, request}) {
+            if (code === "ERR_NETWORK") {
+              Swal.fire({
+                title: "Cargando Jugadores del Torneo",
+                text: "Error en su red, consulte a su proveedor de servicio",
+                icon: "error",
+                showCancelButton: false,
+                allowOutsideClick: false,
+                confirmButtonColor: "#3085d6",
+                confirmButtonText: "Aceptar",
+              });
+            } else {
+              if (code === "ERR_BAD_REQUEST") {
+                const {detail} = JSON.parse(request.response)
+                Swal.fire({
+                    title: "Cargando Jugadores del Torneo",
+                    text: detail,
+                    icon: "error",
+                    showCancelButton: false,
+                    allowOutsideClick: false,
+                    confirmButtonColor: "#3085d6",
+                    confirmButtonText: "Aceptar",
+                });  
+              }
+            }
         }
     };
 

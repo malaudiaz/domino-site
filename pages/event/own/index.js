@@ -54,19 +54,31 @@ export default function Own() {
         setRefresh(false);
         setEvents(data.data);
       }
-    } catch (errors) {
-      console.log(errors);
-      const { response } = errors;
-      const { detail } = response.data;
-      Swal.fire({
-        title: "Cargando Eventos",
-        text: detail,
-        icon: "error",
-        showCancelButton: false,
-        allowOutsideClick: false,
-        confirmButtonColor: "#3085d6",
-        confirmButtonText: "Aceptar",
-      });
+    } catch ({code, message, name, request}) {
+      if (code === "ERR_NETWORK") {
+        Swal.fire({
+          title: "Error en la Red",
+          text: "Error en su red, consulte a su proveedor de servicio",
+          icon: "error",
+          showCancelButton: false,
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Aceptar",
+        });
+      } else {
+        if (code === "ERR_BAD_REQUEST") {
+          const {detail} = JSON.parse(request.response)
+          Swal.fire({
+            title: "Autentificar",
+            text: detail,
+            icon: "error",
+            showCancelButton: false,
+            allowOutsideClick: false,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Aceptar",
+          });  
+        }
+      }
     }
   };
 

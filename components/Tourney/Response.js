@@ -13,7 +13,7 @@ export default function Response({tourneyId, menu}) {
     const [totalPages, setTotalPages] = useState(0);
     const [total, setTotal] = useState(0);
     const [refresh, setRefresh] = useState(false);
-    const rowsPerPage = 10;
+    const rowsPerPage = 12;
 
     const config = {
         headers: {
