@@ -17,7 +17,7 @@ import {
   Button,
 } from "reactstrap";
 
-export default function Setting({ tourneyId, menu, setLottery }) {
+export default function Setting({ tourneyId, menu, setting, lottery, setLottery }) {
   const { profile, token, lang } = useAppContext();
 
   const [createObjectURL, setCreateObjectURL] = useState(null);
@@ -26,47 +26,47 @@ export default function Setting({ tourneyId, menu, setLottery }) {
 
   const [formValues, setFormValues] = useState({
     amountTable:{
-      value:0,
+      value: setting.amount_tables,
       error:false,
       errorMessage:'Cantidad de Mesas requerida'
     },
     smartTable:{
-      value:0,
+      value:setting.amount_smart_tables,
       error:false,
       errorMessage:'Cantidad de mesas inteligentes requerida'
     },
     amountRound:{
-      value:0,
+      value:setting.amount_rounds,
       error:false,
       errorMessage:'Cantidad de Rondas requerida'
     },
     pointRound:{
-      value:0,
+      value:setting.number_points_to_win,
       error:false,
       errorMessage:'Puntos por Rondas requerida'
     },
     timeRound:{
-      value:0,
+      value:setting.time_to_win,
       error:false,
       errorMessage:'Tiempo por Rondas requerida'
     },
     playSystem:{
-      value:"SUIZO",
+      value:setting.game_system,
       error:false,
       errorMessage:'Sistema de Juegoes requerido'
     },
     lottery:{
-      value:"MANUAL",
+      value:setting.lottery_type,
       error:false,
       errorMessage:'Tipo de Sorteo es requerido'
     },
     bonus: {
-      value:"YES",
+      value: setting.use_bonus ? "YES" : "NO",
       error:false,
       errorMessage:"Seleccione si se usa o no la bonificación"
     },
     limitPenaltyPoints: {
-      value:0,
+      value: setting.penalties_limit,
       error:false,
       errorMessage:"Límite de puntos por penalización es requerido"
     }
@@ -371,10 +371,17 @@ export default function Setting({ tourneyId, menu, setLottery }) {
                 <Col sm={3}>
                   <InputGroup size="sm">
 
-                    <select name="playSystem" id="playSystem" className="form-select form-select-sm" onChange={handleChange}>
+                    <Input
+                        type="select"
+                        name="playSystem"
+                        id="playSystem"
+                        placeholder="Sistema de Juego"
+                        defaultValue={formValues.playSystem.value}
+                        onChange={handleChange}
+                    >
                       <option value="SUIZO">Sistema Suizo</option>
                       <option value="TRADICIONAL">Sistema Tradicional</option>
-                    </select>
+                    </Input>
 
                   </InputGroup>
                 </Col>
@@ -387,10 +394,17 @@ export default function Setting({ tourneyId, menu, setLottery }) {
                 <Col sm={3}>
                   <InputGroup size="sm">
 
-                    <select name="lottery" id="lottery" className="form-select form-select-sm" onChange={handleChange}>
-                      <option value="MANUAL">Manual</option>
-                      <option value="AUTOMATIC">Automático</option>
-                    </select>
+                    <Input
+                        type="select"
+                        name="lottery"
+                        id="lottery"
+                        placeholder="Sorteo"
+                        defaultValue={formValues.lottery.value}
+                        onChange={handleChange}
+                    >
+                        <option value="MANUAL">Manual</option>
+                        <option value="AUTOMATIC">Automático</option>
+                    </Input>
 
                   </InputGroup>
                 </Col>

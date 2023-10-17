@@ -50,6 +50,7 @@ export default function View() {
       const { data } = await axios.get(url, config);
       if (data.success) {
         setToutney(data.data);
+        setLottery(data.data.setting.lottery_type);
       }
     } catch (errors) {
       console.log(errors);
@@ -162,28 +163,17 @@ export default function View() {
 
           <div className="pt-2 px-4" style={{ display: "flex" }}>
             <Card
-              className="my-2"
+              className="calendar-card my-2"
               inverse
-              style={{
-                width: "80px",
-                height: "80px",
-                border: "1px solid",
-                borderColor: "#c7c7c7",
-              }}
             >
               <CardHeader
                 style={{
                   background: "red",
                   height: "20px",
-                  textAlign: "center",
+                  textAlign: "center"
                 }}
               >
-                <h6
-                  style={{
-                    fontSize: "14px",
-                    fontWeight: "600",
-                    color: "white",
-                  }}
+                <h6 className="calendar-month"
                 >
                   {monthTourney(tourney.startDate)}
                 </h6>
@@ -326,7 +316,7 @@ export default function View() {
 
           {menu === 0 && <Response tourneyId={router.query.id} menu={menu}/>}
           {menu === 1 && <Players tourneyId={router.query.id} menu={menu}/>}
-          {menu === 2 && <Setting tourneyId={router.query.id} menu={menu} setLottery={setLottery}/>}
+          {menu === 2 && <Setting tourneyId={router.query.id} menu={menu} setting={tourney.setting} lottery={lottery} setLottery={setLottery}/>}
           {menu === 3 && <Lottery tourneyId={router.query.id} menu={menu} lottery={lottery}/>}
           {menu === 4 && <Tables tourneyId={router.query.id} menu={menu}/>}
 

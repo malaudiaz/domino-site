@@ -1610,14 +1610,30 @@ h6 {
   gap: 20px;
 }
 
-@media (min-width: 600px) {
+@media only screen and (min-width: 768px) {
+  .container-events {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
 
+@media only screen and (min-width: 992px) {
+  .container-events {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+}
+
+@media only screen and (min-width: 1600px) {
   .container-events {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
   }
 }
+
 
 .card .textos {
 	height: 100%;
@@ -1748,5 +1764,55 @@ h6 {
     text-align: center;
     height: 230px;
     width: auto;
+  }  
+}
+
+.lottery-card {
+  height: 90px;
+  background: #ebebeb;
+  cursor: pointer;  
+}
+
+.lottery-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+}
+
+.calendar-card {
+  width: 80px;
+  height: 80px;
+  border: 1px solid;
+  border-color: #c7c7c7;
+}
+
+.calendar-month {
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+}
+
+.calendar-day {
+  font-size: 24px;
+  font-weight: 600;
+  color: "#012970"
+}
+
+@media (max-width: 600px) {
+  .calendar-card {
+    width: 150px;
+    height: 80px;
+    border: 1px solid;
+    border-color: #c7c7c7;
+  }
+  
+  .calendar-month {
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+  }
+  .calendar-day {
+    font-size: 10px;
+    font-weight: 600;
+    color: "#012970"
   }  
 }
