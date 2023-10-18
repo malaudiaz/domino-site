@@ -8,6 +8,16 @@ import SetNumber from "./SetNumber";
 
 import { InputGroup, Input, InputGroupText, Button } from "reactstrap";
 
+import {
+  Accordion,
+  AccordionBody,
+  AccordionHeader,
+  AccordionItem,
+} from 'reactstrap';
+
+import Bombo from "./Bombo";
+import BomboPlayer from "./BomboPlayer";
+
 export default function Lottery({ tourneyId, menu, lottery }) {
   const { profile, token, lang } = useAppContext();
   const [players, setPlayers] = useState([]);
@@ -19,8 +29,21 @@ export default function Lottery({ tourneyId, menu, lottery }) {
   const [record, setRecord] = useState(null);
   const [selected, setSelected] = useState([]);
   const [filter, setFilter] = useState("");
+  const [openNewBombo, setOpenNewBombo] = useState(false);
+  const [bombo, setBombo] = useState([]);
   const rowsPerPage = 12;
 
+  const [view, setView] = useState('1');
+
+  const toggle = (id) => {
+    if (view === id) {
+      setView();
+    } else {
+      setView(id);
+    }
+  };  
+
+  
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -31,7 +54,7 @@ export default function Lottery({ tourneyId, menu, lottery }) {
   };
 
   const fetchData = async () => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}player?tourney_id=${tourneyId}&page=${page}&per_page=${rowsPerPage}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}player?tourney_id=${tourneyId}&page=${page}&per_page=${rowsPerPage}&criteria_key=${"username"}&criteria_value=${filter}`;
 
     try {
       const { data } = await axios.get(url, config);
@@ -128,6 +151,11 @@ export default function Lottery({ tourneyId, menu, lottery }) {
     }
   };
 
+  const newBombo = (e) => {
+    e.preventDefault();
+    setOpenNewBombo(true);
+  };
+
   const handleChange = (e) => {
     setFilter(e.target.value);
   };
@@ -141,90 +169,162 @@ export default function Lottery({ tourneyId, menu, lottery }) {
 
   const handleSave = async (e) => {
     e.preventDefault();
-    if (selected.length === total) {
-      const url = `${process.env.NEXT_PUBLIC_API_URL}domino/scale/initial?tourney_id=${tourneyId}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}domino/scale/initial?tourney_id=${tourneyId}`;
 
-      try {
-        const { data } = await axios.post(url, selected, config);
-        if (data.success) {
-          Swal.fire({
-            title: "Sorteo de Jugadores del Torneo",
-            text: data.detail,
-            icon: "info",
-            showCancelButton: false,
-            allowOutsideClick: false,
-            confirmButtonColor: "#3085d6",
-            confirmButtonText: "Aceptar",
-          });
-        }
-      } catch ({ code, message, name, request }) {
-        if (code === "ERR_NETWORK") {
-          Swal.fire({
-            title: "Sorteo de Jugadores del Torneo",
-            text: "Error en su red, consulte a su proveedor de servicio",
-            icon: "error",
-            showCancelButton: false,
-            allowOutsideClick: false,
-            confirmButtonColor: "#3085d6",
-            confirmButtonText: "Aceptar",
-          });
-        } else {
-          if (code === "ERR_BAD_REQUEST") {
-            const { detail } = JSON.parse(request.response);
+    if (lottery === "MANUAL") {
+
+      if (selected.length === total) {
+
+        try {
+          const { data } = await axios.post(url, selected, config);
+          if (data.success) {
             Swal.fire({
               title: "Sorteo de Jugadores del Torneo",
-              text: detail,
-              icon: "error",
+              text: data.detail,
+              icon: "info",
               showCancelButton: false,
               allowOutsideClick: false,
               confirmButtonColor: "#3085d6",
               confirmButtonText: "Aceptar",
             });
           }
+        } catch ({ code, message, name, request }) {
+          if (code === "ERR_NETWORK") {
+            Swal.fire({
+              title: "Sorteo de Jugadores del Torneo",
+              text: "Error en su red, consulte a su proveedor de servicio",
+              icon: "error",
+              showCancelButton: false,
+              allowOutsideClick: false,
+              confirmButtonColor: "#3085d6",
+              confirmButtonText: "Aceptar",
+            });
+          } else {
+            if (code === "ERR_BAD_REQUEST") {
+              const { detail } = JSON.parse(request.response);
+              Swal.fire({
+                title: "Sorteo de Jugadores del Torneo",
+                text: detail,
+                icon: "error",
+                showCancelButton: false,
+                allowOutsideClick: false,
+                confirmButtonColor: "#3085d6",
+                confirmButtonText: "Aceptar",
+              });
+            }
+          }
         }
+
       }
+
+    } else {
+
+      if (bombo.length > 0) {
+
+        try {
+          const { data } = await axios.post(url, bombo, config);
+          if (data.success) {
+            Swal.fire({
+              title: "Sorteo de Jugadores del Torneo",
+              text: data.detail,
+              icon: "info",
+              showCancelButton: false,
+              allowOutsideClick: false,
+              confirmButtonColor: "#3085d6",
+              confirmButtonText: "Aceptar",
+            });
+          }
+        } catch ({ code, message, name, request }) {
+          if (code === "ERR_NETWORK") {
+            Swal.fire({
+              title: "Sorteo de Jugadores del Torneo",
+              text: "Error en su red, consulte a su proveedor de servicio",
+              icon: "error",
+              showCancelButton: false,
+              allowOutsideClick: false,
+              confirmButtonColor: "#3085d6",
+              confirmButtonText: "Aceptar",
+            });
+          } else {
+            if (code === "ERR_BAD_REQUEST") {
+              const { detail } = JSON.parse(request.response);
+              Swal.fire({
+                title: "Sorteo de Jugadores del Torneo",
+                text: detail,
+                icon: "error",
+                showCancelButton: false,
+                allowOutsideClick: false,
+                confirmButtonColor: "#3085d6",
+                confirmButtonText: "Aceptar",
+              });
+            }
+          }
+        }
+
+      }
+
     }
   };
 
   return (
     <div>
-      <div className="d-flex flex-wrap ps-4">
-        <h1 className="title flex-grow-1">
-          Sorteo {lottery === "MANUAL" ? "Manual" : "Automático"}
-        </h1>
-        <div className="d-flex pe-4">
-          <Button
-            className="btn btn-sm btn-success"
-            style={{ width: "100px" }}
-            disabled={selected.length !== total}
-            onClick={handleSave}
-          >
-            <i className="bi bi-check2-circle"></i> Salvar
-          </Button>
-          <InputGroup size="sm" className="ms-2">
-            <Input
-              type="text"
-              name="username"
-              id="username"
-              autoComplete="off"
-              placeholder={"Buscar..."}
-              onChange={handleChange}
-              value={filter}
-              onKeyPress={(event) => {
-                if (!/^[a-z_.\s]*$/.test(event.key)) {
-                  event.preventDefault();
-                }
-              }}
-            />
-            <InputGroupText>
-              <button style={{ border: "none" }} onClick={handleSearch}>
-                <i className={filter === "" ? "bi bi-search" : "bi bi-x"}></i>
-              </button>
-            </InputGroupText>
-          </InputGroup>
+      {lottery === "MANUAL" ? 
+        <div className="d-flex flex-wrap ps-4">
+          <h1 className="title flex-grow-1">Sorteo Manual</h1>
+          <div className="d-flex pe-4">
+            <Button
+              className="btn btn-sm btn-success"
+              style={{ width: "100px" }}
+              disabled={selected.length !== total}
+              onClick={handleSave}
+            >
+              <i className="bi bi-check2-circle"></i> Salvar
+            </Button>
+            <InputGroup size="sm" className="ms-2">
+              <Input
+                type="text"
+                name="username"
+                id="username"
+                autoComplete="off"
+                placeholder={"Buscar..."}
+                onChange={handleChange}
+                value={filter}
+                onKeyPress={(event) => {
+                  if (!/^[a-z_.\s]*$/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
+              />
+              <InputGroupText>
+                <button style={{ border: "none" }} onClick={handleSearch}>
+                  <i className={filter === "" ? "bi bi-search" : "bi bi-x"}></i>
+                </button>
+              </InputGroupText>
+            </InputGroup>
+          </div>
         </div>
-      </div>
-      <div className="pt-3 px-4 pb-4" style={{ display: "grid" }}>
+      : <div className="d-flex flex-wrap ps-4">
+          <h1 className="title flex-grow-1">
+            Sorteo Automático
+          </h1>
+          <div className="d-flex pe-4">
+            <Button
+              className="btn btn-sm btn-success me-2"
+              style={{ width: "120px" }}
+              onClick={newBombo}
+            >
+              <i className="bi bi-plus"></i> Crear Bombo
+            </Button>
+
+            <Button className="btn btn-sm btn-secondary" onClick={handleSave}><i class="bi bi-check-circle"></i> Salvar</Button>
+            
+          </div>
+        </div>
+      }
+
+      {lottery === "MANUAL" ? 
+
+        <div className="pt-3 px-4 pb-4" style={{ display: "grid" }}>
         {players.length > 0 ? (
           <div className="container-events">
             {players.map((item, idx) => (
@@ -306,7 +406,24 @@ export default function Lottery({ tourneyId, menu, lottery }) {
             />
           </div>
         )}
-      </div>
+        </div>
+      : <div className="pt-3 px-4 pb-4">
+
+        <Accordion open={view} toggle={toggle}>
+          {bombo.map((item, idx) => (
+            <AccordionItem key={idx}>
+              <AccordionHeader targetId={item.id}>
+                {item.title}
+              </AccordionHeader>
+              <AccordionBody accordionId={item.id}>
+                <BomboPlayer tourneyId={tourneyId} item={item} bombo={bombo} setBombo={setBombo} />
+              </AccordionBody>
+            </AccordionItem>
+          ))}
+        </Accordion>
+
+        </div>
+      }
 
       <SetNumber
         open={open}
@@ -316,6 +433,9 @@ export default function Lottery({ tourneyId, menu, lottery }) {
         setSelected={setSelected}
         lottery={lottery}
       />
+
+      <Bombo open={openNewBombo} setClose={setOpenNewBombo} bombo={bombo} setBombo={setBombo} />
+
     </div>
   );
 }
