@@ -169,11 +169,12 @@ export default function Lottery({ tourneyId, menu, lottery }) {
 
   const handleSave = async (e) => {
     e.preventDefault();
-    const url = `${process.env.NEXT_PUBLIC_API_URL}domino/scale/initial?tourney_id=${tourneyId}`;
 
     if (lottery === "MANUAL") {
 
       if (selected.length === total) {
+
+        let url = `${process.env.NEXT_PUBLIC_API_URL}domino/scale/initial/manual/?tourney_id=${tourneyId}`;
 
         try {
           const { data } = await axios.post(url, selected, config);
@@ -220,6 +221,8 @@ export default function Lottery({ tourneyId, menu, lottery }) {
     } else {
 
       if (bombo.length > 0) {
+
+        let url = `${process.env.NEXT_PUBLIC_API_URL}domino/scale/initial/automatic/?tourney_id=${tourneyId}`;
 
         try {
           const { data } = await axios.post(url, bombo, config);
@@ -316,7 +319,7 @@ export default function Lottery({ tourneyId, menu, lottery }) {
               <i className="bi bi-plus-circle"></i> Crear Bombo
             </Button>
 
-            <Button className="btn btn-sm" color="primary" onClick={handleSave}><i class="bi bi-check-circle"></i> Salvar</Button>
+            <Button className="btn btn-sm" color="primary" onClick={handleSave}><i className="bi bi-check-circle"></i> Salvar</Button>
             
           </div>
         </div>

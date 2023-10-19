@@ -85,6 +85,26 @@ export default function Bombo({ open, setClose, bombo, setBombo }) {
       });
 
       setBombo(array);
+
+      setFormValues({
+        letter: {
+          value: "",
+          error: false,
+          errorMessage: "Letra del bombo requerida",
+        },
+        eloMin: {
+          value: "",
+          error: false,
+          errorMessage: "ELO Mínimo requerido",
+        },
+        eloMax: {
+          value: "",
+          error: false,
+          errorMessage: "ELO Máximo requerido",
+        },
+    
+      });      
+
       setClose();
     }
   };
