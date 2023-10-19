@@ -66,7 +66,9 @@ export default function BomboPlayer({ tourneyId, item, bombo, setBombo }) {
   };
 
   useEffect(() => {
-    fetchData();
+    if (max !== "" && min !== "") {
+      fetchData();
+    }
   }, [page, max, min]);
 
   const onChangePage = (pageNumber) => {
@@ -108,104 +110,56 @@ export default function BomboPlayer({ tourneyId, item, bombo, setBombo }) {
     }
   }
 
-  const handleSave = async (e) => {
-    e.preventDefault();
-
-    if (bombo.length > 0) {
-        const url = `${process.env.NEXT_PUBLIC_API_URL}domino/scale/initial?tourney_id=${tourneyId}`;
-  
-        try {
-          const { data } = await axios.post(url, bombo, config);
-          if (data.success) {
-            Swal.fire({
-              title: "Sorteo de Jugadores del Torneo",
-              text: data.detail,
-              icon: "info",
-              showCancelButton: false,
-              allowOutsideClick: false,
-              confirmButtonColor: "#3085d6",
-              confirmButtonText: "Aceptar",
-            });
-          }
-        } catch ({ code, message, name, request }) {
-          if (code === "ERR_NETWORK") {
-            Swal.fire({
-              title: "Sorteo de Jugadores del Torneo",
-              text: "Error en su red, consulte a su proveedor de servicio",
-              icon: "error",
-              showCancelButton: false,
-              allowOutsideClick: false,
-              confirmButtonColor: "#3085d6",
-              confirmButtonText: "Aceptar",
-            });
-          } else {
-            if (code === "ERR_BAD_REQUEST") {
-              const { detail } = JSON.parse(request.response);
-              Swal.fire({
-                title: "Sorteo de Jugadores del Torneo",
-                text: detail,
-                icon: "error",
-                showCancelButton: false,
-                allowOutsideClick: false,
-                confirmButtonColor: "#3085d6",
-                confirmButtonText: "Aceptar",
-              });
-            }
-          }
-        }
-      }      
-  }
-
   return (
     <div className="pb-4" style={{ display: "grid" }}>
 
-    <Navbar
-        className="navbar-light bg-light my-2"
-    >
-        <div className="d-flex flex-wrap">
-            <div className="d-flex me-4">
-                <Label size="sm" style={{width: "100px"}}>ELO Máximo:</Label>
-                <InputGroup size="sm" style={{width: "50px"}}>
-                    <Input
-                        type="text"
-                        name="maxElo"
-                        id="maxElo"
-                        autoComplete="off"
-                        value={max}
-                        onChange={handleChange}
-                        onKeyPress={(event) => {
-                            if (!/^[0-9]*$/.test(event.key)) {
-                                event.preventDefault();
-                            }
-                        }}
-                    />
-                </InputGroup>
-            </div>
-           
-            <div className="d-flex me-4">
-                <Label size="sm" style={{width: "100px"}}>ELO Mínimo:</Label>
-                <InputGroup size="sm" style={{width: "50px"}}>
-                    <Input
-                        type="text"
-                        name="minElo"
-                        id="minElo"
-                        autoComplete="off"
-                        value={min}
-                        onChange={handleChange}
-                        onKeyPress={(event) => {
-                            if (!/^[0-9]*$/.test(event.key)) {
-                                event.preventDefault();
-                            }
-                        }}
-                    />
-                </InputGroup>
-            </div>
+      <Navbar
+          className="navbar-light bg-light my-2"
+      >
+          <div className="d-flex flex-wrap">
+              <div className="d-flex me-4">
+                  <Label size="sm" style={{width: "100px"}}>ELO Máximo:</Label>
+                  <InputGroup size="sm" style={{width: "50px"}}>
+                      <Input
+                          type="text"
+                          name="maxElo"
+                          id="maxElo"
+                          autoComplete="off"
+                          value={max}
+                          onChange={handleChange}
+                          onKeyPress={(event) => {
+                              if (!/^[0-9]*$/.test(event.key)) {
+                                  event.preventDefault();
+                              }
+                          }}
+                      />
+                  </InputGroup>
+              </div>
+            
+              <div className="d-flex me-4">
+                  <Label size="sm" style={{width: "100px"}}>ELO Mínimo:</Label>
+                  <InputGroup size="sm" style={{width: "50px"}}>
+                      <Input
+                          type="text"
+                          name="minElo"
+                          id="minElo"
+                          autoComplete="off"
+                          value={min}
+                          onChange={handleChange}
+                          onKeyPress={(event) => {
+                              if (!/^[0-9]*$/.test(event.key)) {
+                                  event.preventDefault();
+                              }
+                          }}
+                      />
+                  </InputGroup>
+              </div>
 
-            <div className="d-flex">
-                <Button className="btn btn-sm btn-danger" onClick={handleDelte}><i class="bi bi-trash"></i> Eliminar</Button>
-            </div>
-        </div>
-    </Navbar>
+              <div className="d-flex">
+                  <Button className="btn btn-sm btn-danger" onClick={handleDelte}><i class="bi bi-trash"></i> Eliminar</Button>
+              </div>
+          </div>
+      </Navbar>
 
       <div className="container-events pt-3">
         {players.map((item, idx) => (

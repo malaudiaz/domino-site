@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 import {
   Modal,
@@ -17,7 +18,7 @@ import {
 
 export default function SetNumber({ open, setClose, record, selected, setSelected, lottery }) {
 
-    const [number, setNumber] = useState("");
+    const [number, setNumber] = useState(1);
     const [isNotValid, setIsNotValid] = useState(false);
 
     const handleChange = (e) => {
@@ -37,22 +38,38 @@ export default function SetNumber({ open, setClose, record, selected, setSelecte
 
             if (selected.length > 0) {
                 const items = selected;
-                const item = items.find(element => element.id === record.id);
+                let item = items.find(element => element.number === number);
 
                 if (!item) {
-                    items.push({id: record.id, number: number});
-                    setSelected(items);
+
+                    item = items.find(element => element.id === record.id);
+
+                    if (!item) {
+                        items.push({id: record.id, number: number});
+                        setSelected(items);
+                        setNumber(selected.length+1);
+                        setClose();
+                    }
+                } else {
+                    Swal.fire({
+                        title: "Sorteo",
+                        text: "Número ya asignado",
+                        icon: "info",
+                        showCancelButton: false,
+                        allowOutsideClick: false,
+                        confirmButtonColor: "#3085d6",
+                        confirmButtonText: "Aceptar",
+                    });            
                 }
             
             } else {
                 setSelected([{id: record.id, number: number}]);
+                setNumber(2);
+                setClose();
             }
-
-            // setNumber(selected.length+1);
-            setClose();
         }
     };    
-    
+   
     return (
         <Modal isOpen={open} backdrop={"static"} keyboard={true} centered={true} size="sm">
             <ModalHeader toggle={(e) => {close(e);}}>

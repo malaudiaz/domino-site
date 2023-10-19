@@ -313,10 +313,10 @@ export default function Lottery({ tourneyId, menu, lottery }) {
               style={{ width: "120px" }}
               onClick={newBombo}
             >
-              <i className="bi bi-plus"></i> Crear Bombo
+              <i className="bi bi-plus-circle"></i> Crear Bombo
             </Button>
 
-            <Button className="btn btn-sm btn-secondary" onClick={handleSave}><i class="bi bi-check-circle"></i> Salvar</Button>
+            <Button className="btn btn-sm" color="primary" onClick={handleSave}><i class="bi bi-check-circle"></i> Salvar</Button>
             
           </div>
         </div>
