@@ -24,49 +24,51 @@ export default function Setting({ tourneyId, menu, setting, lottery, setLottery 
   const [image, setImage] = useState(null);
   const [file, setFile] = useState("");
 
+  
+
   const [formValues, setFormValues] = useState({
     amountTable:{
-      value: setting.amount_tables,
+      value: Object.entries(setting).length > 0 ? setting.amount_tables : "",
       error:false,
       errorMessage:'Cantidad de Mesas requerida'
     },
     smartTable:{
-      value:setting.amount_smart_tables,
+      value: Object.entries(setting).length > 0 ? setting.amount_smart_tables : "",
       error:false,
       errorMessage:'Cantidad de mesas inteligentes requerida'
     },
     amountRound:{
-      value:setting.amount_rounds,
+      value: Object.entries(setting).length > 0 ? setting.amount_rounds : "",
       error:false,
       errorMessage:'Cantidad de Rondas requerida'
     },
     pointRound:{
-      value:setting.number_points_to_win,
+      value: Object.entries(setting).length > 0 ? setting.number_points_to_win : "",
       error:false,
       errorMessage:'Puntos por Rondas requerida'
     },
     timeRound:{
-      value:setting.time_to_win,
+      value: Object.entries(setting).length > 0 ? setting.time_to_win : "",
       error:false,
       errorMessage:'Tiempo por Rondas requerida'
     },
     playSystem:{
-      value:setting.game_system,
+      value: Object.entries(setting).length > 0 ? setting.game_system : "SUIZO",
       error:false,
       errorMessage:'Sistema de Juegoes requerido'
     },
     lottery:{
-      value:setting.lottery_type,
+      value: Object.entries(setting).length > 0 ? setting.lottery_type : "MANUAL",
       error:false,
       errorMessage:'Tipo de Sorteo es requerido'
     },
     bonus: {
-      value: setting.use_bonus ? "YES" : "NO",
+      value: Object.entries(setting).length > 0 ? setting.use_bonus : "YES",
       error:false,
       errorMessage:"Seleccione si se usa o no la bonificación"
     },
     limitPenaltyPoints: {
-      value: setting.penalties_limit,
+      value: Object.entries(setting).length > 0 ? setting.penalties_limit : "",
       error:false,
       errorMessage:"Límite de puntos por penalización es requerido"
     }

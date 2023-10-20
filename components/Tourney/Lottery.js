@@ -42,7 +42,6 @@ export default function Lottery({ tourneyId, menu, lottery }) {
       setView(id);
     }
   };  
-
   
   const config = {
     headers: {
