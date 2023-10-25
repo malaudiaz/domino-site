@@ -5,7 +5,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { useAppContext } from "../../AppContext";
 
-export default function Players({tourneyId, menu}) {
+export default function Players({tourneyId, menu, status}) {
     const { token, lang } = useAppContext();
     const [players, setPlayers] = useState([]);
     const [page, setPage] = useState(1);
@@ -146,18 +146,30 @@ export default function Players({tourneyId, menu}) {
                                     <small>{item.profile_type}. {item.city_name + ", " + item.country}</small>
                                 </div>
 
-                                <div>
+                                {status === "CREATED" && (<div>
                                     <div
-                                    className="rounded p-2 trash-effect"
-                                    title="Eliminar jugador"
-                                    onClick={(e) => {removePlayer(item.id)}}
+                                        className="rounded p-2 trash-effect"
+                                        title="Eliminar jugador"
+                                        onClick={(e) => {removePlayer(item.id)}}
                                     >
                                     <i
                                         className="bi bi-person-dash"
                                         style={{ fontSize: "24px" }}
                                     ></i>
                                     </div>
-                                </div>
+                                </div>)}
+                                {status === "INITIADED" && (<div>
+                                    <div
+                                        className="rounded p-2"
+                                        title="Jugador Aceptado"
+                                    >
+                                    <i
+                                        className="bi bi-patch-check"
+                                        style={{ fontSize: "24px", color: "blue" }}
+                                    ></i>
+                                    </div>
+                                </div>)}
+
                             </div>
 
                             <div className="d-flex flex-row justify-content-between align-items-center px-2">

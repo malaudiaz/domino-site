@@ -17,14 +17,14 @@ import {
   Button,
 } from "reactstrap";
 
-export default function Setting({ tourneyId, menu, setting, lottery, setLottery }) {
+export default function Setting({ tourneyId, menu, tourney, setLottery }) {
   const { profile, token, lang } = useAppContext();
 
   const [createObjectURL, setCreateObjectURL] = useState(null);
   const [image, setImage] = useState(null);
   const [file, setFile] = useState("");
 
-  
+  const setting = tourney.setting;
 
   const [formValues, setFormValues] = useState({
     amountTable:{
@@ -306,6 +306,7 @@ export default function Setting({ tourneyId, menu, setting, lottery, setLottery 
                       invalid={formValues.smartTable.error}                     
                       value={formValues.smartTable.value}
                       onChange={handleChange}
+                      disabled={tourney.status_name==="INITIADED"}
                     />
                     <FormFeedback>La cantidad de mesas inteligentes es requerida.</FormFeedback>
                   </InputGroup>
@@ -325,6 +326,7 @@ export default function Setting({ tourneyId, menu, setting, lottery, setLottery 
                       invalid={formValues.amountRound.error}                     
                       value={formValues.amountRound.value}
                       onChange={handleChange}
+                      disabled={tourney.status_name==="INITIADED"}
                     />
                   </InputGroup>
                 </Col>
@@ -343,6 +345,7 @@ export default function Setting({ tourneyId, menu, setting, lottery, setLottery 
                       invalid={formValues.pointRound.error}                     
                       value={formValues.pointRound.value}
                       onChange={handleChange}
+                      disabled={tourney.status_name==="INITIADED"}
                     />
                   </InputGroup>
                 </Col>
@@ -361,6 +364,7 @@ export default function Setting({ tourneyId, menu, setting, lottery, setLottery 
                       invalid={formValues.timeRound.error}                     
                       value={formValues.timeRound.value}
                       onChange={handleChange}
+                      disabled={tourney.status_name==="INITIADED"}
                     />
                   </InputGroup>
                 </Col>
@@ -380,6 +384,7 @@ export default function Setting({ tourneyId, menu, setting, lottery, setLottery 
                         placeholder="Sistema de Juego"
                         defaultValue={formValues.playSystem.value}
                         onChange={handleChange}
+                        disabled={tourney.status_name==="INITIADED"}
                     >
                       <option value="SUIZO">Sistema Suizo</option>
                       <option value="TRADICIONAL">Sistema Tradicional</option>
@@ -403,6 +408,7 @@ export default function Setting({ tourneyId, menu, setting, lottery, setLottery 
                         placeholder="Sorteo"
                         defaultValue={formValues.lottery.value}
                         onChange={handleChange}
+                        disabled={tourney.status_name==="INITIADED"}
                     >
                         <option value="MANUAL">Manual</option>
                         <option value="AUTOMATIC">Automático</option>
@@ -420,10 +426,18 @@ export default function Setting({ tourneyId, menu, setting, lottery, setLottery 
                 <Col sm={3}>
                   <InputGroup size="sm">
 
-                    <select name="bonus" id="bonus" className="form-select form-select-sm" onChange={handleChange}>
+                    <Input
+                        type="select"
+                        name="bonus"
+                        id="bonus"
+                        placeholder="Bonificación"
+                        defaultValue={formValues.bonus.value}
+                        onChange={handleChange}
+                        disabled={tourney.status_name==="INITIADED"}
+                    >
                       <option value="YES">Sí</option>
                       <option value="NO">No</option>
-                    </select>
+                    </Input>
 
                   </InputGroup>
                 </Col>
@@ -443,6 +457,7 @@ export default function Setting({ tourneyId, menu, setting, lottery, setLottery 
                       invalid={formValues.limitPenaltyPoints.error}                     
                       value={formValues.limitPenaltyPoints.value}
                       onChange={handleChange}
+                      disabled={tourney.status_name==="INITIADED"}
                     />
                   </InputGroup>
                 </Col>
@@ -459,6 +474,7 @@ export default function Setting({ tourneyId, menu, setting, lottery, setLottery 
             color="primary"
             data-toggle="tooltip"
             title="Guardar Cambios"
+            disabled={tourney.status_name==="INITIADED"}
           >
             Guardar
           </Button>

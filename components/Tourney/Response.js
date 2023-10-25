@@ -6,7 +6,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { useAppContext } from "../../AppContext";
 
-export default function Response({tourneyId, menu}) {
+export default function Response({tourneyId, menu, status}) {
     const { token, lang } = useAppContext();
     const [invitations, setInvitations] = useState([]);
     const [page, setPage] = useState(1);
@@ -120,7 +120,7 @@ export default function Response({tourneyId, menu}) {
                                 </small>
                             </div>
 
-                            <div className="ps-4">
+                            {status === "CREATED" && (<div className="ps-4">
                                 <div
                                     className="rounded p-2 accept-effect"
                                     title="Aprobar jugador"
@@ -131,9 +131,9 @@ export default function Response({tourneyId, menu}) {
                                     style={{ fontSize: "24px" }}
                                 ></i>
                                 </div>
-                            </div>
+                            </div>)}
 
-                            <div>
+                            {status === "CREATED" && (<div>
                                 <div
                                     className="rounded p-2 trash-effect"
                                     title="Rechazar jugador"
@@ -144,7 +144,20 @@ export default function Response({tourneyId, menu}) {
                                     style={{ fontSize: "24px" }}
                                 ></i>
                                 </div>
-                            </div>
+                            </div>)}
+
+                            {status === "INITIADED" && (<div>
+                                <div
+                                    className="rounded p-2"
+                                    title="Jugador Aceptado"
+                                >
+                                <i
+                                    className="bi bi-patch-check"
+                                    style={{ fontSize: "24px", color: "blue" }}
+                                ></i>
+                                </div>
+                            </div>)}
+
                         </div>
 
                         <div className="d-flex flex-row justify-content-between align-items-center px-2">

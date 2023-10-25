@@ -229,7 +229,6 @@ export default function View() {
           >
             <button
               type="button"
-              disabled={disabled}
               style={
                 menu === 0
                   ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
@@ -246,7 +245,6 @@ export default function View() {
 
             <button
               type="button"
-              disabled={disabled}
               style={
                 menu === 1
                   ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
@@ -263,7 +261,6 @@ export default function View() {
 
             <button 
               type="button" 
-              // disabled={disabled}
               style={
                 menu === 2
                 ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
@@ -280,7 +277,7 @@ export default function View() {
 
             <button
               type="button"
-              // disabled={!disabled}
+              disabled={tourney.status_name==="INITIADED"}
               style={
                 menu === 3
                   ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
@@ -297,16 +294,15 @@ export default function View() {
 
             <button
               type="button"
-              // disabled={!disabled}
               style={
-                menu === 3
+                menu === 4
                   ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
                   : { background: "#e4e6eb" }
               }
               className="btn btn-sm"
               onClick={(e) => {
                 e.preventDefault();
-                handleButton(3);
+                handleButton(4);
               }}
             >
               <i className="bi bi-bounding-box"></i> Mesas
@@ -314,9 +310,9 @@ export default function View() {
 
           </div>
 
-          {menu === 0 && <Response tourneyId={router.query.id} menu={menu}/>}
-          {menu === 1 && <Players tourneyId={router.query.id} menu={menu}/>}
-          {menu === 2 && <Setting tourneyId={router.query.id} menu={menu} setting={tourney.setting} lottery={lottery} setLottery={setLottery}/>}
+          {menu === 0 && <Response tourneyId={router.query.id} menu={menu} status={tourney.status_name}/>}
+          {menu === 1 && <Players tourneyId={router.query.id} menu={menu} status={tourney.status_name} />}
+          {menu === 2 && <Setting tourneyId={router.query.id} menu={menu} tourney={tourney} setLottery={setLottery}/>}
           {menu === 3 && <Lottery tourneyId={router.query.id} menu={menu} lottery={lottery}/>}
           {menu === 4 && <Tables tourneyId={router.query.id} menu={menu}/>}
 

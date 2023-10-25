@@ -156,7 +156,7 @@ export default function BomboPlayer({ tourneyId, item, bombo, setBombo }) {
               </div>
 
               <div className="d-flex">
-                  <Button className="btn btn-sm btn-danger" onClick={handleDelte}><i class="bi bi-trash"></i> Eliminar</Button>
+                  <Button className="btn btn-sm btn-danger" onClick={handleDelte}><i className="bi bi-trash"></i> Eliminar</Button>
               </div>
           </div>
       </Navbar>
