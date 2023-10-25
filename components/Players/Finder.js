@@ -14,12 +14,14 @@ export default function FinderPlayer({ id, changePlayer, record }) {
   const [openFinderPlayer, setOpenFinderPlayer] = useState(false);
 
   useEffect(()=>{
-    if (Object.entries(record).length > 0) {
-      if (record.lst_users) {
-        setPlayer(record.lst_users.name);
+    if (record) {
+      if (Object.entries(record).length > 0) {
+        if (record.lst_users) {
+          setPlayer(record.lst_users.name);
+        }
       }
     }
-  })
+  }, [record])
 
   const onOpenFinder = () => {
     setOpenFinderPlayer(true);

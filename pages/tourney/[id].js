@@ -308,7 +308,7 @@ export default function Tourneys() {
                       />
                     </div>
                   </div>
-                  <CardBody onClick={(e) => {e.preventDefault();handleClick(id);}}>
+                  <CardBody onClick={(e) => {e.preventDefault(); handleClick(id);}}>
                     <Image
                       alt="Tourney Image"
                       src={"/Logo-V.png"}
