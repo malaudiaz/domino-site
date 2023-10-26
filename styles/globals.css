@@ -1816,3 +1816,21 @@ h6 {
     color: "#012970"
   }  
 }
+
+.image_with_badge_container {
+  display: inline-block; 
+  position: relative;
+}
+
+.badge-on-image-y {
+  position: absolute;
+  bottom: 2px; 
+  padding: 3px 6px;
+}
+
+.badge-on-image-x {
+  position: absolute;
+  bottom: 2px;
+  right: 0px;
+  padding: 3px 6px;
+}

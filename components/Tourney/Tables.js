@@ -4,6 +4,7 @@ import Image from "next/image";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useAppContext } from "../../AppContext";
+import { Card, CardHeader, Label, Input, CardFooter } from "reactstrap";
 
 export default function Tables({ tourneyId, menu }) {
   const { token, lang } = useAppContext();
@@ -12,38 +13,72 @@ export default function Tables({ tourneyId, menu }) {
     {
       id: 0,
       number: 1,
-      image: "",
-      playerOne: {},
-      playerTwo: {},
-      playerThree: {},
-      playerFour: {},
+      type: "Inteligente",
+      image: "/smartdomino.png",
+      playerOne: {id: "1", name: "Juán Carlos", elo: 15235, nivel: "Experto", index: 1, avatar: "/profile/user-vector.jpg"},
+      playerTwo: {id: "2", name: "Ricardo", elo: 15226, nivel: "Experto", index: 2, avatar: "/profile/user-vector.jpg"},
+      playerThree: {id: "3", name: "Migue", elo: 14230, nivel: "Experto", index: 3, avatar: "/profile/user-vector.jpg"},
+      playerFour: {id: "4", name: "Jesús", elo: 12345, nivel: "Profesional", index: 4, avatar: "/profile/user-vector.jpg"},
     },
     {
       id: 1,
       number: 2,
-      image: "",
-      playerOne: {},
-      playerTwo: {},
-      playerThree: {},
-      playerFour: {},
+      type: "Inteligente",
+      image: "/smartdomino.png",
+      playerOne: {id: "1", name: "Juán Carlos", elo: 15235, nivel: "Experto", index: 5, avatar: "/profile/user-vector.jpg"},
+      playerTwo: {id: "2", name: "Ricardo", elo: 15226, nivel: "Experto", index: 6, avatar: "/profile/user-vector.jpg"},
+      playerThree: {id: "3", name: "Migue", elo: 14230, nivel: "Experto", index: 7, avatar: "/profile/user-vector.jpg"},
+      playerFour: {id: "4", name: "Jesús", elo: 12345, nivel: "Profesional", index: 8, avatar: "/profile/user-vector.jpg"},
     },
     {
       id: 2,
       number: 3,
-      image: "",
-      playerOne: {},
-      playerTwo: {},
-      playerThree: {},
-      playerFour: {},
+      type: "Tradicional",
+      image: "/smartdomino.png",
+      playerOne: {id: "1", name: "Juán Carlos", elo: 15235, nivel: "Experto", index: 9, avatar: "/profile/user-vector.jpg"},
+      playerTwo: {id: "2", name: "Ricardo", elo: 15226, nivel: "Experto", index: 10, avatar: "/profile/user-vector.jpg"},
+      playerThree: {id: "3", name: "Migue", elo: 14230, nivel: "Experto", index: 11, avatar: "/profile/user-vector.jpg"},
+      playerFour: {id: "4", name: "Jesús", elo: 12345, nivel: "Profesional", index: 12, avatar: "/profile/user-vector.jpg"},
     },
     {
       id: 3,
       number: 4,
-      image: "",
-      playerOne: {},
-      playerTwo: {},
-      playerThree: {},
-      playerFour: {},
+      type: "Tradicional",
+      image: "/smartdomino.png",
+      playerOne: {id: "1", name: "Juán Carlos", elo: 15235, nivel: "Experto", index: 13, avatar: "/profile/user-vector.jpg"},
+      playerTwo: {id: "2", name: "Ricardo", elo: 15226, nivel: "Experto", index: 14, avatar: "/profile/user-vector.jpg"},
+      playerThree: {id: "3", name: "Migue", elo: 14230, nivel: "Experto", index: 15, avatar: "/profile/user-vector.jpg"},
+      playerFour: {id: "4", name: "Jesús", elo: 12345, nivel: "Profesional", index: 16, avatar: "/profile/user-vector.jpg"},
+    },
+    {
+      id: 4,
+      number: 5,
+      type: "Tradicional",
+      image: "/smartdomino.png",
+      playerOne: {id: "1", name: "Juán Carlos", elo: 15235, nivel: "Experto", index: 17, avatar: "/profile/user-vector.jpg"},
+      playerTwo: {id: "2", name: "Ricardo", elo: 15226, nivel: "Experto", index: 18, avatar: "/profile/user-vector.jpg"},
+      playerThree: {id: "3", name: "Migue", elo: 14230, nivel: "Experto", index: 19, avatar: "/profile/user-vector.jpg"},
+      playerFour: {id: "4", name: "Jesús", elo: 12345, nivel: "Profesional", index: 20, avatar: "/profile/user-vector.jpg"},
+    },
+    {
+      id: 5,
+      number: 6,
+      type: "Tradicional",
+      image: "/smartdomino.png",
+      playerOne: {id: "1", name: "Juán Carlos", elo: 15235, nivel: "Experto", index: 21, avatar: "/profile/user-vector.jpg"},
+      playerTwo: {id: "2", name: "Ricardo", elo: 15226, nivel: "Experto", index: 22, avatar: "/profile/user-vector.jpg"},
+      playerThree: {id: "3", name: "Migue", elo: 14230, nivel: "Experto", index: 23, avatar: "/profile/user-vector.jpg"},
+      playerFour: {id: "4", name: "Jesús", elo: 12345, nivel: "Profesional", index: 24, avatar: "/profile/user-vector.jpg"},
+    },
+    {
+      id: 6,
+      number: 7,
+      type: "Tradicional",
+      image: "/smartdomino.png",
+      playerOne: {id: "1", name: "Juán Carlos", elo: 15235, nivel: "Experto", index: 25, avatar: "/profile/user-vector.jpg"},
+      playerTwo: {id: "2", name: "Ricardo", elo: 15226, nivel: "Experto", index: 26, avatar: "/profile/user-vector.jpg"},
+      playerThree: {id: "3", name: "Migue", elo: 14230, nivel: "Experto", index: 27, avatar: "/profile/user-vector.jpg"},
+      playerFour: {id: "4", name: "Jesús", elo: 12345, nivel: "Profesional", index: 28, avatar: "/profile/user-vector.jpg"},
     },
   ]);
 
@@ -55,9 +90,9 @@ export default function Tables({ tourneyId, menu }) {
   const config = {
     headers: {
       "Content-Type": "application/json",
-      Accept: "application/json",
+      "Accept": "application/json",
       "accept-Language": lang,
-      Authorization: `Bearer ${token}`,
+      "Authorization": `Bearer ${token}`,
     },
   };
 
@@ -103,71 +138,164 @@ export default function Tables({ tourneyId, menu }) {
       {tables.length > 0 ? (
         <div className="container-events">
           {tables.map((item, idx) => (
-            <div
+            <Card
               key={idx}
-              className="d-flex align-items-center rounded p-2"
-              style={{ height: "300px", background: "#ebebeb" }}
+              className="d-flex flex-column align-items-center rounded"
+              style={{ height: "350px", background: "#ebebeb" }}
             >
-              <div class="container-fluid">
-                <div className="row justify-content-center text-center pb-2">
-                  <Image
-                    alt="Photo Profile"
-                    src={"/profile/user-vector.jpg"}
-                    width={60}
-                    height={60}
-                    className="rounded-image"
-                  />
+              <CardHeader className="w-100">Mesa <b>{item.number}</b> - {item.type}</CardHeader>
+              <div class="container-fluid pt-2">
+                <div className="row d-flex justify-content-center text-center pb-2">
+                  <div className="image_with_badge_container">
+                    <Image
+                      alt="Avatar Player 1"
+                      src={item.playerOne.avatar}
+                      width={60}
+                      height={60}
+                      className="rounded-image"
+                    />
+                    <span className="badge bg-primary rounded badge-on-image-y">{item.playerOne.index}</span>
+                  </div>
+                  <small>{item.playerOne.name}</small>
                 </div>
 
                 <div className="row">
 
                   <div className="col-3 d-flex flex-column justify-content-center text-center">
-                    <Image
-                      alt="Photo Profile"
-                      src={"/profile/user-vector.jpg"}
-                      width={30}
-                      height={60}
-                      className="rounded-image"
-                    />
+                    <div className="image_with_badge_container">
+                      <Image
+                        alt="Avatar Player 2"
+                        src={item.playerTwo.avatar}
+                        width={60}
+                        height={60}
+                        className="rounded-image"
+                      />
+                      <span className="badge bg-primary rounded badge-on-image-x">{item.playerTwo.index}</span>
+                    </div>
+                    <small>{item.playerTwo.name}</small>
                   </div>
 
                   <div
                     className="col-6 d-flex flex-column justify-content-center align-items-center border border-primary bg-white"
-                    style={{ height: "150px" }}
+                    style={{ height: "100px" }}
                   >
 
                     <Image
                       alt="Photo Profile"
-                      src={"/smartdomino.png"}
-                      width={60}
-                      height={60}
+                      src={item.image}
+                      width={"100%"}
+                      height={"100%"}
                     />
+
+                    <div className="d-flex flex-wrap">
+                      <strong>Imagen de Publicidad</strong>
+                    </div>
 
                   </div>
 
-                  <div className="col-3 d-flex flex-column justify-content-center">
-                    <Image
-                      alt="Photo Profile"
-                      src={"/profile/user-vector.jpg"}
-                      width={30}
-                      height={60}
-                      className="rounded-image"
-                    />
+
+                  <div className="col-3 d-flex flex-column justify-content-center text-center">
+                      <div className="image_with_badge_container">
+                      <Image
+                        alt="Avatar Player 4"
+                        src={item.playerFour.avatar}
+                        width={60}
+                        height={60}
+                        className="rounded-image"
+                      />
+                      <span className="badge bg-primary rounded badge-on-image-x">{item.playerFour.index}</span>
+                    </div>
+                    <small>{item.playerFour.name}</small>
                   </div>
+
+                </div>
+
+                <div className="row">
+
+                  <div className="col-6 justify-content-center text-right">
+
+                    <Label
+                      href="#"
+                      className="btn btn-primary btn-sm"
+                      title="Cargar nueva foto de pérfil"
+                      style={{ color: "white" }}
+                    >
+                      <i className="bi bi-upload"></i>
+                      <Input
+                        type="file"
+                        hidden
+                        onChange={(event) => {
+                          if (event.target.files && event.target.files[0]) {
+                            const i = event.target.files[0];
+                            if (i.type.includes("image/jpeg")) {
+                            } else {
+                              Swal.fire({
+                                icon: "error",
+                                title: "Cargando Imagen",
+                                text: "Ha ocurrido un error al cargar la imagen",
+                                showConfirmButton: true,
+                              });
+                            }
+                          }
+                        }}
+                      />
+                    </Label>
+
+                  </div>
+
+                  <div className="col-6 justify-content-center text-left">
+                    <Label
+                      href="#"
+                      className="btn btn-danger btn-sm"
+                      title="Eliminar mí foto de perfil"
+                      style={{ color: "white" }}
+                      onClick={(e) => {
+
+                        Swal.fire({
+                          title: "¿ Desea eliminar esta foto de pérfil ?",
+                          text: "! Esta opción no podrá ser revertida !",
+                          icon: "question",
+                          showCancelButton: true,
+                          confirmButtonText: "Sí",
+                          cancelButtonText: "No",
+                          confirmButtonColor: "#3085d6",
+                          cancelButtonColor: "#d33",
+                          reverseButtons: true,
+                          allowOutsideClick: false,
+                        }).then((result) => {
+                          if (result.isConfirmed) {
+
+                            setRecord({ ...record, photo: null, file: null });
+                            setImage(null);
+                            setCreateObjectURL(null);    
+
+                          }
+                        });                      
+
+                      }}
+                    >
+                      <i className="bi bi-trash"></i>
+                    </Label>
+                  </div>
+                  
 
                 </div>
 
                 <div className="row justify-content-center text-center pt-2">
-                  <Image
-                    alt="Photo Profile"
-                    src={"/profile/user-vector.jpg"}
-                    width={60}
-                    height={60}
-                    className="rounded-image"
-                  />
+                  <div className="image_with_badge_container">
+                    <Image
+                      alt="Avatar Player 3"
+                      src={item.playerThree.avatar}
+                      width={60}
+                      height={60}
+                      className="rounded-image"
+                    />
+                    <span className="badge bg-primary rounded badge-on-image-y">{item.playerThree.index}</span>
+                  </div>
+                  <small>{item.playerThree.name}</small>
                 </div>
               </div>
-            </div>
+            </Card>
           ))}
         </div>
       ) : (

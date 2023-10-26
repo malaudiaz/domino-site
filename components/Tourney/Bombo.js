@@ -185,7 +185,7 @@ export default function Bombo({ open, setClose, bombo, setBombo }) {
                   invalid={formValues.eloMax.error}
                   value={formValues.eloMax.value}
                   onKeyPress={(event) => {
-                    if (!/^[0-9]*$/.test(event.key)) {
+                    if (!/^[0-9.]*$/.test(event.key)) {
                       event.preventDefault();
                     }
                   }}
@@ -209,7 +209,7 @@ export default function Bombo({ open, setClose, bombo, setBombo }) {
                   value={formValues.eloMin.value}
                   autoComplete="off"
                   onKeyPress={(event) => {
-                    if (!/^[0-9]*$/.test(event.key)) {
+                    if (!/^[0-9.]*$/.test(event.key)) {
                       event.preventDefault();
                     }
                   }}
