@@ -23,6 +23,7 @@ export default function Own() {
   const ctxMenu = [
     { text: "Editar", key: "mnuEdit", icon: "bi bi-pencil-square" },
     { text: "Eliminar", key: "mnuDel", icon: "bi bi-trash" },
+    { text: "Configurar", key: "mnuSetting", icon: "bi bi-gear" },
   ];
 
   const handleAddEvents = () => {
@@ -138,6 +139,10 @@ export default function Own() {
     });
   };
 
+  const mnuSetting = (index) => {
+    handleClick(events[index].id);
+  }
+
   const onMenuSelection = (key, index) => {
     switch (key) {
       case "mnuEdit":
@@ -146,7 +151,10 @@ export default function Own() {
       case "mnuDel":
         mnuDelete(index);
         break;
-    }
+      case "mnuSetting":
+        mnuSetting(index);
+        break;
+      }
   };
 
   return (

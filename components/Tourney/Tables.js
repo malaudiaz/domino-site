@@ -9,83 +9,12 @@ import { Card, CardHeader, Label, Input, CardFooter } from "reactstrap";
 export default function Tables({ tourneyId, menu }) {
   const { token, lang } = useAppContext();
 
-  const [tables, setTables] = useState([
-    {
-      id: 0,
-      number: 1,
-      type: "Inteligente",
-      image: "/smartdomino.png",
-      playerOne: {id: "1", name: "Juán Carlos", elo: 15235, nivel: "Experto", index: 1, avatar: "/profile/user-vector.jpg"},
-      playerTwo: {id: "2", name: "Ricardo", elo: 15226, nivel: "Experto", index: 2, avatar: "/profile/user-vector.jpg"},
-      playerThree: {id: "3", name: "Migue", elo: 14230, nivel: "Experto", index: 3, avatar: "/profile/user-vector.jpg"},
-      playerFour: {id: "4", name: "Jesús", elo: 12345, nivel: "Profesional", index: 4, avatar: "/profile/user-vector.jpg"},
-    },
-    {
-      id: 1,
-      number: 2,
-      type: "Inteligente",
-      image: "/smartdomino.png",
-      playerOne: {id: "1", name: "Juán Carlos", elo: 15235, nivel: "Experto", index: 5, avatar: "/profile/user-vector.jpg"},
-      playerTwo: {id: "2", name: "Ricardo", elo: 15226, nivel: "Experto", index: 6, avatar: "/profile/user-vector.jpg"},
-      playerThree: {id: "3", name: "Migue", elo: 14230, nivel: "Experto", index: 7, avatar: "/profile/user-vector.jpg"},
-      playerFour: {id: "4", name: "Jesús", elo: 12345, nivel: "Profesional", index: 8, avatar: "/profile/user-vector.jpg"},
-    },
-    {
-      id: 2,
-      number: 3,
-      type: "Tradicional",
-      image: "/smartdomino.png",
-      playerOne: {id: "1", name: "Juán Carlos", elo: 15235, nivel: "Experto", index: 9, avatar: "/profile/user-vector.jpg"},
-      playerTwo: {id: "2", name: "Ricardo", elo: 15226, nivel: "Experto", index: 10, avatar: "/profile/user-vector.jpg"},
-      playerThree: {id: "3", name: "Migue", elo: 14230, nivel: "Experto", index: 11, avatar: "/profile/user-vector.jpg"},
-      playerFour: {id: "4", name: "Jesús", elo: 12345, nivel: "Profesional", index: 12, avatar: "/profile/user-vector.jpg"},
-    },
-    {
-      id: 3,
-      number: 4,
-      type: "Tradicional",
-      image: "/smartdomino.png",
-      playerOne: {id: "1", name: "Juán Carlos", elo: 15235, nivel: "Experto", index: 13, avatar: "/profile/user-vector.jpg"},
-      playerTwo: {id: "2", name: "Ricardo", elo: 15226, nivel: "Experto", index: 14, avatar: "/profile/user-vector.jpg"},
-      playerThree: {id: "3", name: "Migue", elo: 14230, nivel: "Experto", index: 15, avatar: "/profile/user-vector.jpg"},
-      playerFour: {id: "4", name: "Jesús", elo: 12345, nivel: "Profesional", index: 16, avatar: "/profile/user-vector.jpg"},
-    },
-    {
-      id: 4,
-      number: 5,
-      type: "Tradicional",
-      image: "/smartdomino.png",
-      playerOne: {id: "1", name: "Juán Carlos", elo: 15235, nivel: "Experto", index: 17, avatar: "/profile/user-vector.jpg"},
-      playerTwo: {id: "2", name: "Ricardo", elo: 15226, nivel: "Experto", index: 18, avatar: "/profile/user-vector.jpg"},
-      playerThree: {id: "3", name: "Migue", elo: 14230, nivel: "Experto", index: 19, avatar: "/profile/user-vector.jpg"},
-      playerFour: {id: "4", name: "Jesús", elo: 12345, nivel: "Profesional", index: 20, avatar: "/profile/user-vector.jpg"},
-    },
-    {
-      id: 5,
-      number: 6,
-      type: "Tradicional",
-      image: "/smartdomino.png",
-      playerOne: {id: "1", name: "Juán Carlos", elo: 15235, nivel: "Experto", index: 21, avatar: "/profile/user-vector.jpg"},
-      playerTwo: {id: "2", name: "Ricardo", elo: 15226, nivel: "Experto", index: 22, avatar: "/profile/user-vector.jpg"},
-      playerThree: {id: "3", name: "Migue", elo: 14230, nivel: "Experto", index: 23, avatar: "/profile/user-vector.jpg"},
-      playerFour: {id: "4", name: "Jesús", elo: 12345, nivel: "Profesional", index: 24, avatar: "/profile/user-vector.jpg"},
-    },
-    {
-      id: 6,
-      number: 7,
-      type: "Tradicional",
-      image: "/smartdomino.png",
-      playerOne: {id: "1", name: "Juán Carlos", elo: 15235, nivel: "Experto", index: 25, avatar: "/profile/user-vector.jpg"},
-      playerTwo: {id: "2", name: "Ricardo", elo: 15226, nivel: "Experto", index: 26, avatar: "/profile/user-vector.jpg"},
-      playerThree: {id: "3", name: "Migue", elo: 14230, nivel: "Experto", index: 27, avatar: "/profile/user-vector.jpg"},
-      playerFour: {id: "4", name: "Jesús", elo: 12345, nivel: "Profesional", index: 28, avatar: "/profile/user-vector.jpg"},
-    },
-  ]);
+  const [tables, setTables] = useState([]);
 
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [total, setTotal] = useState(0);
-  const rowsPerPage = 10;
+  const rowsPerPage = 8;
 
   const config = {
     headers: {
@@ -97,7 +26,7 @@ export default function Tables({ tourneyId, menu }) {
   };
 
   const fetchData = async () => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}invitation/tourney/?tourney_id=${tourneyId}&page=${page}&per_page=${rowsPerPage}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/tables/?tourney_id=${tourneyId}&page=${page}&per_page=${rowsPerPage}`;
 
     try {
       const { data } = await axios.get(url, config);
@@ -123,10 +52,10 @@ export default function Tables({ tourneyId, menu }) {
   };
 
   useEffect(() => {
-    if (menu === 5) {
+    if (menu === 4) {
       fetchData();
     }
-  }, [menu]);
+  }, [menu, page]);
 
   const onChangePage = (pageNumber) => {
     setPage(pageNumber);
@@ -141,7 +70,7 @@ export default function Tables({ tourneyId, menu }) {
             <Card
               key={idx}
               className="d-flex flex-column align-items-center rounded"
-              style={{ height: "350px", background: "#ebebeb" }}
+              style={{ height: "400px", background: "#ebebeb" }}
             >
               <CardHeader className="w-100">Mesa <b>{item.number}</b> - {item.type}</CardHeader>
               <div class="container-fluid pt-2">
@@ -210,9 +139,9 @@ export default function Tables({ tourneyId, menu }) {
 
                 </div>
 
-                <div className="row">
+                <div className="row pt-2">
 
-                  <div className="col-6 justify-content-center text-right">
+                  <div className="col-12 justify-content-center text-center">
 
                     <Label
                       href="#"
@@ -241,9 +170,6 @@ export default function Tables({ tourneyId, menu }) {
                       />
                     </Label>
 
-                  </div>
-
-                  <div className="col-6 justify-content-center text-left">
                     <Label
                       href="#"
                       className="btn btn-danger btn-sm"
@@ -276,8 +202,8 @@ export default function Tables({ tourneyId, menu }) {
                     >
                       <i className="bi bi-trash"></i>
                     </Label>
-                  </div>
-                  
+
+                  </div>                
 
                 </div>
 

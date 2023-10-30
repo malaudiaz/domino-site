@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 import { useAppContext } from "../../AppContext";
 import SetNumber from "./SetNumber";
 
-import { InputGroup, Input, InputGroupText, Button } from "reactstrap";
+import { InputGroup, Input, InputGroupText, Button, Label } from "reactstrap";
 
 import {
   Accordion,
@@ -18,8 +18,8 @@ import {
 import Bombo from "./Bombo";
 import BomboPlayer from "./BomboPlayer";
 
-export default function Lottery({ tourneyId, menu, lottery }) {
-  const { profile, token, lang } = useAppContext();
+export default function Lottery({ tourney, menu, lottery, setMenu }) {
+  const { token, lang } = useAppContext();
   const [players, setPlayers] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -31,6 +31,8 @@ export default function Lottery({ tourneyId, menu, lottery }) {
   const [filter, setFilter] = useState("");
   const [openNewBombo, setOpenNewBombo] = useState(false);
   const [bombo, setBombo] = useState([]);
+
+  const [playerAvailable, setPlayerAvailable] = useState(0);
   const rowsPerPage = 12;
 
   const [view, setView] = useState('1');
@@ -46,14 +48,14 @@ export default function Lottery({ tourneyId, menu, lottery }) {
   const config = {
     headers: {
       "Content-Type": "application/json",
-      Accept: "application/json",
+      "Accept": "application/json",
       "accept-Language": lang,
-      Authorization: `Bearer ${token}`,
+      "Authorization": `Bearer ${token}`
     },
   };
 
   const fetchData = async () => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}player?tourney_id=${tourneyId}&page=${page}&per_page=${rowsPerPage}&criteria_key=${"username"}&criteria_value=${filter}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}player?tourney_id=${tourney.id}&page=${page}&per_page=${rowsPerPage}&criteria_key=${"username"}&criteria_value=${filter}`;
 
     try {
       const { data } = await axios.get(url, config);
@@ -92,10 +94,17 @@ export default function Lottery({ tourneyId, menu, lottery }) {
   };
 
   useEffect(() => {
-    if (menu === 3) {
+    if (menu === 3 && lottery === "MANUAL") {
       fetchData();
+    } else {
+      let total = 0;
+      for (let i=0; i<bombo.length; i++) {
+        total = total + bombo[i].players;
+      }
+      setPlayerAvailable(total);      
     }
-  }, [menu, refresh, page, filter]);
+  }, [menu, refresh, page, filter, lottery]);
+
 
   const onChangePage = (pageNumber) => {
     setPage(pageNumber);
@@ -173,15 +182,16 @@ export default function Lottery({ tourneyId, menu, lottery }) {
 
       if (selected.length === total) {
 
-        let url = `${process.env.NEXT_PUBLIC_API_URL}domino/scale/initial/manual/?tourney_id=${tourneyId}`;
+        let url = `${process.env.NEXT_PUBLIC_API_URL}domino/scale/initial/manual/?tourney_id=${tourney.id}`;
 
         try {
           const { data } = await axios.post(url, selected, config);
           if (data.success) {
+            setMenu(4);
             Swal.fire({
               title: "Sorteo de Jugadores del Torneo",
               text: data.detail,
-              icon: "info",
+              icon: "success",
               showCancelButton: false,
               allowOutsideClick: false,
               confirmButtonColor: "#3085d6",
@@ -221,11 +231,12 @@ export default function Lottery({ tourneyId, menu, lottery }) {
 
       if (bombo.length > 0) {
 
-        let url = `${process.env.NEXT_PUBLIC_API_URL}domino/scale/initial/automatic/?tourney_id=${tourneyId}`;
+        let url = `${process.env.NEXT_PUBLIC_API_URL}domino/scale/initial/automatic/?tourney_id=${tourney.id}`;
 
         try {
           const { data } = await axios.post(url, bombo, config);
           if (data.success) {
+            setMenu(4);
             Swal.fire({
               title: "Sorteo de Jugadores del Torneo",
               text: data.detail,
@@ -310,6 +321,11 @@ export default function Lottery({ tourneyId, menu, lottery }) {
             Sorteo Automático
           </h1>
           <div className="d-flex pe-4">
+
+            <div className="pt-2 pe-4">
+              <Label>Jugadores disponibles: <strong>{tourney.amount_player - playerAvailable}</strong> / <strong>{tourney.amount_player}</strong></Label>
+            </div>
+
             <Button
               className="btn btn-sm btn-success me-2"
               style={{ width: "120px" }}
@@ -318,7 +334,12 @@ export default function Lottery({ tourneyId, menu, lottery }) {
               <i className="bi bi-plus-circle"></i> Crear Bombo
             </Button>
 
-            <Button className="btn btn-sm" color="primary" onClick={handleSave}><i className="bi bi-check-circle"></i> Salvar</Button>
+            <Button className="btn btn-sm" 
+              color="primary" 
+              onClick={handleSave} 
+              disabled={bombo.length===0 || (tourney.amount_player - playerAvailable)>0}>
+                <i className="bi bi-check-circle"></i> Salvar
+              </Button>
             
           </div>
         </div>
@@ -418,7 +439,13 @@ export default function Lottery({ tourneyId, menu, lottery }) {
                 {item.title}
               </AccordionHeader>
               <AccordionBody accordionId={item.id}>
-                <BomboPlayer tourneyId={tourneyId} item={item} bombo={bombo} setBombo={setBombo} />
+                <BomboPlayer 
+                  tourney={tourney} 
+                  item={item} 
+                  bombo={bombo} 
+                  setBombo={setBombo} 
+                  setPlayerAvailable={setPlayerAvailable}
+                />
               </AccordionBody>
             </AccordionItem>
           ))}
@@ -436,7 +463,7 @@ export default function Lottery({ tourneyId, menu, lottery }) {
         lottery={lottery}
       />
 
-      <Bombo open={openNewBombo} setClose={setOpenNewBombo} bombo={bombo} setBombo={setBombo} />
+      <Bombo open={openNewBombo} setClose={setOpenNewBombo} bombo={bombo} setBombo={setBombo} tourney={tourney}/>
 
     </div>
   );

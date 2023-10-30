@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { useAppContext } from "../../AppContext";
+import axios from "axios";
 
 import {
   Modal,
@@ -15,7 +17,9 @@ import {
   Label,
 } from "reactstrap";
 
-export default function Bombo({ open, setClose, bombo, setBombo }) {
+export default function Bombo({ open, setClose, bombo, setBombo, tourney }) {
+  const { token, lang } = useAppContext();
+
   const [formValues, setFormValues] = useState({
     letter: {
       value: "",
@@ -51,6 +55,15 @@ export default function Bombo({ open, setClose, bombo, setBombo }) {
     });
   };
 
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "accept-Language": lang,
+      "Authorization": `Bearer ${token}`
+    },
+  };  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -76,36 +89,72 @@ export default function Bombo({ open, setClose, bombo, setBombo }) {
       !formValues.eloMax.error
     ) {
       const array = bombo;
-      
-      array.push({
-        id: bombo.length+1,
-        title: "Bombo - " + formValues.letter.value,
-        min: formValues.eloMin.value,
-        max: formValues.eloMax.value,
-      });
 
-      setBombo(array);
+      const url = `${process.env.NEXT_PUBLIC_API_URL}player/elo/number/?tourney_id=${tourney.id}&min_elo=${formValues.eloMin.value}&max_elo=${formValues.eloMax.value}`;
 
-      setFormValues({
-        letter: {
-          value: "",
-          error: false,
-          errorMessage: "Letra del bombo requerida",
-        },
-        eloMin: {
-          value: "",
-          error: false,
-          errorMessage: "ELO Mínimo requerido",
-        },
-        eloMax: {
-          value: "",
-          error: false,
-          errorMessage: "ELO Máximo requerido",
-        },
+      try {
+        const { data } = await axios.get(url, config);
+
+        if (data.success) {
+
+          array.push({
+            id: bombo.length+1,
+            title: "Bombo - " + formValues.letter.value,
+            min: formValues.eloMin.value,
+            max: formValues.eloMax.value,
+            players: data.data
+          });
     
-      });      
+          setBombo(array);
+    
+          setFormValues({
+            letter: {
+              value: "",
+              error: false,
+              errorMessage: "Letra del bombo requerida",
+            },
+            eloMin: {
+              value: "",
+              error: false,
+              errorMessage: "ELO Mínimo requerido",
+            },
+            eloMax: {
+              value: "",
+              error: false,
+              errorMessage: "ELO Máximo requerido",
+            },
+        
+          });      
+    
+          setClose();
 
-      setClose();
+        }
+      } catch ({ code, message, name, request }) {
+        if (code === "ERR_NETWORK") {
+          Swal.fire({
+            title: "Cargando Jugadores del Torneo",
+            text: "Error en su red, consulte a su proveedor de servicio",
+            icon: "error",
+            showCancelButton: false,
+            allowOutsideClick: false,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Aceptar",
+          });
+        } else {
+          if (code === "ERR_BAD_REQUEST") {
+            const { detail } = JSON.parse(request.response);
+            Swal.fire({
+              title: "Cargando Jugadores del Torneo",
+              text: detail,
+              icon: "error",
+              showCancelButton: false,
+              allowOutsideClick: false,
+              confirmButtonColor: "#3085d6",
+              confirmButtonText: "Aceptar",
+            });
+          }
+        }
+      }     
     }
   };
 
@@ -125,7 +174,12 @@ export default function Bombo({ open, setClose, bombo, setBombo }) {
             ...formValues["eloMax"],
             error: false,
             value: ""
-        }
+        },
+        players: {
+          ...formValues["players"],
+          error: false,
+          value: 0
+      }
     });  
   },[]);
 

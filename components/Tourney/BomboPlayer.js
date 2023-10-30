@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 import Image from "next/image";
 import { Navbar,Form, Label, InputGroup, Input, Button } from "reactstrap";
 
-export default function BomboPlayer({ tourneyId, item, bombo, setBombo }) {
+export default function BomboPlayer({ tourney, item, bombo, setBombo, setPlayerAvailable }) {
   const { token, lang } = useAppContext();
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -21,14 +21,14 @@ export default function BomboPlayer({ tourneyId, item, bombo, setBombo }) {
   const config = {
     headers: {
       "Content-Type": "application/json",
-      Accept: "application/json",
+      "Accept": "application/json",
       "accept-Language": lang,
-      Authorization: `Bearer ${token}`,
+      "Authorization": `Bearer ${token}`,
     },
   };
 
   const fetchData = async () => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}player/elo/?tourney_id=${tourneyId}&page=${page}&per_page=${rowsPerPage}&min_elo=${min}&max_elo=${max}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}player/elo/?tourney_id=${tourney.id}&page=${page}&per_page=${rowsPerPage}&min_elo=${min}&max_elo=${max}`;
 
     try {
       const { data } = await axios.get(url, config);
@@ -36,6 +36,14 @@ export default function BomboPlayer({ tourneyId, item, bombo, setBombo }) {
         setTotal(data.total);
         setTotalPages(data.total_pages);
         setPlayers(data.data);
+        item.players = data.total;
+
+        let total = 0;
+        for (let i=0; i<bombo.length; i++) {
+          total = total + bombo[i].players;
+        }
+        setPlayerAvailable(total);
+
       }
     } catch ({ code, message, name, request }) {
       if (code === "ERR_NETWORK") {
@@ -119,7 +127,7 @@ export default function BomboPlayer({ tourneyId, item, bombo, setBombo }) {
           <div className="d-flex flex-wrap">
               <div className="d-flex me-4">
                   <Label size="sm" style={{width: "100px"}}>ELO Máximo:</Label>
-                  <InputGroup size="sm" style={{width: "50px"}}>
+                  <InputGroup size="sm" style={{width: "100px"}}>
                       <Input
                           type="text"
                           name="maxElo"
@@ -128,7 +136,7 @@ export default function BomboPlayer({ tourneyId, item, bombo, setBombo }) {
                           value={max}
                           onChange={handleChange}
                           onKeyPress={(event) => {
-                              if (!/^[0-9]*$/.test(event.key)) {
+                              if (!/^[0-9.]*$/.test(event.key)) {
                                   event.preventDefault();
                               }
                           }}
@@ -138,7 +146,7 @@ export default function BomboPlayer({ tourneyId, item, bombo, setBombo }) {
             
               <div className="d-flex me-4">
                   <Label size="sm" style={{width: "100px"}}>ELO Mínimo:</Label>
-                  <InputGroup size="sm" style={{width: "50px"}}>
+                  <InputGroup size="sm" style={{width: "100px"}}>
                       <Input
                           type="text"
                           name="minElo"
@@ -147,7 +155,7 @@ export default function BomboPlayer({ tourneyId, item, bombo, setBombo }) {
                           value={min}
                           onChange={handleChange}
                           onKeyPress={(event) => {
-                              if (!/^[0-9]*$/.test(event.key)) {
+                              if (!/^[0-9.]*$/.test(event.key)) {
                                   event.preventDefault();
                               }
                           }}
@@ -184,16 +192,6 @@ export default function BomboPlayer({ tourneyId, item, bombo, setBombo }) {
                   {item.profile_type}. {item.city_name + ", " + item.country}
                 </small>
               </div>
-
-              {/* <h6 className={isNumberAsign(item.id) ? "d-inline" : "d-none"}>
-                <span className="badge text-bg-success">
-                  {lottery === "MANUAL" ? (
-                    getNumberAsign(item.id)
-                  ) : (
-                    <small>B{getNumberAsign(item.id)}</small>
-                  )}
-                </span>
-              </h6> */}
             </div>
 
             <div className="d-flex flex-row justify-content-between align-items-center px-2 py-2">

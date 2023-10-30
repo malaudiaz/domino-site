@@ -312,8 +312,8 @@ export default function View() {
 
           {menu === 0 && <Response tourneyId={router.query.id} menu={menu} status={tourney.status_name}/>}
           {menu === 1 && <Players tourneyId={router.query.id} menu={menu} status={tourney.status_name} />}
-          {menu === 2 && <Setting tourneyId={router.query.id} menu={menu} tourney={tourney} setLottery={setLottery}/>}
-          {menu === 3 && <Lottery tourneyId={router.query.id} menu={menu} lottery={lottery}/>}
+          {menu === 2 && <Setting tourneyId={router.query.id} menu={menu} tourney={tourney} setLottery={setLottery} setMenu={setMenu}/>}
+          {menu === 3 && <Lottery tourney={tourney} menu={menu} lottery={lottery} setMenu={setMenu}/>}
           {menu === 4 && <Tables tourneyId={router.query.id} menu={menu}/>}
 
           

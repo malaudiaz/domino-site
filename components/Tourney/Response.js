@@ -121,41 +121,41 @@ export default function Response({tourneyId, menu, status}) {
                             </div>
 
                             {status === "CREATED" && (<div className="ps-4">
+                                {item.status_name === "ACCEPTED" && (
                                 <div
                                     className="rounded p-2 accept-effect"
                                     title="Aprobar jugador"
                                     onClick={(e) => {approbePlayer(item.id, true)}}
                                 >
-                                <i
-                                    className="bi bi-person-check"
-                                    style={{ fontSize: "24px" }}
-                                ></i>
-                                </div>
+                                    <i
+                                        className="bi bi-person-check"
+                                        style={{ fontSize: "24px" }}
+                                    ></i>
+                                </div>)}
                             </div>)}
 
                             {status === "CREATED" && (<div>
+                                {item.status_name === "ACCEPTED" && (
                                 <div
                                     className="rounded p-2 trash-effect"
                                     title="Rechazar jugador"
                                     onClick={(e) => {approbePlayer(item.id, false)}}
                                 >
-                                <i
-                                    className="bi bi-person-dash"
-                                    style={{ fontSize: "24px" }}
-                                ></i>
-                                </div>
+                                    <i
+                                        className="bi bi-person-dash"
+                                        style={{ fontSize: "24px" }}
+                                    ></i>
+                                </div>)}
                             </div>)}
 
-                            {status === "INITIADED" && (<div>
+                            {(status === "INITIADED" || status === "CONFIGURATED") && (<div>
+                                {item.status_name === "CONFIRMED" && (
                                 <div
                                     className="rounded p-2"
                                     title="Jugador Aceptado"
                                 >
-                                <i
-                                    className="bi bi-patch-check"
-                                    style={{ fontSize: "24px", color: "blue" }}
-                                ></i>
-                                </div>
+                                    <i className="bi bi-patch-check" style={{ fontSize: "24px", color: "blue" }}></i>
+                                </div>)}
                             </div>)}
 
                         </div>

@@ -158,7 +158,7 @@ export default function Players({tourneyId, menu, status}) {
                                     ></i>
                                     </div>
                                 </div>)}
-                                {status === "INITIADED" && (<div>
+                                {(status === "INITIADED" || status === "CONFIGURATED") && (<div>
                                     <div
                                         className="rounded p-2"
                                         title="Jugador Aceptado"

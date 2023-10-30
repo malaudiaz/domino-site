@@ -17,7 +17,7 @@ import {
   Button,
 } from "reactstrap";
 
-export default function Setting({ tourneyId, menu, tourney, setLottery }) {
+export default function Setting({ tourneyId, menu, tourney, setLottery, setMenu }) {
   const { profile, token, lang } = useAppContext();
 
   const [createObjectURL, setCreateObjectURL] = useState(null);
@@ -172,6 +172,7 @@ export default function Setting({ tourneyId, menu, tourney, setLottery }) {
         });
         if (data.success) {
           setLottery(formValues.lottery.value);
+          setMenu(3);
           Swal.fire({
             icon: "success",
             title: "Configurando Torneo",
@@ -306,7 +307,7 @@ export default function Setting({ tourneyId, menu, tourney, setLottery }) {
                       invalid={formValues.smartTable.error}                     
                       value={formValues.smartTable.value}
                       onChange={handleChange}
-                      disabled={tourney.status_name==="INITIADED"}
+                      disabled={tourney.status_name==="CONFIGURATED" || tourney.status_name==="INITIADED"}
                     />
                     <FormFeedback>La cantidad de mesas inteligentes es requerida.</FormFeedback>
                   </InputGroup>
@@ -326,7 +327,7 @@ export default function Setting({ tourneyId, menu, tourney, setLottery }) {
                       invalid={formValues.amountRound.error}                     
                       value={formValues.amountRound.value}
                       onChange={handleChange}
-                      disabled={tourney.status_name==="INITIADED"}
+                      disabled={tourney.status_name==="CONFIGURATED" || tourney.status_name==="INITIADED"}
                     />
                   </InputGroup>
                 </Col>
@@ -345,7 +346,7 @@ export default function Setting({ tourneyId, menu, tourney, setLottery }) {
                       invalid={formValues.pointRound.error}                     
                       value={formValues.pointRound.value}
                       onChange={handleChange}
-                      disabled={tourney.status_name==="INITIADED"}
+                      disabled={tourney.status_name==="CONFIGURATED" || tourney.status_name==="INITIADED"}
                     />
                   </InputGroup>
                 </Col>
@@ -364,7 +365,7 @@ export default function Setting({ tourneyId, menu, tourney, setLottery }) {
                       invalid={formValues.timeRound.error}                     
                       value={formValues.timeRound.value}
                       onChange={handleChange}
-                      disabled={tourney.status_name==="INITIADED"}
+                      disabled={tourney.status_name==="CONFIGURATED" || tourney.status_name==="INITIADED"}
                     />
                   </InputGroup>
                 </Col>
@@ -384,8 +385,8 @@ export default function Setting({ tourneyId, menu, tourney, setLottery }) {
                         placeholder="Sistema de Juego"
                         defaultValue={formValues.playSystem.value}
                         onChange={handleChange}
-                        disabled={tourney.status_name==="INITIADED"}
-                    >
+                        disabled={tourney.status_name==="CONFIGURATED" || tourney.status_name==="INITIADED"}
+                      >
                       <option value="SUIZO">Sistema Suizo</option>
                       <option value="TRADICIONAL">Sistema Tradicional</option>
                     </Input>
@@ -408,8 +409,8 @@ export default function Setting({ tourneyId, menu, tourney, setLottery }) {
                         placeholder="Sorteo"
                         defaultValue={formValues.lottery.value}
                         onChange={handleChange}
-                        disabled={tourney.status_name==="INITIADED"}
-                    >
+                        disabled={tourney.status_name==="CONFIGURATED" || tourney.status_name==="INITIADED"}
+                      >
                         <option value="MANUAL">Manual</option>
                         <option value="AUTOMATIC">Automático</option>
                     </Input>
@@ -433,8 +434,8 @@ export default function Setting({ tourneyId, menu, tourney, setLottery }) {
                         placeholder="Bonificación"
                         defaultValue={formValues.bonus.value}
                         onChange={handleChange}
-                        disabled={tourney.status_name==="INITIADED"}
-                    >
+                        disabled={tourney.status_name==="CONFIGURATED" || tourney.status_name==="INITIADED"}
+                      >
                       <option value="YES">Sí</option>
                       <option value="NO">No</option>
                     </Input>
@@ -457,7 +458,7 @@ export default function Setting({ tourneyId, menu, tourney, setLottery }) {
                       invalid={formValues.limitPenaltyPoints.error}                     
                       value={formValues.limitPenaltyPoints.value}
                       onChange={handleChange}
-                      disabled={tourney.status_name==="INITIADED"}
+                      disabled={tourney.status_name==="CONFIGURATED" || tourney.status_name==="INITIADED"}
                     />
                   </InputGroup>
                 </Col>
@@ -474,7 +475,7 @@ export default function Setting({ tourneyId, menu, tourney, setLottery }) {
             color="primary"
             data-toggle="tooltip"
             title="Guardar Cambios"
-            disabled={tourney.status_name==="INITIADED"}
+            disabled={tourney.status_name==="CONFIGURATED" || tourney.status_name==="INITIADED"}
           >
             Guardar
           </Button>
