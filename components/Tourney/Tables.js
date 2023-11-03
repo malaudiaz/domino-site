@@ -78,14 +78,16 @@ export default function Tables({ tourneyId, menu }) {
                   <div className="image_with_badge_container">
                     <Image
                       alt="Avatar Player 1"
-                      src={item.playerOne.avatar}
+                      src={item.playerOne ? item.playerOne.avatar : "/profile/user-vector.jpg"}
                       width={60}
                       height={60}
                       className="rounded-image"
                     />
-                    <span className="badge bg-primary rounded badge-on-image-y">{item.playerOne.index}</span>
+                    <span className="badge bg-primary rounded badge-on-image-y">
+                      {item.playerOne ? item.playerOne.index : "-"}
+                    </span>
                   </div>
-                  <small>{item.playerOne.name}</small>
+                  <small>{item.playerOne ? item.playerOne.name : "Vacante"}</small>
                 </div>
 
                 <div className="row">
@@ -94,14 +96,16 @@ export default function Tables({ tourneyId, menu }) {
                     <div className="image_with_badge_container">
                       <Image
                         alt="Avatar Player 2"
-                        src={item.playerTwo.avatar}
+                        src={item.playerTwo ? item.playerTwo.avatar : "/profile/user-vector.jpg"}
                         width={60}
                         height={60}
                         className="rounded-image"
                       />
-                      <span className="badge bg-primary rounded badge-on-image-x">{item.playerTwo.index}</span>
+                      <span className="badge bg-primary rounded badge-on-image-x">
+                        {item.playerTwo ? item.playerTwo.index : "-"}
+                      </span>
                     </div>
-                    <small>{item.playerTwo.name}</small>
+                    <small>{item.playerTwo ? item.playerTwo.name : "Vacante"}</small>
                   </div>
 
                   <div
@@ -122,19 +126,20 @@ export default function Tables({ tourneyId, menu }) {
 
                   </div>
 
-
                   <div className="col-3 d-flex flex-column justify-content-center text-center">
                       <div className="image_with_badge_container">
-                      <Image
-                        alt="Avatar Player 4"
-                        src={item.playerFour.avatar}
-                        width={60}
-                        height={60}
-                        className="rounded-image"
-                      />
-                      <span className="badge bg-primary rounded badge-on-image-x">{item.playerFour.index}</span>
-                    </div>
-                    <small>{item.playerFour.name}</small>
+                        <Image
+                          alt="Avatar Player 4"
+                          src={item.playerFour ? item.playerFour.avatar : "/profile/user-vector.jpg"}
+                          width={60}
+                          height={60}
+                          className="rounded-image"
+                        />
+                        <span className="badge bg-primary rounded badge-on-image-x">
+                          {item.playerFour ? item.playerFour.index : "-"}
+                        </span>
+                      </div>
+                      <small>{item.playerFour ? item.playerFour.name: "Vacante"}</small>
                   </div>
 
                 </div>
@@ -211,14 +216,14 @@ export default function Tables({ tourneyId, menu }) {
                   <div className="image_with_badge_container">
                     <Image
                       alt="Avatar Player 3"
-                      src={item.playerThree.avatar}
+                      src={item.playerThree ? item.playerThree.avatar : "/profile/user-vector.jpg"}
                       width={60}
                       height={60}
                       className="rounded-image"
                     />
-                    <span className="badge bg-primary rounded badge-on-image-y">{item.playerThree.index}</span>
+                    <span className="badge bg-primary rounded badge-on-image-y">{item.playerThree ? item.playerThree.index : "-"}</span>
                   </div>
-                  <small>{item.playerThree.name}</small>
+                  <small>{item.playerThree ? item.playerThree.name : "Vacante"}</small>
                 </div>
               </div>
             </Card>

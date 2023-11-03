@@ -63,7 +63,7 @@ const Sidebar = () => {
           </ul>          
         </li>
 
-        {profile.type === "EVENTADMON" &&
+        {profile.type !== "USER" &&
           <li className="nav-item">
             <a
               className="nav-link"
@@ -87,6 +87,8 @@ const Sidebar = () => {
                     </a>
                 </Link>
               </li>
+
+              {profile.type === "EVENTADMON" &&
               <li>
                 <Link href={"/event/own"}>
                   <a>
@@ -94,7 +96,9 @@ const Sidebar = () => {
                     <span>Mís Eventos</span>
                   </a>
                 </Link>
-              </li>
+              </li>}
+
+
             </ul>          
           </li>
         }
