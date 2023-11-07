@@ -8,11 +8,8 @@ import Image from "next/image";
 import { useAppContext } from "../../../AppContext";
 import Header from "../../../components/Header/Header";
 import Footer from "../../../components/Footers/Footer";
-import Response from "../../../components/Tourney/Response";
 import Players from "../../../components/Tourney/Players";
-import Tables from "../../../components/Tourney/Tables";
-import Setting from "../../../components/Tourney/Setting";
-import Lottery from "../../../components/Tourney/Lottery";
+import { eventDate } from "../../../_functions";
 
 export default function View() {
   const { token, lang } = useAppContext();
@@ -20,9 +17,8 @@ export default function View() {
   const router = useRouter();
   const [tourney, setToutney] = useState([]);
 
-  const [disabled, setDisabled] = useState(false);
   const [lottery, setLottery] = useState("MANUAL");
-  const [menu, setMenu] = useState(0);
+  const [menu, setMenu] = useState(1);
 
   const monthTourney = (startDate) => {
     const start = new Date(startDate + " 00:00");
@@ -78,22 +74,6 @@ export default function View() {
     setMenu(btn);
   };
 
-  const playButton = () => {
-    Swal.fire({
-      title: "¿ Iniciar Torneo ?",
-      text: "Deseas iniciar esté torneo",
-      icon: "question",
-      showCancelButton: true,
-      cancelButtonText: "Cancelar",
-      allowOutsideClick: false,
-      confirmButtonColor: "#3085d6",
-      confirmButtonText: "Iniciar",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        setMenu(2);
-      }
-    });
-  };
 
   return (
     <>
@@ -153,7 +133,7 @@ export default function View() {
       <main id="main" className="main">
         <Head>
           <link rel="shortcut icon" href="/smartdomino.ico" />
-          <title>Torneos</title>
+          <title>{tourney.name}</title>
         </Head>
 
         <div
@@ -227,6 +207,7 @@ export default function View() {
             className="px-4 pb-4"
             style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
           >
+
             <button
               type="button"
               style={
@@ -240,7 +221,7 @@ export default function View() {
                 handleButton(0);
               }}
             >
-              <i className="bi bi-envelope-check"></i> Invitaciones Aceptadas
+              <i className="bi bi-people"></i> Jugadores
             </button>
 
             <button
@@ -256,66 +237,15 @@ export default function View() {
                 handleButton(1);
               }}
             >
-              <i className="bi bi-people"></i> Jugadores
+              <i className="bi bi-diagram-3"></i> Rondas
             </button>
 
-            <button 
-              type="button" 
-              style={
-                menu === 2
-                ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
-                : { background: "#e4e6eb" }
-              }
-              className="btn btn-sm"
-              onClick={(e)=>{
-                e.preventDefault();
-                handleButton(2);
-              }}
-            >
-              <i className="bi bi-gear"></i> Configurar Torneo
-            </button>
-
-            <button
-              type="button"
-              disabled={tourney.status_name==="INITIADED"}
-              style={
-                menu === 3
-                  ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
-                  : { background: "#e4e6eb" }
-              }
-              className="btn btn-sm"
-              onClick={(e) => {
-                e.preventDefault();
-                handleButton(3);
-              }}
-            >
-              <i className="bi bi-card-checklist"></i> Sorteo
-            </button>
-
-            <button
-              type="button"
-              style={
-                menu === 4
-                  ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
-                  : { background: "#e4e6eb" }
-              }
-              className="btn btn-sm"
-              onClick={(e) => {
-                e.preventDefault();
-                handleButton(4);
-              }}
-            >
-              <i className="bi bi-bounding-box"></i> Mesas
-            </button>
 
           </div>
 
-          {menu === 0 && <Response tourneyId={router.query.id} menu={menu} status={tourney.status_name}/>}
           {menu === 1 && <Players tourneyId={router.query.id} menu={menu} status={tourney.status_name} />}
-          {menu === 2 && <Setting tourneyId={router.query.id} menu={menu} tourney={tourney} setLottery={setLottery} setMenu={setMenu}/>}
-          {menu === 3 && <Lottery tourney={tourney} menu={menu} lottery={lottery} setMenu={setMenu}/>}
-          {menu === 4 && <Tables tourneyId={router.query.id} menu={menu}/>}
 
+          {/* Los torneos en esta vista deben estar en estado iniciado */}
           
         </div>
       </main>

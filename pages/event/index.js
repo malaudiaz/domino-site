@@ -1,5 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
+import { useRouter } from 'next/router';
 import {useAppContext} from "../../AppContext";
 import Layout from "../../layouts/Layout";
 import Head from "next/head";
@@ -23,12 +24,28 @@ export default function Events() {
   const {profile, lang, token, i18n} = useAppContext();
   const [events, setEvents] = useState([]);
   const [refresh, setRefresh] = useState(false);
-  const [ubication, setUbication] = useState(false);
+  const [locations, setLocations] = useState(false);
   const [period, setPeriod] = useState(false);
+  const [moment, setMoment] = useState("");
+  const [location, setLocation] = useState("");
 
-  const [filter, setFilter] = useState("");
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [total, setTotal] = useState(0);
 
-  const ctxMenu = [];
+  const router = useRouter();
+
+
+  const rowsPerPage = 12;
+
+  const [filter, setFilter] = useState({
+    criteria_key: "participating",
+    criteria_value: "",
+  });
+
+  const ctxMenu = [
+    { text: "Torneos", key: "mnuTourney", icon: "bi bi-pencil-square" }
+  ];
 
   const config = {
     headers: {
@@ -40,13 +57,23 @@ export default function Events() {
   };
 
   const fetchData = async () => {
-    const url = `${
+    let url = `${
       process.env.NEXT_PUBLIC_API_URL
-    }event?profile_id=${profile.id}&page=${0}&per_page=${0}`;
+    }event/criteria/?profile_id=${profile.id}&page=${page}&per_page=${rowsPerPage}`;
+
+    if (filter.criteria_key !== "") {
+      if (filter.criteria_value === "") {
+        url = url + "&criteria_key=" + (filter.criteria_key==="participating" ? "participating" : "following");
+      } else {
+        url = url + "&criteria_key=" + filter.criteria_key + "&criteria_value=" + filter.criteria_value;
+      }
+    }
 
     try {
       const { data } = await axios.get(url, config);
       if (data.success) {
+        setTotal(data.total);
+        setTotalPages(data.total_pages);   
         setRefresh(false);
         setEvents(data.data);
       }
@@ -65,7 +92,7 @@ export default function Events() {
         if (code === "ERR_BAD_REQUEST") {
           const {detail} = JSON.parse(request.response)
           Swal.fire({
-            title: "Autentificar",
+            title: "Descubrir Eventos",
             text: detail,
             icon: "error",
             showCancelButton: false,
@@ -82,24 +109,36 @@ export default function Events() {
     if (Object.entries(profile).length > 0) {
       fetchData();
     }
-  }, [refresh, profile]);
+  }, [refresh, profile, filter]);
 
   const t = i18n.events;
 
   const onMenuSelection = (key, index) => {
     switch (key) {
-      case "mnuEdit":
-        break;
-      case "mnuDel":
+      case "mnuTourney":
         break;
     }
   };
 
-  const toggleUbication = () => setUbication((prevState) => !prevState);
+  const toggleLocations = () => setLocations((prevState) => !prevState);
   const togglePeriod = () => setPeriod((prevState) => !prevState);
-  const changePeriod = (text) => {
-    document.getElementById("period").innerHTML = text;
+
+  const changeFilter = (name, text, value) => {
+    if (document.getElementById(name)) {
+      document.getElementById(name).innerHTML = text;
+    }
+    setFilter({criteria_key: name, criteria_value: value});
+    if (name === "location") {
+      setLocation(value);
+    } else {
+      setMoment(value);
+    }
+  }
+
+  const handleClick = (id) => {
+    router.push(`/tourney/available/${id}`);
   };
+
 
   return (
     <Layout>
@@ -116,34 +155,66 @@ export default function Events() {
           </div>
 
           <div className="px-4" style={{display: "flex", flexWrap: "wrap", gap:"10px"}}>
-              <Dropdown isOpen={ubication} toggle={toggleUbication} direction={"down"}>
-                <DropdownToggle caret><i className="bi bi-geo-alt"></i> Mí ubicación</DropdownToggle>
+              <Dropdown isOpen={locations} toggle={toggleLocations} direction={"down"}>
+                <DropdownToggle 
+                  id="location" 
+                  caret
+                  color={filter.criteria_key==="location" ? "primary" : "secondary"}                
+                >
+                  <i className="bi bi-geo-alt"></i> Mí ubicación
+                </DropdownToggle>
                 <DropdownMenu>
-                  <DropdownItem>Mi país</DropdownItem>
-                  <DropdownItem>Mi ciudad</DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
-
-              <Dropdown isOpen={period} toggle={togglePeriod} direction={"down"}>
-                <DropdownToggle id="period" caret><i className="bi bi-calendar-week"></i> Cualquier fecha</DropdownToggle>
-                <DropdownMenu>
-                  <DropdownItem onClick={(e)=>{e.preventDefault(); changePeriod("Cualquier fecha")}}>Cualquier fecha</DropdownItem>
+                  <DropdownItem onClick={(e)=>{e.preventDefault(); changeFilter("location", "Mí ubicación", "")}}>Mí ubicación</DropdownItem>
                   <DropdownItem divider />
-                  <DropdownItem onClick={(e)=>{e.preventDefault(); changePeriod("Hoy")}}>Hoy</DropdownItem>
-                  <DropdownItem onClick={(e)=>{e.preventDefault(); changePeriod("Mañana")}}>Mañana</DropdownItem>
-                  <DropdownItem onClick={(e)=>{e.preventDefault(); changePeriod("Este fin de semana")}}>Este fin de semana</DropdownItem>
-                  <DropdownItem onClick={(e)=>{e.preventDefault(); changePeriod("Esta semana")}}>Esta semana</DropdownItem>
-                  <DropdownItem onClick={(e)=>{e.preventDefault(); changePeriod("Próxima semana")}}>Próxima semana</DropdownItem>
-                  <DropdownItem onClick={(e)=>{e.preventDefault(); changePeriod("Este mes")}}>Este mes</DropdownItem>
+                  <DropdownItem onClick={(e)=>{e.preventDefault(); changeFilter("location", "Mi País", "MY_COUNTRY")}}>Mi país</DropdownItem>
+                  <DropdownItem onClick={(e)=>{e.preventDefault(); changeFilter("location", "Mi Ciudad", "MY_CITY")}}>Mi ciudad</DropdownItem>
                 </DropdownMenu>
               </Dropdown>
 
-              <Button size="sm" color="primary"> 
-                  Destacados
-              </Button> 
-              <Button size="sm"> 
+              <Dropdown 
+                isOpen={period} 
+                toggle={togglePeriod} 
+                direction={"down"}
+              >
+                <DropdownToggle 
+                  id="moment" 
+                  caret
+                  color={filter.criteria_key==="moment" ? "primary" : "secondary"}                
+                >
+                  <i className="bi bi-calendar-week"></i> Cualquier fecha</DropdownToggle>
+                <DropdownMenu>
+                  <DropdownItem onClick={(e)=>{e.preventDefault(); changeFilter("moment", "Cualquier fecha", "0")}}>Cualquier fecha</DropdownItem>
+                  <DropdownItem divider />
+                  <DropdownItem onClick={(e)=>{e.preventDefault(); changeFilter("moment", "Hoy", "1")}}>Hoy</DropdownItem>
+                  <DropdownItem onClick={(e)=>{e.preventDefault(); changeFilter("moment", "Mañana", "2")}}>Mañana</DropdownItem>
+                  <DropdownItem onClick={(e)=>{e.preventDefault(); changeFilter("moment", "Este fin de semana", "3")}}>Este fin de semana</DropdownItem>
+                  <DropdownItem onClick={(e)=>{e.preventDefault(); changeFilter("moment", "Esta semana", "4")}}>Esta semana</DropdownItem>
+                  <DropdownItem onClick={(e)=>{e.preventDefault(); changeFilter("moment", "Próxima semana", "5")}}>Próxima semana</DropdownItem>
+                  <DropdownItem onClick={(e)=>{e.preventDefault(); changeFilter("moment", "Este mes", "6")}}>Este mes</DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+
+              <Button 
+                color={filter.criteria_key==="following" ? "primary" : "secondary"} 
+                size="sm" 
+                onClick={(e)=>{
+                  e.preventDefault(); 
+                  changeFilter("following", "Siguiendo", "")}}
+                > 
                   Siguiendo
               </Button> 
+
+              <Button 
+                color={filter.criteria_key==="participating" ? "primary" : "secondary"} 
+                size="sm" 
+                onClick={(e)=>{
+                  e.preventDefault(); 
+                  changeFilter("participating", "Participando", "")}}
+                > 
+                  Participando
+              </Button> 
+
+
           </div>
 
           <div className="pt-4 px-4" style={{display: "grid"}}>
@@ -152,7 +223,7 @@ export default function Events() {
 
             <div className="container-events">
               {events.map(
-                ({ name, summary, photo, startDate, endDate, city_name, campus, amount_people }, idx) => (
+                ({ id, name, summary, photo, startDate, endDate, city_name, campus, amount_people }, idx) => (
                   <Card style={{cursor: "pointer", borderRadius: "10px"}} key={idx}>
                     <div className="d-flex justify-content-between p-2">
                       <div className="d-flex flex-row align-items-center">
@@ -168,31 +239,33 @@ export default function Events() {
                         />
                       </div>
                     </div>
-                    <Image
-                      alt={summary}
-                      src={photo}
-                      width={400}
-                      height={400}
-                      quality={50}
-                      priority
-                      layout="intrinsic"
-                    />
-                    <CardBody>
-                      <div className="col-12 pt-4" style={{textAlign: "center"}}>
-                        <h6 className="mb-2 text-muted">{summary}</h6>
-                      </div>
-                      <div className="row pt-2" style={{textAlign: "center"}}>
-                        <span className="mb-2 text-muted"><b>{eventDate(startDate, endDate)}</b></span>
-                      </div>
-                      <div className="row pt-2" style={{textAlign: "center"}}>
-                          <b>{campus}, {city_name}</b>
-                      </div>
-                      {amount_people > 0 &&
-                        <div className="col-12 pt-2" style={{textAlign: "center"}}>
-                          <span className="mb-2 text-muted">{amount_people === 1 ? amount_people + " persona asistira" : amount_people + " personas asistirán"}</span>
+                    <div onClick={(e)=>{e.preventDefault(); handleClick(id)}}>
+                      <Image
+                        alt={summary}
+                        src={photo}
+                        width={400}
+                        height={400}
+                        quality={50}
+                        priority
+                        layout="intrinsic"
+                      />
+                      <CardBody>
+                        <div className="col-12 pt-4" style={{textAlign: "center"}}>
+                          <h6 className="mb-2 text-muted">{summary}</h6>
                         </div>
-                      }
-                    </CardBody>
+                        <div className="row pt-2" style={{textAlign: "center"}}>
+                          <span className="mb-2 text-muted"><b>{eventDate(startDate, endDate)}</b></span>
+                        </div>
+                        <div className="row pt-2" style={{textAlign: "center"}}>
+                            <b>{campus}, {city_name}</b>
+                        </div>
+                        {amount_people > 0 &&
+                          <div className="col-12 pt-2" style={{textAlign: "center"}}>
+                            <span className="mb-2 text-muted">{amount_people === 1 ? amount_people + " persona asistira" : amount_people + " personas asistirán"}</span>
+                          </div>
+                        }
+                      </CardBody>
+                    </div>
                   </Card>
                 )
               )}
