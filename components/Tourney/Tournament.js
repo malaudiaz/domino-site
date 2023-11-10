@@ -14,6 +14,7 @@ import {
   FormFeedback,
   Col,
   Label,
+  Form
 } from "reactstrap";
 
 import axios from "axios";
@@ -33,10 +34,9 @@ export default function Tournament({ open, setClose, record, event }) {
   });
 
   const [error, setError] = useState({
-    name: null,
-    modality: null,
-    startDate: null,
-    summary: null,
+    name: false,
+    modality: false,
+    startDate: false
   });
 
   useEffect(() => {
@@ -52,20 +52,19 @@ export default function Tournament({ open, setClose, record, event }) {
         });
     } else {
         setTourney({
-            id: null,
-            event_id: null,
-            name: null,
-            modality: null,
-            startDate: null,
-            summary: null
+            id: "",
+            event_id: "",
+            name: "",
+            modality: "",
+            startDate: "",
+            summary: ""
         });
     }
     setError({
       ...error,
-      name: null,
-      modality: null,
-      startDate: null,
-      summary: null
+      name: false,
+      modality: false,
+      startDate: false,
     });
   }, [record]);
 
@@ -92,7 +91,19 @@ export default function Tournament({ open, setClose, record, event }) {
     }
   };
 
+  const isError = () => {
+    setError({
+      ...error,
+      name: tourney.name==="",
+      modality: tourney.modality==="",
+      startDate: tourney.startDate===""
+    })
+    const valid = (tourney.name==="" || tourney.modality==="" || tourney.startDate==="");
+    return valid;
+  }
+
   const handleCreate = async () => {
+
     const url = `${process.env.NEXT_PUBLIC_API_URL}tourney?event_id=${event.id}`;
 
     try {
@@ -136,12 +147,11 @@ export default function Tournament({ open, setClose, record, event }) {
           confirmButtonText: "Aceptar",
         });
     }
-
   };
 
   const handleUpdate = async () => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}tourney/${tourney.id}`;
 
+    const url = `${process.env.NEXT_PUBLIC_API_URL}tourney/${tourney.id}`;
     try {
         const { data } = await axios.put(url, tourney, config);
         if (data.success) {
@@ -188,7 +198,9 @@ export default function Tournament({ open, setClose, record, event }) {
   };
 
   const handleSubmit = async (e) => {
-    if (isValid()) {
+    e.preventDefault();
+
+    if (!isError()) {
       if (Object.entries(record).length === 0) {
         handleCreate();
       } else {
@@ -206,134 +218,137 @@ export default function Tournament({ open, setClose, record, event }) {
       >
         {Object.entries(record).length === 0 ? "Crear Torneo" : "Editar Torneo"}
       </ModalHeader>
-      <ModalBody>
-        <div className="col-12">
-          <div className="p-2">
-            <Col md={12}>
-              <FormGroup>
-                <Label>Nombre del Torneo</Label>
-                <InputGroup size="sm">
-                  <Input
-                    type="text"
-                    name="name"
-                    id="name"
-                    placeholder={"Nombre del Torneo"}
-                    invalid={error.name}
-                    onChange={handleChange("name")}
-                    autoComplete="off"
-                    value={tourney.name}
-                    onKeyPress={(event) => {
-                      if (!/^[A-Za-z_0-9.áéíóúÑñ\s]*$/.test(event.key)) {
-                        event.preventDefault();
-                      }
-                    }}
-                  />
-                  <FormFeedback>
-                    Por favor, teclee el nombre del torneo
-                  </FormFeedback>
-                </InputGroup>
-              </FormGroup>
-            </Col>
-            <Col md={12}>
-              <FormGroup>
-                <Label>Modalidad</Label>
-                <InputGroup size="sm">
-                  <Input
-                    id="modality"
-                    name="modality"
-                    type="select"
-                    value={tourney.modality}
-                    invalid={error.modality}
-                    onChange={handleChange("modality")}
-                  >
-                    <option value="">Modalidad</option>
-                    <option value="Individual">Individual</option>
-                    <option value="Parejas">Parejas</option>
-                    <option value="Equipo">Equipo</option>
-                  </Input>
-                  <FormFeedback>
-                    Por favor, seleccione la modalidad del torneo
-                  </FormFeedback>
-                </InputGroup>
-              </FormGroup>
-            </Col>
-            <Col md="12">
-              <FormGroup>
-                <Label>Fecha</Label>
-                <InputGroup size="sm">
-                  <Input
-                    id="startDate"
-                    name="startDate"
-                    invalid={error.startDate}
-                    placeholder="Fecha"
-                    type="date"
-                    value={tourney.startDate}
-                    onChange={handleChange("startDate")}
-                  />
-                  <FormFeedback>
-                    La fecha debe estar dentro del rango del evento
-                  </FormFeedback>
-                </InputGroup>
-              </FormGroup>
-            </Col>
-            <Col md={12}>
-              <FormGroup>
-                <Label>Comentario</Label>
-                <InputGroup size="sm">
-                  <Input
-                    type="text"
-                    name="summary"
-                    id="summary"
-                    placeholder={"Comentario"}
-                    onChange={handleChange("summary")}
-                    autoComplete="off"
-                    value={tourney.summary}
-                    onKeyPress={(event) => {
-                      if (!/^[A-Za-z_0-9.áéíóúÑñ\s]*$/.test(event.key)) {
-                        event.preventDefault();
-                      }
-                    }}
-                  />
-                </InputGroup>
-              </FormGroup>
-            </Col>
+
+      <Form onSubmit={handleSubmit}>
+      
+        <ModalBody>
+          <div className="col-12">
+            <div className="p-2">
+              <Col md={12}>
+                <FormGroup>
+                  <Label>Nombre del Torneo</Label>
+                  <InputGroup size="sm">
+                    <Input
+                      type="text"
+                      name="name"
+                      id="name"
+                      placeholder={"Nombre del Torneo"}
+                      invalid={error.name}
+                      onChange={handleChange("name")}
+                      autoComplete="off"
+                      value={tourney.name}
+                      onKeyPress={(event) => {
+                        if (!/^[A-Za-z_0-9.áéíóúÑñ\s]*$/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                    />
+                    <FormFeedback>
+                      Por favor, teclee el nombre del torneo
+                    </FormFeedback>
+                  </InputGroup>
+                </FormGroup>
+              </Col>
+              <Col md={12}>
+                <FormGroup>
+                  <Label>Modalidad</Label>
+                  <InputGroup size="sm">
+                    <Input
+                      id="modality"
+                      name="modality"
+                      type="select"
+                      value={tourney.modality}
+                      invalid={error.modality}
+                      onChange={handleChange("modality")}
+                    >
+                      <option value="">Modalidad</option>
+                      <option value="Individual">Individual</option>
+                      <option value="Parejas">Parejas</option>
+                      <option value="Equipo">Equipo</option>
+                    </Input>
+                    <FormFeedback>
+                      Por favor, seleccione la modalidad del torneo
+                    </FormFeedback>
+                  </InputGroup>
+                </FormGroup>
+              </Col>
+              <Col md="12">
+                <FormGroup>
+                  <Label>Fecha</Label>
+                  <InputGroup size="sm">
+                    <Input
+                      id="startDate"
+                      name="startDate"
+                      invalid={error.startDate}
+                      placeholder="Fecha"
+                      type="date"
+                      value={tourney.startDate}
+                      onChange={handleChange("startDate")}
+                    />
+                    <FormFeedback>
+                      La fecha debe estar dentro del rango del evento
+                    </FormFeedback>
+                  </InputGroup>
+                </FormGroup>
+              </Col>
+              <Col md={12}>
+                <FormGroup>
+                  <Label>Comentario</Label>
+                  <InputGroup size="sm">
+                    <Input
+                      type="text"
+                      name="summary"
+                      id="summary"
+                      placeholder={"Comentario"}
+                      onChange={handleChange("summary")}
+                      autoComplete="off"
+                      value={tourney.summary}
+                      onKeyPress={(event) => {
+                        if (!/^[A-Za-z_0-9.áéíóúÑñ\s]*$/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                    />
+                  </InputGroup>
+                </FormGroup>
+              </Col>
+            </div>
           </div>
-        </div>
-      </ModalBody>
-      <ModalFooter className="modal-footer">
+        </ModalBody>
+        <ModalFooter className="modal-footer">
           <Button
-            className="btn-sm"
-            style={{
-              backgroundColor: "#0095f6",
-              border: "none",
-              color: "white",
-              fontSize: "14px",
-              fontWeight: "700",
-            }}
-            onClick={(e) => {
-              handleSubmit(e);
-            }}
-            title="Aceptar"
-          >
-            <i className="bi-check2-circle" />{" "}
-            Aceptar
-        </Button>
+              type="submit"
+              className="btn-sm"
+              style={{
+                backgroundColor: "#0095f6",
+                border: "none",
+                color: "white",
+                fontSize: "14px",
+                fontWeight: "700",
+              }}
+              title="Aceptar"
+            >
+              <i className="bi-check2-circle" />{" "}
+              Aceptar
+          </Button>
 
-        <Button
-            className="btn-sm"
-            style={{
-              border: "none",
-              fontSize: "14px",
-              fontWeight: "700",
-            }}
-            title="Cancelar"
-            onClick={close}
-          >
-            <i className="bi bi-x-circle" />{" "}
-            Cancelar
-        </Button>
+          <Button
+              className="btn-sm"
+              style={{
+                border: "none",
+                fontSize: "14px",
+                fontWeight: "700",
+              }}
+              title="Cancelar"
+              onClick={close}
+            >
+              <i className="bi bi-x-circle" />{" "}
+              Cancelar
+          </Button>
 
-      </ModalFooter>
+        </ModalFooter>
+
+      </Form>
     </Modal>
   );
 }

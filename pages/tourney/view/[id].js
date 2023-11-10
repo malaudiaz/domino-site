@@ -293,6 +293,24 @@ export default function View() {
               <i className="bi bi-bounding-box"></i> Mesas
             </button>
 
+
+            <button
+              type="button"
+              style={
+                menu === 5
+                  ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
+                  : { background: "#e4e6eb" }
+              }
+              className="btn btn-sm"
+              onClick={(e) => {
+                e.preventDefault();
+              }}
+            >
+              <i className="bi bi-collection-play"></i> Inicial Ronda
+            </button>
+
+
+
           </div>
 
           {menu === 0 && <Response tourneyId={tourneyId} menu={menu} status={tourney.status_name}/>}
