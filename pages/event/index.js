@@ -44,7 +44,8 @@ export default function Events() {
   });
 
   const ctxMenu = [
-    { text: "Torneos", key: "mnuTourney", icon: "bi bi-pencil-square" }
+    { text: "Torneos", key: "mnuTourney", icon: "bi bi-pencil-square" },
+    { text: "Seguir", key: "mnuFollow", icon: "bi bi-pencil-square" }
   ];
 
   const config = {

@@ -11,7 +11,6 @@ import Image from "next/image";
 import { eventDate } from "../../_functions";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footers/Footer";
-import Link from "next/link";
 
 export default function Tourneys() {
   const {token, lang} = useAppContext();
@@ -30,6 +29,8 @@ export default function Tourneys() {
     { text: "Eliminar", key: "mnuDel", icon: "bi bi-trash" },
     { text: "Configurar", key: "mnuSetting", icon: "bi bi-gear" }
   ];
+
+  const tourneyId = router.query.id;
 
   const config = {
     headers: {
@@ -67,10 +68,10 @@ export default function Tourneys() {
   };
 
   useEffect(() => {
-    if (router.query.id) {
+    if (tourneyId) {
       fetchData();
     }
-  }, [reload, router.query.id]);
+  }, [reload, tourneyId]);
 
   const sendInvitations = async (torneyId) => {
     const url = `${process.env.NEXT_PUBLIC_API_URL}invitation?tourney_id=${torneyId}`;
@@ -356,7 +357,7 @@ export default function Tourneys() {
           </div>
         </div>
 
-        <Tournament open={open} setClose={setClose} record={record} event={event} eventId={router.query.id}/>
+        <Tournament open={open} setClose={setClose} record={record} event={event} eventId={tourneyId}/>
 
       </main>
 

@@ -10,7 +10,7 @@ import { eventDate } from "../../../_functions";
 import Header from "../../../components/Header/Header";
 import Footer from "../../../components/Footers/Footer";
 
-export default function Tourneys() {
+export default function Available() {
   const {token, lang} = useAppContext();
   const router = useRouter();
 
@@ -29,7 +29,7 @@ export default function Tourneys() {
   };
 
   const fetchData = async () => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}event/one_event/${router.query.id}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}event/one_event/${router.query.id}?only_iniciaded=true`;
 
     try {
       const { data } = await axios.get(url, config);
@@ -197,7 +197,6 @@ export default function Tourneys() {
                       <span>Fecha: </span>
                       <b>{eventDate(startDate, "")}</b>
                     </div>
-
                   </CardBody>
                 </Card>
               ))}

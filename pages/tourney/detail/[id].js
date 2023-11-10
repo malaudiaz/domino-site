@@ -8,10 +8,10 @@ import Image from "next/image";
 import { useAppContext } from "../../../AppContext";
 import Header from "../../../components/Header/Header";
 import Footer from "../../../components/Footers/Footer";
-import Players from "../../../components/Tourney/Players";
 import { eventDate } from "../../../_functions";
+import Rounds from "../../../components/Tourney/Rounds";
 
-export default function View() {
+export default function Detail() {
   const { token, lang } = useAppContext();
 
   const router = useRouter();
@@ -19,6 +19,7 @@ export default function View() {
 
   const [lottery, setLottery] = useState("MANUAL");
   const [menu, setMenu] = useState(1);
+  const tourneyId = router.query.id
 
   const monthTourney = (startDate) => {
     const start = new Date(startDate + " 00:00");
@@ -40,7 +41,7 @@ export default function View() {
   };
 
   const fetchData = async () => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}tourney/one/${router.query.id}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}tourney/one/${tourneyId}`;
 
     try {
       const { data } = await axios.get(url, config);
@@ -65,10 +66,10 @@ export default function View() {
   };
 
   useEffect(() => {
-    if (router.query.id) {
+    if (tourneyId) {
       fetchData();
     }
-  }, [menu, router.query.id]);
+  }, [menu, tourneyId]);
 
   const handleButton = (btn) => {
     setMenu(btn);
@@ -115,6 +116,7 @@ export default function View() {
               </CardFooter>
             </Card>
           </li>
+
           <li className="nav-item">
             <a
               className={
@@ -203,49 +205,7 @@ export default function View() {
             <hr></hr>
           </div>
 
-          <div
-            className="px-4 pb-4"
-            style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
-          >
-
-            <button
-              type="button"
-              style={
-                menu === 0
-                  ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
-                  : { background: "#e4e6eb" }
-              }
-              className="btn btn-sm"
-              onClick={(e) => {
-                e.preventDefault();
-                handleButton(0);
-              }}
-            >
-              <i className="bi bi-people"></i> Jugadores
-            </button>
-
-            <button
-              type="button"
-              style={
-                menu === 1
-                  ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
-                  : { background: "#e4e6eb" }
-              }
-              className="btn btn-sm"
-              onClick={(e) => {
-                e.preventDefault();
-                handleButton(1);
-              }}
-            >
-              <i className="bi bi-diagram-3"></i> Rondas
-            </button>
-
-
-          </div>
-
-          {menu === 1 && <Players tourneyId={router.query.id} menu={menu} status={tourney.status_name} />}
-
-          {/* Los torneos en esta vista deben estar en estado iniciado */}
+          <Rounds tourneyId={tourneyId} title={"Rondas"}/>
           
         </div>
       </main>

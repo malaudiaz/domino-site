@@ -13,12 +13,14 @@ import Players from "../../../components/Tourney/Players";
 import Tables from "../../../components/Tourney/Tables";
 import Setting from "../../../components/Tourney/Setting";
 import Lottery from "../../../components/Tourney/Lottery";
+import { eventDate } from "../../../_functions";
 
 export default function View() {
   const { token, lang } = useAppContext();
 
   const router = useRouter();
   const [tourney, setToutney] = useState([]);
+  const tourneyId = router.query.id;
 
   const [disabled, setDisabled] = useState(false);
   const [lottery, setLottery] = useState("MANUAL");
@@ -44,7 +46,7 @@ export default function View() {
   };
 
   const fetchData = async () => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}tourney/one/${router.query.id}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}tourney/one/${tourneyId}`;
 
     try {
       const { data } = await axios.get(url, config);
@@ -69,30 +71,13 @@ export default function View() {
   };
 
   useEffect(() => {
-    if (router.query.id) {
+    if (tourneyId) {
       fetchData();
     }
-  }, [menu, router.query.id]);
+  }, [menu, tourneyId]);
 
   const handleButton = (btn) => {
     setMenu(btn);
-  };
-
-  const playButton = () => {
-    Swal.fire({
-      title: "¿ Iniciar Torneo ?",
-      text: "Deseas iniciar esté torneo",
-      icon: "question",
-      showCancelButton: true,
-      cancelButtonText: "Cancelar",
-      allowOutsideClick: false,
-      confirmButtonColor: "#3085d6",
-      confirmButtonText: "Iniciar",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        setMenu(2);
-      }
-    });
   };
 
   return (
@@ -310,11 +295,11 @@ export default function View() {
 
           </div>
 
-          {menu === 0 && <Response tourneyId={router.query.id} menu={menu} status={tourney.status_name}/>}
-          {menu === 1 && <Players tourneyId={router.query.id} menu={menu} status={tourney.status_name} />}
-          {menu === 2 && <Setting tourneyId={router.query.id} menu={menu} tourney={tourney} setLottery={setLottery} setMenu={setMenu}/>}
+          {menu === 0 && <Response tourneyId={tourneyId} menu={menu} status={tourney.status_name}/>}
+          {menu === 1 && <Players tourneyId={tourneyId} title={"Jugadores Aceptados"} menu={"PLAYERS"} status={tourney.status_name} />}
+          {menu === 2 && <Setting tourneyId={tourneyId} menu={menu} tourney={tourney} setLottery={setLottery} setMenu={setMenu}/>}
           {menu === 3 && <Lottery tourney={tourney} menu={menu} lottery={lottery} setMenu={setMenu}/>}
-          {menu === 4 && <Tables tourneyId={router.query.id} menu={menu}/>}
+          {menu === 4 && <Tables tourneyId={tourneyId} menu={menu}/>}
 
           
         </div>
