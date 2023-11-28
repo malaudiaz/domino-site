@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react";
-import { useAppContext } from "../../AppContext";
-import axios from "axios";
 
 import {
   Modal,
@@ -17,8 +15,7 @@ import {
   Label,
 } from "reactstrap";
 
-export default function Bombo({ open, setClose, bombo, setBombo, tourney }) {
-  const { token, lang } = useAppContext();
+export default function Bombo({ open, setClose, bombo, setBombo, eloMax, onSave }) {
 
   const [formValues, setFormValues] = useState({
     letter: {
@@ -55,15 +52,6 @@ export default function Bombo({ open, setClose, bombo, setBombo, tourney }) {
     });
   };
 
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-      "Accept": "application/json",
-      "accept-Language": lang,
-      "Authorization": `Bearer ${token}`
-    },
-  };  
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -90,71 +78,37 @@ export default function Bombo({ open, setClose, bombo, setBombo, tourney }) {
     ) {
       const array = bombo;
 
-      const url = `${process.env.NEXT_PUBLIC_API_URL}player/elo/number/?tourney_id=${tourney.id}&min_elo=${formValues.eloMin.value}&max_elo=${formValues.eloMax.value}`;
+      array.push({
+        id: bombo.length+1,
+        title: formValues.letter.value,
+        min: formValues.eloMin.value,
+        max: formValues.eloMax.value,
+      });
 
-      try {
-        const { data } = await axios.get(url, config);
+      setBombo(array);
 
-        if (data.success) {
-
-          array.push({
-            id: bombo.length+1,
-            title: "Bombo - " + formValues.letter.value,
-            min: formValues.eloMin.value,
-            max: formValues.eloMax.value,
-            players: data.data
-          });
-    
-          setBombo(array);
-    
-          setFormValues({
-            letter: {
-              value: "",
-              error: false,
-              errorMessage: "Letra del bombo requerida",
-            },
-            eloMin: {
-              value: "",
-              error: false,
-              errorMessage: "ELO Mínimo requerido",
-            },
-            eloMax: {
-              value: "",
-              error: false,
-              errorMessage: "ELO Máximo requerido",
-            },
-        
-          });      
-    
-          setClose();
-
+      setFormValues({
+        letter: {
+          value: "",
+          error: false,
+          errorMessage: "Título de categoría, requerido",
+        },
+        eloMin: {
+          value: "",
+          error: false,
+          errorMessage: "ELO Mínimo requerido",
+        },
+        eloMax: {
+          value: "",
+          error: false,
+          errorMessage: "ELO Máximo requerido",
         }
-      } catch ({ code, message, name, request }) {
-        if (code === "ERR_NETWORK") {
-          Swal.fire({
-            title: "Cargando Jugadores del Torneo",
-            text: "Error en su red, consulte a su proveedor de servicio",
-            icon: "error",
-            showCancelButton: false,
-            allowOutsideClick: false,
-            confirmButtonColor: "#3085d6",
-            confirmButtonText: "Aceptar",
-          });
-        } else {
-          if (code === "ERR_BAD_REQUEST") {
-            const { detail } = JSON.parse(request.response);
-            Swal.fire({
-              title: "Cargando Jugadores del Torneo",
-              text: detail,
-              icon: "error",
-              showCancelButton: false,
-              allowOutsideClick: false,
-              confirmButtonColor: "#3085d6",
-              confirmButtonText: "Aceptar",
-            });
-          }
-        }
-      }     
+      });   
+      
+      onSave();
+
+      setClose();
+
     }
   };
 
@@ -173,15 +127,10 @@ export default function Bombo({ open, setClose, bombo, setBombo, tourney }) {
         eloMax: {
             ...formValues["eloMax"],
             error: false,
-            value: ""
+            value: eloMax
         },
-        players: {
-          ...formValues["players"],
-          error: false,
-          value: 0
-      }
     });  
-  },[]);
+  },[eloMax]);
 
   return (
     <Modal
@@ -196,13 +145,13 @@ export default function Bombo({ open, setClose, bombo, setBombo, tourney }) {
           close(e);
         }}
       >
-        Crear Bombo
+        Crear Categoría
       </ModalHeader>
       <Form onSubmit={handleSubmit} autoComplete="off">
         <ModalBody>
           <FormGroup row>
             <Label size="sm" sm={5}>
-              Letra
+              Título
             </Label>
             <Col sm={7}>
               <InputGroup size="sm">
@@ -238,6 +187,7 @@ export default function Bombo({ open, setClose, bombo, setBombo, tourney }) {
                   autoComplete="off"
                   invalid={formValues.eloMax.error}
                   value={formValues.eloMax.value}
+                  disabled={eloMax !== ""}
                   onKeyPress={(event) => {
                     if (!/^[0-9.]*$/.test(event.key)) {
                       event.preventDefault();
@@ -285,6 +235,7 @@ export default function Bombo({ open, setClose, bombo, setBombo, tourney }) {
             }}
             type="submit"
             title="Aceptar"
+            disabled={parseFloat(formValues.eloMin.value) >= parseFloat(formValues.eloMax.value)}
           >
             <i className="bi-check2-circle" /> Aceptar
           </Button>

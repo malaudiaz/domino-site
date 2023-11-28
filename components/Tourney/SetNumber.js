@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
 import {
@@ -17,9 +17,14 @@ import {
 } from "reactstrap";
 
 export default function SetNumber({ open, setClose, record, selected, setSelected, lottery }) {
-
-    const [number, setNumber] = useState(1);
+    const [number, setNumber] = useState(0);
+    const [reload, setReload] = useState(false);
     const [isNotValid, setIsNotValid] = useState(false);
+
+    useEffect(()=>{
+        setNumber(selected.length + 1);
+        setReload(false);
+    },[reload])
 
     const handleChange = (e) => {
         setIsNotValid(e.target.value === "");
@@ -36,7 +41,7 @@ export default function SetNumber({ open, setClose, record, selected, setSelecte
 
         if (!isNotValid) {
 
-            if (selected.length > 0) {
+            if (selected.length >= 0) {
                 const items = selected;
                 let item = items.find(element => element.number === number);
 
@@ -47,10 +52,11 @@ export default function SetNumber({ open, setClose, record, selected, setSelecte
                     if (!item) {
                         items.push({id: record.id, number: number});
                         setSelected(items);
-                        setNumber(selected.length+1);
+                        setReload(true);
                         setClose();
                     }
                 } else {
+                    setReload(true);
                     Swal.fire({
                         title: "Sorteo",
                         text: "Número ya asignado",
@@ -62,10 +68,9 @@ export default function SetNumber({ open, setClose, record, selected, setSelecte
                     });            
                 }
             
-            } else {
-                setSelected([{id: record.id, number: number}]);
-                setNumber(2);
-                setClose();
+            // } else {
+            //     setSelected([{id: record.id, number: number}]);
+            //     setClose();
             }
         }
     };    
@@ -88,7 +93,7 @@ export default function SetNumber({ open, setClose, record, selected, setSelecte
                                     invalid={isNotValid}
                                     onChange={handleChange}
                                     autoComplete="off"
-                                    value={number}
+                                    value={selected.length + 1}
                                     onKeyPress={(event) => {
                                         if (!/^[0-9]*$/.test(event.key)) {
                                             event.preventDefault();

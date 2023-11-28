@@ -2,75 +2,118 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useAppContext } from "../../AppContext";
-import Image from "next/image";
+import classnames from "classnames";
 
 import {
-  Col,
   Card,
   CardBody,
-  Form,
-  FormGroup,
-  Label,
-  InputGroup,
-  Input,
-  FormFeedback,
   Button,
+  Nav, 
+  NavItem,
+  NavLink,
+  TabContent,
+  TabPane,
 } from "reactstrap";
 
-export default function Setting({ tourneyId, menu, tourney, setLottery, setMenu }) {
-  const { profile, token, lang } = useAppContext();
+import Advertising from "./Setting/Advertising";
+import General from "./Setting/General";
+import Category from "./Setting/Category";
 
-  const [createObjectURL, setCreateObjectURL] = useState(null);
-  const [image, setImage] = useState(null);
-  const [file, setFile] = useState("");
-
-  const setting = tourney.setting;
+export default function Setting({ tourney, setMenu }) {
+  const { token, lang } = useAppContext();
+  const [activeTab, setActiveTab] = useState("1");
+  const [reload, setReload] = useState(false);
 
   const [formValues, setFormValues] = useState({
+    tourneyId: {
+      value: "",
+      error: false,
+      errorMessage: ""
+    },
+    eloMax:{
+      value: "",
+      error: false,
+      errorMessage: "ELO Máximo, requerido"
+    },
+    eloMin:{
+      value: "",
+      error: false,
+      errorMessage: "ELO Mínimo, requerido"
+    },
     amountTable:{
-      value: Object.entries(setting).length > 0 ? setting.amount_tables : "",
-      error:false,
-      errorMessage:'Cantidad de Mesas requerida'
+      value: "",
+      error: false,
+      errorMessage: 'Cantidad de Mesas requerida'
+    },
+    amountPlayer:{
+      value: "",
+      error: false,
+      errorMessage: 'Cantidad de Jugadores requerida'
     },
     smartTable:{
-      value: Object.entries(setting).length > 0 ? setting.amount_smart_tables : "",
-      error:false,
-      errorMessage:'Cantidad de mesas inteligentes requerida'
+      value: "",
+      error: false,
+      errorMessage: 'Cantidad de mesas inteligentes requerida'
     },
     amountRound:{
-      value: Object.entries(setting).length > 0 ? setting.amount_rounds : "",
-      error:false,
-      errorMessage:'Cantidad de Rondas requerida'
+      value: "",
+      error: false,
+      errorMessage: 'Cantidad de Rondas requerida'
     },
     pointRound:{
-      value: Object.entries(setting).length > 0 ? setting.number_points_to_win : "",
-      error:false,
-      errorMessage:'Puntos por Rondas requerida'
+      value: "",
+      error: false,
+      errorMessage: 'Puntos por Rondas requerida'
     },
     timeRound:{
-      value: Object.entries(setting).length > 0 ? setting.time_to_win : "",
-      error:false,
-      errorMessage:'Tiempo por Rondas requerida'
+      value: "",
+      error: false,
+      errorMessage: 'Tiempo por Rondas requerida'
     },
     playSystem:{
-      value: Object.entries(setting).length > 0 ? setting.game_system : "SUIZO",
-      error:false,
-      errorMessage:'Sistema de Juegoes requerido'
+      value: "SUIZO",
+      error: false,
+      errorMessage: 'Sistema de Juegoes requerido'
     },
     lottery:{
-      value: Object.entries(setting).length > 0 ? setting.lottery_type : "MANUAL",
-      error:false,
-      errorMessage:'Tipo de Sorteo es requerido'
+      value: "MANUAL",
+      error: false,
+      errorMessage: 'Tipo de Sorteo es requerido'
     },
     bonus: {
-      value: Object.entries(setting).length > 0 ? setting.use_bonus : "YES",
-      error:false,
-      errorMessage:"Seleccione si se usa o no la bonificación"
+      value: "YES",
+      error: false,
+      errorMessage: "Seleccione si se usa o no la bonificación"
     },
     limitPenaltyPoints: {
-      value: Object.entries(setting).length > 0 ? setting.penalties_limit : "",
-      error:false,
-      errorMessage:"Límite de puntos por penalización es requerido"
+      value: "",
+      error: false,
+      errorMessage: "Límite de puntos por penalización es requerido"
+    },
+    statusId: {
+      value: "",
+      error: false,
+      errorMessage: ""
+    },
+    statusName: {
+      value: "",
+      error: false,
+      errorMessage: ""
+    },
+    statusDescription: {
+      value: "",
+      error: false,
+      errorMessage: ""
+    },
+    image: {
+      value: "",
+      error: false,
+      errorMessage: ""
+    },
+    lst_categories: {
+      value: "",
+      error: false,
+      errorMessage: ""
     }
   })    
 
@@ -84,19 +127,107 @@ export default function Setting({ tourneyId, menu, tourney, setLottery, setMenu 
   };  
 
   const fetchData = async () => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}tourney/setting/tables/${tourneyId}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}tourney/setting/${tourney.id}`;
 
     try {
-      const { data } = await axios.post(url, {}, config);
+      const { data } = await axios.get(url, config);
       if (data.success) {
+
         setFormValues({
-          ...formValues,
-          amountTable: {
-            ...formValues["amountTable"],
+          tourneyId: {
+            value: data.data.tourney_id,
             error: false,
-            value: data.data
+            errorMessage: "ID, Requerido"
+          },
+          eloMax:{
+            value: data.data.elo_max,
+            error: false,
+            errorMessage: "ELO Máximo, requerido"
+          },
+          eloMin:{
+            value: data.data.elo_min,
+            error: false,
+            errorMessage: "ELO Mínimo, requerido"
+          },
+          amountTable:{
+            value: data.data.amount_tables,
+            error:false,
+            errorMessage:'Cantidad de Mesas requerida'
+          },
+          amountPlayer:{
+            value: data.data.amount_player,
+            error: false,
+            errorMessage: 'Cantidad de Jugadores requerida'
+          },
+          smartTable:{
+            value: data.data.amount_smart_tables,
+            error:false,
+            errorMessage:'Cantidad de mesas inteligentes requerida'
+          },
+          amountRound:{
+            value: data.data.amount_rounds,
+            error:false,
+            errorMessage:'Cantidad de Rondas requerida'
+          },
+          pointRound:{
+            value: data.data.number_points_to_win,
+            error:false,
+            errorMessage:'Puntos por Rondas requerida'
+          },
+          timeRound:{
+            value: data.data.time_to_win,
+            error:false,
+            errorMessage:'Tiempo por Rondas requerida'
+          },
+          playSystem:{
+            value: data.data.game_system,
+            error:false,
+            errorMessage:'Sistema de Juegoes requerido'
+          },
+          lottery:{
+            value: data.data.lottery_type,
+            error:false,
+            errorMessage:'Tipo de Sorteo es requerido'
+          },
+          bonus: {
+            value: data.data.use_bonus,
+            error:false,
+            errorMessage:"Seleccione si se usa o no la bonificación"
+          },
+          limitPenaltyPoints: {
+            value: data.data.penalties_limit,
+            error:false,
+            errorMessage:"Límite de puntos por penalización es requerido"
+          },
+          statusId: {
+            value: data.data.status_id,
+            error: false,
+            errorMessage: ""
+          },
+          statusName: {
+            value: data.data.status_name,
+            error: false,
+            errorMessage: ""
+          },
+          statusDescription: {
+            value: data.data.status_description,
+            error: false,
+            errorMessage: ""
+          },
+          image: {
+            value: data.data.image,
+            error: false,
+            errorMessage: ""
+          },
+          lst_categories: {
+            value: data.data.lst_categories,
+            error: false,
+            errorMessage: ""
           }
-        })      
+        });
+
+        setReload(false);
+
       }
     } catch ({code, message, name, request}) {
       if (code === "ERR_NETWORK") {
@@ -127,52 +258,22 @@ export default function Setting({ tourneyId, menu, tourney, setLottery, setMenu 
   };
 
   useEffect(() => {
-    if (menu === 2) {
+    if (tourney.id) {
       fetchData();
     }
-  }, [menu]);
+  }, [reload, tourney.id]);
 
-  const handleChange = (e) => {
-    const {name, value} = e.target;
-
-    setFormValues({
-      ...formValues,
-      [name]:{
-        ...formValues[name],
-        error: false,
-        value
-      }
-    })
-  }
-
-  const handleSubmit = async (e) => {
+  const handleClose = async (e) => {
     e.preventDefault();
 
-    setFormValues({
-      ...formValues,
-      smartTable: {
-        ...formValues["smartTable"],
-        error: smartTable.value === ""
-      }
-    })
+    const url = `${process.env.NEXT_PUBLIC_API_URL}tourney/setting/close/${formValues.tourneyId.value}`;
 
-    if (!formValues.smartTable.error) {
-
-      const url = `${process.env.NEXT_PUBLIC_API_URL}tourney/setting/${profile.id}?id=${tourneyId}&amount_tables=${formValues.amountTable.value}&amount_smart_tables=${formValues.smartTable.value}&amount_rounds=${formValues.amountRound.value}&number_points_to_win=${formValues.pointRound.value}&time_to_win=${formValues.timeRound.value}&game_system=${formValues.playSystem.value}&lottery=${formValues.lottery.value}&bonus=${formValues.bonus.value}&limitPenaltyPoints=${formValues.limitPenaltyPoints.value}`;
-
-      const body = new FormData();
-      body.append("image", file);
-
-      try {
-        const { data } = await axios.post(url, body, {
-          headers: {
-            "Accept-Language": lang,
-            "Authorization": `Bearer ${token}`,
-          },
-        });
+    try {
+        const { data } = await axios.post(url, {}, config);
         if (data.success) {
-          setLottery(formValues.lottery.value);
-          setMenu(3);
+          setReload(true);
+          setMenu("LOTTERY");
+
           Swal.fire({
             icon: "success",
             title: "Configurando Torneo",
@@ -181,7 +282,6 @@ export default function Setting({ tourneyId, menu, tourney, setLottery, setMenu 
           });
         }
       } catch (errors) {
-        setLottery("");
         console.log(errors);
 
         Swal.fire({
@@ -191,296 +291,91 @@ export default function Setting({ tourneyId, menu, tourney, setLottery, setMenu 
           showConfirmButton: true,
         });
       }
- 
-    }      
   }
 
+  const toggleTab = (tab) => {
+    if (activeTab !== tab) {
+      setActiveTab(tab);
+    }
+  };
 
   return (
     <div>
       <div className="ps-4">
         <h1 className="title">Configurar Torneo</h1>
       </div>
-      <Form onSubmit={handleSubmit} encType="multipart/form-data" autoComplete="off">
-        <div className="tourney-setting">
-          <Card className="publicity-card">
-            <CardBody style={{width: "100%"}}>
-              <Image
-                src={createObjectURL ? createObjectURL : "/Logo-V.png"}
-                alt="Publicidad"
-                width="150"
-                height="150"
-              />
-              <div>
-                <p>
-                  <strong>Foto de Publicidad</strong>
-                </p>
-                <Label
-                  href="#"
-                  className="btn btn-primary btn-sm"
-                  title="Cargar nueva foto de pérfil"
-                  style={{ color: "white" }}
-                >
-                  <i className="bi bi-upload"></i>
-                  <Input
-                    type="file"
-                    hidden
-                    onChange={(event) => {
-                      if (event.target.files && event.target.files[0]) {
-                        const i = event.target.files[0];
-                        if (i.type.includes("image/jpeg")) {
-                          setFile(i);
-                          setImage(i);
-                          setCreateObjectURL(URL.createObjectURL(i));
-                        } else {
-                          Swal.fire({
-                            icon: "error",
-                            title: "Cargando Imagen",
-                            text: "Ha ocurrido un error al cargar la imagen",
-                            showConfirmButton: true,
-                          });
-                        }
-                      }
+
+      <div className="tourney-setting">
+        <Card className="publicity-card">
+          <CardBody style={{width: "100%"}}>
+
+            <Advertising formValues={formValues} reload={reload} setReload={setReload} />
+
+          </CardBody>
+        </Card>
+        <Card className="flex-fill">
+          <CardBody className="p-4">
+
+              <Nav tabs>
+                <NavItem>
+                  <NavLink
+                    href="#"
+                    className={classnames({ active: activeTab === "1" })}
+                    onClick={() => {
+                      toggleTab("1");
                     }}
-                  />
-                </Label>
+                  >
+                    Ajustes Generales
+                  </NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink
+                    href="#"
+                    className={classnames({ active: activeTab === "2" })}
+                    onClick={() => {
+                      toggleTab("2");
+                    }}
+                  >
+                    Categorias
+                  </NavLink>
+                </NavItem>
+              </Nav>
 
-                <Label
-                  href="#"
-                  className="btn btn-danger btn-sm"
-                  title="Eliminar foto de Publicidad"
-                  style={{ color: "white" }}
-                  onClick={(e) => {
-                    Swal.fire({
-                      title: "¿ Desea eliminar esta foto de publicidad ?",
-                      text: "! Esta opción no podrá ser revertida !",
-                      icon: "question",
-                      showCancelButton: true,
-                      confirmButtonText: "Sí",
-                      cancelButtonText: "No",
-                      confirmButtonColor: "#3085d6",
-                      cancelButtonColor: "#d33",
-                      reverseButtons: true,
-                      allowOutsideClick: false,
-                    }).then((result) => {
-                      if (result.isConfirmed) {
-                        setImage(null);
-                        setCreateObjectURL(null);
-                      }
-                    });
-                  }}
-                >
-                  <i className="bi bi-trash"></i>
-                </Label>
-              </div>
-            </CardBody>
-          </Card>
-          <Card className="flex-fill">
-            <CardBody className="p-4">
-              <FormGroup row className="ps-4 pe-4">
-                <Label size="sm" sm={3}>
-                  Cantidad de Mesas
-                </Label>
-                <Col sm={3}>
-                  <InputGroup size="sm">
-                    <Input
-                      type="text"
-                      name="amountTtable"
-                      id="amountTable"
-                      value={formValues.amountTable.value}
-                      disabled
-                    />
-                  </InputGroup>
-                </Col>
-              </FormGroup>
+              <TabContent activeTab={activeTab}>
+                <TabPane tabId="1">
 
-              <FormGroup row className="ps-4 pe-4">
-                <Label size="sm" sm={3}>
-                  Cantidad de Mesas Inteligentes
-                </Label>
-                <Col sm={3}>
-                  <InputGroup size="sm">
-                    <Input 
-                      type="text" 
-                      name="smartTable" 
-                      id="smartTable" 
-                      invalid={formValues.smartTable.error}                     
-                      value={formValues.smartTable.value}
-                      onChange={handleChange}
-                      disabled={tourney.status_name==="CONFIGURATED" || tourney.status_name==="INITIADED"}
-                    />
-                    <FormFeedback>La cantidad de mesas inteligentes es requerida.</FormFeedback>
-                  </InputGroup>
-                </Col>
-              </FormGroup>
+                    <General formValues={formValues} setFormValues={setFormValues} setReload={setReload} />
 
-              <FormGroup row className="ps-4 pe-4">
-                <Label size="sm" sm={3}>
-                  Cantidad de Rondas
-                </Label>
-                <Col sm={3}>
-                  <InputGroup size="sm">
-                    <Input 
-                      type="text" 
-                      name="amountRound" 
-                      id="amountRound" 
-                      invalid={formValues.amountRound.error}                     
-                      value={formValues.amountRound.value}
-                      onChange={handleChange}
-                      disabled={tourney.status_name==="CONFIGURATED" || tourney.status_name==="INITIADED"}
-                    />
-                  </InputGroup>
-                </Col>
-              </FormGroup>
+                </TabPane>
+                <TabPane tabId="2">
 
-              <FormGroup row className="ps-4 pe-4">
-                <Label size="sm" sm={3}>
-                  Puntos para ganar ronda
-                </Label>
-                <Col sm={3}>
-                  <InputGroup size="sm">
-                    <Input 
-                      type="text" 
-                      name="pointRound" 
-                      id="pointRound" 
-                      invalid={formValues.pointRound.error}                     
-                      value={formValues.pointRound.value}
-                      onChange={handleChange}
-                      disabled={tourney.status_name==="CONFIGURATED" || tourney.status_name==="INITIADED"}
-                    />
-                  </InputGroup>
-                </Col>
-              </FormGroup>
+                    <Category formValues={formValues} setReload={setReload} />
 
-              <FormGroup row className="ps-4 pe-4">
-                <Label size="sm" sm={3}>
-                  Tiempo máximo para ganar (min.)
-                </Label>
-                <Col sm={3}>
-                  <InputGroup size="sm">
-                    <Input 
-                      type="text" 
-                      name="timeRound" 
-                      id="timeRound" 
-                      invalid={formValues.timeRound.error}                     
-                      value={formValues.timeRound.value}
-                      onChange={handleChange}
-                      disabled={tourney.status_name==="CONFIGURATED" || tourney.status_name==="INITIADED"}
-                    />
-                  </InputGroup>
-                </Col>
-              </FormGroup>
+                </TabPane>
+              </TabContent>
 
-              <FormGroup row className="ps-4 pe-4">
-                <Label size="sm" sm={3}>
-                  Sistema de Juego
-                </Label>
-                <Col sm={3}>
-                  <InputGroup size="sm">
+          </CardBody>
+        </Card>
 
-                    <Input
-                        type="select"
-                        name="playSystem"
-                        id="playSystem"
-                        placeholder="Sistema de Juego"
-                        defaultValue={formValues.playSystem.value}
-                        onChange={handleChange}
-                        disabled={tourney.status_name==="CONFIGURATED" || tourney.status_name==="INITIADED"}
-                      >
-                      <option value="SUIZO">Sistema Suizo</option>
-                      <option value="TRADICIONAL">Sistema Tradicional</option>
-                    </Input>
+      </div>
 
-                  </InputGroup>
-                </Col>
-              </FormGroup>
-
-              <FormGroup row className="ps-4 pe-4">
-                <Label size="sm" sm={3}>
-                  Tipo de Sorteo
-                </Label>
-                <Col sm={3}>
-                  <InputGroup size="sm">
-
-                    <Input
-                        type="select"
-                        name="lottery"
-                        id="lottery"
-                        placeholder="Sorteo"
-                        defaultValue={formValues.lottery.value}
-                        onChange={handleChange}
-                        disabled={tourney.status_name==="CONFIGURATED" || tourney.status_name==="INITIADED"}
-                      >
-                        <option value="MANUAL">Manual</option>
-                        <option value="AUTOMATIC">Automático</option>
-                    </Input>
-
-                  </InputGroup>
-                </Col>
-              </FormGroup>
-
-
-              <FormGroup row className="ps-4 pe-4">
-                <Label size="sm" sm={3}>
-                  Usar Bonificación
-                </Label>
-                <Col sm={3}>
-                  <InputGroup size="sm">
-
-                    <Input
-                        type="select"
-                        name="bonus"
-                        id="bonus"
-                        placeholder="Bonificación"
-                        defaultValue={formValues.bonus.value}
-                        onChange={handleChange}
-                        disabled={tourney.status_name==="CONFIGURATED" || tourney.status_name==="INITIADED"}
-                      >
-                      <option value="YES">Sí</option>
-                      <option value="NO">No</option>
-                    </Input>
-
-                  </InputGroup>
-                </Col>
-              </FormGroup>
-
-
-              <FormGroup row className="ps-4 pe-4">
-                <Label size="sm" sm={3}>
-                  Límite de Puntos por Penalización
-                </Label>
-                <Col sm={3}>
-                  <InputGroup size="sm">
-                    <Input 
-                      type="text" 
-                      name="limitPenaltyPoints" 
-                      id="limitPenaltyPoints" 
-                      invalid={formValues.limitPenaltyPoints.error}                     
-                      value={formValues.limitPenaltyPoints.value}
-                      onChange={handleChange}
-                      disabled={tourney.status_name==="CONFIGURATED" || tourney.status_name==="INITIADED"}
-                    />
-                  </InputGroup>
-                </Col>
-              </FormGroup>
-
-
-            </CardBody>
-          </Card>
-        </div>
-        <div className="pt-2 pb-4 text-center">
-          <Button 
+      <div className="pt-2 pb-4 text-center">
+          <Button
             size={"sm"}
-            type="submit"
             color="primary"
             data-toggle="tooltip"
-            title="Guardar Cambios"
-            disabled={tourney.status_name==="CONFIGURATED" || tourney.status_name==="INITIADED"}
+            title="Cerrar Configuración"
+            onClick={handleClose}
+            disabled={
+                formValues.statusName.value === "CONFIGURATED" ||
+                formValues.statusName.value === "INITIADED"
+            }
           >
-            Guardar
+            Cerrar Configuración
           </Button>
-        </div>
-      </Form>
+      </div>
+
+
     </div>
 
   );

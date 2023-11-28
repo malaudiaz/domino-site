@@ -6,7 +6,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { useAppContext } from "../../AppContext";
 
-export default function Response({tourneyId, menu, status}) {
+export default function Response({tourneyId, status}) {
     const { token, lang } = useAppContext();
     const [invitations, setInvitations] = useState([]);
     const [page, setPage] = useState(1);
@@ -52,10 +52,10 @@ export default function Response({tourneyId, menu, status}) {
     };
     
     useEffect(() => {
-        if (menu === 0) {
-          fetchData();
+        if (tourneyId) {
+            fetchData();
         }
-    }, [menu, refresh, page]);
+    }, [tourneyId, refresh, page]);
     
 
     const onChangePage = (pageNumber) => {

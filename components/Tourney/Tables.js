@@ -4,9 +4,9 @@ import Image from "next/image";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useAppContext } from "../../AppContext";
-import { Card, CardHeader, Label, Input, CardFooter } from "reactstrap";
+import { Card, CardHeader, Label, Input } from "reactstrap";
 
-export default function Tables({ tourneyId, menu }) {
+export default function Tables({ tourneyId }) {
   const { token, lang } = useAppContext();
 
   const [tables, setTables] = useState([]);
@@ -52,10 +52,10 @@ export default function Tables({ tourneyId, menu }) {
   };
 
   useEffect(() => {
-    if (menu === 4) {
+    if (tourneyId) {
       fetchData();
     }
-  }, [menu, page]);
+  }, [tourneyId, page]);
 
   const onChangePage = (pageNumber) => {
     setPage(pageNumber);

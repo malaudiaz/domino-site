@@ -84,19 +84,32 @@ export default function Login() {
 
           router.push("/");
         }
-      } catch (error) {
-        console.log(error);
-        // const { detail } = response.data;
-        Swal.fire({
-          title: "Autentificar",
-          text: "dfddfsdfsd",
-          icon: "error",
-          showCancelButton: false,
-          allowOutsideClick: false,
-          confirmButtonColor: "#3085d6",
-          confirmButtonText: "Aceptar",
-        });
-      }
+      } catch ({code, message, name, request}) {
+        if (code === "ERR_NETWORK") {
+          Swal.fire({
+            title: "Autentificar",
+            text: "Error en su red, consulte a su proveedor de servicio",
+            icon: "error",
+            showCancelButton: false,
+            allowOutsideClick: false,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Aceptar",
+          });
+        } else {
+          if (code === "ERR_BAD_REQUEST") {
+            const {detail} = JSON.parse(request.response)
+            Swal.fire({
+              title: "Autentificar",
+              text: detail,
+              icon: "error",
+              showCancelButton: false,
+              allowOutsideClick: false,
+              confirmButtonColor: "#3085d6",
+              confirmButtonText: "Aceptar",
+            });  
+          }
+        }
+      } 
     }
   };
 

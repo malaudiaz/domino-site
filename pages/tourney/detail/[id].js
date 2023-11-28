@@ -71,10 +71,6 @@ export default function Detail() {
     }
   }, [menu, tourneyId]);
 
-  const handleButton = (btn) => {
-    setMenu(btn);
-  };
-
 
   return (
     <>
@@ -205,7 +201,7 @@ export default function Detail() {
             <hr></hr>
           </div>
 
-          <Rounds tourneyId={tourneyId} title={"Rondas"}/>
+          <Rounds tourneyId={tourneyId} title={"Rondas"} showPlay={false}/>
           
         </div>
       </main>

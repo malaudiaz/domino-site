@@ -13,6 +13,8 @@ import Players from "../../../components/Tourney/Players";
 import Tables from "../../../components/Tourney/Tables";
 import Setting from "../../../components/Tourney/Setting";
 import Lottery from "../../../components/Tourney/Lottery";
+import Rounds from "../../../components/Tourney/Rounds";
+
 import { eventDate } from "../../../_functions";
 
 export default function View() {
@@ -21,10 +23,7 @@ export default function View() {
   const router = useRouter();
   const [tourney, setToutney] = useState([]);
   const tourneyId = router.query.id;
-
-  const [disabled, setDisabled] = useState(false);
-  const [lottery, setLottery] = useState("MANUAL");
-  const [menu, setMenu] = useState(0);
+  const [menu, setMenu] = useState("INVITATION");
 
   const monthTourney = (startDate) => {
     const start = new Date(startDate + " 00:00");
@@ -52,7 +51,6 @@ export default function View() {
       const { data } = await axios.get(url, config);
       if (data.success) {
         setToutney(data.data);
-        setLottery(data.data.setting.lottery_type);
       }
     } catch (errors) {
       console.log(errors);
@@ -74,10 +72,15 @@ export default function View() {
     if (tourneyId) {
       fetchData();
     }
-  }, [menu, tourneyId]);
+  }, [tourneyId]);
 
   const handleButton = (btn) => {
-    setMenu(btn);
+    if (btn !== "PLAY") {
+      setMenu(btn);
+    } else {
+      setMenu(btn);
+
+    }
   };
 
   return (
@@ -215,14 +218,14 @@ export default function View() {
             <button
               type="button"
               style={
-                menu === 0
+                menu === "INVITATION"
                   ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
                   : { background: "#e4e6eb" }
               }
               className="btn btn-sm"
               onClick={(e) => {
                 e.preventDefault();
-                handleButton(0);
+                handleButton("INVITATION");
               }}
             >
               <i className="bi bi-envelope-check"></i> Invitaciones Aceptadas
@@ -231,14 +234,14 @@ export default function View() {
             <button
               type="button"
               style={
-                menu === 1
+                menu === "PLAYERS"
                   ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
                   : { background: "#e4e6eb" }
               }
               className="btn btn-sm"
               onClick={(e) => {
                 e.preventDefault();
-                handleButton(1);
+                handleButton("PLAYERS");
               }}
             >
               <i className="bi bi-people"></i> Jugadores
@@ -247,14 +250,14 @@ export default function View() {
             <button 
               type="button" 
               style={
-                menu === 2
+                menu === "SETTING"
                 ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
                 : { background: "#e4e6eb" }
               }
               className="btn btn-sm"
               onClick={(e)=>{
                 e.preventDefault();
-                handleButton(2);
+                handleButton("SETTING");
               }}
             >
               <i className="bi bi-gear"></i> Configurar Torneo
@@ -264,14 +267,14 @@ export default function View() {
               type="button"
               disabled={tourney.status_name==="INITIADED"}
               style={
-                menu === 3
+                menu === "LOTTERY"
                   ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
                   : { background: "#e4e6eb" }
               }
               className="btn btn-sm"
               onClick={(e) => {
                 e.preventDefault();
-                handleButton(3);
+                handleButton("LOTTERY");
               }}
             >
               <i className="bi bi-card-checklist"></i> Sorteo
@@ -280,14 +283,14 @@ export default function View() {
             <button
               type="button"
               style={
-                menu === 4
+                menu === "TABLES"
                   ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
                   : { background: "#e4e6eb" }
               }
               className="btn btn-sm"
               onClick={(e) => {
                 e.preventDefault();
-                handleButton(4);
+                handleButton("TABLES");
               }}
             >
               <i className="bi bi-bounding-box"></i> Mesas
@@ -297,13 +300,14 @@ export default function View() {
             <button
               type="button"
               style={
-                menu === 5
+                menu === "PLAY"
                   ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
                   : { background: "#e4e6eb" }
               }
               className="btn btn-sm"
               onClick={(e) => {
                 e.preventDefault();
+                handleButton("PLAY");
               }}
             >
               <i className="bi bi-collection-play"></i> Inicial Ronda
@@ -313,12 +317,12 @@ export default function View() {
 
           </div>
 
-          {menu === 0 && <Response tourneyId={tourneyId} menu={menu} status={tourney.status_name}/>}
-          {menu === 1 && <Players tourneyId={tourneyId} title={"Jugadores Aceptados"} menu={"PLAYERS"} status={tourney.status_name} />}
-          {menu === 2 && <Setting tourneyId={tourneyId} menu={menu} tourney={tourney} setLottery={setLottery} setMenu={setMenu}/>}
-          {menu === 3 && <Lottery tourney={tourney} menu={menu} lottery={lottery} setMenu={setMenu}/>}
-          {menu === 4 && <Tables tourneyId={tourneyId} menu={menu}/>}
-
+          {menu === "INVITATION" && <Response tourneyId={tourneyId} status={tourney.status_name}/>}
+          {menu === "PLAYERS" && <Players tourneyId={tourneyId} title={"Jugadores Aceptados"} status={tourney.status_name} />}
+          {menu === "SETTING" && <Setting tourney={tourney} setMenu={setMenu} />}
+          {menu === "LOTTERY" && <Lottery tourney={tourney} />}
+          {menu === "TABLES" && <Tables tourneyId={tourneyId} />}
+          {menu === "PLAY" && <Rounds tourneyId={tourneyId} title={"Rondas"} showPlay={true} />}
           
         </div>
       </main>

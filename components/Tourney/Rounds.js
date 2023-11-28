@@ -5,7 +5,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { useAppContext } from "../../AppContext";
 
-export default function Rounds({ tourneyId, title }) {
+export default function Rounds({ tourneyId, title, showPlay }) {
   const { token, lang } = useAppContext();
   const [rounds, setRounds] = useState([]);
   const [page, setPage] = useState(1);
@@ -74,8 +74,83 @@ export default function Rounds({ tourneyId, title }) {
     setPage(pageNumber);
   };
 
-  const handleClick = (id) => {
-    router.push(`/round/${id}`);
+  const roundPlay = async() => {
+    const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/${tourneyId}`;
+
+    try {
+      const { data } = await axios.post(url, {}, config);
+      if (data.success) {
+        setRefresh(true);
+
+        Swal.fire({
+          title: "Rondas",
+          text: "La ronda ha sido iniciada",
+          icon: "info",
+          showCancelButton: false,
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Aceptar",
+        });
+      }
+    } catch ({code, message, name, request}) {
+      if (code === "ERR_NETWORK") {
+        Swal.fire({
+          title: "Error en la Red",
+          text: "Error en su red, consulte a su proveedor de servicio",
+          icon: "error",
+          showCancelButton: false,
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Aceptar",
+        });
+      } else {
+        if (code === "ERR_BAD_REQUEST") {
+          const {detail} = JSON.parse(request.response)
+          Swal.fire({
+            title: "Autentificar",
+            text: detail,
+            icon: "error",
+            showCancelButton: false,
+            allowOutsideClick: false,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Aceptar",
+          });  
+        }
+      }
+    }
+  };
+
+  const handleClick = (item) => {
+    if (!showPlay) {
+      router.push(`/round/${item.id}`);
+    } else {
+
+      if (item.status_name === "CREATED") {
+        Swal.fire({
+          title: "Inicial Ronda",
+          text: "Estas seguro que deseas inicial esta ronda",
+          icon: "question",
+          showCancelButton: true,
+          cancelButtonText: "Cancelar",
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Inicial",
+        }).then((result) => {
+          if (result.isConfirmed) {
+
+            roundPlay();
+
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: "info",
+          title: "Inicial Ronda",
+          text: "La ronda seleccionada, ya esta iniciada",
+          showConfirmButton: true,
+        });
+      }
+    }
   };
 
   return (
@@ -91,12 +166,12 @@ export default function Rounds({ tourneyId, title }) {
               <div
                 key={idx}
                 className="align-items-center rounded p-2"
-                style={{ height: item.close_date !== "" ? "90px" : "70px", background: "#ebebeb" }}
+                style={{ height: item.close_date !== "" ? "100px" : "80px", background: "#ebebeb" }}
               >
                 <div
                   className="d-flex flex-row justify-content-between icons align-items-center"
-                  style={{ width: "98%", cursor: "pointer" }}
-                  onClick={(e) => {e.preventDefault(); handleClick(item.id);}}
+                  style={{ width: "98%", cursor:"pointer"}}
+                  onClick={(e) => {e.preventDefault(); handleClick(item);}}
                 >
 
                   <h3 className="ms-2"><span className="badge bg-danger rounded-circle">{item.round_number}</span></h3>          
@@ -111,6 +186,9 @@ export default function Rounds({ tourneyId, title }) {
                             Fecha Final: <b>{item.close_date}</b>
                         </small>
                     }
+                    <small className="comment-text fs-12">
+                        Estado: <b>{item.status_description.toUpperCase()}</b>
+                    </small>
                   </div>
 
                 </div>
