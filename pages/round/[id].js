@@ -35,19 +35,31 @@ export default function Round() {
           if (data.success) {
             setRound(data.data);
           }
-        } catch (errors) {
-          console.log(errors);
-          const { response } = errors;
-          const { detail } = response.data;
-          Swal.fire({
-            title: "Cargando Ronda",
-            text: detail,
-            icon: "error",
-            showCancelButton: false,
-            allowOutsideClick: false,
-            confirmButtonColor: "#3085d6",
-            confirmButtonText: "Aceptar",
-          });
+        } catch ({ code, message, name, request }) {
+            if (code === "ERR_NETWORK") {
+              Swal.fire({
+                title: "Cargando Rondas del Torneo",
+                text: "Error en su red, consulte a su proveedor de servicio",
+                icon: "error",
+                showCancelButton: false,
+                allowOutsideClick: false,
+                confirmButtonColor: "#3085d6",
+                confirmButtonText: "Aceptar",
+              });
+            } else {
+              if (code === "ERR_BAD_REQUEST") {
+                const { detail } = JSON.parse(request.response);
+                Swal.fire({
+                  title: "Cargando Rondas del Torneo",
+                  text: detail,
+                  icon: "error",
+                  showCancelButton: false,
+                  allowOutsideClick: false,
+                  confirmButtonColor: "#3085d6",
+                  confirmButtonText: "Aceptar",
+                });
+              }
+            }
         }
     };
     

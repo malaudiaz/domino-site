@@ -64,43 +64,60 @@ const Sidebar = () => {
         </li>
 
         {profile.type !== "USER" &&
-          <li className="nav-item">
-            <a
-              className="nav-link"
-              data-bs-target="#Events"
-              data-bs-toggle="collapse"
-            >
-              <i className={"bi bi-calendar3"}></i>
-              <span>Eventos</span>
-              <i className="bi bi-chevron-down ms-auto"></i>
-            </a>
+          <>
+            <li className="nav-item">
+              <a
+                className="nav-link"
+                data-bs-target="#Events"
+                data-bs-toggle="collapse"
+              >
+                <i className={"bi bi-calendar3"}></i>
+                <span>Eventos</span>
+                <i className="bi bi-chevron-down ms-auto"></i>
+              </a>
 
-            <ul
-                id="Events"
-                className="nav-content"
-            >
-              <li>
-                <Link href={"/event"}>
+              <ul
+                  id="Events"
+                  className="nav-content"
+              >
+                <li>
+                  <Link href={"/event"}>
+                      <a>
+                        <i className="bi bi-calendar3-week"></i>
+                        <span>Descubrir Eventos</span>
+                      </a>
+                  </Link>
+                </li>
+
+                {profile.type === "EVENTADMON" &&
+                <li>
+                  <Link href={"/event/own"}>
                     <a>
-                      <i className="bi bi-calendar3-week"></i>
-                      <span>Descubrir Eventos</span>
+                      <i className={"bi bi-calendar2-heart"}></i>
+                      <span>Mís Eventos</span>
                     </a>
-                </Link>
-              </li>
-
-              {profile.type === "EVENTADMON" &&
-              <li>
-                <Link href={"/event/own"}>
-                  <a>
-                    <i className={"bi bi-calendar2-heart"}></i>
-                    <span>Mís Eventos</span>
-                  </a>
-                </Link>
-              </li>}
+                  </Link>
+                </li>}
 
 
-            </ul>          
-          </li>
+              </ul>          
+            </li>
+
+            <li className="nav-item">
+              <Link href={"/capture"}>
+                <a
+                  className={
+                    router.asPath === "/capture"
+                      ? "nav-link active"
+                      : "nav-link collapsed"
+                  }
+                >
+                  <i className="bi bi-box-arrow-in-up-right" />              
+                  <span>Entrada de Datos</span>
+                </a>
+              </Link>
+            </li>
+          </>
         }
 
 

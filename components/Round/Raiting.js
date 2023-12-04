@@ -4,7 +4,7 @@ import Image from "next/image";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useAppContext } from "../../AppContext";
-import { Card, CardHeader, Label, Input, CardFooter, Table } from "reactstrap";
+import { Table } from "reactstrap";
 
 export default function Raiting({ roundId }) {
     const { token, lang } = useAppContext();
@@ -26,29 +26,41 @@ export default function Raiting({ roundId }) {
     };
   
     const fetchData = async () => {
-      const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/scale/?round_id=${roundId}&page=${page}&per_page=${rowsPerPage}`;
+        const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/scale/?round_id=${roundId}&page=${page}&per_page=${rowsPerPage}`;
   
-      try {
-        const { data } = await axios.get(url, config);
-        if (data.success) {
-          setTotal(data.total);
-          setTotalPages(data.total_pages);
-          setRaiting(data.data);
+        try {
+            const { data } = await axios.get(url, config);
+            if (data.success) {
+            setTotal(data.total);
+            setTotalPages(data.total_pages);
+            setRaiting(data.data);
+            }
+        } catch ({ code, message, name, request }) {
+            if (code === "ERR_NETWORK") {
+                Swal.fire({
+                    title: "Cargando Clasificación del Torneo",
+                    text: "Error en su red, consulte a su proveedor de servicio",
+                    icon: "error",
+                    showCancelButton: false,
+                    allowOutsideClick: false,
+                    confirmButtonColor: "#3085d6",
+                    confirmButtonText: "Aceptar",
+                });
+            } else {
+                if (code === "ERR_BAD_REQUEST") {
+                    const { detail } = JSON.parse(request.response);
+                    Swal.fire({
+                    title: "Cargando Clasificación del Torneo",
+                    text: detail,
+                    icon: "error",
+                    showCancelButton: false,
+                    allowOutsideClick: false,
+                    confirmButtonColor: "#3085d6",
+                    confirmButtonText: "Aceptar",
+                    });
+                }
+            }
         }
-      } catch (errors) {
-        console.log(errors);
-        const { response } = errors;
-        const { detail } = response.data;
-        Swal.fire({
-          title: "Cargando Mesas de la Ronda",
-          text: detail,
-          icon: "error",
-          showCancelButton: false,
-          allowOutsideClick: false,
-          confirmButtonColor: "#3085d6",
-          confirmButtonText: "Aceptar",
-        });
-      }
     };
   
     useEffect(() => {
@@ -126,7 +138,7 @@ export default function Raiting({ roundId }) {
                                     <td className="text-center">
                                         <Image
                                             alt="Avatar"
-                                            src={item.avatar ? item.avatar : "/profile/user-vector.jpg"}
+                                            src={item.photo ? item.photo : "/profile/user-vector.jpg"}
                                             width={40}
                                             height={40}
                                             className="rounded-image"

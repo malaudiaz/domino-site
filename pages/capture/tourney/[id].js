@@ -1,29 +1,20 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import Head from "next/head";
-import { Card, CardHeader, CardBody, CardFooter } from "reactstrap";
-import axios from "axios";
-import Swal from "sweetalert2";
-import Image from "next/image";
 import { useAppContext } from "../../../AppContext";
 import Header from "../../../components/Header/Header";
-import Footer from "../../../components/Footers/Footer";
-import Response from "../../../components/Tourney/Response";
-import Players from "../../../components/Tourney/Players";
-import Tables from "../../../components/Tourney/Tables";
-import Setting from "../../../components/Tourney/Setting";
-import Lottery from "../../../components/Tourney/Lottery";
+import { Card, CardHeader, CardBody, CardFooter } from "reactstrap";
+import Image from "next/image";
+import Head from "next/head";
+import { eventDate } from "../../../_functions";
+import axios from "axios";
+import Swal from "sweetalert2";
 import Rounds from "../../../components/Tourney/Rounds";
 
-import { eventDate } from "../../../_functions";
-
-export default function View() {
+export default function TourneyView() {
   const { token, lang } = useAppContext();
-
   const router = useRouter();
-  const [tourney, setToutney] = useState([]);
   const tourneyId = router.query.id;
-  const [menu, setMenu] = useState("INVITATION");
+  const [tourney, setToutney] = useState([]);
 
   const monthTourney = (startDate) => {
     const start = new Date(startDate + " 00:00");
@@ -38,10 +29,10 @@ export default function View() {
   const config = {
     headers: {
       "Content-Type": "application/json",
-      "Accept": "application/json",
+      Accept: "application/json",
       "accept-Language": lang,
-      "Authorization": `Bearer ${token}`,
-    }
+      Authorization: `Bearer ${token}`,
+    },
   };
 
   const fetchData = async () => {
@@ -52,7 +43,9 @@ export default function View() {
       if (data.success) {
         setToutney(data.data);
       }
-    } catch ({ code, message, name, request }) {
+    } catch (error) {
+      console.log(error);
+      const { code, message, name, request } = error;
       if (code === "ERR_NETWORK") {
         Swal.fire({
           title: "Cargando Torneo",
@@ -85,15 +78,6 @@ export default function View() {
       fetchData();
     }
   }, [tourneyId]);
-
-  const handleButton = (btn) => {
-    if (btn !== "PLAY") {
-      setMenu(btn);
-    } else {
-      setMenu(btn);
-
-    }
-  };
 
   return (
     <>
@@ -160,21 +144,16 @@ export default function View() {
           className="card"
           style={{ border: "1px solid", borderColor: "#c7c7c7" }}
         >
-
           <div className="pt-2 px-4" style={{ display: "flex" }}>
-            <Card
-              className="calendar-card my-2"
-              inverse
-            >
+            <Card className="calendar-card my-2" inverse>
               <CardHeader
                 style={{
                   background: "red",
                   height: "20px",
-                  textAlign: "center"
+                  textAlign: "center",
                 }}
               >
-                <h6 className="calendar-month"
-                >
+                <h6 className="calendar-month">
                   {monthTourney(tourney.startDate)}
                 </h6>
               </CardHeader>
@@ -227,121 +206,14 @@ export default function View() {
             className="px-4 pb-4"
             style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
           >
-            <button
-              type="button"
-              style={
-                menu === "INVITATION"
-                  ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
-                  : { background: "#e4e6eb" }
-              }
-              className="btn btn-sm"
-              onClick={(e) => {
-                e.preventDefault();
-                handleButton("INVITATION");
-              }}
-            >
-              <i className="bi bi-envelope-check"></i> Invitaciones Aceptadas
-            </button>
-
-            <button
-              type="button"
-              style={
-                menu === "PLAYERS"
-                  ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
-                  : { background: "#e4e6eb" }
-              }
-              className="btn btn-sm"
-              onClick={(e) => {
-                e.preventDefault();
-                handleButton("PLAYERS");
-              }}
-            >
-              <i className="bi bi-people"></i> Jugadores
-            </button>
-
-            <button 
-              type="button" 
-              style={
-                menu === "SETTING"
-                ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
-                : { background: "#e4e6eb" }
-              }
-              className="btn btn-sm"
-              onClick={(e)=>{
-                e.preventDefault();
-                handleButton("SETTING");
-              }}
-            >
-              <i className="bi bi-gear"></i> Configurar Torneo
-            </button>
-
-            <button
-              type="button"
-              disabled={tourney.status_name==="CREATED"}
-              style={
-                menu === "LOTTERY"
-                  ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
-                  : { background: "#e4e6eb" }
-              }
-              className="btn btn-sm"
-              onClick={(e) => {
-                e.preventDefault();
-                handleButton("LOTTERY");
-              }}
-            >
-              <i className="bi bi-card-checklist"></i> Sorteo
-            </button>
-
-            <button
-              type="button"
-              disabled={tourney.status_name==="CREATED"}
-              style={
-                menu === "TABLES"
-                  ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
-                  : { background: "#e4e6eb" }
-              }
-              className="btn btn-sm"
-              onClick={(e) => {
-                e.preventDefault();
-                handleButton("TABLES");
-              }}
-            >
-              <i className="bi bi-bounding-box"></i> Mesas
-            </button>
-
-
-            <button
-              type="button"
-              disabled={tourney.status_name==="CREATED"}
-              style={
-                menu === "PLAY"
-                  ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
-                  : { background: "#e4e6eb" }
-              }
-              className="btn btn-sm"
-              onClick={(e) => {
-                e.preventDefault();
-                handleButton("PLAY");
-              }}
-            >
-              <i className="bi bi-collection-play"></i> Iniciar Ronda
-            </button>
-
-
-
+            {/* Componente de Rondas */}
+            <Rounds tourneyId={tourneyId} title={"Rondas"} showPlay={false} />            
           </div>
 
-          {menu === "INVITATION" && <Response tourneyId={tourneyId} status={tourney.status_name}/>}
-          {menu === "PLAYERS" && <Players tourneyId={tourneyId} title={"Jugadores Aceptados"} status={tourney.status_name} />}
-          {menu === "SETTING" && <Setting tourney={tourney} setMenu={setMenu} />}
-          {menu === "LOTTERY" && <Lottery tourney={tourney} />}
-          {menu === "TABLES" && <Tables tourneyId={tourneyId} />}
-          {menu === "PLAY" && <Rounds tourneyId={tourneyId} title={"Rondas"} showPlay={true} uri={"/round"}/>}
-          
+          {/* Componente de Tabla */}
+
         </div>
       </main>
-
-      <Footer />
     </>
   );
 }

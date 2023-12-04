@@ -5,9 +5,6 @@ import Header from "../components/Header/Header";
 import SideBar from "../components/Sidebar/SideBar";
 import Footer from "../components/Footers/Footer";
 
-import Breadcrumb from "../components/Breadcrumbs/Breadcrumbs";
-import BreadcrumbItem from "../components/Breadcrumbs/BreadcrumbItem";
-
 export default function Layout({ children }) {
   const router = useRouter();
   const [breadcrumbs, setBreadcrumbs] = useState();
@@ -39,27 +36,6 @@ export default function Layout({ children }) {
 
       <main id="main" className="main">
         <div className="pagetitle">
-          {/* <h1>{title}</h1>
-          <Breadcrumb>
-            <BreadcrumbItem
-              isCurrent={router.pathname === "/"}
-              href="/"
-              icon="bi bi-house-door-fill"
-            >
-              Home
-            </BreadcrumbItem>
-            {breadcrumbs &&             
-              breadcrumbs.map((breadcrumb) => (
-                <BreadcrumbItem
-                  key={breadcrumb.href}
-                  href={breadcrumb.href}
-                  isCurrent={breadcrumb.isCurrent}
-                  isDisabled={breadcrumb.isDisabled}
-                >
-                  {breadcrumb.label}
-                </BreadcrumbItem>
-              ))}
-          </Breadcrumb> */}
         </div>
         {children}
       </main>

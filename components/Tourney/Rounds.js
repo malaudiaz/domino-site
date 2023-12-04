@@ -5,7 +5,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { useAppContext } from "../../AppContext";
 
-export default function Rounds({ tourneyId, title, showPlay }) {
+export default function Rounds({ tourneyId, title, showPlay, uri }) {
   const { token, lang } = useAppContext();
   const [rounds, setRounds] = useState([]);
   const [page, setPage] = useState(1);
@@ -39,7 +39,7 @@ export default function Rounds({ tourneyId, title, showPlay }) {
     } catch ({ code, message, name, request }) {
       if (code === "ERR_NETWORK") {
         Swal.fire({
-          title: "Cargando Rondas del Torneo",
+          title: "Iniciando ronda del Torneo",
           text: "Error en su red, consulte a su proveedor de servicio",
           icon: "error",
           showCancelButton: false,
@@ -51,7 +51,7 @@ export default function Rounds({ tourneyId, title, showPlay }) {
         if (code === "ERR_BAD_REQUEST") {
           const { detail } = JSON.parse(request.response);
           Swal.fire({
-            title: "Cargando Rondas del Torneo",
+            title: "Iniciando ronda del Torneo",
             text: detail,
             icon: "error",
             showCancelButton: false,
@@ -122,13 +122,17 @@ export default function Rounds({ tourneyId, title, showPlay }) {
 
   const handleClick = (item) => {
     if (!showPlay) {
-      router.push(`/round/${item.id}`);
+      if (!uri) {
+        router.push(uri);
+      } else {
+        router.push(`${uri}/${item.id}`);
+      }
     } else {
 
       if (item.status_name === "CREATED") {
         Swal.fire({
           title: "Inicial Ronda",
-          text: "Estas seguro que deseas inicial esta ronda",
+          text: "Estas seguro que deseas iniciar esta ronda",
           icon: "question",
           showCancelButton: true,
           cancelButtonText: "Cancelar",
@@ -145,13 +149,18 @@ export default function Rounds({ tourneyId, title, showPlay }) {
       } else {
         Swal.fire({
           icon: "info",
-          title: "Inicial Ronda",
+          title: "Iniciar Ronda",
           text: "La ronda seleccionada, ya esta iniciada",
           showConfirmButton: true,
         });
       }
     }
   };
+
+  const setClose = () => {
+    setOpen(false);
+  };
+
 
   return (
     <div>
@@ -165,7 +174,7 @@ export default function Rounds({ tourneyId, title, showPlay }) {
             {rounds.map((item, idx) => (
               <div
                 key={idx}
-                className="align-items-center rounded p-2"
+                className="lottery-card align-items-center rounded p-2"
                 style={{ height: item.close_date !== "" ? "100px" : "80px", background: "#ebebeb" }}
               >
                 <div

@@ -99,7 +99,7 @@ export default function Response({tourneyId, status}) {
                 {invitations.map((item, idx) => (
                     <div
                         key={idx}
-                        className="align-items-center rounded p-2"
+                        className="lottery-card align-items-center rounded p-2"
                         style={{ height: "90px", background: "#ebebeb" }}
                     >
                         <div

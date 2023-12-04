@@ -85,7 +85,7 @@ export default function Players({ id, lotteryType, selected, setSelected, filter
     if (selected.length > 0) {
       const item = selected.find((element) => element.id === id);
       if (item) {
-        return item.number;
+        return item.position_number;
       } else return false;
     }
     return false;
@@ -93,28 +93,31 @@ export default function Players({ id, lotteryType, selected, setSelected, filter
 
   const handleSelect = (e, item) => {
     e.preventDefault();
-    const exist = selected.find((element) => element.id === item.id);
-    if (!exist) {
-      setRecord(item);
-      setOpen(true);
-    } else {
-      Swal.fire({
-        title: "Eliminar número",
-        text: "¿ Deseas eliminar este número de sorteo ?",
-        icon: "question",
-        showCancelButton: true,
-        cancelButtonText: "Cancelar",
-        allowOutsideClick: false,
-        confirmButtonColor: "#3085d6",
-        confirmButtonText: "Eliminar",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          const resultado = selected.filter(
-            (element) => element.id !== item.id
-          );
-          setSelected(resultado);
-        }
-      });
+
+    if (lotteryType === "MANUAL") {
+      const exist = selected.find((element) => element.id === item.id);
+      if (!exist) {
+        setRecord(item);
+        setOpen(true);
+      } else {
+        Swal.fire({
+          title: "Eliminar número",
+          text: "¿ Deseas eliminar este número de sorteo ?",
+          icon: "question",
+          showCancelButton: true,
+          cancelButtonText: "Cancelar",
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Eliminar",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            const resultado = selected.filter(
+              (element) => element.id !== item.id
+            );
+            setSelected(resultado);
+          }
+        });
+      }
     }
   };
 
@@ -149,13 +152,9 @@ export default function Players({ id, lotteryType, selected, setSelected, filter
                 </small>
               </div>
 
-              <h6 className={isNumberAsign(item.id) ? "d-inline" : "d-none"}>
+              <h6 className="d-inline">
                 <span className="badge text-bg-success">
-                  {lotteryType === "MANUAL" ? (
-                    getNumberAsign(item.id)
-                  ) : (
-                    <small>B{getNumberAsign(item.id)}</small>
-                  )}
+                  {item.position_number === "" ? getNumberAsign(item.id) :  item.position_number}
                 </span>
               </h6>
             </div>

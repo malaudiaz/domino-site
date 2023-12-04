@@ -16,9 +16,6 @@ export default function Detail() {
 
   const router = useRouter();
   const [tourney, setToutney] = useState([]);
-
-  const [lottery, setLottery] = useState("MANUAL");
-  const [menu, setMenu] = useState(1);
   const tourneyId = router.query.id
 
   const monthTourney = (startDate) => {
@@ -47,21 +44,32 @@ export default function Detail() {
       const { data } = await axios.get(url, config);
       if (data.success) {
         setToutney(data.data);
-        setLottery(data.data.setting.lottery_type);
       }
-    } catch (errors) {
-      console.log(errors);
-      const { response } = errors;
-      const { detail } = response.data;
-      Swal.fire({
-        title: "Cargando Torneo",
-        text: detail,
-        icon: "error",
-        showCancelButton: false,
-        allowOutsideClick: false,
-        confirmButtonColor: "#3085d6",
-        confirmButtonText: "Aceptar",
-      });
+    } catch ({ code, message, name, request }) {
+      if (code === "ERR_NETWORK") {
+        Swal.fire({
+          title: "Cargando Rondas del Torneo",
+          text: "Error en su red, consulte a su proveedor de servicio",
+          icon: "error",
+          showCancelButton: false,
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Aceptar",
+        });
+      } else {
+        if (code === "ERR_BAD_REQUEST") {
+          const { detail } = JSON.parse(request.response);
+          Swal.fire({
+            title: "Cargando Rondas del Torneo",
+            text: detail,
+            icon: "error",
+            showCancelButton: false,
+            allowOutsideClick: false,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Aceptar",
+          });
+        }
+      }
     }
   };
 
@@ -69,7 +77,7 @@ export default function Detail() {
     if (tourneyId) {
       fetchData();
     }
-  }, [menu, tourneyId]);
+  }, [tourneyId]);
 
 
   return (

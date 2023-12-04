@@ -90,6 +90,62 @@ export default function Lottery({ tourney }) {
     }
   };
 
+  const handleSave = async (e) => {
+    e.preventDefault();
+
+    if (tourney.lottery_type === "MANUAL") {
+
+      if (selected.length === tourney.amount_player) {
+
+        let url = `${process.env.NEXT_PUBLIC_API_URL}domino/scale/initial/manual/?tourney_id=${tourney.id}`;
+
+        try {
+          const { data } = await axios.post(url, selected, config);
+          if (data.success) {
+            setMenu(4);
+            Swal.fire({
+              title: "Sorteo de Jugadores del Torneo",
+              text: data.detail,
+              icon: "success",
+              showCancelButton: false,
+              allowOutsideClick: false,
+              confirmButtonColor: "#3085d6",
+              confirmButtonText: "Aceptar",
+            });
+          }
+        } catch ({ code, message, name, request }) {
+          if (code === "ERR_NETWORK") {
+            Swal.fire({
+              title: "Sorteo de Jugadores del Torneo",
+              text: "Error en su red, consulte a su proveedor de servicio",
+              icon: "error",
+              showCancelButton: false,
+              allowOutsideClick: false,
+              confirmButtonColor: "#3085d6",
+              confirmButtonText: "Aceptar",
+            });
+          } else {
+            if (code === "ERR_BAD_REQUEST") {
+              const { detail } = JSON.parse(request.response);
+              Swal.fire({
+                title: "Sorteo de Jugadores del Torneo",
+                text: detail,
+                icon: "error",
+                showCancelButton: false,
+                allowOutsideClick: false,
+                confirmButtonColor: "#3085d6",
+                confirmButtonText: "Aceptar",
+              });
+            }
+          }
+        }
+
+      }
+
+    } 
+  };
+
+
   return (
     <div>
       <div className="d-flex flex-wrap ps-4">
@@ -99,6 +155,7 @@ export default function Lottery({ tourney }) {
             <Button
               className="btn btn-sm btn-success"
               style={{ width: "100px" }}
+              onClick={handleSave}
             >
               <i className="bi bi-check2-circle"></i> Salvar
             </Button>
