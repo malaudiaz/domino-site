@@ -152,11 +152,21 @@ export default function Players({ id, lotteryType, selected, setSelected, filter
                 </small>
               </div>
 
-              <h6 className="d-inline">
-                <span className="badge text-bg-success">
-                  {item.position_number === "" ? getNumberAsign(item.id) :  item.position_number}
-                </span>
-              </h6>
+              {item.position_number === "" ? (
+                <h6 className="d-inline">
+                  <span className="badge text-bg-success">
+                    {item.position_number}
+                  </span>
+                </h6>
+              ) : (
+                <h6 className={isNumberAsign(item.id) ? "d-inline" : "d-none"}>
+                    <span className="badge text-bg-success">
+                      <small>{getNumberAsign(item.id)}</small>
+                    </span>
+                </h6>
+              )}
+              
+
             </div>
 
             <div className="d-flex flex-row justify-content-between align-items-center px-2 py-2">

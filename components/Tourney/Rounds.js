@@ -5,7 +5,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { useAppContext } from "../../AppContext";
 
-export default function Rounds({ tourneyId, title, showPlay, uri }) {
+export default function Rounds({ tourneyId, title, showPlay, newPage, round, setRound }) {
   const { token, lang } = useAppContext();
   const [rounds, setRounds] = useState([]);
   const [page, setPage] = useState(1);
@@ -122,10 +122,10 @@ export default function Rounds({ tourneyId, title, showPlay, uri }) {
 
   const handleClick = (item) => {
     if (!showPlay) {
-      if (!uri) {
-        router.push(uri);
-      } else {
+      if (newPage) {
         router.push(`${uri}/${item.id}`);
+      } else {
+        setRound(item.id);
       }
     } else {
 
@@ -175,7 +175,7 @@ export default function Rounds({ tourneyId, title, showPlay, uri }) {
               <div
                 key={idx}
                 className="lottery-card align-items-center rounded p-2"
-                style={{ height: item.close_date !== "" ? "100px" : "80px", background: "#ebebeb" }}
+                style={{ height: "100px", background: "#ebebeb" }}
               >
                 <div
                   className="d-flex flex-row justify-content-between icons align-items-center"
@@ -183,7 +183,7 @@ export default function Rounds({ tourneyId, title, showPlay, uri }) {
                   onClick={(e) => {e.preventDefault(); handleClick(item);}}
                 >
 
-                  <h3 className="ms-2"><span className="badge bg-danger rounded-circle">{item.round_number}</span></h3>          
+                  <h3 className="ms-2"><span className={round === item.id ? "badge bg-primary rounded-circle" : "badge bg-danger rounded-circle"}>{item.round_number}</span></h3>          
 
                   <div className="d-flex flex-column flex-fill ms-4">
                     <h6><b>{item.summary}</b></h6>

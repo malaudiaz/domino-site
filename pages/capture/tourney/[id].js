@@ -9,12 +9,14 @@ import { eventDate } from "../../../_functions";
 import axios from "axios";
 import Swal from "sweetalert2";
 import Rounds from "../../../components/Tourney/Rounds";
+import Info from "../../../components/Round/Info";
 
 export default function TourneyView() {
   const { token, lang } = useAppContext();
   const router = useRouter();
   const tourneyId = router.query.id;
   const [tourney, setToutney] = useState([]);
+  const [round, setRound] =useState("");
 
   const monthTourney = (startDate) => {
     const start = new Date(startDate + " 00:00");
@@ -29,9 +31,9 @@ export default function TourneyView() {
   const config = {
     headers: {
       "Content-Type": "application/json",
-      Accept: "application/json",
+      "Accept": "application/json",
       "accept-Language": lang,
-      Authorization: `Bearer ${token}`,
+      "Authorization": `Bearer ${token}`,
     },
   };
 
@@ -77,7 +79,7 @@ export default function TourneyView() {
     if (tourneyId) {
       fetchData();
     }
-  }, [tourneyId]);
+  }, [tourneyId, round]);
 
   return (
     <>
@@ -207,10 +209,19 @@ export default function TourneyView() {
             style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
           >
             {/* Componente de Rondas */}
-            <Rounds tourneyId={tourneyId} title={"Rondas"} showPlay={false} />            
+
+            <Rounds tourneyId={tourneyId} title={"Rondas"} showPlay={false} newPage={false} round={round} setRound={setRound}/>
+
           </div>
 
+          <div className="row px-4">
+            <hr></hr>
+          </div>
+
+
           {/* Componente de Tabla */}
+            <Info />
+
 
         </div>
       </main>

@@ -328,6 +328,7 @@ export default function General({ formValues, setFormValues, setReload }) {
 
         <div className="pt-2 pb-4 text-center">
           <Button
+            type="submit"
             size={"sm"}
             color="primary"
             data-toggle="tooltip"

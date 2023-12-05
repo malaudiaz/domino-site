@@ -336,7 +336,7 @@ export default function View() {
           {menu === "SETTING" && <Setting tourney={tourney} setMenu={setMenu} />}
           {menu === "LOTTERY" && <Lottery tourney={tourney} />}
           {menu === "TABLES" && <Tables tourneyId={tourneyId} />}
-          {menu === "PLAY" && <Rounds tourneyId={tourneyId} title={"Rondas"} showPlay={true} uri={"/round"}/>}
+          {menu === "PLAY" && <Rounds tourneyId={tourneyId} title={"Rondas"} showPlay={true} newPage={true}/>}
           
         </div>
       </main>

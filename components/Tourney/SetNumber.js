@@ -17,18 +17,20 @@ import {
 } from "reactstrap";
 
 export default function SetNumber({ open, setClose, record, selected, setSelected, lottery }) {
-    const [number, setNumber] = useState(0);
+    const [number, setNumber] = useState(1);
     const [reload, setReload] = useState(false);
     const [isNotValid, setIsNotValid] = useState(false);
 
     useEffect(()=>{
-        setNumber(selected.length + 1);
+        if (number === 1) {
+            setNumber(selected.length + 1);
+        }
         setReload(false);
     },[reload])
 
     const handleChange = (e) => {
         setIsNotValid(e.target.value === "");
-        setNumber(e.target.value);
+        setNumber(parseInt(e.target.value));
     }
 
     const close = () => {
@@ -43,14 +45,15 @@ export default function SetNumber({ open, setClose, record, selected, setSelecte
 
             if (selected.length >= 0) {
                 const items = selected;
-                let item = items.find(element => element.number === number);
+                let item = items.find(element => element.position_number === number);
 
                 if (!item) {
 
                     item = items.find(element => element.id === record.id);
 
                     if (!item) {
-                        items.push({id: record.id, number: number});
+                        items.push({id: record.id, position_number: number});
+                        setNumber(number+1);
                         setSelected(items);
                         setReload(true);
                         setClose();
@@ -93,7 +96,7 @@ export default function SetNumber({ open, setClose, record, selected, setSelecte
                                     invalid={isNotValid}
                                     onChange={handleChange}
                                     autoComplete="off"
-                                    value={selected.length + 1}
+                                    value={number}
                                     onKeyPress={(event) => {
                                         if (!/^[0-9]*$/.test(event.key)) {
                                             event.preventDefault();
