@@ -20,6 +20,7 @@ export default function Lottery({ tourney }) {
   const [filter, setFilter] = useState("");
   const [view, setView] = useState('1');
   const [selected, setSelected] = useState([]);
+  const [number, setNumber] = useState(1);
 
   const toggle = (id) => {
     if (view === id) {
@@ -205,7 +206,9 @@ export default function Lottery({ tourney }) {
                     id={item.id} 
                     lotteryType={tourney.lottery_type} 
                     selected={selected} 
-                    setSelected={setSelected} 
+                    setSelected={setSelected}
+                    number={number}
+                    setNumber={setNumber} 
                     filter={filter}
                   />
                 </AccordionBody>

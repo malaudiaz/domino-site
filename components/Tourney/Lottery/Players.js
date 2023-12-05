@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 import { useAppContext } from "../../../AppContext";
 import SetNumber from "../SetNumber";
 
-export default function Players({ id, lotteryType, selected, setSelected, filter }) {
+export default function Players({ id, lotteryType, selected, setSelected, filter, number, setNumber }) {
   const { token, lang } = useAppContext();
   const [players, setPlayers] = useState([]);
   const [page, setPage] = useState(1);
@@ -204,6 +204,8 @@ export default function Players({ id, lotteryType, selected, setSelected, filter
         record={record}
         selected={selected}
         setSelected={setSelected}
+        number={number}
+        setNumber={setNumber}
         lottery={lotteryType}
       />
     </div>

@@ -16,21 +16,19 @@ import {
   Label,
 } from "reactstrap";
 
-export default function SetNumber({ open, setClose, record, selected, setSelected, lottery }) {
-    const [number, setNumber] = useState(1);
+export default function SetNumber({ open, setClose, record, selected, setSelected, number, setNumber, lottery }) {
+    const [position, setPosition] = useState(number);
     const [reload, setReload] = useState(false);
     const [isNotValid, setIsNotValid] = useState(false);
 
     useEffect(()=>{
-        if (number === 1) {
-            setNumber(selected.length + 1);
-        }
+        setPosition(number);
         setReload(false);
-    },[reload])
+    },[reload, number])
 
     const handleChange = (e) => {
         setIsNotValid(e.target.value === "");
-        setNumber(parseInt(e.target.value));
+        setPosition(e.target.value);
     }
 
     const close = () => {
@@ -45,16 +43,20 @@ export default function SetNumber({ open, setClose, record, selected, setSelecte
 
             if (selected.length >= 0) {
                 const items = selected;
-                let item = items.find(element => element.position_number === number);
+                let item = items.find(element => element.position_number === position);
 
                 if (!item) {
 
                     item = items.find(element => element.id === record.id);
 
                     if (!item) {
-                        items.push({id: record.id, position_number: number});
-                        setNumber(number+1);
+                        items.push({id: record.id, position_number: position});
                         setSelected(items);
+
+                        setNumber(selected.length+1);
+
+                        console.log(number);
+
                         setReload(true);
                         setClose();
                     }
@@ -91,12 +93,12 @@ export default function SetNumber({ open, setClose, record, selected, setSelecte
                             <InputGroup size="sm">
                                 <Input
                                     type="text"
-                                    name="number"
-                                    id="number"
+                                    name="position"
+                                    id="position"
                                     invalid={isNotValid}
                                     onChange={handleChange}
                                     autoComplete="off"
-                                    value={number}
+                                    value={position}
                                     onKeyPress={(event) => {
                                         if (!/^[0-9]*$/.test(event.key)) {
                                             event.preventDefault();
