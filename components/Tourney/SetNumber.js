@@ -16,7 +16,7 @@ import {
   Label,
 } from "reactstrap";
 
-export default function SetNumber({ open, setClose, record, selected, setSelected, number, setNumber, lottery }) {
+export default function SetNumber({ open, setClose, record, selected, setSelected, number, setNumber, lottery, category }) {
     const [position, setPosition] = useState(number);
     const [reload, setReload] = useState(false);
     const [isNotValid, setIsNotValid] = useState(false);
@@ -50,12 +50,10 @@ export default function SetNumber({ open, setClose, record, selected, setSelecte
                     item = items.find(element => element.id === record.id);
 
                     if (!item) {
-                        items.push({id: record.id, position_number: position});
+                        items.push({id: record.id, position_number: position, category: category});
                         setSelected(items);
 
                         setNumber(selected.length+1);
-
-                        console.log(number);
 
                         setReload(true);
                         setClose();

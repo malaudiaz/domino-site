@@ -207,6 +207,7 @@ export default function Players({ id, lotteryType, selected, setSelected, filter
         number={number}
         setNumber={setNumber}
         lottery={lotteryType}
+        category={id}
       />
     </div>
   );
