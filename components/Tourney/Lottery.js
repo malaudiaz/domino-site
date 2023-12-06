@@ -14,7 +14,7 @@ import {
 
 import Players from "./Lottery/Players";
 
-export default function Lottery({ tourney }) {
+export default function Lottery({ tourney, setRefresh }) {
   const { token, lang } = useAppContext();
   const [categories, setCategories] = useState([]);
   const [filter, setFilter] = useState("");
@@ -46,7 +46,6 @@ export default function Lottery({ tourney }) {
       const { data } = await axios.get(url, config);
       if (data.success) {
         setCategories(data.data);
-        setRefresh(false);
       }
     } catch ({ code, message, name, request }) {
       if (code === "ERR_NETWORK") {
@@ -103,7 +102,7 @@ export default function Lottery({ tourney }) {
         try {
           const { data } = await axios.post(url, selected, config);
           if (data.success) {
-            setMenu(4);
+            setRefresh(true);
             Swal.fire({
               title: "Sorteo de Jugadores del Torneo",
               text: data.detail,
@@ -114,7 +113,9 @@ export default function Lottery({ tourney }) {
               confirmButtonText: "Aceptar",
             });
           }
-        } catch ({ code, message, name, request }) {
+        } catch (errors) {
+          console.log(errors);
+          const { code, message, name, request } = errors;
           if (code === "ERR_NETWORK") {
             Swal.fire({
               title: "Sorteo de Jugadores del Torneo",
@@ -140,9 +141,7 @@ export default function Lottery({ tourney }) {
             }
           }
         }
-
       }
-
     } 
   };
 
@@ -157,6 +156,7 @@ export default function Lottery({ tourney }) {
               className="btn btn-sm btn-success"
               style={{ width: "100px" }}
               onClick={handleSave}
+              disabled={tourney.status_name === "INITIADED"}
             >
               <i className="bi bi-check2-circle"></i> Salvar
             </Button>
@@ -170,11 +170,6 @@ export default function Lottery({ tourney }) {
               placeholder={"Buscar..."}
               onChange={handleChange}
               value={filter}
-              onKeyPress={(event) => {
-                if (!/^[a-z_.\s]*$/.test(event.key)) {
-                  event.preventDefault();
-                }
-              }}
             />
             <InputGroupText>
               <button style={{ border: "none" }} onClick={handleSearch}>

@@ -24,6 +24,7 @@ export default function View() {
   const [tourney, setToutney] = useState([]);
   const tourneyId = router.query.id;
   const [menu, setMenu] = useState("INVITATION");
+  const [refresh, setRefresh] = useState(false);
 
   const monthTourney = (startDate) => {
     const start = new Date(startDate + " 00:00");
@@ -51,6 +52,7 @@ export default function View() {
       const { data } = await axios.get(url, config);
       if (data.success) {
         setToutney(data.data);
+        setRefresh(false);
       }
     } catch ({ code, message, name, request }) {
       if (code === "ERR_NETWORK") {
@@ -84,7 +86,7 @@ export default function View() {
     if (tourneyId) {
       fetchData();
     }
-  }, [tourneyId]);
+  }, [tourneyId, refresh]);
 
   const handleButton = (btn) => {
     if (btn !== "PLAY") {
@@ -334,7 +336,7 @@ export default function View() {
           {menu === "INVITATION" && <Response tourneyId={tourneyId} status={tourney.status_name}/>}
           {menu === "PLAYERS" && <Players tourneyId={tourneyId} title={"Jugadores Aceptados"} status={tourney.status_name} />}
           {menu === "SETTING" && <Setting tourney={tourney} setMenu={setMenu} />}
-          {menu === "LOTTERY" && <Lottery tourney={tourney} />}
+          {menu === "LOTTERY" && <Lottery tourney={tourney} setRefresh={setRefresh} />}
           {menu === "TABLES" && <Tables tourneyId={tourneyId} />}
           {menu === "PLAY" && <Rounds tourneyId={tourneyId} title={"Rondas"} showPlay={true} newPage={true}/>}
           

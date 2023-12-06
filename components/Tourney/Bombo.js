@@ -161,13 +161,8 @@ export default function Bombo({ open, setClose, bombo, setBombo, eloMax, onSave 
                   id="letter"
                   onChange={handleChange}
                   invalid={formValues.letter.error}
-                  value={formValues.letter.value}
+                  value={formValues.letter.value.toLocaleUpperCase()}
                   autoComplete="off"
-                  onKeyPress={(event) => {
-                    if (!/^[A-Z]*$/.test(event.key)) {
-                      event.preventDefault();
-                    }
-                  }}
                 />
                 <FormFeedback>{formValues.letter.errorMessage}</FormFeedback>
               </InputGroup>

@@ -69,11 +69,7 @@ export default function SetNumber({ open, setClose, record, selected, setSelecte
                         confirmButtonColor: "#3085d6",
                         confirmButtonText: "Aceptar",
                     });            
-                }
-            
-            // } else {
-            //     setSelected([{id: record.id, number: number}]);
-            //     setClose();
+                }            
             }
         }
     };    
