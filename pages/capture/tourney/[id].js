@@ -93,11 +93,7 @@ export default function TourneyView() {
         </div>
         <ul className="sidebar-nav" id="sidebar-nav">
           <li className="nav-item">
-            <Card
-              style={{
-                borderRadius: "10px",
-              }}
-            >
+            <Card className="card-info">
               <div className="d-flex justify-content-between p-2">
                 <div className="d-flex flex-row align-items-center">
                   <div className="d-flex flex-column ms-2">
@@ -220,7 +216,7 @@ export default function TourneyView() {
 
 
           {/* Componente de Tabla */}
-            <Info />
+            <Info round={round}/>
 
 
         </div>

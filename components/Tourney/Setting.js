@@ -19,7 +19,7 @@ import Advertising from "./Setting/Advertising";
 import General from "./Setting/General";
 import Category from "./Setting/Category";
 
-export default function Setting({ tourney, setMenu }) {
+export default function Setting({ tourney, setMenu, setRefresh }) {
   const { token, lang } = useAppContext();
   const [activeTab, setActiveTab] = useState("1");
   const [reload, setReload] = useState(false);
@@ -115,7 +115,7 @@ export default function Setting({ tourney, setMenu }) {
       error: false,
       errorMessage: ""
     }
-  })    
+  });    
 
   const config = {
     headers: {
@@ -271,6 +271,7 @@ export default function Setting({ tourney, setMenu }) {
     try {
         const { data } = await axios.post(url, {}, config);
         if (data.success) {
+          setRefresh(true);
           setReload(true);
           setMenu("LOTTERY");
 
@@ -344,12 +345,12 @@ export default function Setting({ tourney, setMenu }) {
               <TabContent activeTab={activeTab}>
                 <TabPane tabId="1">
 
-                    <General formValues={formValues} setFormValues={setFormValues} setReload={setReload} />
+                    <General formValues={formValues} setFormValues={setFormValues} setReload={setReload}/>
 
                 </TabPane>
                 <TabPane tabId="2">
 
-                    <Category formValues={formValues} setReload={setReload} />
+                    <Category formValues={formValues}/>
 
                 </TabPane>
               </TabContent>

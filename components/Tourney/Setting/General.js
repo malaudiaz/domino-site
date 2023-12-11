@@ -54,7 +54,7 @@ export default function General({ formValues, setFormValues, setReload }) {
             "Authorization": `Bearer ${token}`                },
         });
         if (data.success) {
-          setReload(true);
+          // setReload(true);
 
           Swal.fire({
             icon: "success",

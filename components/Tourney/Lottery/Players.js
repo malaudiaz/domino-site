@@ -152,7 +152,7 @@ export default function Players({ id, lotteryType, selected, setSelected, filter
                 </small>
               </div>
 
-              {item.position_number === "" ? (
+              {item.position_number && item.position_number !== "" ? (
                 <h6 className="d-inline">
                   <span className="badge text-bg-success">
                     {item.position_number}

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useAppContext } from "../../AppContext";
 import axios from "axios";
 import Swal from "sweetalert2";
+import Empty from "../../components/Empty/Empty";
 
 export default function Solicitude() {
   const { profile, lang, token } = useAppContext();
@@ -183,23 +184,7 @@ export default function Solicitude() {
               )}
             </div>
           ) : (
-            <div className="wrapper">
-              <div style={{ textAlign: "center" }}>
-                <svg
-                  width="56"
-                  height="46"
-                  fill="#0d6efd"
-                  className="bi bi-link-45deg"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5z" />
-                  <path d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0v-5z" />
-                </svg>
-                <div className="pt-4 fs-5">
-                  Las solicitudes recibidas aparecerán aquí.
-                </div>
-              </div>
-            </div>
+            <Empty message="Las solicitudes recibidas aparecerán aquí." path1="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5z" path2="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0v-5z"/>
           )}
         </div>
       </div>

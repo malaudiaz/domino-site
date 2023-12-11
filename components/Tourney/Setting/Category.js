@@ -5,7 +5,7 @@ import axios from "axios";
 import { useAppContext } from "../../../AppContext";
 import Bombo from "../Bombo";
 
-export default function Category({ formValues, setReload }) {
+export default function Category({ formValues }) {
   const { token, lang } = useAppContext();
   const [openNewBombo, setOpenNewBombo] = useState(false);
   const [bombo, setBombo] = useState([]);
@@ -53,7 +53,7 @@ export default function Category({ formValues, setReload }) {
             "Authorization": `Bearer ${token}`                },
         });
         if (data.success) {
-          setReload(true);
+          // setReload(true);
 
           Swal.fire({
             icon: "success",

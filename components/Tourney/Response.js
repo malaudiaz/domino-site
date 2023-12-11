@@ -5,6 +5,7 @@ import Image from "next/image";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useAppContext } from "../../AppContext";
+import { Button } from "reactstrap";
 
 export default function Response({tourneyId, status}) {
     const { token, lang } = useAppContext();
@@ -93,119 +94,131 @@ export default function Response({tourneyId, status}) {
     };
 
     return (
-        <div className="pt-3 px-4 pb-4" style={{ display: "grid" }}>
-            {invitations.length > 0 ? (
-            <div className="container-events">               
-                {invitations.map((item, idx) => (
-                    <div
-                        key={idx}
-                        className="lottery-card align-items-center rounded p-2"
-                        style={{ height: "90px", background: "#ebebeb" }}
-                    >
+        <div>
+            <div className="d-flex justify-content-between item-align-center ps-4 pe-4">
+                <h1 className="title">{"Invitaciones Aceptadas"}</h1>
+                <Button 
+                    color="primary" 
+                    size={"sm"}
+                    disabled={status !== "CREATED"}
+                >Aceptar Todas
+                </Button>
+            </div>
+
+            <div className="pt-3 px-4 pb-4" style={{ display: "grid" }}>
+                {invitations.length > 0 ? (
+                <div className="container-events">               
+                    {invitations.map((item, idx) => (
                         <div
-                            className="d-flex flex-row justify-content-between icons align-items-center"
-                            style={{ width: "98%" }}
+                            key={idx}
+                            className="lottery-card align-items-center rounded p-2"
+                            style={{ height: "90px", background: "#ebebeb" }}
                         >
-                            <Image
-                                alt="Photo Profile"
-                                src={item.photo}
-                                width={40}
-                                height={40}
-                                className="rounded-image"
-                            />
-                            <div className="d-flex flex-column flex-fill ms-2">
-                                <span className="gamer-couple">{item.name}</span>
-                                <small className="comment-text fs-12">
-                                {item.city_name + ", " + item.country}
-                                </small>
+                            <div
+                                className="d-flex flex-row justify-content-between icons align-items-center"
+                                style={{ width: "98%" }}
+                            >
+                                <Image
+                                    alt="Photo Profile"
+                                    src={item.photo}
+                                    width={40}
+                                    height={40}
+                                    className="rounded-image"
+                                />
+                                <div className="d-flex flex-column flex-fill ms-2">
+                                    <span className="gamer-couple">{item.name}</span>
+                                    <small className="comment-text fs-12">
+                                    {item.city_name + ", " + item.country}
+                                    </small>
+                                </div>
+
+                                {status === "CREATED" && (<div className="ps-4">
+                                    {item.status_name === "ACCEPTED" && (
+                                    <div
+                                        className="rounded p-2 accept-effect"
+                                        title="Aprobar jugador"
+                                        onClick={(e) => {approbePlayer(item.id, true)}}
+                                    >
+                                        <i
+                                            className="bi bi-person-check"
+                                            style={{ fontSize: "24px" }}
+                                        ></i>
+                                    </div>)}
+                                </div>)}
+
+                                {status === "CREATED" && (<div>
+                                    {item.status_name === "ACCEPTED" && (
+                                    <div
+                                        className="rounded p-2 trash-effect"
+                                        title="Rechazar jugador"
+                                        onClick={(e) => {approbePlayer(item.id, false)}}
+                                    >
+                                        <i
+                                            className="bi bi-person-dash"
+                                            style={{ fontSize: "24px" }}
+                                        ></i>
+                                    </div>)}
+                                </div>)}
+
+                                {(status === "INITIADED" || status === "CONFIGURATED") && (<div>
+                                    {item.status_name === "CONFIRMED" && (
+                                    <div
+                                        className="rounded p-2"
+                                        title="Jugador Aceptado"
+                                    >
+                                        <i className="bi bi-patch-check" style={{ fontSize: "24px", color: "blue" }}></i>
+                                    </div>)}
+                                </div>)}
+
                             </div>
 
-                            {status === "CREATED" && (<div className="ps-4">
-                                {item.status_name === "ACCEPTED" && (
-                                <div
-                                    className="rounded p-2 accept-effect"
-                                    title="Aprobar jugador"
-                                    onClick={(e) => {approbePlayer(item.id, true)}}
-                                >
-                                    <i
-                                        className="bi bi-person-check"
-                                        style={{ fontSize: "24px" }}
-                                    ></i>
-                                </div>)}
-                            </div>)}
-
-                            {status === "CREATED" && (<div>
-                                {item.status_name === "ACCEPTED" && (
-                                <div
-                                    className="rounded p-2 trash-effect"
-                                    title="Rechazar jugador"
-                                    onClick={(e) => {approbePlayer(item.id, false)}}
-                                >
-                                    <i
-                                        className="bi bi-person-dash"
-                                        style={{ fontSize: "24px" }}
-                                    ></i>
-                                </div>)}
-                            </div>)}
-
-                            {(status === "INITIADED" || status === "CONFIGURATED") && (<div>
-                                {item.status_name === "CONFIRMED" && (
-                                <div
-                                    className="rounded p-2"
-                                    title="Jugador Aceptado"
-                                >
-                                    <i className="bi bi-patch-check" style={{ fontSize: "24px", color: "blue" }}></i>
-                                </div>)}
-                            </div>)}
+                            <div className="d-flex flex-row justify-content-between align-items-center px-2">
+                                <small className="comment-text fs-12">Nivel: <b>{item.level}</b></small>
+                                <small className="comment-text fs-12">ELO: <b>{item.elo}</b></small>
+                                <small className="comment-text fs-12">Ranking: <b>{item.ranking}</b></small>
+                            </div>
 
                         </div>
+                    ))}
+                </div>
+                ) : (
+                    <div className="wrapper">
+                        <div style={{ textAlign: "center" }}>
 
-                        <div className="d-flex flex-row justify-content-between align-items-center px-2">
-                            <small className="comment-text fs-12">Nivel: <b>{item.level}</b></small>
-                            <small className="comment-text fs-12">ELO: <b>{item.elo}</b></small>
-                            <small className="comment-text fs-12">Ranking: <b>{item.ranking}</b></small>
+                            <svg
+                                width="56"
+                                height="56"
+                                fill="#0d6efd"
+                                className="bi bi-envelope-check"
+                                viewBox="0 0 16 16"
+                            >
+                                <path
+                                    d="M2 2a2 2 0 0 0-2 2v8.01A2 2 0 0 0 2 14h5.5a.5.5 0 0 0 0-1H2a1 1 0 0 1-.966-.741l5.64-3.471L8 9.583l7-4.2V8.5a.5.5 0 0 0 1 0V4a2 2 0 0 0-2-2H2Zm3.708 6.208L1 11.105V5.383l4.708 2.825ZM1 4.217V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v.217l-7 4.2-7-4.2Z"
+                                />
+                                <path
+                                    d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-1.993-1.679a.5.5 0 0 0-.686.172l-1.17 1.95-.547-.547a.5.5 0 0 0-.708.708l.774.773a.75.75 0 0 0 1.174-.144l1.335-2.226a.5.5 0 0 0-.172-.686Z"
+                                />
+                            </svg>
+                            <div className="pt-4 fs-5">
+                                Los invitaciones aceptadas para el torneo aparecerán aquí.
+                            </div>
                         </div>
-
-                    </div>
-                ))}
+                    </div>                
+                )}
+                {totalPages > 1 && 
+                    <div className="row">
+                        <Pagination
+                            onChangePage={onChangePage}
+                            currentPage={page}
+                            totalPage={totalPages}
+                            totalCount={total}
+                            rowsPerPage={rowsPerPage}
+                            siblingCount={1}
+                            showInfo={false}
+                        />
+                    </div>          
+                }
             </div>
-            ) : (
-                <div className="wrapper">
-                    <div style={{ textAlign: "center" }}>
-
-                        <svg
-                            width="56"
-                            height="56"
-                            fill="#0d6efd"
-                            className="bi bi-envelope-check"
-                            viewBox="0 0 16 16"
-                        >
-                            <path
-                                d="M2 2a2 2 0 0 0-2 2v8.01A2 2 0 0 0 2 14h5.5a.5.5 0 0 0 0-1H2a1 1 0 0 1-.966-.741l5.64-3.471L8 9.583l7-4.2V8.5a.5.5 0 0 0 1 0V4a2 2 0 0 0-2-2H2Zm3.708 6.208L1 11.105V5.383l4.708 2.825ZM1 4.217V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v.217l-7 4.2-7-4.2Z"
-                            />
-                            <path
-                                d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-1.993-1.679a.5.5 0 0 0-.686.172l-1.17 1.95-.547-.547a.5.5 0 0 0-.708.708l.774.773a.75.75 0 0 0 1.174-.144l1.335-2.226a.5.5 0 0 0-.172-.686Z"
-                            />
-                        </svg>
-                        <div className="pt-4 fs-5">
-                            Los invitaciones aceptadas para el torneo aparecerán aquí.
-                        </div>
-                    </div>
-                </div>                
-            )}
-            {totalPages > 1 && 
-                <div className="row">
-                    <Pagination
-                        onChangePage={onChangePage}
-                        currentPage={page}
-                        totalPage={totalPages}
-                        totalCount={total}
-                        rowsPerPage={rowsPerPage}
-                        siblingCount={1}
-                        showInfo={false}
-                    />
-                </div>          
-            }
         </div>
     )
 };

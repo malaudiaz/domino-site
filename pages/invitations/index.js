@@ -8,11 +8,11 @@ import Image from "next/image";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { eventDate } from "../../_functions";
+import Empty from "../../components/Empty/Empty";
 
 export default function Invitations() {
   const {profile, lang, token} = useAppContext();
 
-  const ctxMenu = [];
   const [events, setEvents] = useState([]);
   const [status, setStatus] = useState("SEND")
   const [refresh, setRefresh] = useState(false);
@@ -210,59 +210,13 @@ export default function Invitations() {
 
             </div>
           ) : (
-            <div className="wrapper">
-              <div style={{textAlign: "center"}}>
+            <>
+              {status==="SEND" && <Empty message="Los torneos a los que has sido invitado aparecerán aquí." path1="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z" />}
 
-                {status==="SEND" && <>
-                  <svg
-                    width="56"
-                    height="56"
-                    fill="#0d6efd"
-                    className="bi bi-envelope"
-                    viewBox="0 0 16 16"
-                  >
-                    <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z" />
-                  </svg>
-                  <div className="pt-4 fs-5">
-                    <span>Los torneos a los que has sido invitado aparecerán aquí.</span>
-                  </div>
-                </>}
+              {status==="ACCEPTED" && <Empty message="Las invitaciones aceptadas aparecerán aquí." path1="M2 2a2 2 0 0 0-2 2v8.01A2 2 0 0 0 2 14h5.5a.5.5 0 0 0 0-1H2a1 1 0 0 1-.966-.741l5.64-3.471L8 9.583l7-4.2V8.5a.5.5 0 0 0 1 0V4a2 2 0 0 0-2-2H2Zm3.708 6.208L1 11.105V5.383l4.708 2.825ZM1 4.217V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v.217l-7 4.2-7-4.2Z" path2="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-1.993-1.679a.5.5 0 0 0-.686.172l-1.17 1.95-.547-.547a.5.5 0 0 0-.708.708l.774.773a.75.75 0 0 0 1.174-.144l1.335-2.226a.5.5 0 0 0-.172-.686Z" />}
 
-                {status==="ACCEPTED" && <>
-                  <svg
-                    width="56"
-                    height="56"
-                    fill="#0d6efd"
-                    className="bi bi-envelope-check"
-                    viewBox="0 0 16 16"
-                  >
-                    <path d="M2 2a2 2 0 0 0-2 2v8.01A2 2 0 0 0 2 14h5.5a.5.5 0 0 0 0-1H2a1 1 0 0 1-.966-.741l5.64-3.471L8 9.583l7-4.2V8.5a.5.5 0 0 0 1 0V4a2 2 0 0 0-2-2H2Zm3.708 6.208L1 11.105V5.383l4.708 2.825ZM1 4.217V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v.217l-7 4.2-7-4.2Z"/>
-                    <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-1.993-1.679a.5.5 0 0 0-.686.172l-1.17 1.95-.547-.547a.5.5 0 0 0-.708.708l.774.773a.75.75 0 0 0 1.174-.144l1.335-2.226a.5.5 0 0 0-.172-.686Z" />
-                  </svg>
-                  <div className="pt-4 fs-5">
-                    <span>Las invitaciones aceptadas aparecerán aquí.</span>
-                  </div>
-                </>}
-
-
-                {status==="REJECTED" && <>
-                  <svg
-                    width="56"
-                    height="56"
-                    fill="#0d6efd"
-                    className="bi bi-envelope-check"
-                    viewBox="0 0 16 16"
-                  >
-                    <path d="M2 2a2 2 0 0 0-2 2v8.01A2 2 0 0 0 2 14h5.5a.5.5 0 0 0 0-1H2a1 1 0 0 1-.966-.741l5.64-3.471L8 9.583l7-4.2V8.5a.5.5 0 0 0 1 0V4a2 2 0 0 0-2-2H2Zm3.708 6.208L1 11.105V5.383l4.708 2.825ZM1 4.217V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v.217l-7 4.2-7-4.2Z"/>
-                    <path d="M14.975 10.025a3.5 3.5 0 1 0-4.95 4.95 3.5 3.5 0 0 0 4.95-4.95Zm-4.243.707a2.501 2.501 0 0 1 3.147-.318l-3.465 3.465a2.501 2.501 0 0 1 .318-3.147Zm.39 3.854 3.464-3.465a2.501 2.501 0 0 1-3.465 3.465Z"/>
-                  </svg>
-                  <div className="pt-4 fs-5">
-                    <span>Las invitaciones rechazadas aparecerán aquí.</span>
-                  </div>
-                </>}
-
-              </div>
-            </div>
+              {status==="REJECTED" && <Empty message="Las invitaciones rechazadas aparecerán aquí." path1="M2 2a2 2 0 0 0-2 2v8.01A2 2 0 0 0 2 14h5.5a.5.5 0 0 0 0-1H2a1 1 0 0 1-.966-.741l5.64-3.471L8 9.583l7-4.2V8.5a.5.5 0 0 0 1 0V4a2 2 0 0 0-2-2H2Zm3.708 6.208L1 11.105V5.383l4.708 2.825ZM1 4.217V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v.217l-7 4.2-7-4.2Z" path2="M14.975 10.025a3.5 3.5 0 1 0-4.95 4.95 3.5 3.5 0 0 0 4.95-4.95Zm-4.243.707a2.501 2.501 0 0 1 3.147-.318l-3.465 3.465a2.501 2.501 0 0 1 .318-3.147Zm.39 3.854 3.464-3.465a2.501 2.501 0 0 1-3.465 3.465Z" />}               
+            </>
           )}
         </div>
       </div>

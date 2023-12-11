@@ -10,6 +10,7 @@ import DropDownMenu from "../../../components/DropDownMenu/Menu";
 import NewEvent from "../../../components/Events/Events";
 import Image from "next/image";
 import { eventDate } from "../../../_functions";
+import Empty from "../../../components/Empty/Empty";
 
 export default function Own() {
   const {profile, lang, token, i18n} = useAppContext();
@@ -204,7 +205,9 @@ export default function Own() {
                       { id, name, summary, photo, startDate, endDate, city_name, campus, amount_people },
                       idx
                     ) => (
-                      <Card style={{cursor: "pointer", borderRadius: "10px"}} key={idx}>
+                      <Card
+                        className="card-info" 
+                        key={idx}>
                         <div className="d-flex justify-content-between p-2">
                           <div className="d-flex flex-row align-items-center">
                             <div className="d-flex flex-column ms-2">
@@ -219,12 +222,12 @@ export default function Own() {
                             />
                           </div>
                         </div>
-                        <div onClick={(e)=>{e.preventDefault(); handleClick(id)}}>
+                        <div style={{cursor: "pointer", width: "100%"}} onClick={(e)=>{e.preventDefault(); handleClick(id)}}>
                           <Image
                             alt={summary}
                             src={photo}
                             width={400}
-                            height={400}
+                            height={300}
                             quality={50}
                             priority
                             layout="intrinsic"
@@ -252,23 +255,7 @@ export default function Own() {
                   )}
                 </div>
               ) : (
-                <div className="wrapper">
-                  <div style={{ textAlign: "center" }}>
-                    <svg
-                      width="56"
-                      height="56"
-                      fill="#0d6efd"
-                      className="bi bi-calendar3"
-                      viewBox="0 0 16 16"
-                    >
-                      <path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z" />
-                      <path d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
-                    </svg>
-                    <div className="pt-4 fs-5">
-                      Los eventos organizados por tí aparecerán aquí.
-                    </div>
-                  </div>
-                </div>
+                <Empty message="Los eventos organizados por tí aparecerán aquí." path1="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z" path2="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
               )}
 
           </div>

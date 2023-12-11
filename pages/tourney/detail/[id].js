@@ -209,7 +209,7 @@ export default function Detail() {
             <hr></hr>
           </div>
 
-          <Rounds tourneyId={tourneyId} title={"Rondas"} showPlay={false}/>
+          <Rounds tourneyId={tourneyId} title={"Rondas"} showPlay={false} newPage={false}/>
           
         </div>
       </main>

@@ -335,7 +335,7 @@ export default function View() {
 
           {menu === "INVITATION" && <Response tourneyId={tourneyId} status={tourney.status_name}/>}
           {menu === "PLAYERS" && <Players tourneyId={tourneyId} title={"Jugadores Aceptados"} status={tourney.status_name} />}
-          {menu === "SETTING" && <Setting tourney={tourney} setMenu={setMenu} />}
+          {menu === "SETTING" && <Setting tourney={tourney} setMenu={setMenu} setRefresh={setRefresh} />}
           {menu === "LOTTERY" && <Lottery tourney={tourney} setRefresh={setRefresh} />}
           {menu === "TABLES" && <Tables tourneyId={tourneyId} />}
           {menu === "PLAY" && <Rounds tourneyId={tourneyId} title={"Rondas"} showPlay={true} newPage={true}/>}
