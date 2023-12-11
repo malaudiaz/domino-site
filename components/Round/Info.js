@@ -102,7 +102,7 @@ export default function Info({round}) {
                                     <thead>
                                       <tr className="text-center">
                                         <th colSpan={4}>
-                                            {item.name}
+                                            {item.pair_one.name}
                                         </th>
                                       </tr>
                                       <tr>
@@ -177,7 +177,7 @@ export default function Info({round}) {
                                     <thead>
                                       <tr className="text-center">
                                         <th colSpan={4}>
-                                            {item.name}
+                                            {item.pair_two.name}
                                         </th>
                                       </tr>
                                       <tr>

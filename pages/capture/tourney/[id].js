@@ -210,7 +210,7 @@ export default function TourneyView() {
 
           </div>
 
-          <div className="row px-4">
+          <div className="row px-2 py-4">
             <hr></hr>
           </div>
 
