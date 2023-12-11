@@ -196,12 +196,12 @@ export default function TourneyView() {
             </div>
           </div>
 
-          <div className="row px-4">
+          <div className="row px-2">
             <hr></hr>
           </div>
 
           <div
-            className="px-4 pb-4"
+            className="px-2 pb-2"
             style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
           >
             {/* Componente de Rondas */}
@@ -210,7 +210,7 @@ export default function TourneyView() {
 
           </div>
 
-          <div className="row px-2 py-4">
+          <div className="row px-2">
             <hr></hr>
           </div>
 
