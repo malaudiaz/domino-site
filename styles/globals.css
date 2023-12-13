@@ -1780,6 +1780,7 @@ h6 {
 
 .card-info {
   border-radius: 10px;
+  cursor: pointer;  
 }
 
 .card-info:hover {

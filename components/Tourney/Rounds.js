@@ -126,7 +126,9 @@ export default function Rounds({ tourneyId, title, showPlay, newPage, round, set
       if (newPage) {
         router.push(`${uri}/${item.id}`);
       } else {
-        setRound(item.id);
+        if (setRound) {
+          setRound(item.id);
+        }
       }
     } else {
 
