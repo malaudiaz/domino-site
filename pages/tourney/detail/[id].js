@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { Card, CardHeader, CardBody, CardFooter } from "reactstrap";
+import { Card, CardHeader, CardBody, CardFooter, Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
 import axios from "axios";
 import Swal from "sweetalert2";
 import Image from "next/image";
@@ -10,12 +10,19 @@ import Header from "../../../components/Header/Header";
 import Footer from "../../../components/Footers/Footer";
 import { eventDate } from "../../../_functions";
 import Rounds from "../../../components/Tourney/Rounds";
+import Tables from "../../../components/Round/Tables";
+import classnames from "classnames";
+import Raiting from "../../../components/Round/Raiting";
+import Info from "../../../components/Round/Info";
 
 export default function Detail() {
   const { token, lang } = useAppContext();
 
   const router = useRouter();
   const [tourney, setToutney] = useState([]);
+  const [round, setRound] =useState("");
+  const [activeTab, setActiveTab] = useState("1");
+  
   const tourneyId = router.query.id
 
   const monthTourney = (startDate) => {
@@ -27,6 +34,13 @@ export default function Detail() {
     const start = new Date(startDate + " 00:00");
     return start.getDate().toString();
   };
+
+  const toggleTab = (tab) => {
+    if (activeTab !== tab) {
+      setActiveTab(tab);
+    }
+  };
+
 
   const config = {
     headers: {
@@ -209,9 +223,79 @@ export default function Detail() {
             <hr></hr>
           </div>
 
-          <Rounds tourneyId={tourneyId} title={"Rondas"} showPlay={false} newPage={false}/>
-          
+
+          <div
+            className="px-2 pb-2"
+            style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
+          >
+            {/* Componente de Rondas */}
+
+            <Rounds 
+              tourneyId={tourneyId} 
+              title={"Rondas"} 
+              showPlay={false} 
+              newPage={false} 
+              round={round} 
+              setRound={setRound}
+            />
+
+          </div>
+
+          {round && 
+          <div className="d-grid pt-3 px-4 pb-4">
+
+            <Nav tabs>
+              <NavItem>
+                <NavLink
+                  href="#"
+                  className={classnames({ active: activeTab === "1" })}
+                  onClick={() => {
+                    toggleTab("1");
+                  }}
+                >
+                  Mesas
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink
+                  href="#"
+                  className={classnames({ active: activeTab === "2" })}
+                  onClick={() => {
+                    toggleTab("2");
+                  }}
+                >
+                  Posiciones
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink
+                  href="#"
+                  className={classnames({ active: activeTab === "3" })}
+                  onClick={() => {
+                    toggleTab("3");
+                  }}
+                >
+                  Información
+                </NavLink>
+              </NavItem>
+            </Nav>
+
+            <TabContent activeTab={activeTab}>
+              <TabPane tabId="1">
+                <Tables roundId={round}/>
+              </TabPane>
+              <TabPane tabId="2">
+                <Raiting roundId={round}/>
+              </TabPane>
+              <TabPane tabId="3">
+                <Info round={round}/>
+              </TabPane>
+            </TabContent>
+
+          </div>}
+
         </div>
+          
       </main>
 
       <Footer />

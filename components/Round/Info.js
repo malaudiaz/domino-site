@@ -26,10 +26,10 @@ export default function Info({ round }) {
   const config = {
     headers: {
       "Content-Type": "application/json",
-      Accept: "application/json",
+      "Accept": "application/json",
       "accept-Language": lang,
-      Authorization: `Bearer ${token}`,
-    },
+      "Authorization": `Bearer ${token}`,
+    }
   };
 
   const fetchData = async () => {
@@ -71,10 +71,10 @@ export default function Info({ round }) {
   };
 
   useEffect(() => {
-    if (round) {
+    if (round && !open) {
       fetchData();
     }
-  }, [round]);
+  }, [round, open]);
 
   const handleClick = (item) => {
     setRecord(item);
@@ -90,190 +90,196 @@ export default function Info({ round }) {
   };
 
   return (
-    <div className="pt-3 px-4 pb-4" style={{ display: "grid" }}>
-      <div className="container-events">
-        {tables.map((item, idx) => (
-          <Card
-            className="card-info"
-            key={idx}
-            style={{ height: "400px", background: "#ebebeb" }}
-            onClick={(e) => {
-              e.preventDefault();
-              handleClick(item);
-            }}
-          >
-            <CardHeader className="w-100">
-              Mesa <b>{item.table_number}</b> - {item.table_type}
-            </CardHeader>
-            <CardBody>
-              <div className="d-flex flex-row justify-content-between icons align-items-center pt-4">
-                <div className="d-flex flex-column align-items-center">
-                  <Image
-                    alt="Avatar Player 1"
-                    src={"/profile/user-vector.jpg"}
-                    width={60}
-                    height={60}
-                    className="rounded-image"
-                  />
-                  <span>{item.pair_one.player_one}</span>
-                  <small>{item.pair_one.elo_one}</small>
-                </div>
-                <div
-                  className="d-flex flex-column flex-fill ms-2"
-                  style={{ width: "200px" }}
-                >
-                  <Table responsive size="sm">
-                    <thead>
-                      <tr className="text-center">
-                        <th colSpan={4}>{item.pair_one.name}</th>
-                      </tr>
-                      <tr>
-                        <th>Nombre</th>
-                        <th className="text-center">P+</th>
-                        <th className="text-center">P-</th>
-                        <th className="text-center">Total</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr className="align-middle">
-                        <td>{item.pair_one.player_one}</td>
-                        <th
-                          className={
-                            item.pair_one.is_winner
-                              ? "text-center text-danger"
-                              : "text-center"
-                          }
-                          rowSpan={2}
-                        >
-                          {item.pair_one.positive_point}
-                        </th>
-                        <th className="text-center" rowSpan={2}>
-                          {item.pair_one.negative_point}
-                        </th>
-                        <th className="text-center" rowSpan={2}>
-                          {item.pair_one.difference_point}
-                        </th>
-                      </tr>
-                      <tr>
-                        <td>{item.pair_one.player_two}</td>
-                      </tr>
-                    </tbody>
-                  </Table>
-                </div>
-                <div className="d-flex flex-column align-items-center">
-                  <Image
-                    alt="Avatar Player 1"
-                    src={"/profile/user-vector.jpg"}
-                    width={60}
-                    height={60}
-                    className="rounded-image"
-                  />
-                  <span>{item.pair_one.player_two}</span>
-                  <small>{item.pair_one.elo_two}</small>
-                </div>
-              </div>
+    <>
+      {round && <div className="row px-2">
+        <hr></hr>
+      </div>}
 
-              <div className="row px-4">
-                {item.status === "1" ? (
-                  <span className="text-center bg-danger text-light">
-                    <b>{item.status_partida}</b>
-                  </span>
-                ) : (
-                  <span className="text-center bg-primary text-light">
-                    <b>Partida en Proceso</b>
-                  </span>
-                )}
-              </div>
+      <div className="pt-3 px-4 pb-4" style={{ display: "grid" }}>
+        <div className="container-events">
+          {tables.map((item, idx) => (
+            <Card
+              className="card-info"
+              key={idx}
+              style={{ height: "400px", background: "#ebebeb" }}
+              onClick={(e) => {
+                e.preventDefault();
+                handleClick(item);
+              }}
+            >
+              <CardHeader className="w-100">
+                Mesa <b>{item.table_number}</b> - {item.table_type}
+              </CardHeader>
+              <CardBody>
+                <div className="d-flex flex-row justify-content-between icons align-items-center pt-4">
+                  <div className="d-flex flex-column align-items-center">
+                    <Image
+                      alt="Avatar Player 1"
+                      src={"/profile/user-vector.jpg"}
+                      width={60}
+                      height={60}
+                      className="rounded-image"
+                    />
+                    <span>{item.pair_one.player_one}</span>
+                    <small>{item.pair_one.elo_one}</small>
+                  </div>
+                  <div
+                    className="d-flex flex-column flex-fill ms-2"
+                    style={{ width: "200px" }}
+                  >
+                    <Table responsive size="sm">
+                      <thead>
+                        <tr className="text-center">
+                          <th colSpan={4}>{item.pair_one.name}</th>
+                        </tr>
+                        <tr>
+                          <th>Nombre</th>
+                          <th className="text-center">P+</th>
+                          <th className="text-center">P-</th>
+                          <th className="text-center">Total</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr className="align-middle">
+                          <td>{item.pair_one.player_one}</td>
+                          <th
+                            className={
+                              item.pair_one.is_winner
+                                ? "text-center text-danger"
+                                : "text-center"
+                            }
+                            rowSpan={2}
+                          >
+                            {item.pair_one.positive_point}
+                          </th>
+                          <th className="text-center" rowSpan={2}>
+                            {item.pair_one.negative_point}
+                          </th>
+                          <th className="text-center" rowSpan={2}>
+                            {item.pair_one.difference_point}
+                          </th>
+                        </tr>
+                        <tr>
+                          <td>{item.pair_one.player_two}</td>
+                        </tr>
+                      </tbody>
+                    </Table>
+                  </div>
+                  <div className="d-flex flex-column align-items-center">
+                    <Image
+                      alt="Avatar Player 1"
+                      src={"/profile/user-vector.jpg"}
+                      width={60}
+                      height={60}
+                      className="rounded-image"
+                    />
+                    <span>{item.pair_one.player_two}</span>
+                    <small>{item.pair_one.elo_two}</small>
+                  </div>
+                </div>
 
-              <div className="d-flex flex-row justify-content-between icons align-items-center pt-2">
-                <div className="d-flex flex-column align-items-center">
-                  <Image
-                    alt="Avatar Player 1"
-                    src={"/profile/user-vector.jpg"}
-                    width={60}
-                    height={60}
-                    className="rounded-image"
-                  />
-                  <span>{item.pair_two.player_one}</span>
-                  <small>{item.pair_two.elo_one}</small>
+                <div className="row px-4">
+                  {item.status === "1" ? (
+                    <span className="text-center bg-danger text-light">
+                      <b>{item.status_partida}</b>
+                    </span>
+                  ) : (
+                    <span className="text-center bg-primary text-light">
+                      <b>Partida en Proceso</b>
+                    </span>
+                  )}
                 </div>
-                <div
-                  className="d-flex flex-column flex-fill ms-2"
-                  style={{ width: "200px" }}
-                >
-                  <Table responsive size="sm">
-                    <thead>
-                      <tr className="text-center">
-                        <th className="text-center" colSpan={4}>
-                          {item.pair_two.name}
-                        </th>
-                      </tr>
-                      <tr>
-                        <th>Nombre</th>
-                        <th className="text-center">P+</th>
-                        <th className="text-center">P-</th>
-                        <th className="text-center">Total</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr className="align-middle">
-                        <td>{item.pair_two.player_one}</td>
-                        <th
-                          className={
-                            item.pair_two.is_winner
-                              ? "text-center text-danger"
-                              : "text-center"
-                          }
-                          rowSpan={2}
-                        >
-                          {item.pair_two.positive_point}
-                        </th>
-                        <th className="text-center" rowSpan={2}>
-                          {item.pair_two.negative_point}
-                        </th>
-                        <th className="text-center" rowSpan={2}>
-                          {item.pair_two.difference_point}
-                        </th>
-                      </tr>
-                      <tr>
-                        <td>{item.pair_two.player_two}</td>
-                      </tr>
-                    </tbody>
-                  </Table>
-                </div>
-                <div className="d-flex flex-column align-items-center">
-                  <Image
-                    alt="Avatar Player 1"
-                    src={"/profile/user-vector.jpg"}
-                    width={60}
-                    height={60}
-                    className="rounded-image"
-                  />
-                  <span>{item.pair_two.player_two}</span>
-                  <small>{item.pair_two.elo_two}</small>
-                </div>
-              </div>
-            </CardBody>
-          </Card>
-        ))}
-      </div>
 
-      {totalPages > 1 && (
-        <div className="row">
-          <Pagination
-            onChangePage={onChangePage}
-            currentPage={page}
-            totalPage={totalPages}
-            totalCount={total}
-            rowsPerPage={rowsPerPage}
-            siblingCount={1}
-            showInfo={false}
-          />
+                <div className="d-flex flex-row justify-content-between icons align-items-center pt-2">
+                  <div className="d-flex flex-column align-items-center">
+                    <Image
+                      alt="Avatar Player 1"
+                      src={"/profile/user-vector.jpg"}
+                      width={60}
+                      height={60}
+                      className="rounded-image"
+                    />
+                    <span>{item.pair_two.player_one}</span>
+                    <small>{item.pair_two.elo_one}</small>
+                  </div>
+                  <div
+                    className="d-flex flex-column flex-fill ms-2"
+                    style={{ width: "200px" }}
+                  >
+                    <Table responsive size="sm">
+                      <thead>
+                        <tr className="text-center">
+                          <th className="text-center" colSpan={4}>
+                            {item.pair_two.name}
+                          </th>
+                        </tr>
+                        <tr>
+                          <th>Nombre</th>
+                          <th className="text-center">P+</th>
+                          <th className="text-center">P-</th>
+                          <th className="text-center">Total</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr className="align-middle">
+                          <td>{item.pair_two.player_one}</td>
+                          <th
+                            className={
+                              item.pair_two.is_winner
+                                ? "text-center text-danger"
+                                : "text-center"
+                            }
+                            rowSpan={2}
+                          >
+                            {item.pair_two.positive_point}
+                          </th>
+                          <th className="text-center" rowSpan={2}>
+                            {item.pair_two.negative_point}
+                          </th>
+                          <th className="text-center" rowSpan={2}>
+                            {item.pair_two.difference_point}
+                          </th>
+                        </tr>
+                        <tr>
+                          <td>{item.pair_two.player_two}</td>
+                        </tr>
+                      </tbody>
+                    </Table>
+                  </div>
+                  <div className="d-flex flex-column align-items-center">
+                    <Image
+                      alt="Avatar Player 1"
+                      src={"/profile/user-vector.jpg"}
+                      width={60}
+                      height={60}
+                      className="rounded-image"
+                    />
+                    <span>{item.pair_two.player_two}</span>
+                    <small>{item.pair_two.elo_two}</small>
+                  </div>
+                </div>
+              </CardBody>
+            </Card>
+          ))}
         </div>
-      )}
+
+        {totalPages > 1 && (
+          <div className="row">
+            <Pagination
+              onChangePage={onChangePage}
+              currentPage={page}
+              totalPage={totalPages}
+              totalCount={total}
+              rowsPerPage={rowsPerPage}
+              siblingCount={1}
+              showInfo={false}
+            />
+          </div>
+        )}
 
 
-      <Boletus open={open} close={closeBoletus} record={record}/>
-    </div>
+        <Boletus open={open} close={closeBoletus} record={record}/>
+      </div>
+    </>
   );
 }

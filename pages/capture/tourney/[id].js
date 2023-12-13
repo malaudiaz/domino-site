@@ -210,11 +210,6 @@ export default function TourneyView() {
 
           </div>
 
-          <div className="row px-2">
-            <hr></hr>
-          </div>
-
-
           {/* Componente de Tabla */}
             <Info round={round}/>
 
