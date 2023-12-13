@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 import { useAppContext } from "../../AppContext";
 import { Card, CardHeader, Label, Input, CardFooter } from "reactstrap";
 
-export default function Tables({ roundId }) {
+export default function Tables({ round, edited }) {
   const { token, lang } = useAppContext();
 
   const [tables, setTables] = useState([]);
@@ -26,7 +26,7 @@ export default function Tables({ roundId }) {
   };
 
   const fetchData = async () => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/tables/one/?round_id=${roundId}&page=${page}&per_page=${rowsPerPage}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/tables/one/?round_id=${round}&page=${page}&per_page=${rowsPerPage}`;
 
     try {
       const { data } = await axios.get(url, config);
@@ -52,10 +52,10 @@ export default function Tables({ roundId }) {
   };
 
   useEffect(() => {
-    if (roundId) {
+    if (round) {
       fetchData();
     }
-  }, [roundId, page]);
+  }, [round, page]);
 
   const onChangePage = (pageNumber) => {
     setPage(pageNumber);
@@ -70,7 +70,7 @@ export default function Tables({ roundId }) {
             <Card
               key={idx}
               className="d-flex flex-column align-items-center rounded"
-              style={{ height: "400px", background: "#ebebeb" }}
+              style={{ height: edited ? "400px" : "350px", background: "#ebebeb" }}
             >
               <CardHeader className="w-100">Mesa <b>{item.number}</b> - {item.type}</CardHeader>
               <div className="container-fluid pt-2">
@@ -144,7 +144,7 @@ export default function Tables({ roundId }) {
 
                 </div>
 
-                <div className="row pt-2">
+                {edited && <div className="row pt-2">
 
                   <div className="col-12 justify-content-center text-center">
 
@@ -210,7 +210,7 @@ export default function Tables({ roundId }) {
 
                   </div>                
 
-                </div>
+                </div>}
 
                 <div className="row justify-content-center text-center pt-2">
                   <div className="image_with_badge_container">

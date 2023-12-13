@@ -211,7 +211,7 @@ export default function TourneyView() {
           </div>
 
           {/* Componente de Tabla */}
-            <Info round={round}/>
+            <Info round={round} edited={true}/>
 
 
         </div>

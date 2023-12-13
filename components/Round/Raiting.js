@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 import { useAppContext } from "../../AppContext";
 import { Table } from "reactstrap";
 
-export default function Raiting({ roundId }) {
+export default function Raiting({ round }) {
     const { token, lang } = useAppContext();
 
     const [raiting, setRaiting] = useState([]);
@@ -26,7 +26,7 @@ export default function Raiting({ roundId }) {
     };
   
     const fetchData = async () => {
-        const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/scale/?round_id=${roundId}&page=${page}&per_page=${rowsPerPage}`;
+        const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/scale/?round_id=${round}&page=${page}&per_page=${rowsPerPage}`;
   
         try {
             const { data } = await axios.get(url, config);
@@ -64,10 +64,10 @@ export default function Raiting({ roundId }) {
     };
   
     useEffect(() => {
-      if (roundId) {
+      if (round) {
         fetchData();
       }
-    }, [roundId, page]);
+    }, [round, page]);
   
     const onChangePage = (pageNumber) => {
       setPage(pageNumber);

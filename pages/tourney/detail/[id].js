@@ -282,13 +282,13 @@ export default function Detail() {
 
             <TabContent activeTab={activeTab}>
               <TabPane tabId="1">
-                <Tables roundId={round}/>
+                <Tables round={round} edited={false}/>
               </TabPane>
               <TabPane tabId="2">
-                <Raiting roundId={round}/>
+                <Raiting round={round}/>
               </TabPane>
               <TabPane tabId="3">
-                <Info round={round}/>
+                <Info round={round} edited={false}/>
               </TabPane>
             </TabContent>
 

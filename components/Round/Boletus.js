@@ -20,7 +20,7 @@ import { useAppContext } from "../../AppContext";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-export default function Boletus({ open, close, record }) {
+export default function Boletus({ open, close, record, edited }) {
   const { token, lang } = useAppContext();
   const [openData, setOpenData] = useState(false);
   const [boletus, setBoletus] = useState([]);
@@ -202,7 +202,7 @@ export default function Boletus({ open, close, record }) {
             <strong>Ronda: {boletus.round_number}</strong>
             <strong className="ps-4">Mesa: {boletus.table_number}</strong>
           </div>
-          {record.status === "0" && (
+          {(record.status === "0" && edited) && (
             <Button
               color="primary"
               size="sm"
