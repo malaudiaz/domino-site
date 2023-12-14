@@ -62,6 +62,39 @@ export default function Tables({ round, edited }) {
     fetchData();
   };
 
+  const saveImage = async (id, img) => {
+    const body = new FormData();
+    body.append("image", img);
+
+    const url = `${process.env.NEXT_PUBLIC_API_URL}tourney/setting/configure_tables/${id}`
+
+    try {
+      const { data } = await axios.post(url, body, {
+        headers: {
+          "Accept-Language": lang,
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+      if (data.success) {
+        Swal.fire({
+          icon: "success",
+          title: "Publicidad en Mesas",
+          text: data.detail,
+          showConfirmButton: true
+        });
+      }
+    } catch (errors) {
+      console.log(errors);
+      Swal.fire({
+        icon: "error",
+        title: "Publicidad en Mesas",
+        text: "Ha ocurrido un error al consultar la API....",
+        showConfirmButton: true
+      });
+    }  
+  }
+
+
   return (
     <div className="pt-3 px-4 pb-4" style={{ display: "grid" }}>
       {tables.length > 0 ? (
@@ -151,62 +184,58 @@ export default function Tables({ round, edited }) {
                     <Label
                       href="#"
                       className="btn btn-primary btn-sm"
-                      title="Cargar nueva foto de pérfil"
+                      title="Cargar foto de publicidad por defecto"
                       style={{ color: "white" }}
                     >
                       <i className="bi bi-upload"></i>
                       <Input
-                        type="file"
-                        hidden
-                        onChange={(event) => {
-                          if (event.target.files && event.target.files[0]) {
-                            const i = event.target.files[0];
-                            if (i.type.includes("image/jpeg")) {
-                            } else {
-                              Swal.fire({
-                                icon: "error",
-                                title: "Cargando Imagen",
-                                text: "Ha ocurrido un error al cargar la imagen",
-                                showConfirmButton: true,
-                              });
-                            }
-                          }
-                        }}
+                          type="file"
+                          hidden
+                          onChange={(event) => {
+                              if (event.target.files && event.target.files[0]) {
+                                  const i = event.target.files[0];
+                                  if (i.type.includes("image/jpeg")) {
+                                      saveImage(item.table_id, i);
+                                  } else {
+                                      Swal.fire({
+                                          icon: "error",
+                                          title: "Cargando Imagen",
+                                          text: "Ha ocurrido un error al cargar la imagen",
+                                          showConfirmButton: true,
+                                      });
+                                  }
+                              }
+                          }}
                       />
                     </Label>
 
                     <Label
                       href="#"
                       className="btn btn-danger btn-sm"
-                      title="Eliminar mí foto de perfil"
+                      title="Eliminar foto de Publicidad"
                       style={{ color: "white" }}
                       onClick={(e) => {
-
-                        Swal.fire({
-                          title: "¿ Desea eliminar esta foto de pérfil ?",
-                          text: "! Esta opción no podrá ser revertida !",
-                          icon: "question",
-                          showCancelButton: true,
-                          confirmButtonText: "Sí",
-                          cancelButtonText: "No",
-                          confirmButtonColor: "#3085d6",
-                          cancelButtonColor: "#d33",
-                          reverseButtons: true,
-                          allowOutsideClick: false,
-                        }).then((result) => {
-                          if (result.isConfirmed) {
-
-                            setRecord({ ...record, photo: null, file: null });
-                            setImage(null);
-                            setCreateObjectURL(null);    
-
-                          }
-                        });                      
-
+                          Swal.fire({
+                              title: "¿ Desea eliminar esta foto de publicidad ?",
+                              text: "! Esta opción no podrá ser revertida !",
+                              icon: "question",
+                              showCancelButton: true,
+                              confirmButtonText: "Sí",
+                              cancelButtonText: "No",
+                              confirmButtonColor: "#3085d6",
+                              cancelButtonColor: "#d33",
+                              reverseButtons: true,
+                              allowOutsideClick: false,
+                          }).then((result) => {
+                              if (result.isConfirmed) {
+                                  saveImage(item.table_id, "");
+                              }
+                          });
                       }}
                     >
-                      <i className="bi bi-trash"></i>
+                      <i className="bi bi-trash"/>
                     </Label>
+
 
                   </div>                
 
