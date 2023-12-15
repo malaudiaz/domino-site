@@ -1,7 +1,7 @@
 
 export default function Empty({message, path1, path2}) {
   return (
-    <div className="wrapper">
+    <div className="container">
       <div style={{ textAlign: "center" }}>
         {path1 & path2 ? (
           <svg

@@ -171,7 +171,7 @@ export default function Rounds({ tourneyId, title, showPlay, newPage, round, set
         <h1 className="title">{title}</h1>
       </div>
 
-      <div className="pt-3 px-4 pb-4" style={{ display: "grid" }}>
+      <div className="d-grid pt-3 px-4 pb-4" >
         {rounds.length > 0 ? (
           <div className="container-events">
             {rounds.map((item, idx) => (

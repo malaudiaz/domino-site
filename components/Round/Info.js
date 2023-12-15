@@ -179,13 +179,13 @@ export default function Info({ round, edited }) {
                 </div>
 
                 <div className="row px-4">
-                  {item.status === "1" ? (
+                  {item.status == "1" ? (
                     <span className="text-center bg-danger text-light">
                       <b>{item.status_partida}</b>
                     </span>
                   ) : (
                     <span className="text-center bg-primary text-light">
-                      <b>Partida en Proceso</b>
+                      <b>{item.status_partida}</b>
                     </span>
                   )}
                 </div>
