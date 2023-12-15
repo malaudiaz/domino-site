@@ -90,7 +90,7 @@ export default function Boletus({ open, close, record, edited }) {
   };
 
   useEffect(() => {
-    if (record.boletus_id && reload) {
+    if (record.boletus_id) {
       fetchData();
     }
   }, [record, reload]);
