@@ -74,7 +74,7 @@ export default function Info({ round, edited }) {
     if (round && !open) {
       fetchData();
     }
-  }, [round, open]);
+  }, [round, open, record]);
 
   const handleClick = (item) => {
     setRecord(item);
