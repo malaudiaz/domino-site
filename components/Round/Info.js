@@ -33,7 +33,7 @@ export default function Info({ round, edited }) {
   };
 
   const fetchData = async () => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/boletus/all/${round}&page=${page}&per_page=${rowsPerPage}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/boletus/all/${round}?page=${page}&per_page=${rowsPerPage}`;
 
     try {
       const { data } = await axios.get(url, config);

@@ -5,11 +5,13 @@ import Link from "next/link";
 import Swal from "sweetalert2";
 import Notification from "../Notifications/Notifications";
 import { deleteCookie } from 'cookies-next';
-
+import { useState } from "react";
+import ChangeProfile from "../Profile/ChangeProfile";
 
 const Header = () => {
   const router = useRouter();
   const {profile, i18n} = useAppContext();
+  const [open, setOpen] = useState(false);
 
   const t = i18n.header;
 
@@ -46,6 +48,10 @@ const Header = () => {
     };
     select("body").classList.toggle("toggle-sidebar");
   };
+
+  const changeProfile = () => {
+    setOpen(true);
+  }
 
   return (
     <header id="header" className="header fixed-top d-flex align-items-center">
@@ -102,6 +108,15 @@ const Header = () => {
               </li>
 
               <li>
+                <Link href="#">
+                  <a className="dropdown-item d-flex align-items-center" onClick={changeProfile}>
+                    <i className="bi bi-person-gear"></i>
+                    <span>Cambiar de Perfil</span>
+                  </a>
+                </Link>
+              </li>
+
+              <li>
                 <hr className="dropdown-divider" />
               </li>
 
@@ -115,6 +130,9 @@ const Header = () => {
           </li>
         </ul>
       </nav>
+
+      <ChangeProfile open={open} setOpen={setOpen} />
+
     </header>
   );
 };
