@@ -20,10 +20,11 @@ import { useAppContext } from "../../AppContext";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-export default function Boletus({ open, close, record, edited }) {
+export default function Boletus({ open, close, record, edited, setRefresh }) {
   const { token, lang } = useAppContext();
   const [openData, setOpenData] = useState(false);
   const [boletus, setBoletus] = useState([]);
+  const [gameOver, setGameOver] = useState(false);
   const [reload, setReload] = useState(true)
   const [data, setData] = useState({
     pair: {
@@ -52,6 +53,10 @@ export default function Boletus({ open, close, record, edited }) {
     }
   };
 
+  const toggle = () => {
+    close();
+  }
+
   const fetchData = async () => {
     const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/boletus/data/${record.boletus_id}`;
 
@@ -59,6 +64,8 @@ export default function Boletus({ open, close, record, edited }) {
       const { data } = await axios.get(url, config);
       if (data.success) {
         setBoletus(data.data);
+        const gover = data.data.number_points_to_win === data.data.pair_one.total_point || data.data.number_points_to_win === data.data.pair_two.total_point;
+        setGameOver(gover);
         setReload(false);
       }
     } catch ({ code, message, name, request }) {
@@ -93,7 +100,7 @@ export default function Boletus({ open, close, record, edited }) {
     if (record.boletus_id) {
       fetchData();
     }
-  }, [record, reload]);
+  }, [record, reload, gameOver]);
 
   const handleNew = () => {
     setOpenData(true);
@@ -114,6 +121,10 @@ export default function Boletus({ open, close, record, edited }) {
       const { data } = await axios.post(url, body, config);
 
       if (data.success) {
+        if (data.data.closed_round) {
+          setRefresh(true);
+        }
+
         Swal.fire({
           icon: "success",
           title: "Guardando Data",
@@ -190,9 +201,7 @@ export default function Boletus({ open, close, record, edited }) {
       centered={true}
     >
       <ModalHeader
-        toggle={(e) => {
-          close(e);
-        }}
+        toggle={toggle}
       >
         <small>Boleta</small>
       </ModalHeader>
@@ -202,7 +211,7 @@ export default function Boletus({ open, close, record, edited }) {
             <strong>Ronda: {boletus.round_number}</strong>
             <strong className="ps-4">Mesa: {boletus.table_number}</strong>
           </div>
-          {(record.status === "0" && edited) && (
+          {(record.status === "0" && edited && gameOver === false) && (
             <Button
               color="primary"
               size="sm"

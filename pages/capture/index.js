@@ -144,7 +144,7 @@ export default function Capture() {
                         {tourney.map((item, i)=>(
                             <Card 
                               className="lottery-card"
-                              style={{ borderRadius: "10px", height:"70px"}} 
+                              style={{ borderRadius: "10px", height:"80px"}} 
                               key={i} 
                               onClick={(e)=>{e.preventDefault();handleTourney(item)}}
                             >

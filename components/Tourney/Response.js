@@ -6,6 +6,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { useAppContext } from "../../AppContext";
 import { Button } from "reactstrap";
+import Empty from "../Empty/Empty";
 
 export default function Response({tourneyId, status}) {
     const { token, lang } = useAppContext();
@@ -63,7 +64,7 @@ export default function Response({tourneyId, status}) {
         setPage(pageNumber);
     };
 
-    const approbePlayer = async(id, value) => {
+    const approbePlayer = async (id, value) => {
         const url = value ? `${process.env.NEXT_PUBLIC_API_URL}player/confirmed/${id}` : `${process.env.NEXT_PUBLIC_API_URL}player/rejected/${id}`;
     
         try {
@@ -93,6 +94,56 @@ export default function Response({tourneyId, status}) {
         }
     };
 
+
+    const approbeAll = async () => {
+        const url = `${process.env.NEXT_PUBLIC_API_URL}tourney/player/confirmed/${tourneyId}`;
+    
+        try {
+          const { data } = await axios.post(url, {}, config);
+          if (data.success) {
+            setRefresh(true);
+            Swal.fire({
+                icon: "success",
+                title: "Aceptar Jugadores",
+                text: "Todos los jugadores forma parte de este torneo",
+                showConfirmButton: true,
+            });      
+          }
+        } catch (errors) {
+          console.log(errors);
+          const { response } = errors;
+          const { detail } = response.data;
+          Swal.fire({
+            title: "Torneo/Jugadores",
+            text: detail,
+            icon: "error",
+            showCancelButton: false,
+            allowOutsideClick: false,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Aceptar",
+          });
+        }
+    };
+
+    const handleApprobe = (e) => {
+        e.preventDefault();
+
+        Swal.fire({
+            title: "Confirmar Juagadores",
+            text: "¿ Estas seguro que desea confirmar a todos los jugadores para formar parte del torneo ?",
+            icon: "question",
+            showCancelButton: true,
+            cancelButtonText: "Cancelar",
+            allowOutsideClick: false,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Aceptat",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                approbeAll();
+            }
+        });     
+    };
+
     return (
         <div>
             <div className="d-flex justify-content-between item-align-center ps-4 pe-4">
@@ -101,7 +152,9 @@ export default function Response({tourneyId, status}) {
                     color="primary" 
                     size={"sm"}
                     disabled={status !== "CREATED"}
-                >Aceptar Todas
+                    onClick={(e) => {handleApprobe(e)}}
+                >
+                    Aceptar Todas
                 </Button>
             </div>
 
@@ -182,28 +235,7 @@ export default function Response({tourneyId, status}) {
                     ))}
                 </div>
                 ) : (
-                    <div className="wrapper">
-                        <div style={{ textAlign: "center" }}>
-
-                            <svg
-                                width="56"
-                                height="56"
-                                fill="#0d6efd"
-                                className="bi bi-envelope-check"
-                                viewBox="0 0 16 16"
-                            >
-                                <path
-                                    d="M2 2a2 2 0 0 0-2 2v8.01A2 2 0 0 0 2 14h5.5a.5.5 0 0 0 0-1H2a1 1 0 0 1-.966-.741l5.64-3.471L8 9.583l7-4.2V8.5a.5.5 0 0 0 1 0V4a2 2 0 0 0-2-2H2Zm3.708 6.208L1 11.105V5.383l4.708 2.825ZM1 4.217V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v.217l-7 4.2-7-4.2Z"
-                                />
-                                <path
-                                    d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-1.993-1.679a.5.5 0 0 0-.686.172l-1.17 1.95-.547-.547a.5.5 0 0 0-.708.708l.774.773a.75.75 0 0 0 1.174-.144l1.335-2.226a.5.5 0 0 0-.172-.686Z"
-                                />
-                            </svg>
-                            <div className="pt-4 fs-5">
-                                Los invitaciones aceptadas para el torneo aparecerán aquí.
-                            </div>
-                        </div>
-                    </div>                
+                    <Empty path1="M2 2a2 2 0 0 0-2 2v8.01A2 2 0 0 0 2 14h5.5a.5.5 0 0 0 0-1H2a1 1 0 0 1-.966-.741l5.64-3.471L8 9.583l7-4.2V8.5a.5.5 0 0 0 1 0V4a2 2 0 0 0-2-2H2Zm3.708 6.208L1 11.105V5.383l4.708 2.825ZM1 4.217V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v.217l-7 4.2-7-4.2Z" path2="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-1.993-1.679a.5.5 0 0 0-.686.172l-1.17 1.95-.547-.547a.5.5 0 0 0-.708.708l.774.773a.75.75 0 0 0 1.174-.144l1.335-2.226a.5.5 0 0 0-.172-.686Z" message="Los invitaciones aceptadas para el torneo aparecerán aquí." />
                 )}
                 {totalPages > 1 && 
                     <div className="row">

@@ -17,6 +17,7 @@ export default function TourneyView() {
   const tourneyId = router.query.id;
   const [tourney, setToutney] = useState([]);
   const [round, setRound] =useState("");
+  const [refresh, setRefresh] = useState(false);
 
   const monthTourney = (startDate) => {
     const start = new Date(startDate + " 00:00");
@@ -206,12 +207,21 @@ export default function TourneyView() {
           >
             {/* Componente de Rondas */}
 
-            <Rounds tourneyId={tourneyId} title={"Rondas"} showPlay={false} newPage={false} round={round} setRound={setRound}/>
+            <Rounds 
+              tourneyId={tourneyId} 
+              title={"Rondas"} 
+              showPlay={false} 
+              newPage={false} 
+              round={round} 
+              setRound={setRound}
+              refresh={refresh}
+              setRefresh={setRefresh}
+            />
 
           </div>
 
           {/* Componente de Tabla */}
-            <Info round={round} edited={true}/>
+            <Info round={round} edited={true} setRefresh={setRefresh}/>
 
 
         </div>

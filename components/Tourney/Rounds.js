@@ -6,13 +6,12 @@ import Swal from "sweetalert2";
 import { useAppContext } from "../../AppContext";
 import Empty from "../Empty/Empty";
 
-export default function Rounds({ tourneyId, title, showPlay, newPage, round, setRound }) {
+export default function Rounds({ tourneyId, title, showPlay, newPage, round, setRound, refresh, setRefresh }) {
   const { token, lang } = useAppContext();
   const [rounds, setRounds] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [total, setTotal] = useState(0);
-  const [refresh, setRefresh] = useState(false);
   const rowsPerPage = 12;
 
   const router = useRouter();
@@ -178,7 +177,7 @@ export default function Rounds({ tourneyId, title, showPlay, newPage, round, set
               <div
                 key={idx}
                 className="lottery-card align-items-center rounded p-2"
-                style={{ height: "100px", background: "#ebebeb" }}
+                style={{ height: "120px", background: "#ebebeb" }}
               >
                 <div
                   className="d-flex flex-row justify-content-between icons align-items-center"
