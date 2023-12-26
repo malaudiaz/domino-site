@@ -172,7 +172,7 @@ export default function Rounds({ tourneyId, title, showPlay, newPage, round, set
 
       <div className="d-grid pt-3 px-4 pb-4" >
         {rounds.length > 0 ? (
-          <div className="container-events">
+          <div className="container-rounds">
             {rounds.map((item, idx) => (
               <div
                 key={idx}
@@ -181,7 +181,7 @@ export default function Rounds({ tourneyId, title, showPlay, newPage, round, set
               >
                 <div
                   className="d-flex flex-row justify-content-between icons align-items-center"
-                  style={{ width: "98%", cursor:"pointer"}}
+                  style={{ height: "100%", width: "98%", cursor:"pointer"}}
                   onClick={(e) => {e.preventDefault(); handleClick(item);}}
                 >
 

@@ -13,9 +13,9 @@ import {
 export default function Advertising({ formValues, reload, setReload }) {
     const { token, lang } = useAppContext();
 
-    useEffect(() => {
-        setReload(false);
-    }, [reload]);
+    // useEffect(() => {
+    //     setReload(false);
+    // }, [reload]);
 
     const saveImage = async (img) => {
         const body = new FormData();

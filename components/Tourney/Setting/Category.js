@@ -74,7 +74,7 @@ export default function Category({ formValues }) {
       }
   }
 
-  const handleDelete = (e, item) => {
+  const handleDelete = (e, item, idx) => {
     e.preventDefault();
 
     if ( formValues.statusName.value === "CONFIGURATED" || formValues.statusName.value === "INITIADED" ) {
@@ -86,27 +86,39 @@ export default function Category({ formValues }) {
       });
     } else {
 
-      Swal.fire({
-        title: "¿ Eliminar Categoría ?",
-        text: "Si continuas, la categoría será eliminada",
-        icon: "question",
-        showCancelButton: true,
-        cancelButtonText: "Cancelar",
-        allowOutsideClick: false,
-        confirmButtonColor: "#3085d6",
-        confirmButtonText: "Eliminar",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          for (let i = 0; i < bombo.length; i++) {
-            if (bombo[i].id === item.id) bombo.splice(i, 1);
-          }
-          setBombo(bombo);
+      if (bombo.length-1 === idx) {
 
-          execAction();
-      
-          setRefresh(true);
-        }
-      });
+        Swal.fire({
+          title: "¿ Eliminar Categoría ?",
+          text: "Si continuas, la categoría será eliminada",
+          icon: "question",
+          showCancelButton: true,
+          cancelButtonText: "Cancelar",
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Eliminar",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            for (let i = 0; i < bombo.length; i++) {
+              if (bombo[i].id === item.id) bombo.splice(i, 1);
+            }
+            setBombo(bombo);
+
+            execAction();
+        
+            setRefresh(true);
+          }
+        });
+
+      } else {
+        Swal.fire({
+          icon: "info",
+          title: "Eliminar Categoría",
+          text: "Esta categoría no puede ser eliminada",
+          showConfirmButton: true,
+        });  
+      }
+
     };
 
   }
@@ -148,7 +160,7 @@ export default function Category({ formValues }) {
                             <td>{item.min}</td>
                             <td>
                                 <a
-                                  onClick={(e) => handleDelete(e, item)}
+                                  onClick={(e) => handleDelete(e, item, idx)}
                                   style={{ cursor: "pointer" }}
                                 >
                                     <i

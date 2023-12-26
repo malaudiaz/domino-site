@@ -242,7 +242,7 @@ export default function View() {
                 handleButton("INVITATION");
               }}
             >
-              <i className="bi bi-envelope-check"></i> Invitaciones Aceptadas
+              <i className="bi bi-envelope-check"></i> Jugadores Interesados
             </button>
 
             <button
@@ -258,7 +258,7 @@ export default function View() {
                 handleButton("PLAYERS");
               }}
             >
-              <i className="bi bi-people"></i> Jugadores
+              <i className="bi bi-people"></i> Jugadores Aceptados
             </button>
 
             <button 
@@ -273,6 +273,7 @@ export default function View() {
                 e.preventDefault();
                 handleButton("SETTING");
               }}
+              disabled={tourney.amount_player===0}
             >
               <i className="bi bi-gear"></i> Configurar Torneo
             </button>
@@ -333,7 +334,7 @@ export default function View() {
 
           </div>
 
-          {menu === "INVITATION" && <Response tourneyId={tourneyId} status={tourney.status_name}/>}
+          {menu === "INVITATION" && <Response tourney={tourney}/>}
           {menu === "PLAYERS" && <Players tourneyId={tourneyId} title={"Jugadores Aceptados"} status={tourney.status_name} />}
           {menu === "SETTING" && <Setting tourney={tourney} setMenu={setMenu} setRefresh={setRefresh} />}
           {menu === "LOTTERY" && <Lottery tourney={tourney} setRefresh={setRefresh} />}

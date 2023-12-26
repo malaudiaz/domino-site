@@ -219,73 +219,76 @@ export default function Events() {
 
           </div>
 
-          <div className="pt-4 px-4" style={{display: "grid"}}>
-
           {events.length > 0 ? (
 
-            <div className="container-events">
-              {events.map(
-                ({ id, name, summary, photo, startDate, endDate, city_name, campus, amount_people }, idx) => (
-                  <Card 
-                    className="card-info"
-                    key={idx}                     
-                  >
-                    <div className="d-flex justify-content-between p-2">
-                      <div className="d-flex flex-row align-items-center">
-                        <div className="d-flex flex-column ms-2">
-                          <span className="fw-bold">{name}</span>
-                        </div>
-                      </div>
-                      <div className="d-flex flex-row ellipsis align-items-center">
-                        <DropDownMenu
-                          idx={idx}
-                          items={ctxMenu}
-                          onMenuSelection={onMenuSelection}
-                        />
-                      </div>
-                    </div>
-                    <div style={{cursor: "pointer", width: "100%"}} onClick={(e)=>{e.preventDefault(); handleClick(id)}}>
-                      <Image
-                        alt={summary}
-                        src={photo}
-                        width={450}
-                        height={350}
-                        quality={80}
-                        priority
-                        layout="intrinsic"
-                      />
-                      <CardBody>
-                        <div className="col-12 pt-4" style={{textAlign: "center"}}>
-                          <h6 className="mb-2 text-muted">{summary}</h6>
-                        </div>
-                        <div className="row pt-2" style={{textAlign: "center"}}>
-                          <span className="mb-2 text-muted"><b>{eventDate(startDate, endDate)}</b></span>
-                        </div>
-                        <div className="row pt-2" style={{textAlign: "center"}}>
-                            <b>{campus}, {city_name}</b>
-                        </div>
-                        {amount_people > 0 &&
-                          <div className="col-12 pt-2" style={{textAlign: "center"}}>
-                            <span className="mb-2 text-muted">{amount_people === 1 ? amount_people + " persona asistira" : amount_people + " personas asistirán"}</span>
+            <div className="pt-4 px-4" style={{display: "grid"}}>
+
+              <div className="container-events">
+                {events.map(
+                  ({ id, name, summary, photo, startDate, endDate, city_name, campus, amount_people }, idx) => (
+                    <Card 
+                      className="card-info"
+                      key={idx}
+                    >
+                      <div className="d-flex justify-content-between p-2">
+                        <div className="d-flex flex-row align-items-center">
+                          <div className="d-flex flex-column ms-2">
+                            <span className="fw-bold">{name}</span>
                           </div>
-                        }
-                      </CardBody>
-                    </div>
-                  </Card>
-                )
-              )}
+                        </div>
+                        <div className="d-flex flex-row ellipsis align-items-center">
+                          <DropDownMenu
+                            idx={idx}
+                            items={ctxMenu}
+                            onMenuSelection={onMenuSelection}
+                          />
+                        </div>
+                      </div>
+                      <div style={{cursor: "pointer", width: "100%"}} onClick={(e)=>{e.preventDefault(); handleClick(id)}}>
+                        <Image
+                          alt={summary}
+                          src={photo}
+                          width={450}
+                          height={350}
+                          quality={80}
+                          priority
+                          layout="intrinsic"
+                        />
+                        <CardBody>
+                          <div className="col-12 pt-4" style={{textAlign: "center"}}>
+                            <h6 className="mb-2 text-muted">{summary}</h6>
+                          </div>
+                          <div className="row pt-2" style={{textAlign: "center"}}>
+                            <span className="mb-2 text-muted"><b>{eventDate(startDate, endDate)}</b></span>
+                          </div>
+                          <div className="row pt-2" style={{textAlign: "center"}}>
+                              <b>{campus}, {city_name}</b>
+                          </div>
+                          {amount_people > 0 &&
+                            <div className="col-12 pt-2" style={{textAlign: "center"}}>
+                              <span className="mb-2 text-muted">{amount_people === 1 ? amount_people + " persona asistira" : amount_people + " personas asistirán"}</span>
+                            </div>
+                          }
+                        </CardBody>
+                      </div>
+                    </Card>
+                  )
+                )}
+              </div>
+
             </div>
 
           ) : (
-            <Empty 
-              message="Los eventos relevantes aparecerán aquí."
-              path1="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"
-              path2="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"
-            />
+            <div className="pt-4 px-4" style={{display: "grid", height: "600px"}}>
+              <Empty 
+                message="Los eventos relevantes aparecerán aquí."
+                path1="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"
+                path2="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"
+              />
+            </div>
           )}
 
 
-          </div>
 
       </div>
 

@@ -21,7 +21,7 @@ export default function Bombo({ open, setClose, bombo, setBombo, eloMax, onSave 
     letter: {
       value: "",
       error: false,
-      errorMessage: "Letra del bombo requerida",
+      errorMessage: "Titulo de categoría requerido",
     },
     eloMin: {
       value: "",
@@ -40,7 +40,8 @@ export default function Bombo({ open, setClose, bombo, setBombo, eloMax, onSave 
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const name = e.target.name;
+    const value = e.target.value.toLocaleUpperCase();
 
     setFormValues({
       ...formValues,
@@ -161,7 +162,7 @@ export default function Bombo({ open, setClose, bombo, setBombo, eloMax, onSave 
                   id="letter"
                   onChange={handleChange}
                   invalid={formValues.letter.error}
-                  value={formValues.letter.value.toLocaleUpperCase()}
+                  value={formValues.letter.value}
                   autoComplete="off"
                 />
                 <FormFeedback>{formValues.letter.errorMessage}</FormFeedback>

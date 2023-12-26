@@ -5,16 +5,17 @@ import Image from "next/image";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useAppContext } from "../../AppContext";
-import { Button } from "reactstrap";
+import { Button, InputGroup, Input, Label } from "reactstrap";
 import Empty from "../Empty/Empty";
 
-export default function Response({tourneyId, status}) {
+export default function Response({tourney}) {
     const { token, lang } = useAppContext();
     const [invitations, setInvitations] = useState([]);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [total, setTotal] = useState(0);
     const [refresh, setRefresh] = useState(false);
+    const [filter, setFilter] = useState(0);
     const rowsPerPage = 12;
 
     const config = {
@@ -27,8 +28,8 @@ export default function Response({tourneyId, status}) {
     };
 
     const fetchData = async () => {
-        const url = `${process.env.NEXT_PUBLIC_API_URL}invitation/tourney/?tourney_id=${tourneyId}&page=${page}&per_page=${rowsPerPage}`;
-    
+        const url = `${process.env.NEXT_PUBLIC_API_URL}invitation/tourney/?tourney_id=${tourney.id}&page=${page}&per_page=${rowsPerPage}&criteria_key=${"status_id"}&criteria_value=${filter}`;
+
         try {
           const { data } = await axios.get(url, config);
           if (data.success) {
@@ -37,27 +38,39 @@ export default function Response({tourneyId, status}) {
             setInvitations(data.data);
             setRefresh(false);
           }
-        } catch (errors) {
-          console.log(errors);
-          const { response } = errors;
-          const { detail } = response.data;
-          Swal.fire({
-            title: "Cargando Invitaciones",
-            text: detail,
-            icon: "error",
-            showCancelButton: false,
-            allowOutsideClick: false,
-            confirmButtonColor: "#3085d6",
-            confirmButtonText: "Aceptar",
-          });
-        }
+        } catch ({ code, message, name, request }) {
+            if (code === "ERR_NETWORK") {
+              Swal.fire({
+                title: "Cargando Invitaciones",
+                text: "Error en su red, consulte a su proveedor de servicio",
+                icon: "error",
+                showCancelButton: false,
+                allowOutsideClick: false,
+                confirmButtonColor: "#3085d6",
+                confirmButtonText: "Aceptar",
+              });
+            } else {
+              if (code === "ERR_BAD_REQUEST") {
+                const { detail } = JSON.parse(request.response);
+                Swal.fire({
+                  title: "Cargando Invitaciones",
+                  text: detail,
+                  icon: "error",
+                  showCancelButton: false,
+                  allowOutsideClick: false,
+                  confirmButtonColor: "#3085d6",
+                  confirmButtonText: "Aceptar",
+                });
+              }
+            }
+        }     
     };
     
     useEffect(() => {
-        if (tourneyId) {
+        if (tourney.id) {
             fetchData();
         }
-    }, [tourneyId, refresh, page]);
+    }, [tourney.id, refresh, page, filter]);
     
 
     const onChangePage = (pageNumber) => {
@@ -71,12 +84,21 @@ export default function Response({tourneyId, status}) {
           const { data } = await axios.post(url, {}, config);
           if (data.success) {
             setRefresh(true);
-            Swal.fire({
-                icon: "success",
-                title: "Aceptar Jugadores",
-                text: "El jugador, ahora forma parte de este torneo",
-                showConfirmButton: true,
-            });      
+            if (value) {
+                Swal.fire({
+                    icon: "success",
+                    title: "Aceptar Jugador",
+                    text: "El jugador, ahora forma parte de este torneo",
+                    showConfirmButton: true
+                });      
+            } else {
+                Swal.fire({
+                    icon: "success",
+                    title: "Rechazar Jugador",
+                    text: "Este jugador no formara parte del torneo",
+                    showConfirmButton: true
+                });      
+            }
           }
         } catch (errors) {
           console.log(errors);
@@ -96,7 +118,7 @@ export default function Response({tourneyId, status}) {
 
 
     const approbeAll = async () => {
-        const url = `${process.env.NEXT_PUBLIC_API_URL}tourney/player/confirmed/${tourneyId}`;
+        const url = `${process.env.NEXT_PUBLIC_API_URL}tourney/player/confirmed/${tourney.id}`;
     
         try {
           const { data } = await axios.post(url, {}, config);
@@ -147,95 +169,146 @@ export default function Response({tourneyId, status}) {
     return (
         <div>
             <div className="d-flex justify-content-between item-align-center ps-4 pe-4">
-                <h1 className="title">{"Invitaciones Aceptadas"}</h1>
-                <Button 
-                    color="primary" 
-                    size={"sm"}
-                    disabled={status !== "CREATED"}
-                    onClick={(e) => {handleApprobe(e)}}
-                >
-                    Aceptar Todas
-                </Button>
+                <h1 className="title">{"Jugadores Interesados"}</h1>
+                <div className="d-flex justify-content-between item-align-center">
+                    <Label size="sm" className="pe-2">
+                        Mostrar:
+                    </Label>
+
+                    <InputGroup size="sm" className="pe-2">
+                        <Input
+                            type="select"
+                            id="filter"
+                            name="filter"
+                            size="sm"
+                            value={filter}
+                            onChange={(e) => {
+                                setFilter(e.target.value);
+                            }}                      
+                        >
+                            <option value={0}>Todos</option>
+                            <option value={1}>Aceptados</option>
+                            <option value={2}>Rechazados</option>
+                        </Input>
+                    </InputGroup>
+
+                    <Button 
+                        color="primary" 
+                        size={"sm"}
+                        style={{width: "250px"}}
+                        disabled={tourney.status_name !== "CREATED" || invitations.length === 0}
+                        onClick={(e) => {handleApprobe(e)}}
+                    >
+                        Aceptar a Todos
+                    </Button>
+                </div>
             </div>
 
-            <div className="pt-3 px-4 pb-4" style={{ display: "grid" }}>
-                {invitations.length > 0 ? (
-                <div className="container-events">               
-                    {invitations.map((item, idx) => (
-                        <div
-                            key={idx}
-                            className="lottery-card align-items-center rounded p-2"
-                            style={{ height: "90px", background: "#ebebeb" }}
-                        >
+            {invitations.length > 0 ? (
+                <div className="pt-3 px-4 pb-4" style={{ display: "grid" }}>
+                    <div className="container-events">               
+                        {invitations.map((item, idx) => (
                             <div
-                                className="d-flex flex-row justify-content-between icons align-items-center"
-                                style={{ width: "98%" }}
+                                key={idx}
+                                className="lottery-card align-items-center rounded p-2"
+                                style={{ height: "90px", background: "#ebebeb" }}
                             >
-                                <Image
-                                    alt="Photo Profile"
-                                    src={item.photo}
-                                    width={40}
-                                    height={40}
-                                    className="rounded-image"
-                                />
-                                <div className="d-flex flex-column flex-fill ms-2">
-                                    <span className="gamer-couple">{item.name}</span>
-                                    <small className="comment-text fs-12">
-                                    {item.city_name + ", " + item.country}
-                                    </small>
+                                <div
+                                    className="d-flex flex-row justify-content-between icons align-items-center"
+                                    style={{ width: "98%" }}
+                                >
+                                    <Image
+                                        alt="Photo Profile"
+                                        src={item.photo}
+                                        width={40}
+                                        height={40}
+                                        className="rounded-image"
+                                    />
+                                    <div className="d-flex flex-column flex-fill ms-2">
+                                        <span className="gamer-couple">{item.name}</span>
+                                        <small className="comment-text fs-12">
+                                        {item.city_name + ", " + item.country}
+                                        </small>
+                                    </div>
+
+                                    {tourney.status_name === "CREATED" && (<div className="ps-4">
+                                        {item.status_name === "ACCEPTED" && (
+                                        <div
+                                            className="rounded p-2 accept-effect"
+                                            title="Aprobar jugador"
+                                            onClick={(e) => {approbePlayer(item.id, true)}}
+                                        >
+                                            <i
+                                                className="bi bi-person-check"
+                                                style={{ fontSize: "24px" }}
+                                            ></i>
+                                        </div>)}
+                                        {item.status_name === "CONFIRMED" && (
+                                        <div
+                                            className="rounded p-2 trash-effect"
+                                            title="Rechazar jugador"
+                                            onClick={(e) => {approbePlayer(item.id, false)}}
+                                        >
+                                            <i
+                                                className="bi bi-person-dash"
+                                                style={{ fontSize: "24px" }}
+                                            ></i>
+                                        </div>                                            
+                                        )}
+
+                                    </div>)}
+
+                                    {tourney.status_name === "CREATED" && (<div>
+                                        {item.status_name === "ACCEPTED" && (
+                                        <div
+                                            className="rounded p-2 trash-effect"
+                                            title="Rechazar jugador"
+                                            onClick={(e) => {approbePlayer(item.id, false)}}
+                                        >
+                                            <i
+                                                className="bi bi-person-dash"
+                                                style={{ fontSize: "24px" }}
+                                            ></i>
+                                        </div>)}
+                                        {item.status_name === "REFUTED" && (
+                                        <div 
+                                            className="rounded p-2 accept-effect"
+                                            title="Aprobar jugador"
+                                            onClick={(e) => {approbePlayer(item.id, true)}}
+                                        >
+                                            <i
+                                                className="bi bi-person-check"
+                                                style={{ fontSize: "24px" }}
+                                            ></i>
+                                        </div>)}
+                                    </div>)}
+
+                                    {(tourney.status_name === "INITIADED" || tourney.status_name === "CONFIGURATED") && (<div>
+                                        {item.status_name === "CONFIRMED" && (
+                                        <div
+                                            className="rounded p-2"
+                                            title="Jugador Aceptado"
+                                        >
+                                            <i className="bi bi-patch-check" style={{ fontSize: "24px", color: "blue" }}></i>
+                                        </div>)}
+                                    </div>)}
+
                                 </div>
 
-                                {status === "CREATED" && (<div className="ps-4">
-                                    {item.status_name === "ACCEPTED" && (
-                                    <div
-                                        className="rounded p-2 accept-effect"
-                                        title="Aprobar jugador"
-                                        onClick={(e) => {approbePlayer(item.id, true)}}
-                                    >
-                                        <i
-                                            className="bi bi-person-check"
-                                            style={{ fontSize: "24px" }}
-                                        ></i>
-                                    </div>)}
-                                </div>)}
-
-                                {status === "CREATED" && (<div>
-                                    {item.status_name === "ACCEPTED" && (
-                                    <div
-                                        className="rounded p-2 trash-effect"
-                                        title="Rechazar jugador"
-                                        onClick={(e) => {approbePlayer(item.id, false)}}
-                                    >
-                                        <i
-                                            className="bi bi-person-dash"
-                                            style={{ fontSize: "24px" }}
-                                        ></i>
-                                    </div>)}
-                                </div>)}
-
-                                {(status === "INITIADED" || status === "CONFIGURATED") && (<div>
-                                    {item.status_name === "CONFIRMED" && (
-                                    <div
-                                        className="rounded p-2"
-                                        title="Jugador Aceptado"
-                                    >
-                                        <i className="bi bi-patch-check" style={{ fontSize: "24px", color: "blue" }}></i>
-                                    </div>)}
-                                </div>)}
+                                <div className="d-flex flex-row justify-content-between align-items-center px-2">
+                                    <small className="comment-text fs-12">Nivel: <b>{item.level}</b></small>
+                                    <small className="comment-text fs-12">ELO: <b>{item.elo}</b></small>
+                                    <small className="comment-text fs-12">Ranking: <b>{item.ranking}</b></small>
+                                </div>
 
                             </div>
-
-                            <div className="d-flex flex-row justify-content-between align-items-center px-2">
-                                <small className="comment-text fs-12">Nivel: <b>{item.level}</b></small>
-                                <small className="comment-text fs-12">ELO: <b>{item.elo}</b></small>
-                                <small className="comment-text fs-12">Ranking: <b>{item.ranking}</b></small>
-                            </div>
-
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
                 ) : (
-                    <Empty path1="M2 2a2 2 0 0 0-2 2v8.01A2 2 0 0 0 2 14h5.5a.5.5 0 0 0 0-1H2a1 1 0 0 1-.966-.741l5.64-3.471L8 9.583l7-4.2V8.5a.5.5 0 0 0 1 0V4a2 2 0 0 0-2-2H2Zm3.708 6.208L1 11.105V5.383l4.708 2.825ZM1 4.217V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v.217l-7 4.2-7-4.2Z" path2="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-1.993-1.679a.5.5 0 0 0-.686.172l-1.17 1.95-.547-.547a.5.5 0 0 0-.708.708l.774.773a.75.75 0 0 0 1.174-.144l1.335-2.226a.5.5 0 0 0-.172-.686Z" message="Los invitaciones aceptadas para el torneo aparecerán aquí." />
+                    <div className="pt-3 px-4 pb-4" style={{ display: "grid", height: "500px" }}>
+                        <Empty path1="M2 2a2 2 0 0 0-2 2v8.01A2 2 0 0 0 2 14h5.5a.5.5 0 0 0 0-1H2a1 1 0 0 1-.966-.741l5.64-3.471L8 9.583l7-4.2V8.5a.5.5 0 0 0 1 0V4a2 2 0 0 0-2-2zm3.708 6.208L1 11.105V5.383zM1 4.217V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v.217l-7 4.2z" path2="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0m-1.993-1.679a.5.5 0 0 0-.686.172l-1.17 1.95-.547-.547a.5.5 0 0 0-.708.708l.774.773a.75.75 0 0 0 1.174-.144l1.335-2.226a.5.5 0 0 0-.172-.686Z" message={filter===0 ? "Los jugadores interesados en participar en el torneo aparecerán aquí" : filter===1 ? "Los jugadores aceptados para participar en el torneo aparecerán aquí" : "Los jugadores rechazados para éste torneo aparecerán aquí"} />
+                    </div>
                 )}
                 {totalPages > 1 && 
                     <div className="row">
@@ -250,7 +323,6 @@ export default function Response({tourneyId, status}) {
                         />
                     </div>          
                 }
-            </div>
         </div>
     )
 };
