@@ -169,7 +169,7 @@ export default function Response({tourney}) {
     return (
         <div>
             <div className="d-flex justify-content-between item-align-center ps-4 pe-4">
-                <h1 className="title">{"Jugadores Interesados"}</h1>
+                <h1 className="title">{"Invitaciones"}</h1>
                 <div className="d-flex justify-content-between item-align-center">
                     <Label size="sm" className="pe-2">
                         Mostrar:

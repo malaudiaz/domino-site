@@ -242,7 +242,7 @@ export default function View() {
                 handleButton("INVITATION");
               }}
             >
-              <i className="bi bi-envelope-check"></i> Jugadores Interesados
+              <i className="bi bi-envelope-check"></i> Invitaciones
             </button>
 
             <button
@@ -258,7 +258,7 @@ export default function View() {
                 handleButton("PLAYERS");
               }}
             >
-              <i className="bi bi-people"></i> Jugadores Aceptados
+              <i className="bi bi-people"></i> Jugadores
             </button>
 
             <button 
