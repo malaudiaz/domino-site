@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAppContext } from "../../AppContext";
 
-import {} from "reactstrap";
 import {
   Modal,
   ModalHeader,
@@ -31,12 +30,14 @@ export default function Tournament({ open, setClose, record, event }) {
     modality: "",
     startDate: "",
     summary: "",
+    number_rounds: ""
   });
 
   const [error, setError] = useState({
     name: false,
     modality: false,
-    startDate: false
+    startDate: false,
+    number_rounds: false
   });
 
   useEffect(() => {
@@ -48,7 +49,8 @@ export default function Tournament({ open, setClose, record, event }) {
             name: record.name,
             modality: record.modality,
             startDate: record.startDate,
-            summary: record.summary
+            summary: record.summary,
+            number_rounds: record.number_rounds
         });
     } else {
         setTourney({
@@ -57,7 +59,8 @@ export default function Tournament({ open, setClose, record, event }) {
             name: "",
             modality: "",
             startDate: "",
-            summary: ""
+            summary: "",
+            number_rounds: ""
         });
     }
     setError({
@@ -65,6 +68,7 @@ export default function Tournament({ open, setClose, record, event }) {
       name: false,
       modality: false,
       startDate: false,
+      number_rounds: false
     });
   }, [record]);
 
@@ -96,9 +100,10 @@ export default function Tournament({ open, setClose, record, event }) {
       ...error,
       name: tourney.name==="",
       modality: tourney.modality==="",
-      startDate: tourney.startDate===""
+      startDate: tourney.startDate==="",
+      number_rounds: tourney.number_rounds===""
     })
-    const valid = (tourney.name==="" || tourney.modality==="" || tourney.startDate==="");
+    const valid = (tourney.name==="" || tourney.modality==="" || tourney.startDate==="" || tourney.number_rounds==="");
     return valid;
   }
 
@@ -134,19 +139,32 @@ export default function Tournament({ open, setClose, record, event }) {
             });    
         }
 
-    } catch (errors) {
-        console.log(errors);
-        const { detail } = errors.response;
-        Swal.fire({
-          title: "Creando Evento",
-          text: detail,
-          icon: "error",
-          showCancelButton: false,
-          allowOutsideClick: false,
-          confirmButtonColor: "#3085d6",
-          confirmButtonText: "Aceptar",
-        });
-    }
+      } catch ({code, message, name, request}) {
+        if (code === "ERR_NETWORK") {
+          Swal.fire({
+            title: "Creando Torneo",
+            text: "Error en su red, consulte a su proveedor de servicio",
+            icon: "error",
+            showCancelButton: false,
+            allowOutsideClick: false,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Aceptar",
+          });
+        } else {
+          if (code === "ERR_BAD_REQUEST") {
+            const {detail} = JSON.parse(request.response)
+            Swal.fire({
+              title: "Creando Torneo",
+              text: detail,
+              icon: "error",
+              showCancelButton: false,
+              allowOutsideClick: false,
+              confirmButtonColor: "#3085d6",
+              confirmButtonText: "Aceptar",
+            });  
+          }
+        }
+      }
   };
 
   const handleUpdate = async () => {
@@ -268,6 +286,25 @@ export default function Tournament({ open, setClose, record, event }) {
                     </Input>
                     <FormFeedback>
                       Por favor, seleccione la modalidad del torneo
+                    </FormFeedback>
+                  </InputGroup>
+                </FormGroup>
+              </Col>
+              <Col md="12">
+                <FormGroup>
+                  <Label>Rondas</Label>
+                  <InputGroup size="sm">
+                    <Input
+                      id="number_rounds"
+                      name="number_rounds"
+                      invalid={error.number_rounds}
+                      type="number"
+                      placeholder="Rondas"
+                      value={tourney.number_rounds}
+                      onChange={handleChange("number_rounds")}
+                    />
+                    <FormFeedback>
+                      Por favor, teclee la cantidad de rondas del torneo 
                     </FormFeedback>
                   </InputGroup>
                 </FormGroup>

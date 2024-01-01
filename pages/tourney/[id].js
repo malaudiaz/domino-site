@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useAppContext } from "../../AppContext";
 import Tournament from "../../components/Tourney/Tournament";
 import Head from "next/head";
-import { Card, CardBody, CardFooter } from "reactstrap";
+import { Card, CardBody, CardFooter, Label, Input } from "reactstrap";
 import DropDownMenu from "../../components/DropDownMenu/Menu";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -11,6 +11,7 @@ import Image from "next/image";
 import { eventDate } from "../../_functions";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footers/Footer";
+import Invitations from "../../components/Tourney/Invitations/Invitations";
 
 export default function Tourneys() {
   const {token, lang} = useAppContext();
@@ -23,14 +24,18 @@ export default function Tourneys() {
   const [menu, setMenu] = useState(0);
   const [open, setOpen] = useState(false);
   const [reload, setReload] = useState(false);
+  const [openInvitation, setOpenInvitation] = useState(false);
+
+  const [tourneyId, setTourneyId] = useState("");
 
   const ctxMenu = [
     { text: "Editar", key: "mnuEdit", icon: "bi bi-pencil-square" },
     { text: "Eliminar", key: "mnuDel", icon: "bi bi-trash" },
-    { text: "Configurar", key: "mnuSetting", icon: "bi bi-gear" }
+    { text: "Configurar", key: "mnuSetting", icon: "bi bi-gear" },
+    { text: "Cambiar Imagen", key: "mnuChangeImage", icon: "bi bi-upload" }
   ];
 
-  const tourneyId = router.query.id;
+  const eventId = router.query.id;
 
   const config = {
     headers: {
@@ -51,58 +56,43 @@ export default function Tourneys() {
         setRecords(data.data.tourney);
         setReload(false);        
       }
-    } catch (errors) {
-      console.log(errors);
-      const { response } = errors;
-      const { detail } = response.data;
-      Swal.fire({
-        title: "Cargando Torneos",
-        text: detail,
-        icon: "error",
-        showCancelButton: false,
-        allowOutsideClick: false,
-        confirmButtonColor: "#3085d6",
-        confirmButtonText: "Aceptar",
-      });
-    }
-  };
-
-  useEffect(() => {
-    if (tourneyId) {
-      fetchData();
-    }
-  }, [reload, tourneyId]);
-
-  const sendInvitations = async (torneyId) => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}invitation?tourney_id=${torneyId}`;
-
-    try {
-      const { data } = await axios.post(url, {}, config);
-      if (data.success) {
+    } catch ({code, message, name, request}) {
+      if (code === "ERR_NETWORK") {
         Swal.fire({
-          title: "Enviar Invitaciones",
-          text: data.detail,
-          icon: "success",
+          title: "Cargando Torneos",
+          text: "Error en su red, consulte a su proveedor de servicio",
+          icon: "error",
           showCancelButton: false,
           allowOutsideClick: false,
           confirmButtonColor: "#3085d6",
           confirmButtonText: "Aceptar",
         });
+      } else {
+        if (code === "ERR_BAD_REQUEST") {
+          const {detail} = JSON.parse(request.response)
+          Swal.fire({
+            title: "Cargando Torneos",
+            text: detail,
+            icon: "error",
+            showCancelButton: false,
+            allowOutsideClick: false,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Aceptar",
+          });  
+        }
       }
-    } catch (errors) {
-      console.log(errors);
-      const { response } = errors;
-      const { detail } = response.data;
-      Swal.fire({
-        title: "Enviar Invitaciones",
-        text: detail,
-        icon: "error",
-        showCancelButton: false,
-        allowOutsideClick: false,
-        confirmButtonColor: "#3085d6",
-        confirmButtonText: "Aceptar",
-      });
     }
+  };
+
+  useEffect(() => {
+    if (eventId) {
+      fetchData();
+    }
+  }, [reload, eventId]);
+
+  const sendInvitations = (id) => {
+    setTourneyId(id);
+    setOpenInvitation(true);
   };
 
   const handleClick = (id) => {
@@ -185,6 +175,43 @@ export default function Tourneys() {
     setReload(true);
     setOpen(false);
   };
+
+  const setCloseInvitation = () => {
+    setOpenInvitation(false);
+  };
+
+  const saveImage = async (id, img) => {
+    const body = new FormData();
+    body.append("image", img);
+
+    const url = `${process.env.NEXT_PUBLIC_API_URL}tourney/image/${id}`
+
+    try {
+      const { data } = await axios.put(url, body, {
+        headers: {
+          "Accept-Language": lang,
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+      if (data.success) {
+        setReload(true);    
+        Swal.fire({
+          icon: "success",
+          title: "Imagen de Torneo",
+          text: data.detail,
+          showConfirmButton: true
+        });
+      }
+    } catch (errors) {
+      console.log(errors);
+      Swal.fire({
+        icon: "error",
+        title: "Imagen de Torneo",
+        text: "Ha ocurrido un error al consultar la API....",
+        showConfirmButton: true
+      });
+    }  
+  }
 
   return (
     <>
@@ -298,9 +325,10 @@ export default function Tourneys() {
 
           <div className="pt-3 px-4" style={{ display: "grid" }}>
             <div className="container-events">
-              {records.map(({ id, name, modality, summary, startDate }, idx) => (
+              {records.map(({ id, name, modality, summary, startDate, image, number_rounds }, idx) => (
                 <Card
-                  style={{ cursor: "pointer", borderRadius: "10px" }}
+                  className="card-info" 
+                  style={{ borderRadius: "10px", cursor: "default" }}
                   key={idx}
                 >
                   <div className="d-flex justify-content-between p-2">
@@ -317,30 +345,123 @@ export default function Tourneys() {
                       />
                     </div>
                   </div>
-                  <CardBody onClick={(e) => {e.preventDefault(); handleClick(id);}}>
+                  <CardBody>
                     <Image
                       alt="Tourney Image"
-                      src={"/Logo-V.png"}
+                      src={image}
                       width={350}
                       height={150}
                       quality={50}
                       priority
                       layout="intrinsic"
                     />
+
+                    <div className="row pt-2">
+
+                      <div className="col-12 justify-content-center text-center">
+
+                        <Label
+                            href="#"
+                            className="btn btn-primary btn-sm me-2"
+                            title="Cambiar foto de publicidad"
+                            style={{ color: "white" }}
+                          >
+                            <i className="bi bi-upload"></i>
+                            <Input
+                                type="file"
+                                id="upfile"
+                                name="upfile"
+                                hidden
+                                onChange={(event) => {
+                                    if (event.target.files && event.target.files[0]) {
+                                        const i = event.target.files[0];
+                                        if (i.type.includes("image/jpeg")) {
+                                            saveImage(id, i);
+                                        } else {
+                                            Swal.fire({
+                                                icon: "error",
+                                                title: "Cargando Imagen",
+                                                text: "Ha ocurrido un error al cargar la imagen",
+                                                showConfirmButton: true,
+                                            });
+                                        }
+                                    }
+                                }}
+                            />
+                        </Label>
+
+                        <Label
+                            href="#"
+                            className="btn btn-danger btn-sm me-2"
+                            title="Eliminar foto de Publicidad"
+                            style={{ color: "white" }}
+                            onClick={(e) => {
+                                Swal.fire({
+                                    title: "¿ Desea eliminar esta foto de publicidad ?",
+                                    text: "! Esta opción no podrá ser revertida !",
+                                    icon: "question",
+                                    showCancelButton: true,
+                                    confirmButtonText: "Sí",
+                                    cancelButtonText: "No",
+                                    confirmButtonColor: "#3085d6",
+                                    cancelButtonColor: "#d33",
+                                    reverseButtons: true,
+                                    allowOutsideClick: false,
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        document.getElementById("upfile").value = ""; 
+                                        saveImage(id, "");
+                                    }
+                                });
+                            }}
+                          >
+                            <i className="bi bi-trash"/>
+                        </Label>
+
+                        <Label
+                            href="#"
+                            className="btn btn-success btn-sm me-2"
+                            title="Configurar"
+                            style={{ color: "white" }}
+                            onClick={(e) => {
+                              e.preventDefault(); 
+                              handleClick(id);
+                            }}
+                          >
+                            <i className="bi bi-gear"/>
+                        </Label>
+
+                        <Label
+                            href="#"
+                            className="btn btn-primary btn-sm"
+                            title="Enviar Invitaciones"
+                            style={{ color: "white" }}
+                            onClick={(e) => {
+                              e.preventDefault(); 
+                              sendInvitations(id);
+                            }}
+                        >
+                            <i className="bi bi-envelope"/>
+                        </Label>
+
+
+                      </div>                
+
+                    </div>
+                    
                     <div className="col-12 pt-4" style={{textAlign: "center"}}>
                       <h6 className="mb-2 teviewxt-muted">{summary}</h6>
                     </div>
-                    <div className="col-12 pt-2">
-                      <span>Modalidad: </span>
-                      <b>{modality}</b>
+                    <div className="d-flex justify-content-between col-12 pt-2">
+                      <span>Modalidad: <b>{modality}</b></span>
+                      <span>Rondas: <b>{number_rounds}</b></span>                      
                     </div>
-                    <div className="col-12 pt-2">
-                      <span>Fecha: </span>
-                      <b>{eventDate(startDate, "")}</b>
+                    <div className="col-12 pt-2 text-center">
+                      <span><b>{eventDate(startDate, "")}</b></span>                      
                     </div>
 
                   </CardBody>
-                  <CardFooter style={{ textAlign: "center" }}>
+                  {/* <CardFooter style={{ textAlign: "center" }}>
                     <button
                       className="btn btn-primary btn-sm"
                       onClick={(e) => {
@@ -350,14 +471,16 @@ export default function Tourneys() {
                     >
                       <i className="bi bi-envelope"></i> Enviar Invitación
                     </button>
-                  </CardFooter>
+                  </CardFooter> */}
                 </Card>
               ))}
             </div>
           </div>
         </div>
 
-        <Tournament open={open} setClose={setClose} record={record} event={event} eventId={tourneyId}/>
+        <Tournament open={open} setClose={setClose} record={record} event={event} eventId={eventId}/>
+
+        <Invitations open={openInvitation} setClose={setCloseInvitation} tourneyId={tourneyId}/>
 
       </main>
 

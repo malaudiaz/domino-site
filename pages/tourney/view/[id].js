@@ -23,7 +23,7 @@ export default function View() {
   const router = useRouter();
   const [tourney, setToutney] = useState([]);
   const tourneyId = router.query.id;
-  const [menu, setMenu] = useState("INVITATION");
+  const [menu, setMenu] = useState("COMPETITORS");
   const [refresh, setRefresh] = useState(false);
 
   const monthTourney = (startDate) => {
@@ -93,7 +93,6 @@ export default function View() {
       setMenu(btn);
     } else {
       setMenu(btn);
-
     }
   };
 
@@ -123,7 +122,7 @@ export default function View() {
               </div>
               <Image
                 alt={""}
-                src={"/Logo-V.png"}
+                src={tourney.image}
                 width={150}
                 height={150}
                 quality={80}
@@ -232,33 +231,17 @@ export default function View() {
             <button
               type="button"
               style={
-                menu === "INVITATION"
+                menu === "COMPETITORS"
                   ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
                   : { background: "#e4e6eb" }
               }
               className="btn btn-sm"
               onClick={(e) => {
                 e.preventDefault();
-                handleButton("INVITATION");
+                handleButton("COMPETITORS");
               }}
             >
-              <i className="bi bi-envelope-check"></i> Invitaciones
-            </button>
-
-            <button
-              type="button"
-              style={
-                menu === "PLAYERS"
-                  ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
-                  : { background: "#e4e6eb" }
-              }
-              className="btn btn-sm"
-              onClick={(e) => {
-                e.preventDefault();
-                handleButton("PLAYERS");
-              }}
-            >
-              <i className="bi bi-people"></i> Jugadores
+              <i className="bi bi-envelope-check"></i> Competidores
             </button>
 
             <button 
@@ -334,8 +317,7 @@ export default function View() {
 
           </div>
 
-          {menu === "INVITATION" && <Response tourney={tourney}/>}
-          {menu === "PLAYERS" && <Players tourneyId={tourneyId} title={"Jugadores Aceptados"} status={tourney.status_name} />}
+          {menu === "COMPETITORS" && <Response tourney={tourney}/>}
           {menu === "SETTING" && <Setting tourney={tourney} setMenu={setMenu} setRefresh={setRefresh} />}
           {menu === "LOTTERY" && <Lottery tourney={tourney} setRefresh={setRefresh} />}
           {menu === "TABLES" && <Tables tourneyId={tourneyId} />}

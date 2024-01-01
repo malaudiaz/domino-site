@@ -40,16 +40,30 @@ export default function FinderPlayer({ id, changePlayer, record }) {
       <InputGroupText>
         <a
           style={{ cursor: "pointer" }}
+          onClick={(e)=>{e.preventDefault(); setPlayer("");}}
+          data-toggle="tooltip"
+          title="Limpiar"
+        >
+          <i className="bi bi-x"></i>
+        </a>
+      </InputGroupText>
+      <InputGroupText>
+        <a
+          style={{ cursor: "pointer" }}
           onClick={onOpenFinder}
           data-toggle="tooltip"
-          title="Buscar pareja"
+          title="Buscar Jugador"
         >
           <i className="bi bi-search"></i>
         </a>
       </InputGroupText>
-      <FormFeedback>Por favor seleccione el cliente</FormFeedback>
 
-      <FindForm isOpen={openFinderPlayer} setClose={setOpenFinderPlayer} setPlayer={setPlayer} changePlayer={changePlayer} />
+      <FindForm 
+        isOpen={openFinderPlayer} 
+        setClose={setOpenFinderPlayer} 
+        setPlayer={setPlayer} 
+        changePlayer={changePlayer} 
+      />
 
     </InputGroup>
   );

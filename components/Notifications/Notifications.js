@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 const Notifications = () => {
     const {profile, i18n, token} = useAppContext();
     const t = i18n.notification;
-    const [notification, setNotification] = useState([]);
+    const [notifications, setNotifications] = useState([]);
 
     const config = {
       headers: {
@@ -55,36 +55,48 @@ const Notifications = () => {
     };  
 
     useEffect(() => {
-      // fetchData();
-    }, [profile]);
+      const client_id = Date.now();
+      const ws = new WebSocket(`ws://localhost:5000/ws/${client_id}`);
+      console.log(client_id);
+      ws.onmessage = function(event) {
+        notifications.push(
+          {
+            severity: "warning",
+            title: "Lorem Ipsum",
+            notification: event.data,
+            timeElapsed: "30 min. ago"
+          }
+        )
+      }  
+    }, []);
   
     
-    const notifications = [
-        {
-          severity: "warning",
-          title: "Lorem Ipsum",
-          notification: "Quae dolorem earum veritatis oditseno",
-          timeElapsed: "30 min. ago"
-        },
-        {
-          severity: "danger",
-          title: "Atque rerum nesciunt",
-          notification: "Quae dolorem earum veritatis oditseno",
-          timeElapsed: "1 hr. ago"
-        },
-        {
-          severity: "success",
-          title: "Sit rerum fuga",
-          notification: "Quae dolorem earum veritatis oditseno",
-          timeElapsed: "2 hrs. ago"
-        },
-        {
-          severity: "primary",
-          title: "Dicta reprehenderit",
-          notification: "Quae dolorem earum veritatis oditseno",
-          timeElapsed: "4 hrs. ago"
-        },
-    ];    
+    // const notifications = [
+    //     {
+    //       severity: "warning",
+    //       title: "Lorem Ipsum",
+    //       notification: "Quae dolorem earum veritatis oditseno",
+    //       timeElapsed: "30 min. ago"
+    //     },
+    //     {
+    //       severity: "danger",
+    //       title: "Atque rerum nesciunt",
+    //       notification: "Quae dolorem earum veritatis oditseno",
+    //       timeElapsed: "1 hr. ago"
+    //     },
+    //     {
+    //       severity: "success",
+    //       title: "Sit rerum fuga",
+    //       notification: "Quae dolorem earum veritatis oditseno",
+    //       timeElapsed: "2 hrs. ago"
+    //     },
+    //     {
+    //       severity: "primary",
+    //       title: "Dicta reprehenderit",
+    //       notification: "Quae dolorem earum veritatis oditseno",
+    //       timeElapsed: "4 hrs. ago"
+    //     },
+    // ];    
 
     return (
         <li className="nav-item dropdown">
@@ -94,7 +106,7 @@ const Notifications = () => {
           data-bs-toggle="dropdown"
         >
           <i className="bi bi-bell"></i>
-          <span className="badge bg-primary badge-number">{notification.length}</span>
+          <span className="badge bg-primary badge-number">{notifications.length}</span>
         </a>
   
         <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">

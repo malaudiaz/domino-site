@@ -261,15 +261,6 @@ export default function FindForm({isOpen, setClose, setPlayer, changePlayer, pro
             <ModalFooter>
                 <Button
                     type="button"
-                    onClick={onCloseFinder}
-                    color="secondary"
-                    data-toggle="tooltip"
-                    title="Cerrar"
-                >
-                    <i className="bi bi-x-circle"></i> Cerrar
-                </Button>
-                <Button
-                    type="button"
                     color="primary"
                     disabled={!mark}
                     data-toggle="tooltip"
@@ -278,6 +269,15 @@ export default function FindForm({isOpen, setClose, setPlayer, changePlayer, pro
                 >
                     <i className="bi bi-check2-circle"></i> Aceptar
                 </Button>          
+                <Button
+                    type="button"
+                    onClick={onCloseFinder}
+                    color="secondary"
+                    data-toggle="tooltip"
+                    title="Cerrar"
+                >
+                    <i className="bi bi-x-circle"></i> Cerrar
+                </Button>
             </ModalFooter>
         </Modal>
     );
