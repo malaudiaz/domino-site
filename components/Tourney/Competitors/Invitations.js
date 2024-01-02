@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import { useAppContext } from "../../../AppContext";
 import Empty from "../../Empty/Empty";
 import Image from "next/image";
-import { Label, InputGroup, Input, Button } from "reactstrap";
+import { Label, InputGroup, Input, Button,InputGroupText } from "reactstrap";
 
 export default function Invitations({ tourney }) {
     const { token, lang } = useAppContext();
@@ -15,6 +15,7 @@ export default function Invitations({ tourney }) {
     const [total, setTotal] = useState(0);
     const [refresh, setRefresh] = useState(false);
     const [filter, setFilter] = useState(0);
+    const [playerName, setPlayerName] = useState("");
     const rowsPerPage = 12;
 
     const config = {
@@ -27,11 +28,15 @@ export default function Invitations({ tourney }) {
     };
 
     const fetchData = async () => {
-        const url = `${
+        let url = `${
           process.env.NEXT_PUBLIC_API_URL
         }invitation/tourney/?tourney_id=${
           tourney.id
         }&page=${page}&per_page=${rowsPerPage}&criteria_key=${"status_id"}&criteria_value=${filter}`;
+
+        if (playerName !== "") {
+            url = url  + "&player_name=" + playerName
+        }
     
         try {
           const { data } = await axios.get(url, config);
@@ -73,7 +78,7 @@ export default function Invitations({ tourney }) {
         if (tourney.id) {
           fetchData();
         }
-    }, [tourney.id, refresh, page, filter]);
+    }, [tourney.id, refresh, page, filter, playerName]);
     
     const onChangePage = (pageNumber) => {
         setPage(pageNumber);
@@ -197,6 +202,37 @@ export default function Invitations({ tourney }) {
 
                 </div>
 
+                <div className="d-flex">
+                    <Label size="sm" className="pe-2">
+                        Buscar:
+                    </Label>
+
+                    <InputGroup size="sm" className="pe-2">
+                        <Input
+                            id="playerName"
+                            name="playerName"
+                            bsSize="sm"
+                            value={playerName}
+                            onChange={(e) => {
+                                setPlayerName(e.target.value);
+                            }}
+                        ></Input>
+                        <InputGroupText>
+                            <a
+                                style={{ cursor: "pointer" }}
+                                onClick={(e)=>{e.preventDefault(); setPlayerName("");}}
+                                data-toggle="tooltip"
+                                title="Limpiar"
+                            >
+                                <i className="bi bi-x"></i>
+                            </a>
+                        </InputGroupText>                    
+                    </InputGroup>
+
+
+                </div>
+
+
                 <Button
                     color="primary"
                     size={"sm"}
@@ -220,131 +256,150 @@ export default function Invitations({ tourney }) {
                     <div className="container-events">
             
                         {invitations.map((item, idx) => (
-                        <div
-                            key={idx}
-                            className="lottery-card align-items-center rounded p-2"
-                            style={{ height: "90px", background: "#ebebeb" }}
-                        >
                             <div
-                                className="d-flex flex-row justify-content-between icons align-items-center"
-                                style={{ width: "98%" }}
+                                key={idx}
+                                className="lottery-card align-items-center rounded p-2"
+                                style={{ height: "90px", background: "#ebebeb", cursor: "default" }}
                             >
-                                <Image
-                                    alt="Photo Profile"
-                                    src={item.photo}
-                                    width={40}
-                                    height={40}
-                                    className="rounded-image"
-                                />
-                            <div className="d-flex flex-column flex-fill ms-2">
-                                <span className="gamer-couple">{item.name}</span>
-                                <small className="comment-text fs-12">
-                                {item.city_name + ", " + item.country}
-                                </small>
-                            </div>
-            
-                            {tourney.status_name === "CREATED" && (
-                                <div className="ps-4">
-                                    {item.status_name === "SEND" && (
-                                        <div
-                                            className="rounded p-2 accept-effect"
-                                            title="Invitación Enviada"
-                                        >
-                                            <i
-                                                className="bi bi-envelope-check"
-                                                style={{ fontSize: "24px" }}
-                                            ></i>
-                                        </div>
-                                    )}
-                                    {item.status_name === "ACCEPTED" && (
-                                        <div className="d-flex">
-                                            <div
-                                                className="rounded p-2 accept-effect"
-                                                title="Aprobar jugador"
-                                                onClick={(e) => {
-                                                    approbePlayer(item.id, true);
-                                                }}
-                                            >
-                                                <i
-                                                    className="bi bi-person-check"
-                                                    style={{ fontSize: "24px" }}
-                                                ></i>
-                                            </div>
-                                            <div
-                                                className="rounded p-2 trash-effect"
-                                                title="Rechazar jugador"
-                                                onClick={(e) => {
-                                                    approbePlayer(item.id, false);
-                                                }}
-                                            >
-                                                <i
-                                                    className="bi bi-person-dash"
-                                                    style={{ fontSize: "24px" }}
-                                                ></i>
-                                            </div>
-                                        </div>
-                                    )}
-
-
-
-                                    {item.status_name === "REFUTED" && (
-                                        <div
-                                            className="p-2"
-                                            title="Jugador Rechazado"
-                                        >
-                                            <i
-                                                className="rounded-circle bg-danger text-white bi bi-person-fill-x p-1"
-                                                style={{ fontSize: "16px" }}
-                                            ></i>
-                                        </div>
-                                    )}
-
-                                    {item.status_name === "CONFIRMED" && (
-                                        <div
-                                            className="p-2 trash-effect"
-                                            title="Jugador Aceptado"
-                                        >
-                                            <i
-                                                className="rounded-circle bg-primary text-white bi bi-person-fill-check p-1"
-                                                style={{ fontSize: "16px" }}
-                                            ></i>
-                                        </div>
-                                    )}
-                                </div>
-                            )}
-            
-            
-                            {(tourney.status_name === "INITIADED" ||
-                                tourney.status_name === "CONFIGURATED") && (
-                                <div>
-                                {item.status_name === "CONFIRMED" && (
-                                    <div className="rounded p-2" title="Jugador Aceptado">
-                                        <i
-                                            className="bi bi-patch-check"
-                                            style={{ fontSize: "24px", color: "blue" }}
-                                        ></i>
+                                <div
+                                    className="d-flex flex-row justify-content-between icons align-items-center"
+                                    style={{ width: "98%" }}
+                                >
+                                    <Image
+                                        alt="Photo Profile"
+                                        src={item.photo}
+                                        width={40}
+                                        height={40}
+                                        className="rounded-image"
+                                    />
+                                    <div className="d-flex flex-column flex-fill ms-2">
+                                        <span className="gamer-couple">{item.name}</span>
+                                        <small className="comment-text fs-12">
+                                        {item.city_name + ", " + item.country}
+                                        </small>
                                     </div>
-                                )}
+                
+                                    {tourney.status_name === "CREATED" && (
+                                        <div className="ps-4">
+                                            {item.status_name === "SEND" && (
+                                                <div className="d-flex">
+                                                    <div
+                                                        className="rounded p-2"
+                                                        title="Invitación Enviada"
+                                                    >
+                                                        <i
+                                                            className="rounded-circle bg-warning text-white bi bi-envelope-check p-1"
+                                                            style={{ fontSize: "16px" }}
+                                                        ></i>
+                                                    </div>
+                                                </div>
+                                            )}
+                                            {item.status_name === "ACCEPTED" && (
+                                                <div className="d-flex">
+                                                    <div
+                                                        className="rounded p-2 accept-effect"
+                                                        title="Aprobar jugador"
+                                                        onClick={(e) => {
+                                                            approbePlayer(item.id, true);
+                                                        }}
+                                                    >
+                                                        <i
+                                                            className="rounded-circle bg-primary text-white bi bi-person-check p-1"
+                                                            style={{ fontSize: "16px" }}
+                                                        ></i>
+                                                    </div>
+                                                    <div
+                                                        className="rounded p-2 trash-effect"
+                                                        title="Rechazar jugador"
+                                                        onClick={(e) => {
+                                                            approbePlayer(item.id, false);
+                                                        }}
+                                                    >
+                                                        <i
+                                                            className="rounded-circle bg-danger text-white bi bi-person-dash p-1"
+                                                            style={{ fontSize: "16px" }}
+                                                        ></i>
+                                                    </div>
+
+                                                    <div
+                                                        className="p-2"
+                                                        title="Invitación Aceptada"
+                                                    >
+                                                        <i
+                                                            className="rounded-circle bg-warning text-white bi bi-person-fill-check p-1"
+                                                            style={{ fontSize: "16px" }}
+                                                        ></i>
+                                                    </div>
+
+
+                                                </div>
+                                            )}
+
+
+
+                                            {item.status_name === "REFUTED" && (
+                                                <div className="d-flex">
+                                                    <div
+                                                        className="rounded p-2 accept-effect"
+                                                        title="Aprobar jugador"
+                                                        onClick={(e) => {
+                                                            approbePlayer(item.id, true);
+                                                        }}
+                                                    >
+                                                        <i
+                                                            className="rounded-circle bg-primary text-white bi bi-person-check p-1"
+                                                            style={{ fontSize: "16px" }}
+                                                        ></i>
+                                                    </div>
+                                                    <div
+                                                        className="p-2"
+                                                        title="Jugador Rechazado"
+                                                    >
+                                                        <i
+                                                            className="rounded-circle bg-warning text-white bi bi-person-fill-x p-1"
+                                                            style={{ fontSize: "16px" }}
+                                                        ></i>
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                        </div>
+                                    )}
+                
+                
+                                    {(tourney.status_name === "INITIADED" ||
+                                        tourney.status_name === "CONFIGURATED") && (
+                                        <div>
+                                            {item.status_name === "CONFIRMED" && (
+                                                <div className="rounded p-2" title="Jugador Aceptado">
+                                                    <i
+                                                        className="bi bi-patch-check"
+                                                        style={{ fontSize: "24px", color: "blue" }}
+                                                    ></i>
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
+
+
                                 </div>
-                            )}
+                
+                                <div className="d-flex flex-row justify-content-between align-items-center px-2">
+                                    <small className="comment-text fs-12">
+                                        Nivel: <b>{item.level}</b>
+                                    </small>
+                                    <small className="comment-text fs-12">
+                                        ELO: <b>{item.elo}</b>
+                                    </small>
+                                    <small className="comment-text fs-12">
+                                        Ranking: <b>{item.ranking}</b>
+                                    </small>
+                                </div>
                             </div>
-            
-                            <div className="d-flex flex-row justify-content-between align-items-center px-2">
-                                <small className="comment-text fs-12">
-                                    Nivel: <b>{item.level}</b>
-                                </small>
-                                <small className="comment-text fs-12">
-                                    ELO: <b>{item.elo}</b>
-                                </small>
-                                <small className="comment-text fs-12">
-                                    Ranking: <b>{item.ranking}</b>
-                                </small>
-                            </div>
-                        </div>
                         ))}
                     </div>
                 </div>
-            ) : (
+        ) : (
                 <div
                     className="pt-3 px-4 pb-4"
                     style={{ display: "grid", height: "500px" }}
