@@ -81,16 +81,16 @@ export default function Players({tourney}) {
     };
 
     const changePlayer = async (id, value) => {
-        const url = `${process.env.NEXT_PUBLIC_API_URL}player/${id}`
+        const url = `${process.env.NEXT_PUBLIC_API_URL}player/changestatus/${id}?status=${value}`;
     
         try {
-          const { data } = await axios.delete(url, config);
+          const { data } = await axios.post(url, {}, config);
           if (data.success) {
             setRefresh(true);
             Swal.fire({
                 icon: "success",
-                title: "Eliminar Jugador",
-                text: "El jugador, ahora deja de forma parte de este torneo",
+                title: "Cambio en Jugador",
+                text: "El jugador ha cambiado su estado",
                 showConfirmButton: true,
             });      
           }
@@ -98,7 +98,7 @@ export default function Players({tourney}) {
         } catch ({code, message, name, request}) {
             if (code === "ERR_NETWORK") {
               Swal.fire({
-                title: "Eliminar Jugador",
+                title: "Cambio en Jugador",
                 text: "Error en su red, consulte a su proveedor de servicio",
                 icon: "error",
                 showCancelButton: false,
@@ -110,7 +110,7 @@ export default function Players({tourney}) {
               if (code === "ERR_BAD_REQUEST") {
                 const {detail} = JSON.parse(request.response)
                 Swal.fire({
-                    title: "Eliminar Jugador",
+                    title: "Cambio en Jugador",
                     text: detail,
                     icon: "error",
                     showCancelButton: false,
@@ -184,6 +184,7 @@ export default function Players({tourney}) {
                             <option value={2}>Esperando</option>
                             <option value={3}>Expulsado</option>
                             <option value={4}>Pausa</option>
+                            <option value={5}>Cancelado</option>
                         </Input>
                     </InputGroup>
                 </div>
