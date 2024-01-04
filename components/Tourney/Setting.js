@@ -19,7 +19,7 @@ import Advertising from "./Setting/Advertising";
 import General from "./Setting/General";
 import Category from "./Setting/Category";
 
-export default function Setting({ tourney, setMenu, setRefresh }) {
+export default function Setting({ tourney }) {
   const { token, lang } = useAppContext();
   const [activeTab, setActiveTab] = useState("1");
   const [reload, setReload] = useState(false);
@@ -55,11 +55,6 @@ export default function Setting({ tourney, setMenu, setRefresh }) {
       error: false,
       errorMessage: 'Cantidad de mesas inteligentes requerida'
     },
-    amountRound:{
-      value: "",
-      error: false,
-      errorMessage: 'Cantidad de Rondas requerida'
-    },
     pointRound:{
       value: "",
       error: false,
@@ -70,26 +65,19 @@ export default function Setting({ tourney, setMenu, setRefresh }) {
       error: false,
       errorMessage: 'Tiempo por Rondas requerida'
     },
-    playSystem:{
-      value: "SUIZO",
-      error: false,
-      errorMessage: 'Sistema de Juegoes requerido'
-    },
     lottery:{
       value: "MANUAL",
       error: false,
       errorMessage: 'Tipo de Sorteo es requerido'
-    },
-    bonus: {
-      value: "YES",
-      error: false,
-      errorMessage: "Seleccione si se usa o no la bonificación"
     },
     limitPenaltyPoints: {
       value: "",
       error: false,
       errorMessage: "Límite de puntos por penalización es requerido"
     },
+
+
+
     statusId: {
       value: "",
       error: false,
@@ -263,37 +251,6 @@ export default function Setting({ tourney, setMenu, setRefresh }) {
     }
   }, [reload, tourney.id]);
 
-  const handleClose = async (e) => {
-    e.preventDefault();
-
-    const url = `${process.env.NEXT_PUBLIC_API_URL}tourney/setting/close/${formValues.tourneyId.value}`;
-
-    try {
-        const { data } = await axios.post(url, {}, config);
-        if (data.success) {
-          setRefresh(true);
-          setReload(true);
-          setMenu("LOTTERY");
-
-          Swal.fire({
-            icon: "success",
-            title: "Configurando Torneo",
-            text: data.detail,
-            showConfirmButton: true,
-          });
-        }
-      } catch (errors) {
-        console.log(errors);
-
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Ha ocurrido un error al consultar la API....",
-          showConfirmButton: true,
-        });
-      }
-  }
-
   const toggleTab = (tab) => {
     if (activeTab !== tab) {
       setActiveTab(tab);
@@ -307,13 +264,6 @@ export default function Setting({ tourney, setMenu, setRefresh }) {
       </div>
 
       <div className="tourney-setting">
-        <Card className="publicity-card">
-          <CardBody style={{width: "100%"}}>
-
-            <Advertising formValues={formValues} reload={reload} setReload={setReload} />
-
-          </CardBody>
-        </Card>
         <Card className="flex-fill">
           <CardBody className="p-4">
 
@@ -359,23 +309,6 @@ export default function Setting({ tourney, setMenu, setRefresh }) {
         </Card>
 
       </div>
-
-      <div className="pt-2 pb-4 text-center">
-          <Button
-            size={"sm"}
-            color="primary"
-            data-toggle="tooltip"
-            title="Cerrar Configuración"
-            onClick={handleClose}
-            disabled={
-                formValues.statusName.value === "CONFIGURATED" ||
-                formValues.statusName.value === "INITIADED"
-            }
-          >
-            Cerrar Configuración
-          </Button>
-      </div>
-
 
     </div>
 

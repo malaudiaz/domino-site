@@ -261,7 +261,7 @@ export default function View() {
               <i className="bi bi-gear"></i> Configurar Torneo
             </button>
 
-            <button
+            {/* <button
               type="button"
               disabled={tourney.status_name==="CREATED"}
               style={
@@ -276,7 +276,7 @@ export default function View() {
               }}
             >
               <i className="bi bi-card-checklist"></i> Sorteo
-            </button>
+            </button> */}
 
             <button
               type="button"
@@ -319,7 +319,9 @@ export default function View() {
 
           {menu === "COMPETITORS" && <Response tourney={tourney}/>}
           {menu === "SETTING" && <Setting tourney={tourney} setMenu={setMenu} setRefresh={setRefresh} />}
-          {menu === "LOTTERY" && <Lottery tourney={tourney} setRefresh={setRefresh} />}
+
+          {/* {menu === "LOTTERY" && <Lottery tourney={tourney} setRefresh={setRefresh} />} */}
+
           {menu === "TABLES" && <Tables tourneyId={tourneyId} />}
           {menu === "PLAY" && <Rounds tourneyId={tourneyId} title={"Rondas"} showPlay={true} newPage={true}/>}
           

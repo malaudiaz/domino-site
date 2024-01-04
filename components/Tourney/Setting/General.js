@@ -1,10 +1,41 @@
 import Swal from "sweetalert2";
 import axios from "axios";
 import { useAppContext } from "../../../AppContext";
-import { Form, FormGroup, Label, Input, Col, InputGroup, FormFeedback, Button } from "reactstrap";
+import { Form, FormGroup, Label, Input, Col, InputGroup, FormFeedback, Button, Card, CardHeader, CardBody } from "reactstrap";
+import { useState } from "react";
 
-export default function General({ formValues, setFormValues, setReload }) {
+export default function General({ formValues, setFormValues }) {
   const { token, lang } = useAppContext();
+
+  const criteriaTourney = [
+    {
+      key: "JG",
+      value: "Juegos Ganados"
+    },
+    {
+      key: "BONUS",
+      value: "Bonificación"
+    },
+    {
+      key: "ELO",
+      value: "ELO"
+    }
+  ];
+
+  const criteriaRound = [
+    {
+      key: "JG",
+      value: "Juegos Ganados"
+    },
+    {
+      key: "ERA",
+      value: "ELO Real Acumulado"
+    },
+    {
+      key: "DP",
+      value: "Díferencia de Puntos"
+    }
+  ];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -136,7 +167,7 @@ export default function General({ formValues, setFormValues, setReload }) {
           <Col sm={3}>
             <InputGroup size="sm">
               <Input
-                type="text"
+                type="number"
                 name="smartTable"
                 id="smartTable"
                 invalid={formValues.smartTable.error}
@@ -156,32 +187,12 @@ export default function General({ formValues, setFormValues, setReload }) {
 
         <FormGroup row className="ps-4 pe-4">
           <Label size="sm" sm={3}>
-            Cantidad de Rondas
-          </Label>
-          <Col sm={3}>
-            <InputGroup size="sm">
-              <Input
-                type="text"
-                name="amountRound"
-                id="amountRound"
-                invalid={formValues.amountRound.error}
-                value={formValues.amountRound.value}
-                onChange={handleChange}
-                disabled={
-                    formValues.statusName.value === "CONFIGURATED" ||
-                    formValues.statusName.value === "INITIADED"
-                }
-              />
-            </InputGroup>
-          </Col>
-
-          <Label size="sm" sm={3}>
             Puntos para ganar ronda
           </Label>
           <Col sm={3}>
             <InputGroup size="sm">
               <Input
-                type="text"
+                type="number"
                 name="pointRound"
                 id="pointRound"
                 invalid={formValues.pointRound.error}
@@ -194,16 +205,14 @@ export default function General({ formValues, setFormValues, setReload }) {
               />
             </InputGroup>
           </Col>
-        </FormGroup>
 
-        <FormGroup row className="ps-4 pe-4">
           <Label size="sm" sm={3}>
             Tiempo máximo para ganar (min.)
           </Label>
           <Col sm={3}>
             <InputGroup size="sm">
               <Input
-                type="text"
+                type="number"
                 name="timeRound"
                 id="timeRound"
                 invalid={formValues.timeRound.error}
@@ -217,28 +226,6 @@ export default function General({ formValues, setFormValues, setReload }) {
             </InputGroup>
           </Col>
 
-          <Label size="sm" sm={3}>
-            Sistema de Juego
-          </Label>
-          <Col sm={3}>
-            <InputGroup size="sm">
-              <Input
-                type="select"
-                name="playSystem"
-                id="playSystem"
-                placeholder="Sistema de Juego"
-                defaultValue={formValues.playSystem.value}
-                onChange={handleChange}
-                disabled={
-                    formValues.statusName.value === "CONFIGURATED" ||
-                    formValues.statusName.value === "INITIADED"
-                }
-              >
-                <option value="SUIZO">Sistema Suizo</option>
-                <option value="TRADICIONAL">Sistema Tradicional</option>
-              </Input>
-            </InputGroup>
-          </Col>
         </FormGroup>
 
         <FormGroup row className="ps-4 pe-4">
@@ -266,37 +253,12 @@ export default function General({ formValues, setFormValues, setReload }) {
           </Col>
 
           <Label size="sm" sm={3}>
-            Usar Bonificación
-          </Label>
-          <Col sm={3}>
-            <InputGroup size="sm">
-              <Input
-                type="select"
-                name="bonus"
-                id="bonus"
-                placeholder="Bonificación"
-                value={formValues.bonus.value}
-                onChange={handleChange}
-                disabled={
-                    formValues.statusName.value === "CONFIGURATED" ||
-                    formValues.statusName.value === "INITIADED"
-                }
-              >
-                <option value="YES">Sí</option>
-                <option value="NO">No</option>
-              </Input>
-            </InputGroup>
-          </Col>
-        </FormGroup>
-
-        <FormGroup row className="ps-4 pe-4">
-          <Label size="sm" sm={3}>
             Límite de Puntos por Penalización
           </Label>
           <Col sm={3}>
             <InputGroup size="sm">
               <Input
-                type="text"
+                type="number"
                 name="limitPenaltyPoints"
                 id="limitPenaltyPoints"
                 invalid={formValues.limitPenaltyPoints.error}
@@ -310,19 +272,147 @@ export default function General({ formValues, setFormValues, setReload }) {
             </InputGroup>
           </Col>
 
-          <Label size="sm" sm={3}>
-            Estado
-          </Label>
-          <Col sm={3}>
-            <InputGroup size="sm">
-              <Input
-                type="text"
-                name="status_description"
-                id="status_description"
-                value={formValues.statusDescription.value}
-                disabled
-              />
-            </InputGroup>
+        </FormGroup>
+
+        <FormGroup row className="pt-2 ps-4 pe-4">
+          <Col sm={6}>
+            <Card>
+              <CardHeader>Críterios de Organización para Torneo</CardHeader>
+              <CardBody className="p-4">
+                <FormGroup row>
+                  <Label size="sm" sm={2}>
+                    Críterio # 1:
+                  </Label>
+                  <Col sm={10}>
+                    <InputGroup size="sm">
+                      <Input
+                        type="select"
+                        name="tcrit1"
+                        id="tcrit1"
+                        placeholder="Críterio # 1"
+                      >
+                        <option key={0} value="">Seleccione</option>
+                        {criteriaTourney.map(({key, value},i)=>(
+                          <option key={i+1} value={key}>{value}</option>
+                        ))}
+                      </Input>
+                    </InputGroup>
+                  </Col>
+                </FormGroup>
+
+                <FormGroup row>
+                  <Label size="sm" sm={2}>
+                    Críterio # 2:
+                  </Label>
+                  <Col sm={10}>
+                    <InputGroup size="sm">
+                      <Input
+                        type="select"
+                        name="tcrit2"
+                        id="tcrit2"
+                        placeholder="Críterio # 2"
+                      >
+                        <option key={0} value="">Seleccione</option>
+                        {criteriaTourney.map(({key, value},i)=>(
+                          <option key={i+1} value={key}>{value}</option>
+                        ))}
+                      </Input>
+                    </InputGroup>
+                  </Col>
+                </FormGroup>
+
+                <FormGroup row>
+                  <Label size="sm" sm={2}>
+                    Críterio # 3:
+                  </Label>
+                  <Col sm={10}>
+                    <InputGroup size="sm">
+                      <Input
+                        type="select"
+                        name="tcrit3"
+                        id="tcrit13"
+                        placeholder="Críterio # 3"
+                      >
+                        <option key={0} value="">Seleccione</option>
+                        {criteriaTourney.map(({key, value},i)=>(
+                          <option key={i+1} value={key}>{value}</option>
+                        ))}
+                      </Input>
+                    </InputGroup>
+                  </Col>
+                </FormGroup>
+              </CardBody>
+            </Card>
+          </Col>
+          <Col sm={6}>
+            <Card>
+              <CardHeader>Críterios de Organización para Rondas</CardHeader>
+              <CardBody className="p-4">
+                <FormGroup row>
+                  <Label size="sm" sm={2}>
+                    Críterio # 1:
+                  </Label>
+                  <Col sm={10}>
+                    <InputGroup size="sm">
+                      <Input
+                        type="select"
+                        name="rcrit1"
+                        id="rcrit1"
+                        placeholder="Críterio # 1"
+                      >
+                        <option key={0} value="">Seleccione</option>
+                        {criteriaRound.map(({key, value},i)=>(
+                          <option key={i+1} value={key}>{value}</option>
+                        ))}
+                      </Input>
+                    </InputGroup>
+                  </Col>
+                </FormGroup>
+
+                <FormGroup row>
+                  <Label size="sm" sm={2}>
+                    Críterio # 2:
+                  </Label>
+                  <Col sm={10}>
+                    <InputGroup size="sm">
+                      <Input
+                        type="select"
+                        name="rcrit2"
+                        id="rcrit2"
+                        placeholder="Críterio # 2"
+                      >
+                        <option key={0} value="">Seleccione</option>
+                        {criteriaRound.map(({key, value},i)=>(
+                          <option key={i+1} value={key}>{value}</option>
+                        ))}
+                      </Input>
+                    </InputGroup>
+                  </Col>
+                </FormGroup>
+
+                <FormGroup row>
+                  <Label size="sm" sm={2}>
+                    Críterio # 3:
+                  </Label>
+                  <Col sm={10}>
+                    <InputGroup size="sm">
+                      <Input
+                        type="select"
+                        name="rcrit3"
+                        id="rcrit3"
+                        placeholder="Críterio # 3"
+                      >
+                        <option key={0} value="">Seleccione</option>
+                        {criteriaRound.map(({key, value},i)=>(
+                          <option key={i+1} value={key}>{value}</option>
+                        ))}
+                      </Input>
+                    </InputGroup>
+                  </Col>
+                </FormGroup>
+              </CardBody>
+            </Card>
+
           </Col>
         </FormGroup>
 
