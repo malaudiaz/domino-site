@@ -287,9 +287,11 @@ export default function General({ formValues, setFormValues }) {
                     <InputGroup size="sm">
                       <Input
                         type="select"
-                        name="tcrit1"
-                        id="tcrit1"
+                        name="event_ordering_one"
+                        id="event_ordering_one"
                         placeholder="Críterio # 1"
+                        value={formValues.event_ordering_one.value}
+                        onChange={handleChange}
                       >
                         <option key={0} value="">Seleccione</option>
                         {criteriaTourney.map(({key, value},i)=>(
@@ -308,9 +310,11 @@ export default function General({ formValues, setFormValues }) {
                     <InputGroup size="sm">
                       <Input
                         type="select"
-                        name="tcrit2"
-                        id="tcrit2"
+                        name="event_ordering_two"
+                        id="event_ordering_two"
                         placeholder="Críterio # 2"
+                        value={formValues.event_ordering_two.value}
+                        onChange={handleChange}
                       >
                         <option key={0} value="">Seleccione</option>
                         {criteriaTourney.map(({key, value},i)=>(
@@ -329,9 +333,11 @@ export default function General({ formValues, setFormValues }) {
                     <InputGroup size="sm">
                       <Input
                         type="select"
-                        name="tcrit3"
-                        id="tcrit13"
-                        placeholder="Críterio # 3"
+                        name="event_ordering_three"
+                        id="event_ordering_three"
+                        placeholder="Críterio # 2"
+                        value={formValues.event_ordering_three.value}
+                        onChange={handleChange}
                       >
                         <option key={0} value="">Seleccione</option>
                         {criteriaTourney.map(({key, value},i)=>(
@@ -356,9 +362,11 @@ export default function General({ formValues, setFormValues }) {
                     <InputGroup size="sm">
                       <Input
                         type="select"
-                        name="rcrit1"
-                        id="rcrit1"
+                        id="round_ordering_one"
+                        name="round_ordering_one"
                         placeholder="Críterio # 1"
+                        value={formValues.round_ordering_one.value}
+                        onChange={handleChange}
                       >
                         <option key={0} value="">Seleccione</option>
                         {criteriaRound.map(({key, value},i)=>(
@@ -377,9 +385,11 @@ export default function General({ formValues, setFormValues }) {
                     <InputGroup size="sm">
                       <Input
                         type="select"
-                        name="rcrit2"
-                        id="rcrit2"
+                        id="round_ordering_two"
+                        name="round_ordering_two"
                         placeholder="Críterio # 2"
+                        value={formValues.round_ordering_two.value}
+                        onChange={handleChange}
                       >
                         <option key={0} value="">Seleccione</option>
                         {criteriaRound.map(({key, value},i)=>(
@@ -398,9 +408,11 @@ export default function General({ formValues, setFormValues }) {
                     <InputGroup size="sm">
                       <Input
                         type="select"
-                        name="rcrit3"
-                        id="rcrit3"
+                        id="round_ordering_three"
+                        name="round_ordering_three"
                         placeholder="Críterio # 3"
+                        value={formValues.round_ordering_three.value}
+                        onChange={handleChange}
                       >
                         <option key={0} value="">Seleccione</option>
                         {criteriaRound.map(({key, value},i)=>(

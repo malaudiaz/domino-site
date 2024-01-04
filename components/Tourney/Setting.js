@@ -75,9 +75,36 @@ export default function Setting({ tourney }) {
       error: false,
       errorMessage: "Límite de puntos por penalización es requerido"
     },
-
-
-
+    event_ordering_one: {
+      value: "",
+      error: false,
+      errorMessage: "Críterio de orden de torneo requerido"
+    },
+    event_ordering_two: {
+      value: "",
+      error: false,
+      errorMessage: "Críterio de orden de torneo requerido"
+    },
+    event_ordering_three: {
+      value: "",
+      error: false,
+      errorMessage: "Críterio de orden de torneo requerido"
+    },
+    round_ordering_one: {
+      value: "",
+      error: false,
+      errorMessage: "Críterio de orden de ronda requerido"
+    },
+    round_ordering_two: {
+      value: "",
+      error: false,
+      errorMessage: "Críterio de orden de ronda requerido"
+    },
+    round_ordering_three: {
+      value: "",
+      error: false,
+      errorMessage: "Críterio de orden de ronda requerido"
+    },
     statusId: {
       value: "",
       error: false,
@@ -187,6 +214,39 @@ export default function Setting({ tourney }) {
             error:false,
             errorMessage:"Límite de puntos por penalización es requerido"
           },
+
+          event_ordering_one: {
+            value: data.data.event_ordering_one,
+            error: false,
+            errorMessage: "Críterio de orden de torneo requerido"
+          },
+          event_ordering_two: {
+            value: data.data.event_ordering_two,
+            error: false,
+            errorMessage: "Críterio de orden de torneo requerido"
+          },
+          event_ordering_three: {
+            value: data.data.event_ordering_three,
+            error: false,
+            errorMessage: "Críterio de orden de torneo requerido"
+          },
+
+          round_ordering_one: {
+            value: data.data.round_ordering_one,
+            error: false,
+            errorMessage: "Críterio de orden de ronda requerido"
+          },
+          round_ordering_two: {
+            value: data.data.round_ordering_two,
+            error: false,
+            errorMessage: "Críterio de orden de ronda requerido"
+          },
+          round_ordering_three: {
+            value: data.data.round_ordering_three,
+            error: false,
+            errorMessage: "Críterio de orden de ronda requerido"
+          },     
+
           statusId: {
             value: data.data.status_id,
             error: false,
