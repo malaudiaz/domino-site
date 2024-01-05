@@ -15,7 +15,6 @@ import {
   TabPane,
 } from "reactstrap";
 
-import Advertising from "./Setting/Advertising";
 import General from "./Setting/General";
 import Category from "./Setting/Category";
 
@@ -389,7 +388,7 @@ export default function Setting({ tourney }) {
                 </TabPane>
                 <TabPane tabId="2">
 
-                    <Category formValues={formValues}/>
+                    <Category formValues={formValues} setReload={setReload}/>
 
                 </TabPane>
               </TabContent>

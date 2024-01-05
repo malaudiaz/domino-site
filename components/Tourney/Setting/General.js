@@ -368,7 +368,8 @@ export default function General({ formValues, setFormValues }) {
                       >
                         <option key={0} value="">Seleccione</option>
                         {criteriaTourney.map(({key, value},i)=>(
-                          <option key={i+1} value={key}>{value}</option>
+                          (key!==formValues.event_ordering_two.value && key!==formValues.event_ordering_three.value) &&
+                            <option key={i+1} value={key}>{value}</option>                        
                         ))}
                       </Input>
                     </InputGroup>
@@ -391,7 +392,8 @@ export default function General({ formValues, setFormValues }) {
                       >
                         <option key={0} value="">Seleccione</option>
                         {criteriaTourney.map(({key, value},i)=>(
-                          <option key={i+1} value={key}>{value}</option>
+                          (key!==formValues.event_ordering_one.value && key!==formValues.event_ordering_three.value) &&
+                            <option key={i+1} value={key}>{value}</option>                        
                         ))}
                       </Input>
                     </InputGroup>
@@ -414,8 +416,9 @@ export default function General({ formValues, setFormValues }) {
                       >
                         <option key={0} value="">Seleccione</option>
                         {criteriaTourney.map(({key, value},i)=>(
-                          <option key={i+1} value={key}>{value}</option>
-                        ))}
+                          (key!==formValues.event_ordering_one.value && key!==formValues.event_ordering_two.value) &&
+                            <option key={i+1} value={key}>{value}</option>                        
+                      ))}
                       </Input>
                     </InputGroup>
                   </Col>
@@ -443,7 +446,8 @@ export default function General({ formValues, setFormValues }) {
                       >
                         <option key={0} value="">Seleccione</option>
                         {criteriaRound.map(({key, value},i)=>(
-                          <option key={i+1} value={key}>{value}</option>
+                          (key!==formValues.round_ordering_two.value && key!==formValues.round_ordering_three.value) &&
+                            <option key={i+1} value={key}>{value}</option>                        
                         ))}
                       </Input>
                     </InputGroup>
@@ -466,8 +470,9 @@ export default function General({ formValues, setFormValues }) {
                       >
                         <option key={0} value="">Seleccione</option>
                         {criteriaRound.map(({key, value},i)=>(
-                          <option key={i+1} value={key}>{value}</option>
-                        ))}
+                          (key!==formValues.round_ordering_one.value && key!==formValues.round_ordering_three.value) &&
+                            <option key={i+1} value={key}>{value}</option>                        
+                      ))}
                       </Input>
                     </InputGroup>
                   </Col>
@@ -489,8 +494,9 @@ export default function General({ formValues, setFormValues }) {
                       >
                         <option key={0} value="">Seleccione</option>
                         {criteriaRound.map(({key, value},i)=>(
-                          <option key={i+1} value={key}>{value}</option>
-                        ))}
+                          (key!==formValues.round_ordering_one.value && key!==formValues.round_ordering_two.value) &&
+                            <option key={i+1} value={key}>{value}</option>                        
+                      ))}
                       </Input>
                     </InputGroup>
                   </Col>

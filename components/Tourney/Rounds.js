@@ -1,17 +1,20 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import Pagination from "../Pagination/Pagination";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useAppContext } from "../../AppContext";
-import Empty from "../Empty/Empty";
+import OutlineTooltip from "../Tooltip/OutlineTooltip";
+import { Card, CardBody, Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
+import classnames from "classnames";
 
-export default function Rounds({ tourneyId, title, showPlay, newPage, round, setRound, refresh, setRefresh }) {
+export default function Rounds({ tourney, tourneyId, title, showPlay, newPage, round, setRound, refresh, setRefresh }) {
   const { token, lang } = useAppContext();
   const [rounds, setRounds] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [total, setTotal] = useState(0);
+  const [activeTab, setActiveTab] = useState("1");
+  const [activeRound, setActiveRound] = useState(null);
   const rowsPerPage = 12;
 
   const router = useRouter();
@@ -26,7 +29,7 @@ export default function Rounds({ tourneyId, title, showPlay, newPage, round, set
   };
 
   const fetchData = async () => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/rounds/?tourney_id=${tourneyId}&page=${page}&per_page=${rowsPerPage}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/rounds/?tourney_id=${tourney.id}&page=${page}&per_page=${rowsPerPage}`;
 
     try {
       const { data } = await axios.get(url, config);
@@ -65,10 +68,10 @@ export default function Rounds({ tourneyId, title, showPlay, newPage, round, set
   };
 
   useEffect(() => {
-    if (tourneyId) {
+    if (tourney.id) {
       fetchData();
     }
-  }, [refresh, page, tourneyId]);
+  }, [refresh, page, tourney.id, activeRound]);
 
   const onChangePage = (pageNumber) => {
     setPage(pageNumber);
@@ -120,57 +123,151 @@ export default function Rounds({ tourneyId, title, showPlay, newPage, round, set
     }
   };
 
-  const handleClick = (item) => {
-    if (!showPlay) {
-      if (newPage) {
-        router.push(`${uri}/${item.id}`);
-      } else {
-        if (setRound) {
-          setRound(item.id);
-        }
-      }
-    } else {
+  // const handleClick = (item) => {
+  //   if (!showPlay) {
+  //     if (newPage) {
+  //       router.push(`${uri}/${item.id}`);
+  //     } else {
+  //       if (setRound) {
+  //         setRound(item.id);
+  //       }
+  //     }
+  //   } else {
 
-      if (item.status_name === "CREATED") {
-        Swal.fire({
-          title: "Inicial Ronda",
-          text: "Estas seguro que deseas iniciar esta ronda",
-          icon: "question",
-          showCancelButton: true,
-          cancelButtonText: "Cancelar",
-          allowOutsideClick: false,
-          confirmButtonColor: "#3085d6",
-          confirmButtonText: "Inicial",
-        }).then((result) => {
-          if (result.isConfirmed) {
+  //     if (item.status_name === "CREATED") {
+  //       Swal.fire({
+  //         title: "Inicial Ronda",
+  //         text: "Estas seguro que deseas iniciar esta ronda",
+  //         icon: "question",
+  //         showCancelButton: true,
+  //         cancelButtonText: "Cancelar",
+  //         allowOutsideClick: false,
+  //         confirmButtonColor: "#3085d6",
+  //         confirmButtonText: "Inicial",
+  //       }).then((result) => {
+  //         if (result.isConfirmed) {
 
-            roundPlay();
+  //           roundPlay();
 
-          }
-        });
-      } else {
-        Swal.fire({
-          icon: "info",
-          title: "Iniciar Ronda",
-          text: "La ronda seleccionada, ya esta iniciada",
-          showConfirmButton: true,
-        });
-      }
-    }
-  };
+  //         }
+  //       });
+  //     } else {
+  //       Swal.fire({
+  //         icon: "info",
+  //         title: "Iniciar Ronda",
+  //         text: "La ronda seleccionada, ya esta iniciada",
+  //         showConfirmButton: true,
+  //       });
+  //     }
+  //   }
+  // };
 
   const setClose = () => {
     setOpen(false);
   };
 
+  const roundTipInfo = (item) => {
+    return (
+      <div className="d-flex flex-column flex-fill ms-4">
+        <h6><b>{item.summary}</b></h6>
+        <small className="comment-text fs-12">
+            Fecha Inicio: <b>{item.start_date}</b>
+        </small>
+        {item.close_date !== "" &&
+            <small className="comment-text fs-12">
+                Fecha Final: <b>{item.close_date}</b>
+            </small>
+        }
+        <small className="comment-text fs-12">
+            Estado: <b>{item.status_description.toUpperCase()}</b>
+        </small>
+      </div>
+
+    )
+  }
+
+  const handleClick = (item) => {
+    setActiveRound(item);
+  }
 
   return (
     <div>
-      <div className="ps-4">
-        <h1 className="title">{title}</h1>
+      <div className="d-flex flex-column flex-wrap gap-1 ps-4">
+        <h1 className="title">Rondas</h1>
+        {rounds.map((item, idx) => (
+          <a key={idx} className="ms-2" style={{cursor: "pointer"}} onClick={(e)=>{e.preventDefault(); handleClick(item);}}>
+            <span 
+              className="round badge bg-primary rounded-circle fs-6" 
+              id={'outlineTooltip'}
+            >
+              {item.round_number}
+            </span>
+
+            <OutlineTooltip
+              placement="bottom"
+              target="outlineTooltip"
+              message={roundTipInfo(item)}
+            />
+    
+          </a>          
+                  
+        ))}
       </div>
 
-      <div className="d-grid pt-3 px-4 pb-4" >
+      <div className="tourney-setting">
+        <Card className="flex-fill">
+          <CardBody className="p-4">
+
+              <div className="d-flex flex-wrap gap-2 justify-content-between p-2">
+                <span>Ronda No. <b>{activeRound.round_number}</b></span>
+                <span>Resumen <b>{activeRound.summary}</b></span>
+                <span>Fecha de Inicio <b>{activeRound.start_date}</b></span>
+                {activeRound.close_date && <span>Fecha de Cierre <b>{activeRound.close_date}</b></span>}
+              </div>
+
+              <Nav tabs>
+                <NavItem>
+                  <NavLink
+                    href="#"
+                    className={classnames({ active: activeTab === "1" })}
+                    onClick={() => {
+                      toggleTab("1");
+                    }}
+                  >
+                    Ajustes Generales
+                  </NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink
+                    href="#"
+                    className={classnames({ active: activeTab === "2" })}
+                    onClick={() => {
+                      toggleTab("2");
+                    }}
+                  >
+                    Categorias
+                  </NavLink>
+                </NavItem>
+              </Nav>
+
+              <TabContent activeTab={activeTab}>
+                <TabPane tabId="1">
+
+
+                </TabPane>
+                <TabPane tabId="2">
+
+
+                </TabPane>
+              </TabContent>
+
+          </CardBody>
+        </Card>
+
+      </div>
+
+
+      {/* <div className="d-grid pt-3 px-4 pb-4" >
         {rounds.length > 0 ? (
           <div className="container-rounds">
             {rounds.map((item, idx) => (
@@ -185,7 +282,11 @@ export default function Rounds({ tourneyId, title, showPlay, newPage, round, set
                   onClick={(e) => {e.preventDefault(); handleClick(item);}}
                 >
 
-                  <h3 className="ms-2"><span className={round === item.id ? "badge bg-primary rounded-circle" : "badge bg-danger rounded-circle"}>{item.round_number}</span></h3>          
+                  <h3 className="ms-2" >
+                    <span className={round === item.id ? "badge bg-primary rounded-circle" : "badge bg-danger rounded-circle"}>
+                      {item.round_number}
+                    </span>           
+                  </h3>          
 
                   <div className="d-flex flex-column flex-fill ms-4">
                     <h6><b>{item.summary}</b></h6>
@@ -222,7 +323,7 @@ export default function Rounds({ tourneyId, title, showPlay, newPage, round, set
             />
           </div>
         )}
-      </div>
+      </div> */}
     </div>
   );
 }

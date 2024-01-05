@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 import { useAppContext } from "../../AppContext";
 import { Card, CardHeader, Label, Input } from "reactstrap";
 
-export default function Tables({ tourneyId }) {
+export default function Tables({ tourney }) {
   const { token, lang } = useAppContext();
 
   const [tables, setTables] = useState([]);
@@ -27,7 +27,7 @@ export default function Tables({ tourneyId }) {
   };
 
   const fetchData = async () => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/tables/?tourney_id=${tourneyId}&page=${page}&per_page=${rowsPerPage}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}tourney/tables/${tourney.id}?page=${page}&per_page=${rowsPerPage}`;
 
     try {
       const { data } = await axios.get(url, config);
@@ -37,27 +37,39 @@ export default function Tables({ tourneyId }) {
         setTables(data.data);
         setReload(false);
       }
-    } catch (errors) {
-      console.log(errors);
-      const { response } = errors;
-      const { detail } = response.data;
-      Swal.fire({
-        title: "Cargando Mesas del Torneo",
-        text: detail,
-        icon: "error",
-        showCancelButton: false,
-        allowOutsideClick: false,
-        confirmButtonColor: "#3085d6",
-        confirmButtonText: "Aceptar",
-      });
+    } catch ({ code, message, name, request }) {
+      if (code === "ERR_NETWORK") {
+        Swal.fire({
+          title: "Obteniendo Mesas del Torneo",
+          text: "Error en su red, consulte a su proveedor de servicio",
+          icon: "error",
+          showCancelButton: false,
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Aceptar",
+        });
+      } else {
+        if (code === "ERR_BAD_REQUEST") {
+          const { detail } = JSON.parse(request.response);
+          Swal.fire({
+            title: "Obteniendo Mesas del Torneo",
+            text: detail,
+            icon: "error",
+            showCancelButton: false,
+            allowOutsideClick: false,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Aceptar",
+          });
+        }
+      }
     }
   };
 
   useEffect(() => {
-    if (tourneyId) {
+    if (tourney.id) {
       fetchData();
     }
-  }, [tourneyId, page, reload]);
+  }, [tourney.id, page, reload]);
 
   const onChangePage = (pageNumber) => {
     setPage(pageNumber);
@@ -108,22 +120,18 @@ export default function Tables({ tourneyId }) {
               className="d-flex flex-column align-items-center rounded"
               style={{ height: "400px", background: "#ebebeb" }}
             >
-              <CardHeader className="w-100">Mesa <b>{item.number}</b> - {item.type}</CardHeader>
+              <CardHeader className="w-100">Mesa <b>{item.table_number}</b> - {item.is_smart ? "Inteligente" : "Tradicional"}</CardHeader>
               <div className="container-fluid pt-2">
                 <div className="row d-flex justify-content-center text-center pb-2">
                   <div className="image_with_badge_container">
                     <Image
                       alt="Avatar Player 1"
-                      src={item.playerOne ? item.playerOne.avatar : "/profile/user-vector.jpg"}
+                      src={"/profile/user-vector.jpg"}
                       width={60}
                       height={60}
                       className="rounded-image"
                     />
-                    <span className="badge bg-primary rounded badge-on-image-y">
-                      {item.playerOne ? item.playerOne.index : "-"}
-                    </span>
                   </div>
-                  <small>{item.playerOne ? item.playerOne.name : "Vacante"}</small>
                 </div>
 
                 <div className="row">
@@ -132,50 +140,32 @@ export default function Tables({ tourneyId }) {
                     <div className="image_with_badge_container">
                       <Image
                         alt="Avatar Player 2"
-                        src={item.playerTwo ? item.playerTwo.avatar : "/profile/user-vector.jpg"}
+                        src={"/profile/user-vector.jpg"}
                         width={60}
                         height={60}
                         className="rounded-image"
                       />
-                      <span className="badge bg-primary rounded badge-on-image-x">
-                        {item.playerTwo ? item.playerTwo.index : "-"}
-                      </span>
                     </div>
-                    <small>{item.playerTwo ? item.playerTwo.name : "Vacante"}</small>
                   </div>
 
-                  <div
-                    className="col-6 d-flex flex-column justify-content-center align-items-center border border-primary bg-white"
-                    style={{ height: "100px" }}
-                  >
-
-                    <Image
-                      alt="Photo Profile"
-                      src={item.image}
-                      width={"100%"}
-                      height={"100%"}
-                    />
-
-                    <div className="d-flex flex-wrap">
-                      <strong>Imagen de Publicidad</strong>
-                    </div>
-
-                  </div>
+                  <Image
+                    className="rounded border border-primary bg-white"
+                    alt="Foto de Publicidad para la Mesa"
+                    src={item.photo}
+                    width={"175px"}
+                    height={"140px"}
+                  />
 
                   <div className="col-3 d-flex flex-column justify-content-center text-center">
                       <div className="image_with_badge_container">
                         <Image
                           alt="Avatar Player 4"
-                          src={item.playerFour ? item.playerFour.avatar : "/profile/user-vector.jpg"}
+                          src={"/profile/user-vector.jpg"}
                           width={60}
                           height={60}
                           className="rounded-image"
                         />
-                        <span className="badge bg-primary rounded badge-on-image-x">
-                          {item.playerFour ? item.playerFour.index : "-"}
-                        </span>
                       </div>
-                      <small>{item.playerFour ? item.playerFour.name: "Vacante"}</small>
                   </div>
 
                 </div>
@@ -184,59 +174,59 @@ export default function Tables({ tourneyId }) {
 
                   <div className="col-12 justify-content-center text-center">
 
-                  <Label
-                      href="#"
-                      className="btn btn-primary btn-sm"
-                      title="Publicidad de Mesa"
-                      style={{ color: "white" }}
-                    >
-                      <i className="bi bi-upload"></i>
-                      <Input
-                          type="file"
-                          hidden
-                          onChange={(event) => {
-                              if (event.target.files && event.target.files[0]) {
-                                  const i = event.target.files[0];
-                                  if (i.type.includes("image/jpeg")) {
-                                      saveImage(item.table_id, i);
-                                  } else {
-                                      Swal.fire({
-                                          icon: "error",
-                                          title: "Cargando Imagen",
-                                          text: "Ha ocurrido un error al cargar la imagen",
-                                          showConfirmButton: true,
-                                      });
-                                  }
-                              }
-                          }}
-                      />
+                    <Label
+                        href="#"
+                        className="btn btn-primary btn-sm"
+                        title="Cambiar foto de Publicidad de la Mesa"
+                        style={{ color: "white" }}
+                      >
+                        <i className="bi bi-upload"></i>
+                        <Input
+                            type="file"
+                            hidden
+                            onChange={(event) => {
+                                if (event.target.files && event.target.files[0]) {
+                                    const i = event.target.files[0];
+                                    if (i.type.includes("image/jpeg")) {
+                                        saveImage(item.id, i);
+                                    } else {
+                                        Swal.fire({
+                                            icon: "error",
+                                            title: "Cargando Imagen",
+                                            text: "Ha ocurrido un error al cargar la imagen",
+                                            showConfirmButton: true,
+                                        });
+                                    }
+                                }
+                            }}
+                        />
                     </Label>
 
                     <Label
-                      href="#"
-                      className="btn btn-danger btn-sm"
-                      title="Eliminar foto de Publicidad"
-                      style={{ color: "white" }}
-                      onClick={(e) => {
-                          Swal.fire({
-                              title: "¿ Desea eliminar esta foto de publicidad ?",
-                              text: "! Esta opción no podrá ser revertida !",
-                              icon: "question",
-                              showCancelButton: true,
-                              confirmButtonText: "Sí",
-                              cancelButtonText: "No",
-                              confirmButtonColor: "#3085d6",
-                              cancelButtonColor: "#d33",
-                              reverseButtons: true,
-                              allowOutsideClick: false,
-                          }).then((result) => {
-                              if (result.isConfirmed) {
-                                  saveImage(item.table_id, "");
-                              }
-                          });
-                      }}
-                    >
-                      <i className="bi bi-trash"/>
+                        href="#"
+                        className="btn btn-danger btn-sm ms-2"
+                        title="Eliminar foto de Publicidad"
+                        style={{ color: "white" }}
+                        onClick={(e) => {
+                            Swal.fire({
+                                title: "¿ Desea eliminar esta foto de publicidad ?",
+                                text: "! Esta opción no podrá ser revertida !",
+                                icon: "question",
+                                showCancelButton: true,
+                                confirmButtonText: "Sí",
+                                cancelButtonText: "No",
+                                confirmButtonColor: "#3085d6",
+                                cancelButtonColor: "#d33",
+                                reverseButtons: true,
+                                allowOutsideClick: false,
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    saveImage(item.id, "");
+                                }
+                            });
+                        }}
+                      >
+                        <i className="bi bi-trash"/>
                     </Label>
 
                   </div>                
@@ -247,14 +237,12 @@ export default function Tables({ tourneyId }) {
                   <div className="image_with_badge_container">
                     <Image
                       alt="Avatar Player 3"
-                      src={item.playerThree ? item.playerThree.avatar : "/profile/user-vector.jpg"}
+                      src={"/profile/user-vector.jpg"}
                       width={60}
                       height={60}
                       className="rounded-image"
                     />
-                    <span className="badge bg-primary rounded badge-on-image-y">{item.playerThree ? item.playerThree.index : "-"}</span>
                   </div>
-                  <small>{item.playerThree ? item.playerThree.name : "Vacante"}</small>
                 </div>
               </div>
             </Card>

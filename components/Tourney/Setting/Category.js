@@ -6,7 +6,7 @@ import { useAppContext } from "../../../AppContext";
 import Bombo from "../Bombo";
 import Empty from "../../Empty/Empty";
 
-export default function Category({ formValues }) {
+export default function Category({ formValues, setReload }) {
   const { token, lang } = useAppContext();
   const [openNewBombo, setOpenNewBombo] = useState(false);
   const [bombo, setBombo] = useState([]);
@@ -18,7 +18,16 @@ export default function Category({ formValues }) {
         const lst = formValues.lst_categories.value;
         let arr = [];
         for (let i=0; i<lst.length; i++) {
-            arr.push({id: i+1, title: lst[i].category_number, min: lst[i].elo_min, max: lst[i].elo_max});
+            arr.push(
+              {
+                number: i+1,
+                id: lst[i].id, 
+                title: lst[i].category_number, 
+                min: lst[i].elo_min, 
+                max: lst[i].elo_max, 
+                players: lst[i].amount_players
+              }
+            );
         }
         setBombo(arr);
     }
@@ -35,18 +44,11 @@ export default function Category({ formValues }) {
     setOpenNewBombo(true);
   };
 
-  const execAction = async () => {
-
-    let paramsObj = [];
-
-    for (let i=0; i<bombo.length; i++) {
-        paramsObj.push({category_number: bombo[i].title, elo_min: bombo[i].min, elo_max: bombo[i].max});
-    }
-
-    const url = `${process.env.NEXT_PUBLIC_API_URL}tourney/setting/categories/${formValues.tourneyId.value}`;
+  const deleteItem = async (item) => {
+    const url = `${process.env.NEXT_PUBLIC_API_URL}tourney/setting/categories/${item.id}`;
 
     try {
-        const { data } = await axios.post(url, paramsObj, {
+        const { data } = await axios.delete(url, {
           headers: {
             "Content-Type": "application/json",
             "Accept": "application/json",
@@ -54,8 +56,8 @@ export default function Category({ formValues }) {
             "Authorization": `Bearer ${token}`                },
         });
         if (data.success) {
-          // setReload(true);
-
+          setEloMax("");
+          setReload(true);
           Swal.fire({
             icon: "success",
             title: "Configurando Torneo",
@@ -63,16 +65,32 @@ export default function Category({ formValues }) {
             showConfirmButton: true,
           });
         }
-      } catch (errors) {
-        console.log(errors);
-
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Ha ocurrido un error al consultar la API....",
-          showConfirmButton: true,
-        });
-      }
+      } catch ({ code, message, name, request }) {
+        if (code === "ERR_NETWORK") {
+          Swal.fire({
+            title: "Eliminar Categoría",
+            text: "Error en su red, consulte a su proveedor de servicio",
+            icon: "error",
+            showCancelButton: false,
+            allowOutsideClick: false,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Aceptar",
+          });
+        } else {
+          if (code === "ERR_BAD_REQUEST") {
+            const { detail } = JSON.parse(request.response);
+            Swal.fire({
+              title: "Eliminar Categoría",
+              text: detail,
+              icon: "error",
+              showCancelButton: false,
+              allowOutsideClick: false,
+              confirmButtonColor: "#3085d6",
+              confirmButtonText: "Aceptar",
+            });
+          }
+        }
+      } 
   }
 
   const handleDelete = (e, item, idx) => {
@@ -100,14 +118,7 @@ export default function Category({ formValues }) {
           confirmButtonText: "Eliminar",
         }).then((result) => {
           if (result.isConfirmed) {
-            for (let i = 0; i < bombo.length; i++) {
-              if (bombo[i].id === item.id) bombo.splice(i, 1);
-            }
-            setBombo(bombo);
-
-            execAction();
-        
-            setRefresh(true);
+            deleteItem(item);
           }
         });
 
@@ -146,21 +157,23 @@ export default function Category({ formValues }) {
               <Table responsive size="sm" hover>
                 <thead>
                     <tr>
-                        <th>#</th>
-                        <th>Nombre</th>
-                        <th>ELO Max.</th>
-                        <th>ELO Min.</th>
+                        <th className="text-center">#</th>
+                        <th className="text-center">Nombre</th>
+                        <th className="text-center">ELO Max.</th>
+                        <th className="text-center">ELO Min.</th>
+                        <th className="text-center">Competidores</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     {bombo.map((item, idx) => (
                         <tr key={idx}>
-                            <td scope="row">{item.id}</td>
-                            <td>{item.title}</td>
-                            <td>{item.max}</td>
-                            <td>{item.min}</td>
-                            <td>
+                            <td className="text-center" scope="row">{item.number}</td>
+                            <td className="text-center">{item.title}</td>
+                            <td className="text-center">{item.max}</td>
+                            <td className="text-center">{item.min}</td>
+                            <td className="text-center">{item.players}</td>
+                            <td className="text-center">
                                 <a
                                   onClick={(e) => handleDelete(e, item, idx)}
                                   style={{ cursor: "pointer" }}
@@ -191,12 +204,11 @@ export default function Category({ formValues }) {
         </Form>
 
         <Bombo 
+            tourneyId={formValues.tourneyId.value}
             open={openNewBombo} 
             setClose={setOpenNewBombo} 
-            bombo={bombo} 
-            setBombo={setBombo}
             eloMax={eloMax}
-            onSave={execAction}
+            setReload={setReload}
         />
 
     </div>

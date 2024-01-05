@@ -9,10 +9,8 @@ import { useAppContext } from "../../../AppContext";
 import Header from "../../../components/Header/Header";
 import Footer from "../../../components/Footers/Footer";
 import Response from "../../../components/Tourney/Response";
-import Players from "../../../components/Tourney/Players";
 import Tables from "../../../components/Tourney/Tables";
 import Setting from "../../../components/Tourney/Setting";
-import Lottery from "../../../components/Tourney/Lottery";
 import Rounds from "../../../components/Tourney/Rounds";
 
 import { eventDate } from "../../../_functions";
@@ -261,23 +259,6 @@ export default function View() {
               <i className="bi bi-gear"></i> Configurar Torneo
             </button>
 
-            {/* <button
-              type="button"
-              disabled={tourney.status_name==="CREATED"}
-              style={
-                menu === "LOTTERY"
-                  ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
-                  : { background: "#e4e6eb" }
-              }
-              className="btn btn-sm"
-              onClick={(e) => {
-                e.preventDefault();
-                handleButton("LOTTERY");
-              }}
-            >
-              <i className="bi bi-card-checklist"></i> Sorteo
-            </button> */}
-
             <button
               type="button"
               // disabled={tourney.status_name==="CREATED"}
@@ -319,11 +300,8 @@ export default function View() {
 
           {menu === "COMPETITORS" && <Response tourney={tourney}/>}
           {menu === "SETTING" && <Setting tourney={tourney} setMenu={setMenu} setRefresh={setRefresh} />}
-
-          {/* {menu === "LOTTERY" && <Lottery tourney={tourney} setRefresh={setRefresh} />} */}
-
-          {menu === "TABLES" && <Tables tourneyId={tourneyId} />}
-          {menu === "PLAY" && <Rounds tourneyId={tourneyId} title={"Rondas"} showPlay={true} newPage={true}/>}
+          {menu === "TABLES" && <Tables tourney={tourney} />}
+          {menu === "PLAY" && <Rounds tourney={tourney} tourneyId={tourneyId} title={"Rondas"} showPlay={true} newPage={true}/>}
           
         </div>
       </main>

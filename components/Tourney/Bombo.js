@@ -1,4 +1,7 @@
 import { useState, useEffect } from "react";
+import Swal from "sweetalert2";
+import axios from "axios";
+import { useAppContext } from "../../AppContext";
 
 import {
   Modal,
@@ -15,7 +18,8 @@ import {
   Label,
 } from "reactstrap";
 
-export default function Bombo({ open, setClose, bombo, setBombo, eloMax, onSave }) {
+export default function Bombo({ open, setClose, eloMax, tourneyId, setReload }) {
+  const { token, lang } = useAppContext();
 
   const [formValues, setFormValues] = useState({
     letter: {
@@ -77,39 +81,79 @@ export default function Bombo({ open, setClose, bombo, setBombo, eloMax, onSave 
       !formValues.eloMin.error &&
       !formValues.eloMax.error
     ) {
-      const array = bombo;
 
-      array.push({
-        id: bombo.length+1,
-        title: formValues.letter.value,
-        min: formValues.eloMin.value,
-        max: formValues.eloMax.value,
-      });
+      const paramsObj = {
+        category_number: formValues.letter.value, 
+        elo_min: formValues.eloMin.value, 
+        elo_max: formValues.eloMax.value
+      }
 
-      setBombo(array);
+      const url = `${process.env.NEXT_PUBLIC_API_URL}tourney/setting/categories/${tourneyId}`;
 
-      setFormValues({
-        letter: {
-          value: "",
-          error: false,
-          errorMessage: "Título de categoría, requerido",
-        },
-        eloMin: {
-          value: "",
-          error: false,
-          errorMessage: "ELO Mínimo requerido",
-        },
-        eloMax: {
-          value: "",
-          error: false,
-          errorMessage: "ELO Máximo requerido",
-        }
-      });   
-      
-      onSave();
+      try {
+          const { data } = await axios.post(url, paramsObj, {
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json",
+              "accept-Language": lang,
+              "Authorization": `Bearer ${token}`                },
+          });
+          if (data.success) {
+            setFormValues({
+              letter: {
+                value: "",
+                error: false,
+                errorMessage: "Título de categoría, requerido",
+              },
+              eloMin: {
+                value: "",
+                error: false,
+                errorMessage: "ELO Mínimo requerido",
+              },
+              eloMax: {
+                value: "",
+                error: false,
+                errorMessage: "ELO Máximo requerido",
+              }
+            });   
 
-      setClose();
+            Swal.fire({
+              icon: "success",
+              title: "Nueva Categoría",
+              text: data.detail,
+              showConfirmButton: true,
+            });
+            setReload(true);
+            setClose();
 
+          }
+        } catch ({ code, message, name, request }) {
+          console.log(message);
+          if (code === "ERR_NETWORK") {
+            Swal.fire({
+              title: "Nueva Categoría",
+              text: "Error en su red, consulte a su proveedor de servicio",
+              icon: "error",
+              showCancelButton: false,
+              allowOutsideClick: false,
+              confirmButtonColor: "#3085d6",
+              confirmButtonText: "Aceptar",
+            });
+          } else {
+            if (code === "ERR_BAD_REQUEST") {
+              const { detail } = JSON.parse(request.response);
+              Swal.fire({
+                title: "Nueva Categoría",
+                text: detail,
+                icon: "error",
+                showCancelButton: false,
+                allowOutsideClick: false,
+                confirmButtonColor: "#3085d6",
+                confirmButtonText: "Aceptar",
+              });              
+            }
+          }
+        } 
     }
   };
 
