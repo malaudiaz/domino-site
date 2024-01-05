@@ -219,10 +219,10 @@ export default function Rounds({ tourney, tourneyId, title, showPlay, newPage, r
           <CardBody className="p-4">
 
               <div className="d-flex flex-wrap gap-2 justify-content-between p-2">
-                <span>Ronda No. <b>{activeRound.round_number}</b></span>
-                <span>Resumen <b>{activeRound.summary}</b></span>
-                <span>Fecha de Inicio <b>{activeRound.start_date}</b></span>
-                {activeRound.close_date && <span>Fecha de Cierre <b>{activeRound.close_date}</b></span>}
+                {/* {activeRound.round_number && <span>Ronda No. <b>{activeRound.round_number}</b></span>}
+                {activeRound.summary && <span>Resumen <b>{activeRound.summary}</b></span>}
+                {activeRound.start_date && <span>Fecha de Inicio <b>{activeRound.start_date}</b></span>}
+                {activeRound.close_date && <span>Fecha de Cierre <b>{activeRound.close_date}</b></span>} */}
               </div>
 
               <Nav tabs>
