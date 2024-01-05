@@ -55,6 +55,11 @@ export default function Setting({ tourney }) {
       error: false,
       errorMessage: 'Cantidad de mesas inteligentes requerida'
     },
+    constant_increase_ELO: {
+      value: "",
+      error: false,
+      errorMessage: 'Constante de crecimiento del ELO es requerida'
+    },
     pointRound:{
       value: "",
       error: false,
@@ -74,6 +79,16 @@ export default function Setting({ tourney }) {
       value: "",
       error: false,
       errorMessage: "Límite de puntos por penalización es requerido"
+    },
+    points_penalty_yellow: {
+      value: "",
+      error: false,
+      errorMessage: "Puntos de penalización por tarjetas amarillas requerido"
+    },
+    points_penalty_red: {
+      value: "",
+      error: false,
+      errorMessage: "Puntos de penalización por tarjetas rojas requerido"
     },
     event_ordering_one: {
       value: "",
@@ -164,6 +179,11 @@ export default function Setting({ tourney }) {
             error: false,
             errorMessage: "ELO Mínimo, requerido"
           },
+          constant_increase_ELO: {
+            value: data.data.constant_increase_ELO,
+            error: false,
+            errorMessage: "ELO Mínimo, requerido"
+          },         
           amountTable:{
             value: data.data.amount_tables,
             error:false,
@@ -214,7 +234,16 @@ export default function Setting({ tourney }) {
             error:false,
             errorMessage:"Límite de puntos por penalización es requerido"
           },
-
+          points_penalty_yellow: {
+            value: data.data.points_penalty_yellow,
+            error:false,
+            errorMessage: "Puntos de penalización por tarjetas amarillas requerido"
+          },
+          points_penalty_red: {
+            value: data.data.points_penalty_red,
+            error:false,
+            errorMessage: "Puntos de penalización por tarjetas rojas requerido"
+          },
           event_ordering_one: {
             value: data.data.event_ordering_one,
             error: false,

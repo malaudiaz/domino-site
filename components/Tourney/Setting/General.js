@@ -67,13 +67,20 @@ export default function General({ formValues, setFormValues }) {
       const body = {
         "amount_tables": formValues.amountTable.value,
         "amount_smart_tables": formValues.smartTable.value,
-        "amount_rounds": formValues.amountRound.value,
         "number_points_to_win": formValues.pointRound.value,
         "time_to_win": formValues.timeRound.value,
-        "game_system": formValues.playSystem.value,
         "lottery": formValues.lottery.value,
-        "bonus": formValues.bonus.value,
-        "limitPenaltyPoints": formValues.limitPenaltyPoints.value        
+        "constant_increase_ELO": formValues.constant_increase_ELO.value,
+        "limitPenaltyPoints": formValues.limitPenaltyPoints.value,
+        "points_penalty_yellow": formValues.points_penalty_yellow.value,
+        "points_penalty_red": formValues.points_penalty_red.value,
+        "points_penalty_red": formValues.points_penalty_red.value,
+        "event_ordering_one": formValues.event_ordering_one.value,
+        "event_ordering_two": formValues.event_ordering_two.value,
+        "event_ordering_three": formValues.event_ordering_three.value,
+        "round_ordering_one": formValues.round_ordering_one.value,
+        "round_ordering_two": formValues.round_ordering_two.value,
+        "round_ordering_three": formValues.round_ordering_three.value
       }
 
       try {
@@ -113,7 +120,7 @@ export default function General({ formValues, setFormValues }) {
   return (
     <Form onSubmit={handleSubmit} autoComplete="off">
       <div className="tab-content pt-2">
-        <FormGroup row className="ps-4 pe-4">
+        <FormGroup row className="pt-2 ps-4 pe-4">
           <Label size="sm" sm={3}>
             ELO Máximo
           </Label>
@@ -253,6 +260,29 @@ export default function General({ formValues, setFormValues }) {
           </Col>
 
           <Label size="sm" sm={3}>
+            Constante de Crecimiento del ELO
+          </Label>
+          <Col sm={3}>
+            <InputGroup size="sm">
+              <Input
+                type="number"
+                name="constant_increase_ELO"
+                id="constant_increase_ELO"
+                invalid={formValues.constant_increase_ELO.error}
+                value={formValues.constant_increase_ELO.value}
+                onChange={handleChange}
+                disabled={
+                    formValues.statusName.value === "CONFIGURATED" ||
+                    formValues.statusName.value === "INITIADED"
+                }
+              />
+            </InputGroup>
+          </Col>
+
+        </FormGroup>
+
+        <FormGroup row className="ps-4 pe-4">
+          <Label size="sm" sm={3}>
             Límite de Puntos por Penalización
           </Label>
           <Col sm={3}>
@@ -272,6 +302,49 @@ export default function General({ formValues, setFormValues }) {
             </InputGroup>
           </Col>
 
+          <Label size="sm" sm={3}>
+            Punto de penalización por tarjeta amarilla
+          </Label>
+          <Col sm={3}>
+            <InputGroup size="sm">
+              <Input
+                type="number"
+                name="points_penalty_yellow"
+                id="points_penalty_yellow"
+                invalid={formValues.points_penalty_yellow.error}
+                value={formValues.points_penalty_yellow.value}
+                onChange={handleChange}
+                disabled={
+                    formValues.statusName.value === "CONFIGURATED" ||
+                    formValues.statusName.value === "INITIADED"
+                }
+              />
+            </InputGroup>
+          </Col>
+
+        </FormGroup>
+
+        <FormGroup row className="ps-4 pe-4">
+          <Col sm={6}></Col>
+          <Label size="sm" sm={3}>
+            Puntos de penalización por tarjeta rojas
+          </Label>
+          <Col sm={3}>
+            <InputGroup size="sm">
+              <Input
+                type="number"
+                name="points_penalty_red"
+                id="points_penalty_red"
+                invalid={formValues.points_penalty_red.error}
+                value={formValues.points_penalty_red.value}
+                onChange={handleChange}
+                disabled={
+                    formValues.statusName.value === "CONFIGURATED" ||
+                    formValues.statusName.value === "INITIADED"
+                }
+              />
+            </InputGroup>
+          </Col>
         </FormGroup>
 
         <FormGroup row className="pt-2 ps-4 pe-4">
@@ -424,7 +497,6 @@ export default function General({ formValues, setFormValues }) {
                 </FormGroup>
               </CardBody>
             </Card>
-
           </Col>
         </FormGroup>
 

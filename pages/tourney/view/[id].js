@@ -256,7 +256,7 @@ export default function View() {
                 e.preventDefault();
                 handleButton("SETTING");
               }}
-              disabled={tourney.amount_player===0}
+              // disabled={tourney.amount_player===0}
             >
               <i className="bi bi-gear"></i> Configurar Torneo
             </button>
@@ -280,7 +280,7 @@ export default function View() {
 
             <button
               type="button"
-              disabled={tourney.status_name==="CREATED"}
+              // disabled={tourney.status_name==="CREATED"}
               style={
                 menu === "TABLES"
                   ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
@@ -298,7 +298,7 @@ export default function View() {
 
             <button
               type="button"
-              disabled={tourney.status_name==="CREATED"}
+              // disabled={tourney.status_name==="CREATED"}
               style={
                 menu === "PLAY"
                   ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
@@ -310,7 +310,7 @@ export default function View() {
                 handleButton("PLAY");
               }}
             >
-              <i className="bi bi-collection-play"></i> Iniciar Ronda
+              <i className="bi bi-collection-play"></i> Rondas
             </button>
 
 
