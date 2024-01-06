@@ -4,7 +4,7 @@ import Image from "next/image";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useAppContext } from "../../AppContext";
-import { Card, CardHeader, Label, Input } from "reactstrap";
+import { Card, CardHeader, Label, Input, CardBody } from "reactstrap";
 
 export default function Tables({ tourney }) {
   const { token, lang } = useAppContext();
@@ -111,69 +111,32 @@ export default function Tables({ tourney }) {
   }
 
   return (
-    <div className="pt-3 px-4 pb-4" style={{ display: "grid" }}>
+    <div className="d-grid pt-3 px-4 pb-4">
       {tables.length > 0 ? (
         <div className="container-events">
           {tables.map((item, idx) => (
             <Card
               key={idx}
-              className="d-flex flex-column align-items-center rounded"
-              style={{ height: "400px", background: "#ebebeb" }}
+              className="card-info" 
+              style={{cursor: "default"}}
             >
-              <CardHeader className="w-100">Mesa <b>{item.table_number}</b> - {item.is_smart ? "Inteligente" : "Tradicional"}</CardHeader>
-              <div className="container-fluid pt-2">
-                <div className="row d-flex justify-content-center text-center pb-2">
-                  <div className="image_with_badge_container">
-                    <Image
-                      alt="Avatar Player 1"
-                      src={"/profile/user-vector.jpg"}
-                      width={60}
-                      height={60}
-                      className="rounded-image"
-                    />
-                  </div>
-                </div>
-
-                <div className="row">
-
-                  <div className="col-3 d-flex flex-column justify-content-center text-center">
-                    <div className="image_with_badge_container">
-                      <Image
-                        alt="Avatar Player 2"
-                        src={"/profile/user-vector.jpg"}
-                        width={60}
-                        height={60}
-                        className="rounded-image"
-                      />
-                    </div>
-                  </div>
-
-                  <Image
-                    className="rounded border border-primary bg-white"
-                    alt="Foto de Publicidad para la Mesa"
-                    src={item.photo}
-                    width={"175px"}
-                    height={"140px"}
-                  />
-
-                  <div className="col-3 d-flex flex-column justify-content-center text-center">
-                      <div className="image_with_badge_container">
-                        <Image
-                          alt="Avatar Player 4"
-                          src={"/profile/user-vector.jpg"}
-                          width={60}
-                          height={60}
-                          className="rounded-image"
-                        />
-                      </div>
-                  </div>
-
-                </div>
-
+              <div className="d-flex justify-content-between py-2 px-3">
+                <span><b>Mesa {item.table_number}</b></span>
+                <span><b>{item.is_smart ? "Inteligente" : "Tradicional"}</b></span>
+              </div>
+              <Image
+                  alt="Foto de Publicidad para la Mesa"
+                  title="Foto de Publicidad para la Mesa"
+                  src={item.photo}
+                  width={350}
+                  height={150}
+                  quality={50}
+                  priority
+                  layout="intrinsic"
+              />
+              <CardBody>
                 <div className="row pt-2">
-
                   <div className="col-12 justify-content-center text-center">
-
                     <Label
                         href="#"
                         className="btn btn-primary btn-sm"
@@ -201,7 +164,6 @@ export default function Tables({ tourney }) {
                             }}
                         />
                     </Label>
-
                     <Label
                         href="#"
                         className="btn btn-danger btn-sm ms-2"
@@ -228,23 +190,9 @@ export default function Tables({ tourney }) {
                       >
                         <i className="bi bi-trash"/>
                     </Label>
-
                   </div>                
-
                 </div>
-
-                <div className="row justify-content-center text-center pt-2">
-                  <div className="image_with_badge_container">
-                    <Image
-                      alt="Avatar Player 3"
-                      src={"/profile/user-vector.jpg"}
-                      width={60}
-                      height={60}
-                      className="rounded-image"
-                    />
-                  </div>
-                </div>
-              </div>
+              </CardBody>
             </Card>
           ))}
         </div>

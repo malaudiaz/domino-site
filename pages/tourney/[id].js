@@ -323,7 +323,7 @@ export default function Tourneys() {
             </button>
           </div>
 
-          <div className="pt-3 px-4" style={{ display: "grid" }}>
+          <div className="d-grid pt-3 px-4">
             <div className="container-events">
               {records.map(({ id, name, modality, summary, startDate, image, number_rounds }, idx) => (
                 <Card
@@ -444,7 +444,6 @@ export default function Tourneys() {
                             <i className="bi bi-envelope"/>
                         </Label>
 
-
                       </div>                
 
                     </div>
@@ -461,17 +460,6 @@ export default function Tourneys() {
                     </div>
 
                   </CardBody>
-                  {/* <CardFooter style={{ textAlign: "center" }}>
-                    <button
-                      className="btn btn-primary btn-sm"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        sendInvitations(id);
-                      }}
-                    >
-                      <i className="bi bi-envelope"></i> Enviar Invitación
-                    </button>
-                  </CardFooter> */}
                 </Card>
               ))}
             </div>
