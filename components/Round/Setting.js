@@ -1,7 +1,7 @@
 
 import { FormGroup, Label, Col, InputGroup, Input, FormFeedback } from "reactstrap"
 
-export default function GeneralSetting({settingValues, setSettingValues}) {
+export default function GeneralSetting({activeRound, settingValues, setSettingValues}) {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -18,7 +18,7 @@ export default function GeneralSetting({settingValues, setSettingValues}) {
     
     return (
         <div className="tab-content pt-4">
-            <FormGroup row className="ps-4 pe-4">
+            {activeRound.can_segment && <FormGroup row className="ps-4 pe-4">
                 <Label size="sm" sm={2}>
                     Usar Segmentación:
                 </Label>
@@ -40,8 +40,11 @@ export default function GeneralSetting({settingValues, setSettingValues}) {
                         <FormFeedback>{settingValues.applySegmentation.errorMessage}</FormFeedback>
                     </InputGroup>
                 </Col>
-            </FormGroup>
-            <FormGroup row className="ps-4 pe-4">
+            </FormGroup>}
+
+            {activeRound.can_bonus && <>
+            
+                <FormGroup row className="ps-4 pe-4">
                 <Label size="sm" sm={2}>
                     Usar Bonificación:
                 </Label>
@@ -82,6 +85,7 @@ export default function GeneralSetting({settingValues, setSettingValues}) {
                     </InputGroup>
                 </Col>
             </FormGroup>}
+            
             {settingValues.applyBonus.value==="YES" && <FormGroup row className="ps-4 pe-4">
                 <Label size="sm" sm={2}>
                     Cantidad de Puntos a Bonificar:
@@ -100,6 +104,9 @@ export default function GeneralSetting({settingValues, setSettingValues}) {
                     </InputGroup>
                 </Col>
             </FormGroup>}
+
+            </>}
+
         </div>
     )
 }

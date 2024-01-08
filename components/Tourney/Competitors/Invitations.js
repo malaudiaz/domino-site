@@ -384,15 +384,12 @@ export default function Invitations({ tourney }) {
 
                                 </div>
                 
-                                <div className="d-flex flex-row justify-content-between align-items-center px-2">
+                                <div className="d-flex flex-row justify-content-between align-items-center px-2 py-2">
                                     <small className="comment-text fs-12">
                                         Nivel: <b>{item.level}</b>
                                     </small>
                                     <small className="comment-text fs-12">
                                         ELO: <b>{item.elo}</b>
-                                    </small>
-                                    <small className="comment-text fs-12">
-                                        Ranking: <b>{item.ranking}</b>
                                     </small>
                                 </div>
                             </div>

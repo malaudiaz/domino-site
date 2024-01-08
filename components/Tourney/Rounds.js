@@ -52,7 +52,7 @@ export default function Rounds({ tourney }) {
     try {
       const { data } = await axios.get(url, config);
       if (data.success) {
-        setRounds(data.data);        
+        setRounds(data.data); 
       }
     } catch ({ code, message, name, request }) {
       if (code === "ERR_NETWORK") {
@@ -118,11 +118,11 @@ export default function Rounds({ tourney }) {
         setSettingValues({
           applySegmentation: {
             ...settingValues["applySegmentation"],
-            value: data.data.use_segmentation === "SI" ? "YES" : "NO"
+            value: data.data.use_segmentation
           },
           applyBonus: {
             ...settingValues["applyBonus"],
-            value: data.data.use_bonus === "SI" ? "YES" : "NO"
+            value: data.data.use_bonus
           },
           amountBonusTable: {
             ...settingValues["amountBonusTable"],
@@ -239,8 +239,9 @@ export default function Rounds({ tourney }) {
         <div className="d-flex flex-row flex-wrap gap-1 justify-content-between align-items-center pe-4">
         {rounds.map((item, idx) => (
           <a key={idx} className="ms-2" style={{cursor: "pointer"}} onClick={(e)=>{e.preventDefault(); handleClick(item);}}>
+
             <span 
-              className="round badge bg-primary rounded-circle fs-6" 
+              className={activeRound && item.id!==activeRound.id ? "round badge bg-primary rounded-circle fs-6" : "round badge bg-success rounded-circle fs-6"}
               id={'outlineTooltip'}
             >
               {item.round_number}
@@ -256,7 +257,7 @@ export default function Rounds({ tourney }) {
 
           { activeRound && activeRound.status_name && 
             <Button size="sm" color="success" onClick={handleSubmit}>              
-              {activeRound.status_name==="CREATED" && "Guardar"}
+              {activeRound.status_name==="CREATED" && "Configurar"}
               {activeRound.status_name==="CONFIGURATED" && "Publicar"}
               {activeRound.status_name==="PUBLICATED" && "Iniciar"}
               {activeRound.status_name==="REVIEW" && "Cerrar"}
@@ -270,7 +271,7 @@ export default function Rounds({ tourney }) {
         {activeRound && <Card className="flex-fill">
           <CardBody className="p-4">
 
-              <div className="d-flex flex-wrap gap-2 justify-content-between p-2">
+              <div className="d-flex flex-wrap gap-2 justify-content-between px-2 pb-4">
                 {activeRound && <span>Ronda No. <b>{activeRound.round_number}</b></span>}
                 {activeRound && <span>Estado: <b>{activeRound.status_description}</b></span>}
                 {activeRound && <span>Mesas: <b>{activeRound.amount_tables}</b></span>}
@@ -282,7 +283,7 @@ export default function Rounds({ tourney }) {
               </div>
 
               <Nav tabs>
-                <NavItem>
+                {(activeRound.can_segment || activeRound.can_bonus) && <NavItem>
                   <NavLink
                     href="#"
                     className={classnames({ active: activeTab === "1" })}
@@ -292,7 +293,7 @@ export default function Rounds({ tourney }) {
                   >
                     Ajustes Generales
                   </NavLink>
-                </NavItem>
+                </NavItem>}
                 {activeRound.is_first && <NavItem>
                   <NavLink
                     href="#"
@@ -368,7 +369,7 @@ export default function Rounds({ tourney }) {
 
               <TabContent activeTab={activeTab}>
                 <TabPane tabId="1">
-                  <GeneralSetting settingValues={settingValues} setSettingValues={setSettingValues}/>
+                  <GeneralSetting activeRound={activeRound} settingValues={settingValues} setSettingValues={setSettingValues}/>
                 </TabPane>
                 <TabPane tabId="2">
                 </TabPane>
