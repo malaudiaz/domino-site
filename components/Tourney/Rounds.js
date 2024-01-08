@@ -4,20 +4,38 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { useAppContext } from "../../AppContext";
 import OutlineTooltip from "../Tooltip/OutlineTooltip";
-import { Card, CardBody, Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
+import { Button, Card, CardBody, Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
 import classnames from "classnames";
+import GeneralSetting from "../Round/Setting";
 
-export default function Rounds({ tourney, tourneyId, title, showPlay, newPage, round, setRound, refresh, setRefresh }) {
+export default function Rounds({ tourney }) {
   const { token, lang } = useAppContext();
   const [rounds, setRounds] = useState([]);
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
-  const [total, setTotal] = useState(0);
   const [activeTab, setActiveTab] = useState("1");
   const [activeRound, setActiveRound] = useState(null);
-  const rowsPerPage = 12;
 
-  const router = useRouter();
+  const [settingValues, setSettingValues] = useState({
+    applySegmentation: {
+      value: "",
+      error: false,
+      errorMessage: "Indique sí desea utilizar la segmentación en esta ronda"
+    },
+    applyBonus: {
+      value: "",
+      error: false,
+      errorMessage: "Indique sí desea utilizar la Bonificación en esta ronda"
+    },
+    amountBonusTable: {
+      value: 0,
+      error: false,
+      errorMessage: "Indique lo cantidad de mesas a bonificar en esta ronda"
+    },
+    amountBonusPoint: {
+      value: 0,
+      error: false,
+      errorMessage: "Indique lo cantidad de puntos a bonificar en esta ronda"
+    }
+  });
 
   const config = {
     headers: {
@@ -29,15 +47,12 @@ export default function Rounds({ tourney, tourneyId, title, showPlay, newPage, r
   };
 
   const fetchData = async () => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/rounds/?tourney_id=${tourney.id}&page=${page}&per_page=${rowsPerPage}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/rounds/?tourney_id=${tourney.id}&page=${0}&per_page=${0}`;
 
     try {
       const { data } = await axios.get(url, config);
       if (data.success) {
-        setTotal(data.total);
-        setTotalPages(data.total_pages);
-        setRounds(data.data);
-        setRefresh(false);
+        setRounds(data.data);        
       }
     } catch ({ code, message, name, request }) {
       if (code === "ERR_NETWORK") {
@@ -71,100 +86,7 @@ export default function Rounds({ tourney, tourneyId, title, showPlay, newPage, r
     if (tourney.id) {
       fetchData();
     }
-  }, [refresh, page, tourney.id, activeRound]);
-
-  const onChangePage = (pageNumber) => {
-    setPage(pageNumber);
-  };
-
-  const roundPlay = async() => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/${tourneyId}`;
-
-    try {
-      const { data } = await axios.post(url, {}, config);
-      if (data.success) {
-        setRefresh(true);
-
-        Swal.fire({
-          title: "Rondas",
-          text: "La ronda ha sido iniciada",
-          icon: "info",
-          showCancelButton: false,
-          allowOutsideClick: false,
-          confirmButtonColor: "#3085d6",
-          confirmButtonText: "Aceptar",
-        });
-      }
-    } catch ({code, message, name, request}) {
-      if (code === "ERR_NETWORK") {
-        Swal.fire({
-          title: "Error en la Red",
-          text: "Error en su red, consulte a su proveedor de servicio",
-          icon: "error",
-          showCancelButton: false,
-          allowOutsideClick: false,
-          confirmButtonColor: "#3085d6",
-          confirmButtonText: "Aceptar",
-        });
-      } else {
-        if (code === "ERR_BAD_REQUEST") {
-          const {detail} = JSON.parse(request.response)
-          Swal.fire({
-            title: "Autentificar",
-            text: detail,
-            icon: "error",
-            showCancelButton: false,
-            allowOutsideClick: false,
-            confirmButtonColor: "#3085d6",
-            confirmButtonText: "Aceptar",
-          });  
-        }
-      }
-    }
-  };
-
-  // const handleClick = (item) => {
-  //   if (!showPlay) {
-  //     if (newPage) {
-  //       router.push(`${uri}/${item.id}`);
-  //     } else {
-  //       if (setRound) {
-  //         setRound(item.id);
-  //       }
-  //     }
-  //   } else {
-
-  //     if (item.status_name === "CREATED") {
-  //       Swal.fire({
-  //         title: "Inicial Ronda",
-  //         text: "Estas seguro que deseas iniciar esta ronda",
-  //         icon: "question",
-  //         showCancelButton: true,
-  //         cancelButtonText: "Cancelar",
-  //         allowOutsideClick: false,
-  //         confirmButtonColor: "#3085d6",
-  //         confirmButtonText: "Inicial",
-  //       }).then((result) => {
-  //         if (result.isConfirmed) {
-
-  //           roundPlay();
-
-  //         }
-  //       });
-  //     } else {
-  //       Swal.fire({
-  //         icon: "info",
-  //         title: "Iniciar Ronda",
-  //         text: "La ronda seleccionada, ya esta iniciada",
-  //         showConfirmButton: true,
-  //       });
-  //     }
-  //   }
-  // };
-
-  const setClose = () => {
-    setOpen(false);
-  };
+  }, [tourney.id]);
 
   const roundTipInfo = (item) => {
     return (
@@ -186,14 +108,135 @@ export default function Rounds({ tourney, tourneyId, title, showPlay, newPage, r
     )
   }
 
+  const handleRound = async (id) => {
+    const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/actions/aperture/${id}`;
+
+    try {
+      const { data } = await axios.get(url, config);
+      if (data.success) {
+        setActiveRound(data.data);
+        setSettingValues({
+          applySegmentation: {
+            ...settingValues["applySegmentation"],
+            value: data.data.use_segmentation === "SI" ? "YES" : "NO"
+          },
+          applyBonus: {
+            ...settingValues["applyBonus"],
+            value: data.data.use_bonus === "SI" ? "YES" : "NO"
+          },
+          amountBonusTable: {
+            ...settingValues["amountBonusTable"],
+            value: data.data.amount_bonus_tables
+          },
+          amountBonusPoint: {
+            ...settingValues["amountBonusPoint"],
+            value: data.data.amount_bonus_points
+          }
+        });
+      }
+    } catch ({ code, message, name, request }) {
+      if (code === "ERR_NETWORK") {
+        Swal.fire({
+          title: "Ronda del Torneo",
+          text: "Error en su red, consulte a su proveedor de servicio",
+          icon: "error",
+          showCancelButton: false,
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Aceptar",
+        });
+      } else {
+        if (code === "ERR_BAD_REQUEST") {
+          const { detail } = JSON.parse(request.response);
+          Swal.fire({
+            title: "Ronda del Torneo",
+            text: detail,
+            icon: "error",
+            showCancelButton: false,
+            allowOutsideClick: false,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Aceptar",
+          });
+        }
+      }
+    }
+  }
+
   const handleClick = (item) => {
-    setActiveRound(item);
+    handleRound(item.id);
+  }
+
+  const toggleTab = (tab) => {
+    if (activeTab !== tab) {
+      setActiveTab(tab);
+    }
+  };
+
+  const handleSubmit = async () => {
+    let url = `${process.env.NEXT_PUBLIC_API_URL}rounds/actions`;
+    let body = {}
+
+    switch (activeRound.status_name) {
+      case "CREATED":
+        url = url + `/aperture/${activeRound.id}`;
+        body["use_segmentation"] = settingValues.applySegmentation.value;
+        body["use_bonus"] = settingValues.applyBonus.value;
+        body["amount_bonus_tables"] = settingValues.amountBonusTable.value;
+        body["amount_bonus_points"] = settingValues.amountBonusPoint.value;
+        break;
+      case "CONFIGURATED":
+        break;
+      case "PUBLICATED":
+        break;
+      case "REVIEW":
+        break;
+    }    
+
+    try {
+      const { data } = await axios.post(url, body, config);
+      if (data.success) {
+
+        Swal.fire({
+          icon: "success",
+          title: "Configurando Ronda",
+          text: data.detail,
+          showConfirmButton: true,
+        });
+
+      }
+    } catch ({code, message, name, request}) {
+      if (code === "ERR_NETWORK") {
+        Swal.fire({
+          title: "Configurando Ronda",
+          text: "Error en su red, consulte a su proveedor de servicio",
+          icon: "error",
+          showCancelButton: false,
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Aceptar",
+        });
+      } else {
+        if (code === "ERR_BAD_REQUEST") {
+          const {detail} = JSON.parse(request.response)
+          Swal.fire({
+            title: "Configurando Ronda",
+            text: detail,
+            icon: "error",
+            showCancelButton: false,
+            allowOutsideClick: false,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Aceptar",
+          });  
+        }
+      }
+    }
   }
 
   return (
     <div>
       <div className="d-flex flex-column flex-wrap gap-1 ps-4">
         <h1 className="title">Rondas</h1>
+        <div className="d-flex flex-row flex-wrap gap-1 justify-content-between align-items-center pe-4">
         {rounds.map((item, idx) => (
           <a key={idx} className="ms-2" style={{cursor: "pointer"}} onClick={(e)=>{e.preventDefault(); handleClick(item);}}>
             <span 
@@ -207,23 +250,35 @@ export default function Rounds({ tourney, tourneyId, title, showPlay, newPage, r
               placement="bottom"
               target="outlineTooltip"
               message={roundTipInfo(item)}
-            />
-    
-          </a>          
-                  
+            />    
+          </a>                            
         ))}
+
+          { activeRound && activeRound.status_name && 
+            <Button size="sm" color="success" onClick={handleSubmit}>              
+              {activeRound.status_name==="CREATED" && "Guardar"}
+              {activeRound.status_name==="CONFIGURATED" && "Publicar"}
+              {activeRound.status_name==="PUBLICATED" && "Iniciar"}
+              {activeRound.status_name==="REVIEW" && "Cerrar"}
+            </Button> 
+          }
+
+        </div>
       </div>
 
       <div className="tourney-setting">
-        <Card className="flex-fill">
+        {activeRound && <Card className="flex-fill">
           <CardBody className="p-4">
 
               <div className="d-flex flex-wrap gap-2 justify-content-between p-2">
-                {activeRound && activeRound.round_number && <span>Ronda No. <b>{activeRound.round_number}</b></span>}
-                {activeRound && activeRound.summary && <span>Resumen <b>{activeRound.summary}</b></span>}
-                {activeRound && activeRound.start_date && <span>Fecha de Inicio <b>{activeRound.start_date}</b></span>}
-                {activeRound && activeRound.close_date && <span>Fecha de Cierre <b>{activeRound.close_date}</b></span>}
-                {activeRound && activeRound.status_description && <span>Estado <b>{activeRound.status_description}</b></span>}
+                {activeRound && <span>Ronda No. <b>{activeRound.round_number}</b></span>}
+                {activeRound && <span>Estado: <b>{activeRound.status_description}</b></span>}
+                {activeRound && <span>Mesas: <b>{activeRound.amount_tables}</b></span>}
+                {activeRound && <span>Mesas Jugando: <b>{activeRound.amount_tables_playing}</b></span>}
+                {activeRound && <span>Competidores Jugando: <b>{activeRound.amount_players_playing}</b></span>}
+                {activeRound && <span>Competidores en Espera: <b>{activeRound.amount_players_waiting}</b></span>}
+                {activeRound && <span>Competidores en Pausa: <b>{activeRound.amount_players_pause}</b></span>}
+                {activeRound && <span>Competidores Expulsador: <b>{activeRound.amount_players_expelled}</b></span>}
               </div>
 
               <Nav tabs>
@@ -238,7 +293,7 @@ export default function Rounds({ tourney, tourneyId, title, showPlay, newPage, r
                     Ajustes Generales
                   </NavLink>
                 </NavItem>
-                <NavItem>
+                {activeRound.is_first && <NavItem>
                   <NavLink
                     href="#"
                     className={classnames({ active: activeTab === "2" })}
@@ -246,24 +301,91 @@ export default function Rounds({ tourney, tourneyId, title, showPlay, newPage, r
                       toggleTab("2");
                     }}
                   >
-                    Categorias
+                    Sorteo
+                  </NavLink>
+                </NavItem>}
+
+                {activeRound.modality === "Individual" && <NavItem>
+                  <NavLink
+                    href="#"
+                    className={classnames({ active: activeTab === "3" })}
+                    onClick={() => {
+                      toggleTab("3");
+                    }}
+                  >
+                    Posiciones por Jugador
+                  </NavLink>
+                </NavItem>}
+
+                <NavItem>
+                  <NavLink
+                    href="#"
+                    className={classnames({ active: activeTab === "4" })}
+                    onClick={() => {
+                      toggleTab("4");
+                    }}
+                  >
+                    Posiciones por Pareja
+                  </NavLink>
+                </NavItem>
+
+                <NavItem>
+                  <NavLink
+                    href="#"
+                    className={classnames({ active: activeTab === "5" })}
+                    onClick={() => {
+                      toggleTab("5");
+                    }}
+                  >
+                    Posiciones por Mesa
+                  </NavLink>
+                </NavItem>
+
+                <NavItem>
+                  <NavLink
+                    href="#"
+                    className={classnames({ active: activeTab === "6" })}
+                    onClick={() => {
+                      toggleTab("6");
+                    }}
+                  >
+                    Entrada de Datos
+                  </NavLink>
+                </NavItem>
+
+                <NavItem>
+                  <NavLink
+                    href="#"
+                    className={classnames({ active: activeTab === "7" })}
+                    onClick={() => {
+                      toggleTab("7");
+                    }}
+                  >
+                    Resultados
                   </NavLink>
                 </NavItem>
               </Nav>
 
               <TabContent activeTab={activeTab}>
                 <TabPane tabId="1">
-
-
+                  <GeneralSetting settingValues={settingValues} setSettingValues={setSettingValues}/>
                 </TabPane>
                 <TabPane tabId="2">
-
-
+                </TabPane>
+                <TabPane tabId="3">
+                </TabPane>
+                <TabPane tabId="4">
+                </TabPane>
+                <TabPane tabId="5">
+                </TabPane>
+                <TabPane tabId="6">
+                </TabPane>
+                <TabPane tabId="7">
                 </TabPane>
               </TabContent>
 
           </CardBody>
-        </Card>
+        </Card>}
 
       </div>
 

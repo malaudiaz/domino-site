@@ -2,7 +2,6 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import { useAppContext } from "../../../AppContext";
 import { Form, FormGroup, Label, Input, Col, InputGroup, FormFeedback, Button, Card, CardHeader, CardBody } from "reactstrap";
-import { useState } from "react";
 
 export default function General({ formValues, setFormValues }) {
   const { token, lang } = useAppContext();
