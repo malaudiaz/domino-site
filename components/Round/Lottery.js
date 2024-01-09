@@ -14,7 +14,7 @@ import {
 
 import Players from "../Tourney/Lottery/Players";
 
-export default function Lottery({ tourney }) {
+export default function Lottery({ activeRound, tourney }) {
   const { token, lang } = useAppContext();
   const [categories, setCategories] = useState([]);
   const [filter, setFilter] = useState("");
@@ -93,9 +93,9 @@ export default function Lottery({ tourney }) {
   const handleSave = async (e) => {
     e.preventDefault();
 
-    if (tourney.lottery_type === "MANUAL") {
+    if (activeRound.lottery_type === "MANUAL") {
 
-      if (selected.length === tourney.amount_player) {
+      if (selected.length === activeRound.amount_players_playing) {
 
         let url = `${process.env.NEXT_PUBLIC_API_URL}domino/scale/initial/manual/?tourney_id=${tourney.id}`;
 
@@ -149,15 +149,15 @@ export default function Lottery({ tourney }) {
   return (
     <div className="tab-content pt-4">
       <div className="d-flex flex-wrap ps-4">
-        <h6 className="title flex-grow-1">{tourney.lottery_type === "MANUAL" ? "Sorteo Manual" : "Sorteo Automático"}</h6>
+        <h6 className="title flex-grow-1">{activeRound.lottery_type === "MANUAL" ? "Sorteo Manual" : "Sorteo Automático"}</h6>
         <div className="d-flex pe-4">
-          {tourney.lottery_type === "MANUAL" && 
+          {activeRound.lottery_type === "MANUAL" && 
             <Button
               className="btn btn-sm btn-success"
               style={{ width: "100px" }}
               title="Salvar el Sorteo"
               onClick={handleSave}
-              disabled={tourney.status_name === "INITIADED"}
+              disabled={activeRound.status_name === "INITIADED"}
             >
               <i className="bi bi-check2-circle"></i> Salvar
             </Button>
@@ -200,7 +200,7 @@ export default function Lottery({ tourney }) {
                   </div>
                   <Players 
                     id={item.id} 
-                    lotteryType={tourney.lottery_type} 
+                    lotteryType={activeRound.lottery_type} 
                     selected={selected} 
                     setSelected={setSelected}
                     number={number}

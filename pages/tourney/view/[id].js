@@ -21,7 +21,7 @@ export default function View() {
   const router = useRouter();
   const [tourney, setToutney] = useState([]);
   const tourneyId = router.query.id;
-  const [menu, setMenu] = useState("COMPETITORS");
+  const [menu, setMenu] = useState(null);
   const [refresh, setRefresh] = useState(false);
 
   const monthTourney = (startDate) => {

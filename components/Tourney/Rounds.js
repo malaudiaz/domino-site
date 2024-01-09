@@ -380,7 +380,7 @@ export default function Rounds({ tourney }) {
                   <GeneralSetting activeRound={activeRound} settingValues={settingValues} setSettingValues={setSettingValues}/>
                 </TabPane>
                 <TabPane tabId="2">
-                  <Lottery tourney={tourney}/>
+                  <Lottery activeRound={activeRound} tourney={tourney}/>
                 </TabPane>
                 <TabPane tabId="3">
                 </TabPane>
