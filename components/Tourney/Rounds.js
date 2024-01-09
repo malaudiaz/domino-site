@@ -260,7 +260,11 @@ export default function Rounds({ tourney }) {
         ))}
 
           { activeRound && activeRound.status_name && 
-            <Button size="sm" color="success" onClick={handleSubmit}>              
+
+
+
+            <Button  className="btn btn-sm btn-success" onClick={handleSubmit}>              
+              <i className="bi bi-check2-circle"/>&nbsp;
               {activeRound.status_name==="CREATED" && "Configurar"}
               {activeRound.status_name==="CONFIGURATED" && "Publicar"}
               {activeRound.status_name==="PUBLICATED" && "Iniciar"}

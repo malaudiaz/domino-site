@@ -155,6 +155,7 @@ export default function Lottery({ tourney }) {
             <Button
               className="btn btn-sm btn-success"
               style={{ width: "100px" }}
+              title="Salvar el Sorteo"
               onClick={handleSave}
               disabled={tourney.status_name === "INITIADED"}
             >
