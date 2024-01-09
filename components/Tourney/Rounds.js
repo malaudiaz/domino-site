@@ -7,6 +7,7 @@ import OutlineTooltip from "../Tooltip/OutlineTooltip";
 import { Button, Card, CardBody, Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
 import classnames from "classnames";
 import GeneralSetting from "../Round/Setting";
+import Lottery from "../Round/Lottery";
 
 export default function Rounds({ tourney }) {
   const { token, lang } = useAppContext();
@@ -86,7 +87,7 @@ export default function Rounds({ tourney }) {
     if (tourney.id) {
       fetchData();
     }
-  }, [tourney.id]);
+  }, [tourney.id, activeRound]);
 
   const roundTipInfo = (item) => {
     return (
@@ -166,6 +167,7 @@ export default function Rounds({ tourney }) {
     handleRound(item.id);
   }
 
+
   const toggleTab = (tab) => {
     if (activeTab !== tab) {
       setActiveTab(tab);
@@ -202,6 +204,8 @@ export default function Rounds({ tourney }) {
           text: data.detail,
           showConfirmButton: true,
         });
+
+        setActiveRound(data.data);
 
       }
     } catch ({code, message, name, request}) {
@@ -372,6 +376,7 @@ export default function Rounds({ tourney }) {
                   <GeneralSetting activeRound={activeRound} settingValues={settingValues} setSettingValues={setSettingValues}/>
                 </TabPane>
                 <TabPane tabId="2">
+                  <Lottery tourney={tourney}/>
                 </TabPane>
                 <TabPane tabId="3">
                 </TabPane>

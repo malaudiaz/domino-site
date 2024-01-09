@@ -40,7 +40,7 @@ export default function Players({ id, lotteryType, selected, setSelected, filter
     } catch ({ code, message, name, request }) {
       if (code === "ERR_NETWORK") {
         Swal.fire({
-          title: "Cargando Jugadores del Torneo",
+          title: "Cargando Jugadores del Sorteo",
           text: "Error en su red, consulte a su proveedor de servicio",
           icon: "error",
           showCancelButton: false,
@@ -52,7 +52,7 @@ export default function Players({ id, lotteryType, selected, setSelected, filter
         if (code === "ERR_BAD_REQUEST") {
           const { detail } = JSON.parse(request.response);
           Swal.fire({
-            title: "Cargando Jugadores del Torneo",
+            title: "Cargando Jugadores del Sorteo",
             text: detail,
             icon: "error",
             showCancelButton: false,
