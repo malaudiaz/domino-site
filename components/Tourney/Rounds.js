@@ -6,6 +6,7 @@ import OutlineTooltip from "../Tooltip/OutlineTooltip";
 import { Button, Card, CardBody, Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
 import classnames from "classnames";
 import GeneralSetting from "../Round/Setting";
+import Raiting from "../Round/Raiting";
 
 export default function Rounds({ tourney }) {
   const { token, lang } = useAppContext();
@@ -394,6 +395,7 @@ export default function Rounds({ tourney }) {
                   />
                 </TabPane>
                 <TabPane tabId="2">
+                  <Raiting round={activeRound.id} />
                 </TabPane>
                 <TabPane tabId="3">
                 </TabPane>

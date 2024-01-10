@@ -8,7 +8,7 @@ import Head from "next/head";
 import { eventDate } from "../../../_functions";
 import axios from "axios";
 import Swal from "sweetalert2";
-import Rounds from "../../../components/Tourney/Rounds";
+// import Rounds from "../../../components/Tourney/Rounds";
 import Info from "../../../components/Round/Info";
 
 export default function TourneyView() {
@@ -207,7 +207,7 @@ export default function TourneyView() {
           >
             {/* Componente de Rondas */}
 
-            <Rounds 
+            {/* <Rounds 
               tourneyId={tourneyId} 
               title={"Rondas"} 
               showPlay={false} 
@@ -216,7 +216,7 @@ export default function TourneyView() {
               setRound={setRound}
               refresh={refresh}
               setRefresh={setRefresh}
-            />
+            /> */}
 
           </div>
 

@@ -178,7 +178,7 @@ export default function GeneralSetting({
             useSegmentation={settingValues.applySegmentation.value} 
             selected={selected}
             setSelected={setSelected}
-        />
+          />
         </CardBody>
       </Card>
     </div>

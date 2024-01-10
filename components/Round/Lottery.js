@@ -90,77 +90,11 @@ export default function Lottery({ activeRound, tourney, useSegmentation, selecte
     }
   };
 
-  const handleSave = async (e) => {
-    e.preventDefault();
-
-    if (activeRound.lottery_type === "MANUAL") {
-
-      if (selected.length === activeRound.amount_players_playing) {
-
-        let url = `${process.env.NEXT_PUBLIC_API_URL}domino/scale/initial/manual/?tourney_id=${tourney.id}`;
-
-        try {
-          const { data } = await axios.post(url, selected, config);
-          if (data.success) {
-            // setRefresh(true);
-            Swal.fire({
-              title: "Sorteo de Jugadores del Torneo",
-              text: data.detail,
-              icon: "success",
-              showCancelButton: false,
-              allowOutsideClick: false,
-              confirmButtonColor: "#3085d6",
-              confirmButtonText: "Aceptar",
-            });
-          }
-        } catch (errors) {
-          console.log(errors);
-          const { code, message, name, request } = errors;
-          if (code === "ERR_NETWORK") {
-            Swal.fire({
-              title: "Sorteo de Jugadores del Torneo",
-              text: "Error en su red, consulte a su proveedor de servicio",
-              icon: "error",
-              showCancelButton: false,
-              allowOutsideClick: false,
-              confirmButtonColor: "#3085d6",
-              confirmButtonText: "Aceptar",
-            });
-          } else {
-            if (code === "ERR_BAD_REQUEST") {
-              const { detail } = JSON.parse(request.response);
-              Swal.fire({
-                title: "Sorteo de Jugadores del Torneo",
-                text: detail,
-                icon: "error",
-                showCancelButton: false,
-                allowOutsideClick: false,
-                confirmButtonColor: "#3085d6",
-                confirmButtonText: "Aceptar",
-              });
-            }
-          }
-        }
-      }
-    } 
-  };
-
   return (
     <div className="tab-content pt-4">
       <div className="d-flex flex-wrap ps-4">
         <h6 className="title flex-grow-1">{activeRound.lottery_type === "MANUAL" ? "Sorteo Manual" : "Sorteo Automático"}</h6>
         <div className="d-flex pe-4">
-          {/* {activeRound.lottery_type === "MANUAL" && 
-            <Button
-              className="btn btn-sm btn-success"
-              style={{ width: "100px" }}
-              title="Salvar el Sorteo"
-              onClick={handleSave}
-              disabled={activeRound.status_name === "INITIADED"}
-            >
-              <i className="bi bi-check2-circle"></i> Salvar
-            </Button>
-          } */}
           <InputGroup size="sm" className="ms-2">
             <Input
               type="text"

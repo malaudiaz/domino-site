@@ -9,7 +9,7 @@ import { useAppContext } from "../../../AppContext";
 import Header from "../../../components/Header/Header";
 import Footer from "../../../components/Footers/Footer";
 import { eventDate } from "../../../_functions";
-import Rounds from "../../../components/Tourney/Rounds";
+// import Rounds from "../../../components/Tourney/Rounds";
 import Tables from "../../../components/Round/Tables";
 import classnames from "classnames";
 import Raiting from "../../../components/Round/Raiting";
@@ -230,14 +230,14 @@ export default function Detail() {
           >
             {/* Componente de Rondas */}
 
-            <Rounds 
+            {/* <Rounds 
               tourneyId={tourneyId} 
               title={"Rondas"} 
               showPlay={false} 
               newPage={false} 
               round={round} 
               setRound={setRound}
-            />
+            /> */}
 
           </div>
 
