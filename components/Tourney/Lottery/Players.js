@@ -6,7 +6,16 @@ import Swal from "sweetalert2";
 import { useAppContext } from "../../../AppContext";
 import SetNumber from "../SetNumber";
 
-export default function Players({ id, lotteryType, selected, setSelected, filter, number, setNumber }) {
+export default function Players({ 
+    id, 
+    lotteryType, 
+    selected, 
+    setSelected, 
+    filter, 
+    number, 
+    setNumber, 
+    useSegmentation 
+  }) {
   const { token, lang } = useAppContext();
   const [players, setPlayers] = useState([]);
   const [page, setPage] = useState(1);
@@ -27,7 +36,13 @@ export default function Players({ id, lotteryType, selected, setSelected, filter
   };
 
   const fetchData = async () => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}tourney/setting/categories/player/${id}?page=${page}&per_page=${rowsPerPage}&criteria_key=username&criteria_value=${filter}`;
+    let url = `${process.env.NEXT_PUBLIC_API_URL}tourney/setting`;
+
+    if (useSegmentation === "YES") {
+      url = url + `/categories/player/${id}?page=${page}&per_page=${rowsPerPage}&criteria_key=username&criteria_value=${filter}`
+    } else {
+      url = url + `/nocategories/player/${id}?page=${page}&per_page=${rowsPerPage}&criteria_key=username&criteria_value=${filter}`
+    }
 
     try {
       const { data } = await axios.get(url, config);
@@ -175,9 +190,6 @@ export default function Players({ id, lotteryType, selected, setSelected, filter
               </small>
               <small className="comment-text fs-12">
                 ELO: <b>{item.elo}</b>
-              </small>
-              <small className="comment-text fs-12">
-                Ranking: <b>{item.ranking}</b>
               </small>
             </div>
           </div>

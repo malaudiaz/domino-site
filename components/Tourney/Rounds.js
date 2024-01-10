@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useAppContext } from "../../AppContext";
@@ -7,13 +6,14 @@ import OutlineTooltip from "../Tooltip/OutlineTooltip";
 import { Button, Card, CardBody, Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
 import classnames from "classnames";
 import GeneralSetting from "../Round/Setting";
-import Lottery from "../Round/Lottery";
 
 export default function Rounds({ tourney }) {
   const { token, lang } = useAppContext();
   const [rounds, setRounds] = useState([]);
   const [activeTab, setActiveTab] = useState("1");
   const [activeRound, setActiveRound] = useState(null);
+
+  const [selected, setSelected] = useState([]);
 
   const [settingValues, setSettingValues] = useState({
     applySegmentation: {
@@ -175,64 +175,81 @@ export default function Rounds({ tourney }) {
   };
 
   const handleSubmit = async () => {
-    let url = `${process.env.NEXT_PUBLIC_API_URL}rounds/actions`;
-    let body = {}
 
-    switch (activeRound.status_name) {
-      case "CREATED":
-        url = url + `/aperture/${activeRound.id}`;
-        body["use_segmentation"] = settingValues.applySegmentation.value;
-        body["use_bonus"] = settingValues.applyBonus.value;
-        body["amount_bonus_tables"] = settingValues.amountBonusTable.value;
-        body["amount_bonus_points"] = settingValues.amountBonusPoint.value;
-        break;
-      case "CONFIGURATED":
-        break;
-      case "PUBLICATED":
-        break;
-      case "REVIEW":
-        break;
-    }    
+    if (selected.length === activeRound.amount_players_playing) {
+    
+      let url = `${process.env.NEXT_PUBLIC_API_URL}rounds/actions`;
+      let body = {}
 
-    try {
-      const { data } = await axios.post(url, body, config);
-      if (data.success) {
+      switch (activeRound.status_name) {
+        case "CREATED":
+          url = url + `/aperture/${activeRound.id}`;
+          body["use_segmentation"] = settingValues.applySegmentation.value;
+          body["use_bonus"] = settingValues.applyBonus.value;
+          body["amount_bonus_tables"] = settingValues.amountBonusTable.value;
+          body["amount_bonus_points"] = settingValues.amountBonusPoint.value;
+          body["lottery"] = selected;
+          break;
+        case "CONFIGURATED":
+          break;
+        case "PUBLICATED":
+          break;
+        case "REVIEW":
+          break;
+      }    
 
-        Swal.fire({
-          icon: "success",
-          title: "Configurando Ronda",
-          text: data.detail,
-          showConfirmButton: true,
-        });
+      try {
+        const { data } = await axios.post(url, body, config);
+        if (data.success) {
 
-        setActiveRound(data.data);
+          Swal.fire({
+            icon: "success",
+            title: "Configurando Ronda",
+            text: data.detail,
+            showConfirmButton: true,
+          });
 
-      }
-    } catch ({code, message, name, request}) {
-      if (code === "ERR_NETWORK") {
-        Swal.fire({
-          title: "Configurando Ronda",
-          text: "Error en su red, consulte a su proveedor de servicio",
-          icon: "error",
-          showCancelButton: false,
-          allowOutsideClick: false,
-          confirmButtonColor: "#3085d6",
-          confirmButtonText: "Aceptar",
-        });
-      } else {
-        if (code === "ERR_BAD_REQUEST") {
-          const {detail} = JSON.parse(request.response)
+          setActiveRound(data.data);
+
+        }
+      } catch ({code, message, name, request}) {
+        console.log(message);
+        if (code === "ERR_NETWORK") {
           Swal.fire({
             title: "Configurando Ronda",
-            text: detail,
+            text: "Error en su red, consulte a su proveedor de servicio",
             icon: "error",
             showCancelButton: false,
             allowOutsideClick: false,
             confirmButtonColor: "#3085d6",
             confirmButtonText: "Aceptar",
-          });  
+          });
+        } else {
+          if (code === "ERR_BAD_REQUEST") {
+            const {detail} = JSON.parse(request.response)
+            Swal.fire({
+              title: "Configurando Ronda",
+              text: detail,
+              icon: "error",
+              showCancelButton: false,
+              allowOutsideClick: false,
+              confirmButtonColor: "#3085d6",
+              confirmButtonText: "Aceptar",
+            });  
+          }
         }
       }
+
+    } else {
+      Swal.fire({
+        title: "Configurando Ronda",
+        text: "Debe asignar el número del sorteo a todos los juagadores",
+        icon: "info",
+        showCancelButton: false,
+        allowOutsideClick: false,
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "Aceptar",
+      });
     }
   }
 
@@ -264,11 +281,12 @@ export default function Rounds({ tourney }) {
 
 
             <Button  className="btn btn-sm btn-success" onClick={handleSubmit}>              
-              <i className="bi bi-check2-circle"/>&nbsp;
-              {activeRound.status_name==="CREATED" && "Configurar"}
-              {activeRound.status_name==="CONFIGURATED" && "Publicar"}
-              {activeRound.status_name==="PUBLICATED" && "Iniciar"}
-              {activeRound.status_name==="REVIEW" && "Cerrar"}
+              {activeRound.status_name==="CREATED" && (
+                <i class="bi bi-gear">&nbsp;Configurar</i>
+              )}
+              {activeRound.status_name==="CONFIGURATED" && (<i class="bi bi-hand-thumbs-up">&nbsp;Publicar</i>)}
+              {activeRound.status_name==="PUBLICATED" && (<i class="bi bi-play-circle">&nbsp;Iniciar</i>)}
+              {activeRound.status_name==="REVIEW" && (<i class="bi bi-door-closed">&nbsp;Cerrar</i>)}
             </Button> 
           }
 
@@ -302,24 +320,13 @@ export default function Rounds({ tourney }) {
                     Ajustes Generales
                   </NavLink>
                 </NavItem>}
-                {activeRound.is_first && <NavItem>
-                  <NavLink
-                    href="#"
-                    className={classnames({ active: activeTab === "2" })}
-                    onClick={() => {
-                      toggleTab("2");
-                    }}
-                  >
-                    Sorteo
-                  </NavLink>
-                </NavItem>}
 
                 {activeRound.modality === "Individual" && <NavItem>
                   <NavLink
                     href="#"
                     className={classnames({ active: activeTab === "3" })}
                     onClick={() => {
-                      toggleTab("3");
+                      toggleTab("2");
                     }}
                   >
                     Posiciones por Jugador
@@ -331,7 +338,7 @@ export default function Rounds({ tourney }) {
                     href="#"
                     className={classnames({ active: activeTab === "4" })}
                     onClick={() => {
-                      toggleTab("4");
+                      toggleTab("3");
                     }}
                   >
                     Posiciones por Pareja
@@ -343,7 +350,7 @@ export default function Rounds({ tourney }) {
                     href="#"
                     className={classnames({ active: activeTab === "5" })}
                     onClick={() => {
-                      toggleTab("5");
+                      toggleTab("4");
                     }}
                   >
                     Posiciones por Mesa
@@ -355,7 +362,7 @@ export default function Rounds({ tourney }) {
                     href="#"
                     className={classnames({ active: activeTab === "6" })}
                     onClick={() => {
-                      toggleTab("6");
+                      toggleTab("5");
                     }}
                   >
                     Entrada de Datos
@@ -367,7 +374,7 @@ export default function Rounds({ tourney }) {
                     href="#"
                     className={classnames({ active: activeTab === "7" })}
                     onClick={() => {
-                      toggleTab("7");
+                      toggleTab("6");
                     }}
                   >
                     Resultados
@@ -377,10 +384,16 @@ export default function Rounds({ tourney }) {
 
               <TabContent activeTab={activeTab}>
                 <TabPane tabId="1">
-                  <GeneralSetting activeRound={activeRound} settingValues={settingValues} setSettingValues={setSettingValues}/>
+                  <GeneralSetting 
+                    activeRound={activeRound} 
+                    settingValues={settingValues} 
+                    setSettingValues={setSettingValues} 
+                    tourney={tourney}
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
                 </TabPane>
                 <TabPane tabId="2">
-                  <Lottery activeRound={activeRound} tourney={tourney}/>
                 </TabPane>
                 <TabPane tabId="3">
                 </TabPane>
@@ -389,8 +402,6 @@ export default function Rounds({ tourney }) {
                 <TabPane tabId="5">
                 </TabPane>
                 <TabPane tabId="6">
-                </TabPane>
-                <TabPane tabId="7">
                 </TabPane>
               </TabContent>
 
