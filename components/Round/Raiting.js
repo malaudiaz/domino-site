@@ -26,7 +26,7 @@ export default function Raiting({ round }) {
     };
   
     const fetchData = async () => {
-        const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/scale/?round_id=${round}&page=${page}&per_page=${rowsPerPage}`;
+        const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/scale/player/current/${round}?page=${page}&per_page=${rowsPerPage}`;
   
         try {
             const { data } = await axios.get(url, config);

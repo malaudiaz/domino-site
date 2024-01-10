@@ -318,7 +318,7 @@ export default function Rounds({ tourney }) {
                       toggleTab("1");
                     }}
                   >
-                    Ajustes Generales
+                    Sorteo
                   </NavLink>
                 </NavItem>}
 
