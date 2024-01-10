@@ -452,7 +452,7 @@ export default function Setting({ tourney }) {
                 <NavItem>
                   <NavLink
                     href="#"
-                    className={classnames({ active: activeTab === "1" })}
+                    className={classnames({ active: activeTab === "2" })}
                     onClick={() => {
                       toggleTab("2");
                     }}
@@ -465,7 +465,7 @@ export default function Setting({ tourney }) {
                 <NavItem>
                   <NavLink
                     href="#"
-                    className={classnames({ active: activeTab === "2" })}
+                    className={classnames({ active: activeTab === "3" })}
                     onClick={() => {
                       toggleTab("3");
                     }}
@@ -477,7 +477,7 @@ export default function Setting({ tourney }) {
                 <NavItem>
                   <NavLink
                     href="#"
-                    className={classnames({ active: activeTab === "2" })}
+                    className={classnames({ active: activeTab === "4" })}
                     onClick={() => {
                       toggleTab("4");
                     }}

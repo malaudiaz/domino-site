@@ -325,7 +325,7 @@ export default function Rounds({ tourney }) {
                 {activeRound.modality === "Individual" && <NavItem>
                   <NavLink
                     href="#"
-                    className={classnames({ active: activeTab === "3" })}
+                    className={classnames({ active: activeTab === "2" })}
                     onClick={() => {
                       toggleTab("2");
                     }}
@@ -337,7 +337,7 @@ export default function Rounds({ tourney }) {
                 <NavItem>
                   <NavLink
                     href="#"
-                    className={classnames({ active: activeTab === "4" })}
+                    className={classnames({ active: activeTab === "3" })}
                     onClick={() => {
                       toggleTab("3");
                     }}
@@ -349,7 +349,7 @@ export default function Rounds({ tourney }) {
                 <NavItem>
                   <NavLink
                     href="#"
-                    className={classnames({ active: activeTab === "5" })}
+                    className={classnames({ active: activeTab === "4" })}
                     onClick={() => {
                       toggleTab("4");
                     }}
@@ -361,7 +361,7 @@ export default function Rounds({ tourney }) {
                 <NavItem>
                   <NavLink
                     href="#"
-                    className={classnames({ active: activeTab === "6" })}
+                    className={classnames({ active: activeTab === "5" })}
                     onClick={() => {
                       toggleTab("5");
                     }}
@@ -373,7 +373,7 @@ export default function Rounds({ tourney }) {
                 <NavItem>
                   <NavLink
                     href="#"
-                    className={classnames({ active: activeTab === "7" })}
+                    className={classnames({ active: activeTab === "6" })}
                     onClick={() => {
                       toggleTab("6");
                     }}
