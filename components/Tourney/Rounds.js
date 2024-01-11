@@ -276,9 +276,9 @@ export default function Rounds({ tourney }) {
           { activeRound && activeRound.status_name && 
             <Button  className="btn btn-sm btn-success" onClick={handleSubmit}>              
               {activeRound.status_name==="CREATED" && (
-                <i class="bi bi-gear">&nbsp;Configurar</i>
+                <><i class="bi bi-gear"></i>&nbsp;Configurar</>
               )}
-              {activeRound.status_name==="CONFIGURATED" && (<i class="bi bi-hand-thumbs-up">&nbsp;Publicar</i>)}
+              {activeRound.status_name==="CONFIGURATED" && (<><i class="bi bi-gear"></i>&nbsp;Publicar</>)}
               {activeRound.status_name==="PUBLICATED" && (<i class="bi bi-play-circle">&nbsp;Iniciar</i>)}
               {activeRound.status_name==="REVIEW" && (<i class="bi bi-door-closed">&nbsp;Cerrar</i>)}
             </Button> 

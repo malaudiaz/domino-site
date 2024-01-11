@@ -96,7 +96,7 @@ export default function Category({ formValues, setFormValues, setReload }) {
   const handleDelete = (e, item, idx) => {
     e.preventDefault();
 
-    if ( formValues.statusName.value === "CONFIGURATED" || formValues.statusName.value === "INITIADED" ) {
+    if ( formValues.statusName.value === "FINALIZED" ) {
       Swal.fire({
         icon: "info",
         title: "Eliminar Categoría",
