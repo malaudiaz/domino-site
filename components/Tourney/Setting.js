@@ -35,6 +35,31 @@ export default function Setting({ tourney }) {
       error: false,
       errorMessage: ""
     },
+    name: {
+      value: "",
+      error: false,
+      errorMessage: "Nombre del torneo, requerido"
+    },
+    modality: {
+      value: "",
+      error: false,
+      errorMessage: "Modalidad del torneo, requerido"
+    },
+    number_rounds: {
+      value: "",
+      error: false,
+      errorMessage: "Rondas del torneo, requerido"
+    },
+    startDate: {
+      value: "",
+      error: false,
+      errorMessage: "Fecha de Inicio del torneo, requerido"
+    },
+    summary: {
+      value: "",
+      error: false,
+      errorMessage: ""
+    },
     eloMax:{
       value: "",
       error: false,
@@ -80,18 +105,28 @@ export default function Setting({ tourney }) {
       error: false,
       errorMessage: 'Tipo de Sorteo es requerido'
     },
+    amountBonusPoints: {
+      value: 0,
+      error:false,
+      errorMessage:""
+    },
+    amountBonusTables: {
+      value: 0,
+      error:false,
+      errorMessage:""
+    },
     limitPenaltyPoints: {
-      value: "",
+      value: 0,
       error: false,
       errorMessage: "Límite de puntos por penalización es requerido"
     },
     points_penalty_yellow: {
-      value: "",
+      value: 0,
       error: false,
       errorMessage: "Puntos de penalización por tarjetas amarillas requerido"
     },
     points_penalty_red: {
-      value: "",
+      value: 0,
       error: false,
       errorMessage: "Puntos de penalización por tarjetas rojas requerido"
     },
@@ -219,6 +254,31 @@ export default function Setting({ tourney }) {
             error: false,
             errorMessage: "ID, Requerido"
           },
+          name: {
+            value: data.data.name,
+            error: false,
+            errorMessage: "Nombre del torneo, requerido"
+          },
+          modality: {
+            value: data.data.modality,
+            error: false,
+            errorMessage: "Modalidad del torneo, requerido"
+          },
+          number_rounds: {
+            value: data.data.number_rounds,
+            error: false,
+            errorMessage: "Rondas del torneo, requerido"
+          },
+          startDate: {
+            value: data.data.start_date,
+            error: false,
+            errorMessage: "Fecha de Inicio del torneo, requerido"
+          },
+          summary: {
+            value: data.data.summary,
+            error: false,
+            errorMessage: ""
+          },     
           eloMax:{
             value: data.data.elo_max,
             error: false,
@@ -249,11 +309,6 @@ export default function Setting({ tourney }) {
             error:false,
             errorMessage:'Cantidad de mesas inteligentes requerida'
           },
-          amountRound:{
-            value: data.data.amount_rounds,
-            error:false,
-            errorMessage:'Cantidad de Rondas requerida'
-          },
           pointRound:{
             value: data.data.number_points_to_win,
             error:false,
@@ -274,15 +329,20 @@ export default function Setting({ tourney }) {
             error:false,
             errorMessage:'Tipo de Sorteo es requerido'
           },
-          bonus: {
-            value: data.data.use_bonus,
-            error:false,
-            errorMessage:"Seleccione si se usa o no la bonificación"
+          amountBonusPoints: {
+            value: data.data.amount_bonus_points,
+            error: false,
+            errorMessage: ""
+          },
+          amountBonusTables: {
+            value: data.data.amount_bonus_tables,
+            error: false,
+            errorMessage: ""
           },
           limitPenaltyPoints: {
             value: data.data.penalties_limit,
-            error:false,
-            errorMessage:"Límite de puntos por penalización es requerido"
+            error: false,
+            errorMessage: "Límite de puntos por penalización es requerido"
           },
           points_penalty_yellow: {
             value: data.data.points_penalty_yellow,
@@ -309,7 +369,6 @@ export default function Setting({ tourney }) {
             error: false,
             errorMessage: "Críterio de orden de torneo requerido"
           },
-
           round_ordering_one: {
             value: data.data.round_ordering_one,
             error: false,
@@ -325,7 +384,6 @@ export default function Setting({ tourney }) {
             error: false,
             errorMessage: "Críterio de orden de ronda requerido"
           },     
-
           statusId: {
             value: data.data.status_id,
             error: false,
@@ -424,11 +482,96 @@ export default function Setting({ tourney }) {
     });
   };
 
+  const hasError = () => {
+    let res = false;
+    res = formValues.amountTable.error || formValues.smartTable.error || formValues.pointRound.error || formValues.timeRound.error || formValues.playSystem.error || formValues.lottery.error || formValues.limitPenaltyPoints.error;
+
+    return res;
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if ( !hasError() ) {
+
+      const url = `${process.env.NEXT_PUBLIC_API_URL}tourney/setting/${formValues.tourneyId.value}`;
+
+      const body = {
+        "name": formValues.name.value,
+        "modality": formValues.modality.value,
+        "number_rounds": formValues.number_rounds.value,
+        "start_date": formValues.startDate.value,
+        "summary": formValues.summary.value,
+        "amount_tables": formValues.amountTable.value,
+        "amount_smart_tables": formValues.smartTable.value,
+        "number_points_to_win": formValues.pointRound.value,
+        "time_to_win": formValues.timeRound.value,
+        "lottery": formValues.lottery.value,
+        "constant_increase_ELO": formValues.constant_increase_ELO.value,
+        "use_penalty": formValues.usePenalty.value,       
+        "limitPenaltyPoints": formValues.limitPenaltyPoints.value,
+        "points_penalty_yellow": formValues.points_penalty_yellow.value,
+        "points_penalty_red": formValues.points_penalty_red.value,
+        "use_bonus": formValues.useBonus.value,
+        "amount_bonus_points": formValues.amountBonusPoints.value,
+        "amount_bonus_tables": formValues.amountBonusTables.value,
+        "use_segmentation": formValues.usesSegmentation.value,
+        "event_ordering_one": formValues.event_ordering_one.value,
+        "event_ordering_two": formValues.event_ordering_two.value,
+        "event_ordering_three": formValues.event_ordering_three.value,
+        "round_ordering_one": formValues.round_ordering_one.value,
+        "round_ordering_two": formValues.round_ordering_two.value,
+        "round_ordering_three": formValues.round_ordering_three.value
+      }
+
+      try {
+        const { data } = await axios.post(url, body, {
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "accept-Language": lang,
+            "Authorization": `Bearer ${token}`                },
+        });
+        if (data.success) {
+          // setReload(true);
+
+          Swal.fire({
+            icon: "success",
+            title: "Configurando Torneo",
+            text: data.detail,
+            showConfirmButton: true,
+          });
+        }
+      } catch (errors) {
+        console.log(errors);
+
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Ha ocurrido un error al consultar la API....",
+          showConfirmButton: true,
+        });
+      }
+    }
+  }
+
 
   return (
     <div>
-      <div className="ps-4">
+      <div className="d-flex flex-row justify-content-between align-items-center ps-4 pe-4">
         <h1 className="title">Configurar Torneo</h1>
+        <div className="pt-2 pb-4 text-center">
+          <button
+              type="button"
+              className="btn btn-sm btn-primary"
+              onClick={(e) => {
+                handleSubmit(e);
+              }}
+              title="Guardar Cambios"
+            >
+              <i className="bi bi-save"></i> Guardar
+          </button>
+        </div>
       </div>
 
       <div className="tourney-setting">
@@ -503,10 +646,10 @@ export default function Setting({ tourney }) {
                             name="name"
                             id="name"
                             placeholder={"Nombre del Torneo"}
-                            // invalid={error.name}
-                            // onChange={handleChange("name")}
+                            invalid={formValues.name.error}
+                            value={formValues.name.value}
+                            onChange={handleChange}
                             autoComplete="off"
-                            // value={tourney.name}
                             onKeyPress={(event) => {
                               if (!/^[A-Za-z_0-9.áéíóúÑñ\s]*$/.test(event.key)) {
                                 event.preventDefault();
@@ -514,7 +657,7 @@ export default function Setting({ tourney }) {
                             }}
                           />
                           <FormFeedback>
-                            Por favor, teclee el nombre del torneo
+                            {formValues.name.errorMessage}
                           </FormFeedback>
                         </InputGroup>
                       </Col>
@@ -549,33 +692,34 @@ export default function Setting({ tourney }) {
                           <Input
                             id="number_rounds"
                             name="number_rounds"
-                            // invalid={error.number_rounds}
                             type="number"
                             placeholder="Rondas"
-                            // value={tourney.number_rounds}
-                            // onChange={handleChange("number_rounds")}
+                            invalid={formValues.number_rounds.error}
+                            value={formValues.number_rounds.value}
+                            onChange={handleChange}
+                            autoComplete="off"
                           />
                           <FormFeedback>
-                            Por favor, teclee la cantidad de rondas del torneo 
+                            {formValues.number_rounds.errorMessage}
                           </FormFeedback>
                         </InputGroup>
                       </Col>
                     </FormGroup>
                     <FormGroup row className="pt-2 ps-4 pe-4">
-                      <Label size="sm" sm={2}>Fechas</Label>
+                      <Label size="sm" sm={2}>Fecha de Inicio</Label>
                       <Col sm={4}>
                         <InputGroup size="sm">
                           <Input
                             id="startDate"
                             name="startDate"
-                            // invalid={error.startDate}
                             placeholder="Fecha"
                             type="date"
-                            // value={tourney.startDate}
-                            // onChange={handleChange("startDate")}
+                            invalid={formValues.startDate.error}
+                            value={formValues.startDate.value}
+                            onChange={handleChange}
                           />
                           <FormFeedback>
-                            La fecha debe estar dentro del rango del evento
+                            {formValues.startDate.errorMessage}
                           </FormFeedback>
                         </InputGroup>
                       </Col>
@@ -589,9 +733,10 @@ export default function Setting({ tourney }) {
                             name="summary"
                             id="summary"
                             placeholder={"Comentario"}
-                            // onChange={handleChange("summary")}
+                            invalid={formValues.summary.error}
+                            value={formValues.summary.value}
+                            onChange={handleChange}
                             autoComplete="off"
-                            // value={tourney.summary}
                             onKeyPress={(event) => {
                               if (!/^[A-Za-z_0-9.áéíóúÑñ\s]*$/.test(event.key)) {
                                 event.preventDefault();

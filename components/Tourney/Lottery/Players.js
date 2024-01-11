@@ -38,7 +38,7 @@ export default function Players({
   const fetchData = async () => {
     let url = `${process.env.NEXT_PUBLIC_API_URL}tourney/setting`;
 
-    if (useSegmentation === "YES") {
+    if (useSegmentation) {
       url = url + `/categories/player/${id}?page=${page}&per_page=${rowsPerPage}&criteria_key=username&criteria_value=${filter}`
     } else {
       url = url + `/nocategories/player/${id}?page=${page}&per_page=${rowsPerPage}&criteria_key=username&criteria_value=${filter}`

@@ -14,12 +14,11 @@ import {
 
 import Players from "../Tourney/Lottery/Players";
 
-export default function Lottery({ activeRound, tourney, useSegmentation, selected, setSelected }) {
+export default function Lottery({ activeRound, tourney, selected, setSelected }) {
   const { token, lang } = useAppContext();
   const [categories, setCategories] = useState([]);
   const [filter, setFilter] = useState("");
   const [view, setView] = useState('1');
-  // const [selected, setSelected] = useState([]);
   const [number, setNumber] = useState(1);
 
   const toggle = (id) => {
@@ -116,7 +115,7 @@ export default function Lottery({ activeRound, tourney, useSegmentation, selecte
 
       <hr></hr>
 
-      {useSegmentation==="YES" ? (
+      {activeRound.use_segmentation ? (
         <div className="pt-3 px-4 pb-4">
 
             {categories.length > 0 ? (
@@ -144,7 +143,7 @@ export default function Lottery({ activeRound, tourney, useSegmentation, selecte
                         number={number}
                         setNumber={setNumber} 
                         filter={filter}
-                        useSegmentation={useSegmentation}
+                        useSegmentation={activeRound.use_segmentation}
                       />
                     </AccordionBody>
                   </AccordionItem>
@@ -183,7 +182,7 @@ export default function Lottery({ activeRound, tourney, useSegmentation, selecte
             number={number}
             setNumber={setNumber} 
             filter={filter}
-            useSegmentation={useSegmentation}
+            useSegmentation={activeRound.use_segmentation}
           />
 
 
