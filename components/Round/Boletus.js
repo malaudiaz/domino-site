@@ -169,7 +169,11 @@ export default function Boletus({ open, close, record, edited, setRefresh }) {
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const name = e.target.name;
+
+    const value = event.target.type === "checkbox"
+        ? event.target.checked
+        : event.target.value;    
 
     setData({
       ...data,
@@ -179,6 +183,83 @@ export default function Boletus({ open, close, record, edited, setRefresh }) {
         value,
       },
     });
+  };
+
+  const closeByTime = async () => {
+    const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/boletus/closedata/${record.boletus_id}`;
+
+    try {
+      const { data } = await axios.post(url, {}, config);
+
+      if (data.success) {
+        Swal.fire({
+          icon: "success",
+          title: "Cerrar Boleta por Tiempo",
+          text: data.detail,
+          showConfirmButton: true,
+        });
+        setData({
+          pair: {
+            value: "",
+            error: false,
+            errorMessage: "Debe seleccionar la pareja Ganadora",
+          },
+          point: {
+            value: "",
+            error: false,
+            errorMessage: "Teclee los puntos obtenidos",
+          },
+        })
+        setOpenData(false);
+        setReload(true);
+      }
+    } catch ({ code, message, name, request }) {
+      if (code === "ERR_NETWORK") {
+        Swal.fire({
+          title: "Cerrar Boleta por Tiempo",
+          text: "Error en su red, consulte a su proveedor de servicio",
+          icon: "error",
+          showCancelButton: false,
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Aceptar",
+        });
+      } else {
+        if (code === "ERR_BAD_REQUEST") {
+          const { detail } = JSON.parse(request.response);
+          Swal.fire({
+            title: "Cerrar Boleta por Tiempo",
+            text: detail,
+            icon: "error",
+            showCancelButton: false,
+            allowOutsideClick: false,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Aceptar",
+          });
+        }
+      }
+    }
+  };
+
+  const handleClose = (e) => {
+    e.preventDefault();
+
+    Swal.fire({
+      title: "¿ Desea Cerrar la Boleta por Tiempo ?",
+      text: "Si continuas, la boleta será cerrada por Tiempo",
+      icon: "question",
+      showCancelButton: true,
+      cancelButtonText: "Cancelar",
+      allowOutsideClick: false,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Aceptar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        closeByTime();
+      }
+    });
+
+
   };
 
   return (
@@ -200,17 +281,31 @@ export default function Boletus({ open, close, record, edited, setRefresh }) {
             <strong>Ronda: {boletus.round_number}</strong>
             <strong className="ps-4">Mesa: {boletus.table_number}</strong>
           </div>
+
           {(record.status === "0" && edited && gameOver === false) && (
-            <Button
-              color="primary"
-              size="sm"
-              onClick={(e) => {
-                e.preventDefault();
-                handleNew();
-              }}
-            >
-              Nueva
-            </Button>
+            <div>
+              <Button
+                color="primary"
+                size="sm"
+                title="Nueva Data"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNew();
+                }}
+              >
+                <i class="bi bi-plus-circle"></i>&nbsp;Nueva
+              </Button>&nbsp;
+              <Button 
+                color="danger" 
+                size="sm" 
+                title="Cerrar por Tiempo"
+                onClick={(e)=>{
+                  handleClose(e);
+                }}
+              >
+                <i class="bi bi-hourglass-split"></i>&nbsp;Tiempo
+              </Button>
+            </div>
           )}
         </div>
         <Table hover responsive size="sm" striped borderless bordered>
@@ -270,34 +365,32 @@ export default function Boletus({ open, close, record, edited, setRefresh }) {
                   Ganador:
                 </Label>
                 <Col sm={9}>
-                  <InputGroup size="sm">
+                  <FormGroup check>
                     <Input
-                      type="select"
                       id="pair"
                       name="pair"
-                      size="sm"
-                      invalid={data.pair.error}
-                      defaultValue={data.pair.value}
+                      value={boletus.pair_one ? boletus.pair_one.pairs_id : ""}
                       onChange={handleChange}
-                    >
-                      <option value="">Pareja Ganadora</option>
-                      <option
-                        value={
-                          boletus.pair_one ? boletus.pair_one.pairs_id : ""
-                        }
-                      >
-                        {boletus.pair_one ? boletus.pair_one.name : ""}
-                      </option>
-                      <option
-                        value={
-                          boletus.pair_two ? boletus.pair_two.pairs_id : ""
-                        }
-                      >
-                        {boletus.pair_two ? boletus.pair_two.name : ""}
-                      </option>
-                    </Input>
-                    <FormFeedback>{data.pair.errorMessage}</FormFeedback>
-                  </InputGroup>
+                      type="radio"
+                    />
+                    {' '}
+                    <Label check>
+                      {boletus.pair_one ? boletus.pair_one.name : ""}
+                    </Label>
+                  </FormGroup>
+                  <FormGroup check>
+                    <Input
+                      id="pair"
+                      name="pair"
+                      value={boletus.pair_two ? boletus.pair_two.pairs_id : ""}
+                      onChange={handleChange}
+                      type="radio"
+                    />
+                    {' '}
+                    <Label check>
+                      {boletus.pair_two ? boletus.pair_two.name : ""}
+                    </Label>
+                  </FormGroup>                  
                 </Col>
               </FormGroup>
 
