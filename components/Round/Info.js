@@ -101,7 +101,7 @@ export default function Info({ round, edited, setRefresh }) {
             <Card
               className="card-info"
               key={idx}
-              style={{ height: "400px", background: "#ebebeb" }}
+              style={{ height: "310px", background: "#ebebeb" }}
               onClick={(e) => {
                 e.preventDefault();
                 handleClick(item);
@@ -118,10 +118,9 @@ export default function Info({ round, edited, setRefresh }) {
                       src={"/profile/user-vector.jpg"}
                       width={60}
                       height={60}
+                      title={item.pair_one.player_one + " - " + item.pair_one.elo_one}
                       className="rounded-image"
                     />
-                    <span>{item.pair_one.player_one}</span>
-                    <small>{item.pair_one.elo_one}</small>
                   </div>
                   <div
                     className="d-flex flex-column flex-fill ms-2"
@@ -162,14 +161,13 @@ export default function Info({ round, edited, setRefresh }) {
                   </div>
                   <div className="d-flex flex-column align-items-center">
                     <Image
-                      alt="Avatar Player 1"
+                      alt="Avatar Player 2"
                       src={"/profile/user-vector.jpg"}
                       width={60}
                       height={60}
                       className="rounded-image"
+                      title={item.pair_one.player_two + " - " + item.pair_one.elo_two}
                     />
-                    <span>{item.pair_one.player_two}</span>
-                    <small>{item.pair_one.elo_two}</small>
                   </div>
                 </div>
 
@@ -188,14 +186,13 @@ export default function Info({ round, edited, setRefresh }) {
                 <div className="d-flex flex-row justify-content-between icons align-items-center pt-2">
                   <div className="d-flex flex-column align-items-center">
                     <Image
-                      alt="Avatar Player 1"
+                      alt="Avatar Player 3"
                       src={"/profile/user-vector.jpg"}
                       width={60}
                       height={60}
                       className="rounded-image"
+                      title={item.pair_one.player_one + " - " + item.pair_one.elo_one}
                     />
-                    <span>{item.pair_two.player_one}</span>
-                    <small>{item.pair_two.elo_one}</small>
                   </div>
                   <div
                     className="d-flex flex-column flex-fill ms-2"
@@ -238,14 +235,13 @@ export default function Info({ round, edited, setRefresh }) {
                   </div>
                   <div className="d-flex flex-column align-items-center">
                     <Image
-                      alt="Avatar Player 1"
+                      alt="Avatar Player 4"
                       src={"/profile/user-vector.jpg"}
                       width={60}
                       height={60}
                       className="rounded-image"
+                      title={item.pair_two.player_two + " - " + item.pair_two.elo_two}
                     />
-                    <span>{item.pair_two.player_two}</span>
-                    <small>{item.pair_two.elo_two}</small>
                   </div>
                 </div>
               </CardBody>
