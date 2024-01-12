@@ -14,7 +14,8 @@ export default function Players({
     filter, 
     number, 
     setNumber, 
-    useSegmentation 
+    useSegmentation,
+    reload 
   }) {
   const { token, lang } = useAppContext();
   const [players, setPlayers] = useState([]);
@@ -80,9 +81,9 @@ export default function Players({
     }
   };
 
-  useEffect(() => {
+  useEffect(() => {   
     fetchData();
-  }, [refresh, page, filter]);
+  }, [refresh, page, filter, reload]);
 
   const onChangePage = (pageNumber) => {
     setPage(pageNumber);

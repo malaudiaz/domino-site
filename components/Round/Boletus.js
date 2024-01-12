@@ -36,12 +36,7 @@ export default function Boletus({ open, close, record, edited, setRefresh }) {
       value: "",
       error: false,
       errorMessage: "Teclee los puntos obtenidos",
-    },
-    duration: {
-      value: "",
-      error: false,
-      errorMessage: "Teclee la duración de la partida",
-    },
+    }
   });
 
   const config = {
@@ -113,8 +108,7 @@ export default function Boletus({ open, close, record, edited, setRefresh }) {
 
     const body = {
       pair: data.pair.value,
-      point: data.point.value,
-      duration: data.duration.value,
+      point: data.point.value
     };
 
     try {
@@ -142,11 +136,6 @@ export default function Boletus({ open, close, record, edited, setRefresh }) {
             error: false,
             errorMessage: "Teclee los puntos obtenidos",
           },
-          duration: {
-            value: "",
-            error: false,
-            errorMessage: "Teclee la duración de la partida",
-          }      
         })
         setOpenData(false);
         setReload(true);
@@ -332,23 +321,6 @@ export default function Boletus({ open, close, record, edited, setRefresh }) {
                 </Col>
               </FormGroup>
 
-              <FormGroup row>
-                <Label size="sm" sm={3}>
-                  Duración (min):
-                </Label>
-                <Col sm={9}>
-                  <InputGroup size="sm">
-                    <Input
-                      name="duration"
-                      size="sm"
-                      placeholder="Duración"
-                      invalid={data.duration.error}
-                      onChange={handleChange}
-                    />
-                    <FormFeedback>{data.duration.errorMessage}</FormFeedback>
-                  </InputGroup>
-                </Col>
-              </FormGroup>
             </ModalBody>
             <ModalFooter>
               <Button type="submit" color="primary" size="sm">

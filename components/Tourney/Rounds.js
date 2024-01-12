@@ -5,14 +5,18 @@ import { useAppContext } from "../../AppContext";
 import OutlineTooltip from "../Tooltip/OutlineTooltip";
 import { Button, Card, CardBody, Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
 import classnames from "classnames";
-import GeneralSetting from "../Round/Setting";
 import Raiting from "../Round/Raiting";
+import Lottery from "../Round/Lottery";
+import Tables from "../../components/Round/Tables";
+import Info from "../../components/Round/Info";
 
 export default function Rounds({ tourney }) {
   const { token, lang } = useAppContext();
   const [rounds, setRounds] = useState([]);
   const [activeTab, setActiveTab] = useState("1");
   const [activeRound, setActiveRound] = useState(null);
+  const [reload, setReload] = useState(true);
+  const [msgTitle, setMsgTitle] = useState("");
 
   const [selected, setSelected] = useState([]);
 
@@ -55,6 +59,8 @@ export default function Rounds({ tourney }) {
       const { data } = await axios.get(url, config);
       if (data.success) {
         setRounds(data.data); 
+        setActiveRound(null);
+        setReload(false);
       }
     } catch ({ code, message, name, request }) {
       if (code === "ERR_NETWORK") {
@@ -88,7 +94,7 @@ export default function Rounds({ tourney }) {
     if (tourney.id) {
       fetchData();
     }
-  }, [tourney.id, activeRound]);
+  }, [tourney.id, selected, reload]);
 
   const roundTipInfo = (item) => {
     return (
@@ -177,21 +183,32 @@ export default function Rounds({ tourney }) {
 
   const handleSubmit = async () => {
 
-    if (selected.length === activeRound.amount_players_playing) {
+    if (selected.length === activeRound.amount_players_playing || activeRound.status_name !== "CREATED") {
     
       let url = `${process.env.NEXT_PUBLIC_API_URL}rounds/actions`;
       let body = {}
 
       switch (activeRound.status_name) {
         case "CREATED":
+          setMsgTitle("Configurando Ronda");
           url = url + `/aperture/${activeRound.id}`;
           body["lottery"] = selected;
           break;
         case "CONFIGURATED":
+          setMsgTitle("Publicando Ronda");
+          url = url + `/publicate/${activeRound.id}`;
           break;
         case "PUBLICATED":
+          setMsgTitle("Iniciando Ronda");
+          url = url + `/started/${activeRound.id}`;
+          break;
+        case "INITIADED":
+          setMsgTitle("Iniciando Ronda");
+          url = url + `/started/${activeRound.id}`;
           break;
         case "REVIEW":
+          setMsgTitle("Cerrando Ronda");
+          url = url + `/close/${activeRound.id}`;
           break;
       }    
 
@@ -201,7 +218,7 @@ export default function Rounds({ tourney }) {
 
           Swal.fire({
             icon: "success",
-            title: "Configurando Ronda",
+            title: msgTitle,
             text: data.detail,
             showConfirmButton: true,
           });
@@ -213,7 +230,7 @@ export default function Rounds({ tourney }) {
         console.log(message);
         if (code === "ERR_NETWORK") {
           Swal.fire({
-            title: "Configurando Ronda",
+            title: msgTitle,
             text: "Error en su red, consulte a su proveedor de servicio",
             icon: "error",
             showCancelButton: false,
@@ -225,7 +242,7 @@ export default function Rounds({ tourney }) {
           if (code === "ERR_BAD_REQUEST") {
             const {detail} = JSON.parse(request.response)
             Swal.fire({
-              title: "Configurando Ronda",
+              title: msgTitle,
               text: detail,
               icon: "error",
               showCancelButton: false,
@@ -273,14 +290,14 @@ export default function Rounds({ tourney }) {
           </a>                            
         ))}
 
-          { activeRound && activeRound.status_name && 
+          { activeRound && activeRound.status_name!=="INITIADED" && 
             <Button  className="btn btn-sm btn-success" onClick={handleSubmit}>              
               {activeRound.status_name==="CREATED" && (
                 <><i class="bi bi-gear"></i>&nbsp;Configurar</>
               )}
-              {activeRound.status_name==="CONFIGURATED" && (<><i class="bi bi-gear"></i>&nbsp;Publicar</>)}
-              {activeRound.status_name==="PUBLICATED" && (<i class="bi bi-play-circle">&nbsp;Iniciar</i>)}
-              {activeRound.status_name==="REVIEW" && (<i class="bi bi-door-closed">&nbsp;Cerrar</i>)}
+              {activeRound.status_name==="CONFIGURATED" && (<><i class="bi bi-check-all"></i>&nbsp;Publicar</>)}
+              {activeRound.status_name==="PUBLICATED" && (<><i class="bi bi-play-circle"/>&nbsp;Iniciar</>)}
+              {activeRound.status_name==="REVIEW" && (<><i class="bi bi-door-closed"/>&nbsp;Cerrar</>)}
             </Button> 
           }
 
@@ -327,6 +344,7 @@ export default function Rounds({ tourney }) {
                   </NavLink>
                 </NavItem>}
 
+                {activeRound.status_name!=="CREATED" &&
                 <NavItem>
                   <NavLink
                     href="#"
@@ -337,8 +355,9 @@ export default function Rounds({ tourney }) {
                   >
                     Posiciones por Pareja
                   </NavLink>
-                </NavItem>
+                </NavItem>}
 
+                {activeRound.status_name!=="CREATED" &&
                 <NavItem>
                   <NavLink
                     href="#"
@@ -349,8 +368,9 @@ export default function Rounds({ tourney }) {
                   >
                     Posiciones por Mesa
                   </NavLink>
-                </NavItem>
+                </NavItem>}
 
+                {activeRound.status_name==="INITIADED" &&
                 <NavItem>
                   <NavLink
                     href="#"
@@ -361,9 +381,9 @@ export default function Rounds({ tourney }) {
                   >
                     Entrada de Datos
                   </NavLink>
-                </NavItem>
+                </NavItem>}
 
-                <NavItem>
+                {/* <NavItem>
                   <NavLink
                     href="#"
                     className={classnames({ active: activeTab === "6" })}
@@ -373,14 +393,14 @@ export default function Rounds({ tourney }) {
                   >
                     Resultados
                   </NavLink>
-                </NavItem>
+                </NavItem> */}
               </Nav>
 
               <TabContent activeTab={activeTab}>
                 <TabPane tabId="1">
-                  <GeneralSetting 
+                  <Lottery 
                     activeRound={activeRound} 
-                    tourney={tourney}
+                    tourney={tourney} 
                     selected={selected}
                     setSelected={setSelected}
                   />
@@ -389,10 +409,13 @@ export default function Rounds({ tourney }) {
                   <Raiting round={activeRound.id} />
                 </TabPane>
                 <TabPane tabId="3">
+                  <Raiting round={activeRound.id} />
                 </TabPane>
                 <TabPane tabId="4">
+                  <Tables round={activeRound.id} edited={false} />
                 </TabPane>
                 <TabPane tabId="5">
+                  <Info round={activeRound.id} edited={true} setRefresh={setReload} />
                 </TabPane>
                 <TabPane tabId="6">
                 </TabPane>

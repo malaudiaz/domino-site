@@ -4,7 +4,7 @@ import Image from "next/image";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useAppContext } from "../../AppContext";
-import { Card, CardHeader, Label, Input, CardBody } from "reactstrap";
+import { Card, Label, Input, CardBody } from "reactstrap";
 
 export default function Tables({ tourney }) {
   const { token, lang } = useAppContext();

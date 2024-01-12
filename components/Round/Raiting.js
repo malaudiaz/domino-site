@@ -80,7 +80,7 @@ export default function Raiting({ round }) {
             {raiting.length > 0 ? (
                 <div className="container">
 
-                    <h5 className="text-center py-2">Tabla de Posiciones</h5>
+                    <h5 className="text-center py-2">Tabla de Posiciones por Jugador</h5>
 
                     <Table
                         bordered

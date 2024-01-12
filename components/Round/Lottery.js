@@ -20,6 +20,7 @@ export default function Lottery({ activeRound, tourney, selected, setSelected })
   const [filter, setFilter] = useState("");
   const [view, setView] = useState('1');
   const [number, setNumber] = useState(1);
+  const [refresh, setRefresh] = useState(true);
 
   const toggle = (id) => {
     if (view === id) {
@@ -45,6 +46,7 @@ export default function Lottery({ activeRound, tourney, selected, setSelected })
       const { data } = await axios.get(url, config);
       if (data.success) {
         setCategories(data.data);
+        setRefresh(false);
       }
     } catch ({ code, message, name, request }) {
       if (code === "ERR_NETWORK") {
@@ -75,8 +77,10 @@ export default function Lottery({ activeRound, tourney, selected, setSelected })
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (refresh) {
+      fetchData();
+    }
+  }, [refresh]);
 
   const handleChange = (e) => {
     setFilter(e.target.value);
@@ -89,11 +93,62 @@ export default function Lottery({ activeRound, tourney, selected, setSelected })
     }
   };
 
+  const handleRestart = async (e) => {
+    e.preventDefault();
+
+    if (activeRound.status_name === "CONFIGURATED" || activeRound.status_name === "CREATED") {
+      const url = `${process.env.NEXT_PUBLIC_API_URL}domino/scale/initial/restart/${activeRound.id}`;
+
+      try {
+        const { data } = await axios.post(url, {}, config);
+        if (data.success) {
+          setSelected([]);
+          setRefresh(true);
+          Swal.fire({
+            title: "Repetir el Sorteo",
+            text: "El sorteo se ha repetido exitosamente",
+            icon: "success",
+            showCancelButton: false,
+            allowOutsideClick: false,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Aceptar",
+          });
+        }
+      } catch ({ code, message, name, request }) {
+        if (code === "ERR_NETWORK") {
+          Swal.fire({
+            title: "Repetir el Sorteo",
+            text: "Error en su red, consulte a su proveedor de servicio",
+            icon: "error",
+            showCancelButton: false,
+            allowOutsideClick: false,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Aceptar",
+          });
+        } else {
+          if (code === "ERR_BAD_REQUEST") {
+            const { detail } = JSON.parse(request.response);
+            Swal.fire({
+              title: "Repetir el Sorteo",
+              text: detail,
+              icon: "error",
+              showCancelButton: false,
+              allowOutsideClick: false,
+              confirmButtonColor: "#3085d6",
+              confirmButtonText: "Aceptar",
+            });
+          }
+        }
+      }  
+    }
+
+  }
+
   return (
     <div className="tab-content pt-4">
       <div className="d-flex flex-wrap ps-4">
         <h6 className="title flex-grow-1">{activeRound.lottery_type === "MANUAL" ? "Sorteo Manual" : "Sorteo Automático"}</h6>
-        <div className="d-flex pe-4">
+        <div className="d-flex pe-2">
           <InputGroup size="sm" className="ms-2">
             <Input
               type="text"
@@ -111,6 +166,14 @@ export default function Lottery({ activeRound, tourney, selected, setSelected })
             </InputGroupText>
           </InputGroup>
         </div>
+        <button
+            type="button"
+            disabled={activeRound.status_name!=="CONFIGURATED" && activeRound.status_name!=="CREATED"}
+            onClick={(e)=>{handleRestart(e)}}
+            className="btn btn-sm btn-primary pe-4"
+        >
+          <i class="bi bi-arrow-repeat"/>&nbsp;Reiniciar
+        </button>
       </div>
 
       <hr></hr>
@@ -144,6 +207,7 @@ export default function Lottery({ activeRound, tourney, selected, setSelected })
                         setNumber={setNumber} 
                         filter={filter}
                         useSegmentation={activeRound.use_segmentation}
+                        reload={refresh}
                       />
                     </AccordionBody>
                   </AccordionItem>
