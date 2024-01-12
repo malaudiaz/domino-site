@@ -332,7 +332,7 @@ export default function Rounds({ tourney }) {
                   </NavLink>
                 </NavItem>
 
-                {activeRound.modality === "Individual" && <NavItem>
+                {(activeRound.status_name!=="CREATED" && activeRound.modality === "Individual") && <NavItem>
                   <NavLink
                     href="#"
                     className={classnames({ active: activeTab === "2" })}

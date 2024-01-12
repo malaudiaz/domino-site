@@ -160,10 +160,28 @@ export default function Category({ formValues, setFormValues, setReload }) {
             <FormGroup row className="pt-2 ps-4 pe-4">
               <Col sm={2}>
                 <Label size="sm">
+                  Cant. Jugadores:
+                </Label>
+              </Col>
+              <Col sm={2}>
+                <InputGroup size="sm">
+                  <Input
+                    type="text"
+                    name="eloMax"
+                    id="eloMax"
+                    value={formValues.amountPlayer.value}
+                    disabled
+                  />
+                </InputGroup>
+              </Col>
+
+
+              <Col sm={2}>
+                <Label size="sm">
                   ELO Máximo:
                 </Label>
               </Col>
-              <Col sm={4}>
+              <Col sm={2}>
                 <InputGroup size="sm">
                   <Input
                     type="text"
@@ -180,7 +198,7 @@ export default function Category({ formValues, setFormValues, setReload }) {
                   ELO Mínimo:
                 </Label>
               </Col>
-              <Col sm={4}>
+              <Col sm={2}>
                 <InputGroup size="sm">
                   <Input
                     type="text"
@@ -191,6 +209,9 @@ export default function Category({ formValues, setFormValues, setReload }) {
                   />
                 </InputGroup>
               </Col>
+
+
+
             </FormGroup>
 
             <Col className="pt-2 ps-4 pe-4" sm={12}>

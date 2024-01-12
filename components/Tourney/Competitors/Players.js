@@ -368,7 +368,7 @@ export default function Players({tourney}) {
                         totalCount={total}
                         rowsPerPage={rowsPerPage}
                         siblingCount={1}
-                        showInfo={false}
+                        showInfo={true}
                     />
                 </div>          
             }

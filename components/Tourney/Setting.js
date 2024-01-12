@@ -670,9 +670,9 @@ export default function Setting({ tourney }) {
                             id="modality"
                             name="modality"
                             type="select"
-                            // value={tourney.modality}
-                            // invalid={error.modality}
-                            // onChange={handleChange("modality")}
+                            value={formValues.modality.value}
+                            invalid={formValues.modality.error}
+                            onChange={handleChange}
                           >
                             <option value="">Modalidad</option>
                             <option value="Individual">Individual</option>

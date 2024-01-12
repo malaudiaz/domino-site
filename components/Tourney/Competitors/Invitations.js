@@ -159,14 +159,14 @@ export default function Invitations({ tourney }) {
         e.preventDefault();
     
         Swal.fire({
-          title: "Confirmar Juagadores",
+          title: "Confirmar Jugadores",
           text: "¿ Estas seguro que desea confirmar a todos los jugadores para formar parte del torneo ?",
           icon: "question",
           showCancelButton: true,
           cancelButtonText: "Cancelar",
           allowOutsideClick: false,
           confirmButtonColor: "#3085d6",
-          confirmButtonText: "Aceptat",
+          confirmButtonText: "Aceptar",
         }).then((result) => {
           if (result.isConfirmed) {
             approbeAll();
@@ -425,7 +425,7 @@ export default function Invitations({ tourney }) {
                         totalCount={total}
                         rowsPerPage={rowsPerPage}
                         siblingCount={1}
-                        showInfo={false}
+                        showInfo={true}
                     />
                 </div>
             )}    

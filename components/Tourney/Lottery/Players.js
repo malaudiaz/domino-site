@@ -206,7 +206,7 @@ export default function Players({
             totalCount={total}
             rowsPerPage={rowsPerPage}
             siblingCount={1}
-            showInfo={false}
+            showInfo={true}
           />
         </div>
       )}

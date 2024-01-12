@@ -223,7 +223,7 @@ export default function Tables({ tourney }) {
             totalCount={total}
             rowsPerPage={rowsPerPage}
             siblingCount={1}
-            showInfo={false}
+            showInfo={true}
           />
         </div>
       )}

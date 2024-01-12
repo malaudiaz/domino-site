@@ -143,10 +143,14 @@ export default function Tables({ round, edited }) {
 
                   <div
                     className="col-6 d-flex flex-column justify-content-center align-items-center border border-primary bg-white"
-                    style={{ height: "100px" }}
+                    style={{ 
+                      height: "100px", 
+                      backgroundImage: "url(" + `${item.image}` + ")", 
+                      backgroundSize: "cover", 
+                      backgroundRepeat: "no-repeat" }}
                   >
 
-                    <Image
+                    {/* <Image
                       alt="Foto de Publicidad para la Mesa"
                       src={item.image}
                       width={400}
@@ -154,7 +158,7 @@ export default function Tables({ round, edited }) {
                       quality={50}
                       priority
                       layout="intrinsic"
-                    />
+                    /> */}
 
                   </div>
 
