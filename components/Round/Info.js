@@ -133,7 +133,6 @@ export default function Info({ round, edited, setRefresh }) {
                           <th colSpan={4}>{item.pair_one.name}</th>
                         </tr>
                         <tr>
-                          <th>Nombre</th>
                           <th className="text-center">P+</th>
                           <th className="text-center">P-</th>
                           <th className="text-center">Total</th>
@@ -141,7 +140,6 @@ export default function Info({ round, edited, setRefresh }) {
                       </thead>
                       <tbody>
                         <tr className="align-middle">
-                          <td>{item.pair_one.player_one}</td>
                           <th
                             className={
                               item.pair_one.is_winner
@@ -158,9 +156,6 @@ export default function Info({ round, edited, setRefresh }) {
                           <th className="text-center" rowSpan={2}>
                             {item.pair_one.difference_point}
                           </th>
-                        </tr>
-                        <tr>
-                          <td>{item.pair_one.player_two}</td>
                         </tr>
                       </tbody>
                     </Table>
@@ -214,7 +209,6 @@ export default function Info({ round, edited, setRefresh }) {
                           </th>
                         </tr>
                         <tr>
-                          <th>Nombre</th>
                           <th className="text-center">P+</th>
                           <th className="text-center">P-</th>
                           <th className="text-center">Total</th>
@@ -222,7 +216,6 @@ export default function Info({ round, edited, setRefresh }) {
                       </thead>
                       <tbody>
                         <tr className="align-middle">
-                          <td>{item.pair_two.player_one}</td>
                           <th
                             className={
                               item.pair_two.is_winner
@@ -239,9 +232,6 @@ export default function Info({ round, edited, setRefresh }) {
                           <th className="text-center" rowSpan={2}>
                             {item.pair_two.difference_point}
                           </th>
-                        </tr>
-                        <tr>
-                          <td>{item.pair_two.player_two}</td>
                         </tr>
                       </tbody>
                     </Table>

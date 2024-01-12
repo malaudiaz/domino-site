@@ -542,15 +542,31 @@ export default function Setting({ tourney }) {
             showConfirmButton: true,
           });
         }
-      } catch (errors) {
-        console.log(errors);
-
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Ha ocurrido un error al consultar la API....",
-          showConfirmButton: true,
-        });
+      } catch ({ code, message, name, request }) {
+        if (code === "ERR_NETWORK") {
+          Swal.fire({
+            title: "Cargando Torneo",
+            text: "Error en su red, consulte a su proveedor de servicio",
+            icon: "error",
+            showCancelButton: false,
+            allowOutsideClick: false,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Aceptar",
+          });
+        } else {
+          if (code === "ERR_BAD_REQUEST") {
+            const { detail } = JSON.parse(request.response);
+            Swal.fire({
+              title: "Cargando Torneo",
+              text: detail,
+              icon: "error",
+              showCancelButton: false,
+              allowOutsideClick: false,
+              confirmButtonColor: "#3085d6",
+              confirmButtonText: "Aceptar",
+            });
+          }
+        }
       }
     }
   }
