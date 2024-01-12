@@ -57,60 +57,56 @@ export default function Invitations({ open, setClose, tourneyId }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (formValues.player !== "" || formValues.eloMax > 0 || formValues.eloMin > 0 || formValues.country !== "") {
+        const paramsObj = {
+            player: formValues.player,
+            country: formValues.country,
+            elo_max: formValues.eloMax,
+            elo_min: formValues.eloMin
+        }
 
-            const paramsObj = {
-                player: formValues.player,
-                country: formValues.country,
-                elo_max: formValues.eloMax,
-                elo_min: formValues.eloMin
-            }
+        const url = `${process.env.NEXT_PUBLIC_API_URL}invitation?tourney_id=${tourneyId}`;
 
-            const url = `${process.env.NEXT_PUBLIC_API_URL}invitation?tourney_id=${tourneyId}`;
+        try {
+            const { data } = await axios.post(url, paramsObj, config);
 
-            try {
-                const { data } = await axios.post(url, paramsObj, config);
-
-                if (data.success) {
-                    setClose();
-                    Swal.fire({
-                        title: "Enviar Invitaciones",
-                        text: data.detail,
-                        icon: "success",
-                        showCancelButton: false,
-                        allowOutsideClick: false,
-                        confirmButtonColor: "#3085d6",
-                        confirmButtonText: "Aceptar",
-                    });
-                }
-            } catch ({code, message, name, request}) {
-                if (code === "ERR_NETWORK") {
-                  Swal.fire({
+            if (data.success) {
+                setClose();
+                Swal.fire({
                     title: "Enviar Invitaciones",
-                    text: "Error en su red, consulte a su proveedor de servicio",
-                    icon: "error",
+                    text: data.detail,
+                    icon: "success",
                     showCancelButton: false,
                     allowOutsideClick: false,
                     confirmButtonColor: "#3085d6",
                     confirmButtonText: "Aceptar",
-                  });
-                } else {
-                  if (code === "ERR_BAD_REQUEST") {
-                    const {detail} = JSON.parse(request.response)
-                    Swal.fire({
-                      title: "Enviar Invitaciones",
-                      text: detail,
-                      icon: "error",
-                      showCancelButton: false,
-                      allowOutsideClick: false,
-                      confirmButtonColor: "#3085d6",
-                      confirmButtonText: "Aceptar",
-                    });  
-                  }
-                }
-            }       
-        }
-
+                });
+            }
+        } catch ({code, message, name, request}) {
+            if (code === "ERR_NETWORK") {
+              Swal.fire({
+                title: "Enviar Invitaciones",
+                text: "Error en su red, consulte a su proveedor de servicio",
+                icon: "error",
+                showCancelButton: false,
+                allowOutsideClick: false,
+                confirmButtonColor: "#3085d6",
+                confirmButtonText: "Aceptar",
+              });
+            } else {
+              if (code === "ERR_BAD_REQUEST") {
+                const {detail} = JSON.parse(request.response)
+                Swal.fire({
+                  title: "Enviar Invitaciones",
+                  text: detail,
+                  icon: "error",
+                  showCancelButton: false,
+                  allowOutsideClick: false,
+                  confirmButtonColor: "#3085d6",
+                  confirmButtonText: "Aceptar",
+                });  
+              }
+            }
+        }       
     }
 
 

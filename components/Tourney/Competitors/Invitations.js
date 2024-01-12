@@ -213,6 +213,7 @@ export default function Invitations({ tourney }) {
                             name="playerName"
                             bsSize="sm"
                             value={playerName}
+                            autoComplete="off"
                             onChange={(e) => {
                                 setPlayerName(e.target.value);
                             }}
@@ -224,7 +225,7 @@ export default function Invitations({ tourney }) {
                                 data-toggle="tooltip"
                                 title="Limpiar"
                             >
-                                <i className="bi bi-x"></i>
+                                <i className={playerName!=="" ? "bi bi-x" : "bi bi-search"}></i>
                             </a>
                         </InputGroupText>                    
                     </InputGroup>

@@ -147,15 +147,14 @@ export default function Tables({ round, edited }) {
                   >
 
                     <Image
-                      alt="Photo Profile"
+                      alt="Foto de Publicidad para la Mesa"
                       src={item.image}
-                      width={"100%"}
-                      height={"100%"}
+                      width={400}
+                      height={350}
+                      quality={50}
+                      priority
+                      layout="intrinsic"
                     />
-
-                    <div className="d-flex flex-wrap">
-                      <strong>Imagen de Publicidad</strong>
-                    </div>
 
                   </div>
 

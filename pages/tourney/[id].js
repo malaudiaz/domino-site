@@ -29,10 +29,8 @@ export default function Tourneys() {
   const [tourneyId, setTourneyId] = useState("");
 
   const ctxMenu = [
-    { text: "Editar", key: "mnuEdit", icon: "bi bi-pencil-square" },
     { text: "Eliminar", key: "mnuDel", icon: "bi bi-trash" },
     { text: "Configurar", key: "mnuSetting", icon: "bi bi-gear" },
-    { text: "Cambiar Imagen", key: "mnuChangeImage", icon: "bi bi-upload" }
   ];
 
   const eventId = router.query.id;
@@ -325,7 +323,7 @@ export default function Tourneys() {
 
           <div className="d-grid pt-3 px-4">
             <div className="container-events">
-              {records.map(({ id, name, modality, summary, startDate, image, number_rounds }, idx) => (
+              {records.map(({ id, name, modality, summary, startDate, image, status_name }, idx) => (
                 <Card
                   className="card-info" 
                   style={{ borderRadius: "10px", cursor: "default" }}
@@ -345,7 +343,7 @@ export default function Tourneys() {
                       />
                     </div>
                   </div>
-                  <CardBody>
+                  <CardBody style={{cursor: "pointer"}} onClick={(e)=>{e.preventDefault(); handleClick(id)}}>
                     <Image
                       alt="Tourney Image"
                       src={image}
@@ -354,8 +352,19 @@ export default function Tourneys() {
                       quality={50}
                       priority
                       layout="intrinsic"
-                    />
-
+                    />                  
+                    <div className="col-12 pt-2" style={{textAlign: "center"}}>
+                      <h6 className="mb-2 teviewxt-muted">{summary}</h6>
+                    </div>
+                    <div className="d-flex justify-content-between col-12 pt-2">
+                      <span>Modalidad: <b>{modality}</b></span>
+                      <span>Estado: <b>{status_name}</b></span>                      
+                    </div>
+                    <div className="col-12 pt-2 text-center">
+                      <span><b>{eventDate(startDate, "")}</b></span>                      
+                    </div>
+                  </CardBody>
+                  <CardFooter>
                     <div className="row pt-2">
 
                       <div className="col-12 justify-content-center text-center">
@@ -420,20 +429,7 @@ export default function Tourneys() {
 
                         <Label
                             href="#"
-                            className="btn btn-success btn-sm me-2"
-                            title="Configurar"
-                            style={{ color: "white" }}
-                            onClick={(e) => {
-                              e.preventDefault(); 
-                              handleClick(id);
-                            }}
-                          >
-                            <i className="bi bi-gear"/>
-                        </Label>
-
-                        <Label
-                            href="#"
-                            className="btn btn-primary btn-sm"
+                            className="btn btn-warning btn-sm"
                             title="Enviar Invitaciones"
                             style={{ color: "white" }}
                             onClick={(e) => {
@@ -447,19 +443,7 @@ export default function Tourneys() {
                       </div>                
 
                     </div>
-                    
-                    <div className="col-12 pt-4" style={{textAlign: "center"}}>
-                      <h6 className="mb-2 teviewxt-muted">{summary}</h6>
-                    </div>
-                    <div className="d-flex justify-content-between col-12 pt-2">
-                      <span>Modalidad: <b>{modality}</b></span>
-                      <span>Rondas: <b>{number_rounds}</b></span>                      
-                    </div>
-                    <div className="col-12 pt-2 text-center">
-                      <span><b>{eventDate(startDate, "")}</b></span>                      
-                    </div>
-
-                  </CardBody>
+                  </CardFooter>
                 </Card>
               ))}
             </div>
