@@ -80,7 +80,7 @@ export default function Raiting({ round }) {
             {raiting.length > 0 ? (
                 <div className="container">
 
-                    <h5 className="text-center py-2">Tabla de Posiciones por Jugador</h5>
+                    <h5 className="text-center py-2">Tabla de Posiciones por Jugadores</h5>
 
                     <Table
                         bordered
@@ -90,42 +90,68 @@ export default function Raiting({ round }) {
                         striped
                     >
                         <thead>
-                            <tr className="text-center">
-                                <th>
-                                    Posición
-                                </th>
-                                <th>
-                                    Avatar
-                                </th>
-                                <th>
-                                    Nombre
-                                </th>
-                                <th>
-                                    ELO
-                                </th>
-                                <th>
+                            <tr>
+                                <th className="text-center" rowSpan={2}>Pos</th>
+                                <th className="text-center" rowSpan={2}>Nombre</th>
+
+                                <th className="text-center" rowSpan={2}>
                                     JJ
                                 </th>
-                                <th>
+                                <th className="text-center" rowSpan={2}>
                                     JG
                                 </th>
-                                <th>
+                                <th className="text-center" rowSpan={2}>
                                     JP
                                 </th>
-                                <th>
+                                <th className="text-center" rowSpan={2}>
                                     P+
                                 </th>
-                                <th>
+                                <th className="text-center" rowSpan={2}>
                                     P-
                                 </th>
-                                <th>
+                                <th className="text-center" rowSpan={2}>
                                     DIF
                                 </th>
+
+
+                                <th className="text-center" colSpan={4}>ELO</th>
+
+                                <th className="text-center" rowSpan={2}>
+                                    BON
+                                </th>
+
+                                <th className="text-center" colSpan={3}>Ptos x Penaliz.</th>
+
+                                <th className="text-center" colSpan={2}>Eficiencia</th>
+
+                            </tr>
+                            <tr className="text-center">
                                 <th>
-                                    EV
+                                    Inicio
                                 </th>
                                 <th>
-                                    País
+                                    Var.
+                                </th>
+                                <th>
+                                    Final
+                                </th>
+                                <th>
+                                    FC
+                                </th>
+                                <th>
+                                    Total
+                                </th>
+                                <th>
+                                    Rojas
+                                </th>
+                                <th>
+                                    Amar.
+                                </th>
+                                <th>
+                                    Esperada
+                                </th>
+                                <th>
+                                    Obtenida
                                 </th>
                             </tr>
                         </thead>
@@ -136,21 +162,10 @@ export default function Raiting({ round }) {
                                     <th scope="row" className="text-center">
                                         {item.position_number}
                                     </th>
-                                    <td className="text-center">
-                                        <Image
-                                            alt="Avatar"
-                                            src={item.photo ? item.photo : "/profile/user-vector.jpg"}
-                                            width={40}
-                                            height={40}
-                                            className="rounded-image"
-                                        />
-                                    </td>
                                     <td>
                                         {item.name}
                                     </td>
-                                    <td className="text-center">
-                                        {item.elo}
-                                    </td>
+
                                     <td className="text-center">
                                         {item.games_played}
                                     </td>
@@ -169,11 +184,40 @@ export default function Raiting({ round }) {
                                     <td className="text-center">
                                         {item.points_difference}
                                     </td>
+
+
+                                    <td className="text-center">
+                                        {item.elo}
+                                    </td>
                                     <td className="text-center">
                                         {item.elo_variable}
                                     </td>
                                     <td className="text-center">
-                                        {item.country}
+                                        {item.elo_at_end}
+                                    </td>
+                                    <td className="text-center">
+                                        {item.k_value}
+                                    </td>
+
+                                    <td className="text-center">
+                                        {item.bonus_points}
+                                    </td>
+
+                                    <td className="text-center">
+                                        {item.penalty_total}
+                                    </td>
+                                    <td className="text-center">
+                                        {item.penalty_red}
+                                    </td>
+                                    <td className="text-center">
+                                        {item.penalty_yellow}
+                                    </td>
+
+                                    <td className="text-center">
+                                        {item.score_expected}
+                                    </td>
+                                    <td className="text-center">
+                                        {item.score_obtained}
                                     </td>
 
                                 </tr>
@@ -211,7 +255,7 @@ export default function Raiting({ round }) {
                         totalCount={total}
                         rowsPerPage={rowsPerPage}
                         siblingCount={1}
-                        showInfo={false}
+                        showInfo={true}
                     />
                 </div>
             )}

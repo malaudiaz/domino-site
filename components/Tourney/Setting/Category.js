@@ -6,33 +6,94 @@ import { useAppContext } from "../../../AppContext";
 import Bombo from "../Bombo";
 import Empty from "../../Empty/Empty";
 
-export default function Category({ formValues, setFormValues, setReload }) {
+export default function Category({ formValues, setFormValues }) {
   const { token, lang } = useAppContext();
   const [openNewBombo, setOpenNewBombo] = useState(false);
   const [bombo, setBombo] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [eloMax, setEloMax] = useState("");
 
-  useEffect(() => {
-    if (formValues.lst_categories.value !== "") {
-        const lst = formValues.lst_categories.value;
-        let arr = [];
-        for (let i=0; i<lst.length; i++) {
-            arr.push(
-              {
-                number: i+1,
-                id: lst[i].id, 
-                title: lst[i].category_number, 
-                min: lst[i].elo_min, 
-                max: lst[i].elo_max, 
-                players: lst[i].amount_players
-              }
-            );
-        }
-        setBombo(arr);
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "accept-Language": lang,
+      "Authorization": `Bearer ${token}`,
     }
-    setRefresh(false);
-}, [refresh, formValues.lst_categories.value]);
+  };
+
+  const fechData = async () => {
+    const url = `${process.env.NEXT_PUBLIC_API_URL}tourney/setting/categories/${formValues.tourneyId.value}`;
+
+    try {
+
+      const { data } = await axios.get(url, config);
+
+      if (data.success) {
+        setFormValues({
+          ...formValues,
+          lst_categories: {
+            ...formValues["lst_categories"],
+            value: data.data
+          },
+        });
+
+        if (formValues.lst_categories.value !== "") {
+            const lst = formValues.lst_categories.value;
+            let arr = [];
+            for (let i=0; i<lst.length; i++) {
+                arr.push(
+                  {
+                    number: i+1,
+                    id: lst[i].id, 
+                    title: lst[i].category_number, 
+                    min: lst[i].elo_min, 
+                    max: lst[i].elo_max, 
+                    players: lst[i].amount_players
+                  }
+                );
+            }
+            setBombo(arr);
+            setRefresh(false);
+        }
+      }
+    } catch ({code, message, name, request}) {
+      if (code === "ERR_NETWORK") {
+        Swal.fire({
+          title: "Segmentación",
+          text: "Error en su red, consulte a su proveedor de servicio",
+          icon: "error",
+          showCancelButton: false,
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Aceptar",
+        });
+      } else {
+        if (code === "ERR_BAD_REQUEST") {
+          const {detail} = JSON.parse(request.response)
+          Swal.fire({
+            title: "Segmentación",
+            text: detail,
+            icon: "error",
+            showCancelButton: false,
+            allowOutsideClick: false,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Aceptar",
+          });  
+          setRefresh(false);
+        }
+      }
+    }
+  }
+
+
+  useEffect(() => {
+    console.log(refresh);
+
+    if (formValues.tourneyId.value) {
+      fechData();
+    }
+}, [refresh, formValues.tourneyId.value]);
 
   const handleAdd = (e) => {
     e.preventDefault();
@@ -57,7 +118,7 @@ export default function Category({ formValues, setFormValues, setReload }) {
         });
         if (data.success) {
           setEloMax("");
-          setReload(true);
+          setRefresh(!refresh);
           Swal.fire({
             icon: "success",
             title: "Configurando Torneo",
@@ -88,6 +149,7 @@ export default function Category({ formValues, setFormValues, setReload }) {
               confirmButtonColor: "#3085d6",
               confirmButtonText: "Aceptar",
             });
+            setRefresh(!refresh);
           }
         }
       } 
@@ -310,7 +372,7 @@ export default function Category({ formValues, setFormValues, setReload }) {
             open={openNewBombo} 
             setClose={setOpenNewBombo} 
             eloMax={eloMax}
-            setReload={setReload}
+            setRefresh={setRefresh}
         />
 
     </div>

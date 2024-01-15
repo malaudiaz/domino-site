@@ -767,12 +767,12 @@ export default function Setting({ tourney }) {
 
                 <TabPane tabId="2">
 
-                    <General formValues={formValues} setFormValues={setFormValues} setReload={setReload}/>
+                    <General formValues={formValues} setFormValues={setFormValues}/>
 
                 </TabPane>
                 <TabPane tabId="3">
 
-                    <Category formValues={formValues} setFormValues={setFormValues} setReload={setReload}/>
+                    <Category formValues={formValues} setFormValues={setFormValues}/>
 
                 </TabPane>
 

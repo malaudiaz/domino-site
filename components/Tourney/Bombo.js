@@ -18,7 +18,7 @@ import {
   Label,
 } from "reactstrap";
 
-export default function Bombo({ open, setClose, eloMax, tourneyId, setReload }) {
+export default function Bombo({ open, setClose, eloMax, tourneyId, setRefresh }) {
   const { token, lang } = useAppContext();
 
   const [formValues, setFormValues] = useState({
@@ -123,7 +123,7 @@ export default function Bombo({ open, setClose, eloMax, tourneyId, setReload }) 
               text: data.detail,
               showConfirmButton: true,
             });
-            setReload(true);
+            setRefresh(true);
             setClose();
 
           }

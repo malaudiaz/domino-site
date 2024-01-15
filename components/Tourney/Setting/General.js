@@ -193,6 +193,7 @@ export default function General({ formValues, setFormValues }) {
                       id="limitPenaltyPoints"
                       invalid={formValues.limitPenaltyPoints.error}
                       value={formValues.limitPenaltyPoints.value}
+                      disabled={formValues.usePenalty.value===false}
                       onChange={handleChange}
                     />
                   </InputGroup>
@@ -211,6 +212,7 @@ export default function General({ formValues, setFormValues }) {
                       id="points_penalty_yellow"
                       invalid={formValues.points_penalty_yellow.error}
                       value={formValues.points_penalty_yellow.value}
+                      disabled={formValues.usePenalty.value===false}
                       onChange={handleChange}
                     />
                   </InputGroup>
@@ -229,6 +231,7 @@ export default function General({ formValues, setFormValues }) {
                       id="points_penalty_red"
                       invalid={formValues.points_penalty_red.error}
                       value={formValues.points_penalty_red.value}
+                      disabled={formValues.usePenalty.value===false}
                       onChange={handleChange}
                     />
                   </InputGroup>
@@ -253,6 +256,7 @@ export default function General({ formValues, setFormValues }) {
                       id="amountBonusTables"
                       invalid={formValues.amountBonusTables.error}
                       value={formValues.amountBonusTables.value}
+                      disabled={formValues.useBonus.value===false}
                       onChange={handleChange}
                     />
                     <FormFeedback>
@@ -273,6 +277,7 @@ export default function General({ formValues, setFormValues }) {
                       id="amountBonusPoints"
                       invalid={formValues.amountBonusPoints.error}
                       value={formValues.amountBonusPoints.value}
+                      disabled={formValues.useBonus.value===false}
                       onChange={handleChange}
                     />
                     <FormFeedback>

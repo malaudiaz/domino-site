@@ -157,23 +157,37 @@ export default function Invitations({ tourney }) {
     
     const handleApprobe = (e) => {
         e.preventDefault();
+
+        if (invitations.length > 0) {
     
-        Swal.fire({
-          title: "Confirmar Jugadores",
-          text: "¿ Estas seguro que desea confirmar a todos los jugadores para formar parte del torneo ?",
-          icon: "question",
-          showCancelButton: true,
-          cancelButtonText: "Cancelar",
-          allowOutsideClick: false,
-          confirmButtonColor: "#3085d6",
-          confirmButtonText: "Aceptar",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            approbeAll();
-          }
-        });
+            Swal.fire({
+            title: "Confirmar Jugadores",
+            text: "¿ Estas seguro que desea confirmar a todos los jugadores para formar parte del torneo ?",
+            icon: "question",
+            showCancelButton: true,
+            cancelButtonText: "Cancelar",
+            allowOutsideClick: false,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Aceptar",
+            }).then((result) => {
+            if (result.isConfirmed) {
+                approbeAll();
+            }
+            });
+
+        } else {
+            Swal.fire({
+                title: "Confirmar Jugadores",
+                text: "No existen jugadores para confirmar",
+                icon: "info",
+                showCancelButton: false,
+                allowOutsideClick: false,
+                confirmButtonColor: "#3085d6",
+                confirmButtonText: "Aceptar",
+            });
+        }   
     };
-        
+       
     return (
         <div className="tab-content pt-2">
             <div className="d-flex flex-wrap gap-2 justify-content-between align-items-center pt-2 px-4 pb-1">
@@ -233,22 +247,18 @@ export default function Invitations({ tourney }) {
 
                 </div>
 
-
                 <Button
                     color="primary"
                     size={"sm"}
                     style={{ width: "200px" }}
                     title="Aceptar a todos los competidores"
-                    disabled={
-                        tourney.status_name !== "CREATED" || invitations.length === 0
-                    }
+                    disabled={tourney.status_name === "CREATED" && filter!=1}
                     onClick={(e) => {
                         handleApprobe(e);
                     }}
                 >
                     Aceptar a Todos
                 </Button>
-
 
             </div>
 

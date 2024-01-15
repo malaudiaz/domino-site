@@ -208,12 +208,13 @@ export default function Players({tourney}) {
                                 onChangeFilter(e.target.value);
                             }}
                         >
-                            <option value={0}>Aceptados</option>
-                            <option value={1}>Jugando</option>
-                            <option value={2}>Esperando</option>
-                            <option value={3}>Expulsado</option>
-                            <option value={4}>Pausa</option>
-                            <option value={5}>Cancelado</option>
+                            <option value={0}>Seleccione</option>
+                            <option value={1}>Aceptados</option>
+                            <option value={2}>Jugando</option>
+                            <option value={3}>Esperando</option>
+                            <option value={4}>Expulsado</option>
+                            <option value={5}>Pausa</option>
+                            <option value={6}>Cancelado</option>
                         </Input>
                     </InputGroup>
                 </div>
