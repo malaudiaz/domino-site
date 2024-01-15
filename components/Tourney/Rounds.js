@@ -5,10 +5,11 @@ import { useAppContext } from "../../AppContext";
 import OutlineTooltip from "../Tooltip/OutlineTooltip";
 import { Button, Card, CardBody, Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
 import classnames from "classnames";
-import Raiting from "../Round/Raiting";
 import Lottery from "../Round/Lottery";
 import Tables from "../../components/Round/Tables";
 import Info from "../../components/Round/Info";
+import PlayerRaiting from "../Round/PlayerRaiting";
+import Raiting from "../Round/Raiting";
 
 export default function Rounds({ tourney }) {
   const { token, lang } = useAppContext();
@@ -173,7 +174,6 @@ export default function Rounds({ tourney }) {
   const handleClick = (item) => {
     handleRound(item.id);
   }
-
 
   const toggleTab = (tab) => {
     if (activeTab !== tab) {
@@ -406,10 +406,10 @@ export default function Rounds({ tourney }) {
                   />
                 </TabPane>
                 <TabPane tabId="2">
-                  <Raiting round={activeRound.id} />
+                  <PlayerRaiting tourney={tourney} round={activeRound}/>
                 </TabPane>
                 <TabPane tabId="3">
-                  <Raiting round={activeRound.id} />
+                  <Raiting id={tourney.id} type={"pairs"}/>
                 </TabPane>
                 <TabPane tabId="4">
                   <Tables round={activeRound.id} edited={false} />

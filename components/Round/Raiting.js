@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
 import Pagination from "../Pagination/Pagination";
-import Image from "next/image";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useAppContext } from "../../AppContext";
 import { Table } from "reactstrap";
 
-export default function Raiting({ round }) {
+export default function Raiting({ id, type }) {
     const { token, lang } = useAppContext();
 
     const [raiting, setRaiting] = useState([]);
@@ -26,7 +25,7 @@ export default function Raiting({ round }) {
     };
   
     const fetchData = async () => {
-        const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/scale/player/current/${round}?page=${page}&per_page=${rowsPerPage}`;
+        const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/scale/player/${type}/${id}?page=${page}&per_page=${rowsPerPage}`;
   
         try {
             const { data } = await axios.get(url, config);
@@ -64,10 +63,10 @@ export default function Raiting({ round }) {
     };
   
     useEffect(() => {
-      if (round) {
+      if (id) {
         fetchData();
       }
-    }, [round, page]);
+    }, [id, page]);
   
     const onChangePage = (pageNumber) => {
       setPage(pageNumber);
@@ -75,12 +74,10 @@ export default function Raiting({ round }) {
     };
 
     return (
-        <div className="pt-3 px-2 pb-4">
+        <div className="pt-3 pb-4">
 
             {raiting.length > 0 ? (
                 <div className="container">
-
-                    <h5 className="text-center py-2">Tabla de Posiciones por Jugadores</h5>
 
                     <Table
                         bordered

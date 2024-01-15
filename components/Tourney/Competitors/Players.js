@@ -166,22 +166,22 @@ export default function Players({tourney}) {
     const onChangeFilter = (value) => {
         setFilter(value);
         switch (value) {
-            case "0":
+            case "1":
                 setMessage("Los jugadores aceptados para participar en el torneo aparecerán aquí.");
                 break;
-            case "1":
+            case "2":
                 setMessage("Los jugadores que estan jugando en el torneo aparecerán aquí.");
                 break;
-            case "2":
+            case "3":
                 setMessage("Los jugadores que estan en espera para jugar en el torneo aparecerán aquí.");
                 break;
-            case "3":
+            case "4":
                 setMessage("Los jugadores expulsados del torneo aparecerán aquí.");
                 break;
-            case "4":
+            case "5":
                 setMessage("Los jugadores que se encuentran en pausa aparecerán aquí.");
                 break;
-            case "5":
+            case "6":
                 setMessage("Los jugadores que han sido cancelados aparecerán aquí.");
                 break;
         }
