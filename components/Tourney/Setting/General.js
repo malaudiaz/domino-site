@@ -84,6 +84,11 @@ export default function General({ formValues, setFormValues }) {
               invalid={formValues.pointRound.error}
               value={formValues.pointRound.value}
               onChange={handleChange}
+              onKeyPress={(event) => {
+                if (!/[0-9]/.test(event.key)) {
+                  event.preventDefault();
+                }
+              }}              
             />
           </InputGroup>
         </Col>
@@ -100,6 +105,11 @@ export default function General({ formValues, setFormValues }) {
               invalid={formValues.timeRound.error}
               value={formValues.timeRound.value}
               onChange={handleChange}
+              onKeyPress={(event) => {
+                if (!/[0-9]/.test(event.key)) {
+                  event.preventDefault();
+                }
+              }}              
             />
           </InputGroup>
         </Col>
@@ -195,6 +205,11 @@ export default function General({ formValues, setFormValues }) {
                       value={formValues.limitPenaltyPoints.value}
                       disabled={formValues.usePenalty.value===false}
                       onChange={handleChange}
+                      onKeyPress={(event) => {
+                        if (!/[0-9]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}              
                     />
                   </InputGroup>
                 </Col>
@@ -214,6 +229,11 @@ export default function General({ formValues, setFormValues }) {
                       value={formValues.points_penalty_yellow.value}
                       disabled={formValues.usePenalty.value===false}
                       onChange={handleChange}
+                      onKeyPress={(event) => {
+                        if (!/[0-9]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}              
                     />
                   </InputGroup>
                 </Col>
@@ -233,6 +253,11 @@ export default function General({ formValues, setFormValues }) {
                       value={formValues.points_penalty_red.value}
                       disabled={formValues.usePenalty.value===false}
                       onChange={handleChange}
+                      onKeyPress={(event) => {
+                        if (!/[0-9]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}              
                     />
                   </InputGroup>
                 </Col>
@@ -258,6 +283,11 @@ export default function General({ formValues, setFormValues }) {
                       value={formValues.amountBonusTables.value}
                       disabled={formValues.useBonus.value===false}
                       onChange={handleChange}
+                      onKeyPress={(event) => {
+                        if (!/[0-9]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}              
                     />
                     <FormFeedback>
                       {formValues.amountBonusTables.errorMessage}
@@ -279,6 +309,11 @@ export default function General({ formValues, setFormValues }) {
                       value={formValues.amountBonusPoints.value}
                       disabled={formValues.useBonus.value===false}
                       onChange={handleChange}
+                      onKeyPress={(event) => {
+                        if (!/[0-9]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}              
                     />
                     <FormFeedback>
                       {formValues.amountBonusPoints.errorMessage}

@@ -366,7 +366,7 @@ export default function Rounds({ tourney }) {
                   </NavLink>
                 </NavItem>}
 
-                {activeRound.status_name==="INITIADED" &&
+                {(activeRound.status_name==="INITIADED" || activeRound.status_name==="REVIEW") &&
                 <NavItem>
                   <NavLink
                     href="#"
@@ -419,9 +419,9 @@ export default function Rounds({ tourney }) {
                   <Tables round={activeRound.id} edited={false} />
                 </TabPane>}
 
-                {activeRound.status_name==="INITIADED" &&
+                {(activeRound.status_name==="INITIADED" || activeRound.status_name==="REVIEW") &&
                 <TabPane tabId="5">
-                  <Info round={activeRound.id} edited={true} setRefresh={setReload} />
+                  <Info round={activeRound} edited={true} setActiveRound={setActiveRound} />
                 </TabPane>}
 
                 <TabPane tabId="6">

@@ -13,7 +13,7 @@ import {
 } from "reactstrap";
 import Boletus from "./Boletus";
 
-export default function Info({ round, edited, setRefresh }) {
+export default function Info({ round, edited, setActiveRound }) {
   const { token, lang } = useAppContext();
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -33,7 +33,7 @@ export default function Info({ round, edited, setRefresh }) {
   };
 
   const fetchData = async () => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/boletus/all/${round}?page=${page}&per_page=${rowsPerPage}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/boletus/all/${round.id}?page=${page}&per_page=${rowsPerPage}`;
 
     try {
       const { data } = await axios.get(url, config);
@@ -71,10 +71,10 @@ export default function Info({ round, edited, setRefresh }) {
   };
 
   useEffect(() => {
-    if (round && !open) {
+    if (round.id && !open) {
       fetchData();
     }
-  }, [round, open, record]);
+  }, [round.id, open, record]);
 
   const handleClick = (item) => {
     setRecord(item);
@@ -264,7 +264,7 @@ export default function Info({ round, edited, setRefresh }) {
         )}
 
 
-        <Boletus open={open} close={closeBoletus} record={record} edited={edited} setRefresh={setRefresh}/>
+        <Boletus open={open} close={closeBoletus} record={record} edited={edited} round={round} setActiveRound={setActiveRound}/>
       </div>
     </>
   );

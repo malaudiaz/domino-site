@@ -20,12 +20,15 @@ import { useAppContext } from "../../AppContext";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-export default function Boletus({ open, close, record, edited, setRefresh }) {
+export default function Boletus({ open, close, record, edited, round, setActiveRound }) {
   const { token, lang } = useAppContext();
   const [openData, setOpenData] = useState(false);
   const [boletus, setBoletus] = useState([]);
   const [gameOver, setGameOver] = useState(false);
   const [reload, setReload] = useState(true)
+
+  const [restart, setRestart] = useState(false);
+
   const [data, setData] = useState({
     pair: {
       value: "",
@@ -115,9 +118,8 @@ export default function Boletus({ open, close, record, edited, setRefresh }) {
       const { data } = await axios.post(url, body, config);
 
       if (data.success) {
-        if (data.data.closed_round) {
-          setRefresh(true);
-        }
+
+        setActiveRound(data.data)
 
         Swal.fire({
           icon: "success",
@@ -282,7 +284,16 @@ export default function Boletus({ open, close, record, edited, setRefresh }) {
             <strong className="ps-4">Mesa: {boletus.table_number}</strong>
           </div>
 
-          {(record.status === "0" && edited && gameOver === false) && (
+          {round.status_name === "REVIEW" && !restart && (<Button
+            color="primary"
+            size="sm"
+            title="Reiniciar Data"
+            onClick={(e)=>{e.preventDefault(); setRestart(!restart)}}
+          >
+            Reiniciar
+          </Button>)}
+
+          {(record.status === "0" && edited && gameOver === false) || (restart) && (
             <div>
               <Button
                 color="primary"
