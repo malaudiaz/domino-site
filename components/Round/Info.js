@@ -264,7 +264,7 @@ export default function Info({ round, edited, setActiveRound }) {
         )}
 
 
-        <Boletus open={open} close={closeBoletus} record={record} edited={edited} round={round} setActiveRound={setActiveRound}/>
+        <Boletus open={open} close={closeBoletus} record={record} edited={edited} setActiveRound={setActiveRound}/>
       </div>
     </>
   );
