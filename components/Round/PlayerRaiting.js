@@ -16,31 +16,36 @@ export default function PlayerRaiting({ tourney, round }) {
         <div className="p-4">
             <h5 className="text-center py-2">Tabla de Posiciones por Jugadores</h5>
 
-            <Nav className="text-center" pills fill>
-                <NavItem style={{marginLeft: "130px"}}>
-                    <NavLink
-                        href="#"
-                        className={classnames({ active: activeTab === "1" })}
-                        onClick={() => {
-                            toggleTab("1");
-                        }}
-                    >
-                        Ronda
-                    </NavLink>
-                </NavItem>
+            <div className="d-flex justify-content-center">
 
-                <NavItem style={{marginRight: "130px"}}>
-                    <NavLink
-                        href="#"
-                        className={classnames({ active: activeTab === "2" })}
-                        onClick={() => {
-                            toggleTab("2");
-                        }}
-                    >
-                        Acumulado
-                    </NavLink>
-                </NavItem>
-            </Nav>
+                <Nav className="text-center" pills fill>
+                    <NavItem>
+                        <NavLink
+                            href="#"
+                            className={classnames({ active: activeTab === "1" })}
+                            onClick={() => {
+                                toggleTab("1");
+                            }}
+                        >
+                            Ronda
+                        </NavLink>
+                    </NavItem>
+
+                    <NavItem>
+                        <NavLink
+                            href="#"
+                            className={classnames({ active: activeTab === "2" })}
+                            onClick={() => {
+                                toggleTab("2");
+                            }}
+                        >
+                            Acumulado
+                        </NavLink>
+                    </NavItem>
+                </Nav>
+
+            </div>
+
 
             <TabContent activeTab={activeTab}>
                 <TabPane tabId="1">
@@ -50,6 +55,8 @@ export default function PlayerRaiting({ tourney, round }) {
                     <Raiting id={tourney.id} type="accumulated"/>
                 </TabPane>
             </TabContent>
+
+
 
         </div>
     )

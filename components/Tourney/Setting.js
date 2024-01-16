@@ -530,11 +530,10 @@ export default function Setting({ tourney }) {
             "Content-Type": "application/json",
             "Accept": "application/json",
             "accept-Language": lang,
-            "Authorization": `Bearer ${token}`                },
+            "Authorization": `Bearer ${token}`                
+          },
         });
         if (data.success) {
-          // setReload(true);
-
           Swal.fire({
             icon: "success",
             title: "Configurando Torneo",

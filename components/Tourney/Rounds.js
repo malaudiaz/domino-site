@@ -17,7 +17,6 @@ export default function Rounds({ tourney }) {
   const [activeTab, setActiveTab] = useState("1");
   const [activeRound, setActiveRound] = useState(null);
   const [reload, setReload] = useState(true);
-  const [msgTitle, setMsgTitle] = useState("");
 
   const [selected, setSelected] = useState([]);
 
@@ -60,7 +59,7 @@ export default function Rounds({ tourney }) {
       const { data } = await axios.get(url, config);
       if (data.success) {
         setRounds(data.data); 
-        setActiveRound(null);
+        // setActiveRound(null);
         setReload(false);
       }
     } catch ({ code, message, name, request }) {
@@ -92,7 +91,7 @@ export default function Rounds({ tourney }) {
   };
 
   useEffect(() => {
-    if (tourney.id) {
+    if (tourney.id && reload) {
       fetchData();
     }
   }, [tourney.id, selected, reload]);
@@ -186,28 +185,25 @@ export default function Rounds({ tourney }) {
     if (selected.length === activeRound.amount_players_playing || activeRound.status_name !== "CREATED") {
     
       let url = `${process.env.NEXT_PUBLIC_API_URL}rounds/actions`;
-      let body = {}
+      let body = {};
+      let msgTitle = "";
 
       switch (activeRound.status_name) {
         case "CREATED":
-          setMsgTitle("Configurando Ronda");
+          msgTitle = "Configurando Ronda";
           url = url + `/aperture/${activeRound.id}`;
           body["lottery"] = selected;
           break;
         case "CONFIGURATED":
-          setMsgTitle("Publicando Ronda");
+          msgTitle = "Publicando Ronda";
           url = url + `/publicate/${activeRound.id}`;
           break;
         case "PUBLICATED":
-          setMsgTitle("Iniciando Ronda");
-          url = url + `/started/${activeRound.id}`;
-          break;
-        case "INITIADED":
-          setMsgTitle("Iniciando Ronda");
+          msgTitle = "Iniciando Ronda";
           url = url + `/started/${activeRound.id}`;
           break;
         case "REVIEW":
-          setMsgTitle("Cerrando Ronda");
+          msgTitle = "Cerrando Ronda";
           url = url + `/close/${activeRound.id}`;
           break;
       }    
@@ -405,18 +401,29 @@ export default function Rounds({ tourney }) {
                     setSelected={setSelected}
                   />
                 </TabPane>
+                {(activeRound.status_name!=="CREATED" && activeRound.modality === "Individual") &&
                 <TabPane tabId="2">
                   <PlayerRaiting tourney={tourney} round={activeRound}/>
-                </TabPane>
+                </TabPane>}
+
+                {activeRound.status_name!=="CREATED" &&
                 <TabPane tabId="3">
-                  <Raiting id={tourney.id} type={"pairs"}/>
-                </TabPane>
+                  <div className="p-4">
+                    <h5 className="text-center py-2">Tabla de Posiciones por Parejas</h5>
+                    <Raiting id={activeRound.id} type={"pairs"}/>
+                  </div>
+                </TabPane>}
+
+                {activeRound.status_name!=="CREATED" &&
                 <TabPane tabId="4">
                   <Tables round={activeRound.id} edited={false} />
-                </TabPane>
+                </TabPane>}
+
+                {activeRound.status_name==="INITIADED" &&
                 <TabPane tabId="5">
                   <Info round={activeRound.id} edited={true} setRefresh={setReload} />
-                </TabPane>
+                </TabPane>}
+
                 <TabPane tabId="6">
                 </TabPane>
               </TabContent>
