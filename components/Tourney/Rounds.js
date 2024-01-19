@@ -220,6 +220,9 @@ export default function Rounds({ tourney }) {
           });
 
           setActiveRound(data.data);
+          if (activeRound.status_name === "REVIEW") {
+            setReload(true);
+          }
 
         }
       } catch ({code, message, name, request}) {
@@ -268,23 +271,26 @@ export default function Rounds({ tourney }) {
       <div className="d-flex flex-column flex-wrap gap-1 ps-4">
         <h1 className="title">Rondas</h1>
         <div className="d-flex flex-row flex-wrap gap-1 justify-content-between align-items-center pe-4">
-        {rounds.map((item, idx) => (
-          <a key={idx} className="ms-2" style={{cursor: "pointer"}} onClick={(e)=>{e.preventDefault(); handleClick(item);}}>
+          <div className="d-flex flex-row flex-wrap gap-1 align-items-center">
+            {rounds.map((item, idx) => (
+              <a key={idx} className="ms-2" style={{cursor: "pointer"}} onClick={(e)=>{e.preventDefault(); handleClick(item);}}>
 
-            <span 
-              className={activeRound && item.id!==activeRound.id ? "round badge bg-primary rounded-circle fs-6" : "round badge bg-success rounded-circle fs-6"}
-              id={'outlineTooltip'}
-            >
-              {item.round_number}
-            </span>
+                <span 
+                  className={activeRound && item.id!==activeRound.id ? "round badge bg-primary rounded-circle fs-6" : "round badge bg-success rounded-circle fs-6"}
+                  id={`outlineTooltip_${idx}`}
+                >
+                  {item.round_number}
+                </span>
 
-            <OutlineTooltip
-              placement="bottom"
-              target="outlineTooltip"
-              message={roundTipInfo(item)}
-            />    
-          </a>                            
-        ))}
+                {/* <OutlineTooltip
+                  id={`tooltip_${idx}`}
+                  placement="bottom"
+                  // target={`outlineTooltip_${idx}`}
+                  message={roundTipInfo(item)}
+                />     */}
+              </a>                            
+            ))}
+          </div>
 
           { activeRound && activeRound.status_name!=="INITIADED" && 
             <Button  className="btn btn-sm btn-success" onClick={handleSubmit}>              
