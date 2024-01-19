@@ -29,6 +29,11 @@ export default function Boletus({ open, close, record, edited, setActiveRound })
   const [isNew, setIsNew] = useState(true);
 
   const [data, setData] = useState({
+    id: {
+      value: "",
+      error: false,
+      errorMessage: "Id de la data",
+    },
     pair: {
       value: "",
       error: false,
@@ -103,6 +108,11 @@ export default function Boletus({ open, close, record, edited, setActiveRound })
     if (item) {                          
       if (item.pair_one > item.pair_two) {
         setData({
+          id: {
+            value: item.data_id,
+            error: false,
+            errorMessage: "Id de la data",
+          },
           pair: {
             value: boletus.pair_one.pairs_id,
             error: false,
@@ -116,6 +126,11 @@ export default function Boletus({ open, close, record, edited, setActiveRound })
         })
       } else {
         setData({
+          id: {
+            value: item.data_id,
+            error: false,
+            errorMessage: "Id de la data",
+          },
           pair: {
             value: boletus.pair_two.pairs_id,
             error: false,
@@ -138,7 +153,7 @@ export default function Boletus({ open, close, record, edited, setActiveRound })
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/boletus/data/${record.boletus_id}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/boletus/data/${isNew ? record.boletus_id : data.id.value}`;
 
     const body = {
       pair: data.pair.value,
