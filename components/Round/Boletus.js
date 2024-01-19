@@ -26,6 +26,7 @@ export default function Boletus({ open, close, record, edited, setActiveRound })
   const [boletus, setBoletus] = useState([]);
   const [gameOver, setGameOver] = useState(false);
   const [reload, setReload] = useState(true)
+  const [isNew, setIsNew] = useState(true);
 
   const [data, setData] = useState({
     pair: {
@@ -98,7 +99,39 @@ export default function Boletus({ open, close, record, edited, setActiveRound })
     }
   }, [record, reload, gameOver]);
 
-  const handleNew = () => {
+  const handleNew = (item) => {
+    if (item) {                          
+      if (item.pair_one > item.pair_two) {
+        setData({
+          pair: {
+            value: boletus.pair_one.pairs_id,
+            error: false,
+            errorMessage: "Debe seleccionar la pareja Ganadora",
+          },
+          point: {
+            value: item.pair_one,
+            error: false,
+            errorMessage: "Teclee los puntos obtenidos",
+          }            
+        })
+      } else {
+        setData({
+          pair: {
+            value: boletus.pair_two.pairs_id,
+            error: false,
+            errorMessage: "Debe seleccionar la pareja Ganadora",
+          },
+          point: {
+            value: item.pair_two,
+            error: false,
+            errorMessage: "Teclee los puntos obtenidos",
+          }            
+        })
+      }
+      setIsNew(false);
+    } else {
+      setIsNew(true);
+    }
     setOpenData(true);
   };
 
@@ -113,7 +146,7 @@ export default function Boletus({ open, close, record, edited, setActiveRound })
     };
 
     try {
-      const { data } = await axios.post(url, body, config);
+      const { data } = await axios[isNew ? "post" : "put"](url, body, config);
 
       if (data.success) {
 
@@ -318,6 +351,7 @@ export default function Boletus({ open, close, record, edited, setActiveRound })
               <th className="text-center">
                 {boletus.pair_two && boletus.pair_two.name}
               </th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -327,6 +361,19 @@ export default function Boletus({ open, close, record, edited, setActiveRound })
                   <td className="text-center">{item.number}</td>
                   <td className="text-center">{item.pair_one}</td>
                   <td className="text-center">{item.pair_two}</td>
+                  <td className="text-center">
+                    <a 
+                      className="edit" 
+                      title="Editar" 
+                      onClick={
+                        (e)=>{
+                          e.preventDefault();
+                          handleNew(item);
+                        }
+                      }>
+                      <i class="bi bi-pencil-square"></i>
+                    </a>
+                  </td>
                 </tr>
               ))}
           </tbody>
@@ -356,7 +403,7 @@ export default function Boletus({ open, close, record, edited, setActiveRound })
               setOpenData(false);
             }}
           >
-            <small>Nueva Data</small>
+            <small>{data.id==="" ? "Nueva Data" : "Modificar Data"}</small>
           </ModalHeader>
           <Form onSubmit={handleSubmit} autoComplete="off">
             <ModalBody>
@@ -370,6 +417,7 @@ export default function Boletus({ open, close, record, edited, setActiveRound })
                       id="pair"
                       name="pair"
                       value={boletus.pair_one ? boletus.pair_one.pairs_id : ""}
+                      checked={boletus.pair_one ? (boletus.pair_one.pairs_id === data.pair.value ? true : false) : false}
                       onChange={handleChange}
                       type="radio"
                     />
@@ -383,6 +431,7 @@ export default function Boletus({ open, close, record, edited, setActiveRound })
                       id="pair"
                       name="pair"
                       value={boletus.pair_two ? boletus.pair_two.pairs_id : ""}
+                      checked={boletus.pair_two ? (boletus.pair_two.pairs_id === data.pair.value ? true : false) : false}
                       onChange={handleChange}
                       type="radio"
                     />

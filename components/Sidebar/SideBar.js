@@ -102,21 +102,6 @@ const Sidebar = () => {
 
               </ul>          
             </li>
-
-            <li className="nav-item">
-              <Link href={"/capture"}>
-                <a
-                  className={
-                    router.asPath === "/capture"
-                      ? "nav-link active"
-                      : "nav-link collapsed"
-                  }
-                >
-                  <i className="bi bi-box-arrow-in-up-right" />              
-                  <span>Entrada de Datos</span>
-                </a>
-              </Link>
-            </li>
           </>
         }
 

@@ -1856,3 +1856,14 @@ h6 {
   right: 0px;
   padding: 3px 6px;
 }
+
+.edit {
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  color: "#012970"
+}
+
+.edit:hover {
+  color: red;
+}
