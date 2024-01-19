@@ -162,7 +162,7 @@ export default function Available() {
 
           <div className="pt-3 px-4" style={{ display: "grid" }}>
             <div className="container-events">
-              {records.map(({ id, name, modality, summary, startDate }, idx) => (
+              {records.map(({ id, name, modality, summary, startDate, image, status_name }, idx) => (
                 <Card
                   style={{ cursor: "pointer", borderRadius: "10px" }}
                   key={idx}
@@ -179,23 +179,22 @@ export default function Available() {
                   <CardBody onClick={(e) => {e.preventDefault(); handleClick(id);}}>
                     <Image
                       alt="Tourney Image"
-                      src={"/Logo-V.png"}
+                      src={image}
                       width={350}
                       height={150}
                       quality={50}
                       priority
                       layout="intrinsic"
                     />
-                    <div className="col-12 pt-4" style={{textAlign: "center"}}>
+                    <div className="col-12 pt-2" style={{textAlign: "center"}}>
                       <h6 className="mb-2 teviewxt-muted">{summary}</h6>
                     </div>
-                    <div className="col-12 pt-2">
-                      <span>Modalidad: </span>
-                      <b>{modality}</b>
+                    <div className="d-flex justify-content-between col-12 pt-2">
+                      <span>Modalidad: <b>{modality}</b></span>
+                      <span>Estado: <b>{status_name}</b></span>                      
                     </div>
-                    <div className="col-12 pt-2">
-                      <span>Fecha: </span>
-                      <b>{eventDate(startDate, "")}</b>
+                    <div className="col-12 pt-2 text-center">
+                      <span><b>{eventDate(startDate, "")}</b></span>                      
                     </div>
                   </CardBody>
                 </Card>

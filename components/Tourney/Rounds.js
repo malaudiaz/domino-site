@@ -221,6 +221,7 @@ export default function Rounds({ tourney }) {
 
           setActiveRound(data.data);
           if (activeRound.status_name === "REVIEW") {
+            setActiveRound(null);
             setReload(true);
           }
 
