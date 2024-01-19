@@ -301,7 +301,7 @@ export default function View() {
           {menu === "COMPETITORS" && <Response tourney={tourney}/>}
           {menu === "SETTING" && <Setting tourney={tourney} setMenu={setMenu} setRefresh={setRefresh} />}
           {menu === "TABLES" && <Tables tourney={tourney}/>}
-          {menu === "PLAY" && <Rounds tourney={tourney} />}
+          {menu === "PLAY" && <Rounds tourney={tourney} readOnly={false} />}
           
         </div>
       </main>

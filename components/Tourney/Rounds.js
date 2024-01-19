@@ -11,7 +11,7 @@ import Info from "../../components/Round/Info";
 import PlayerRaiting from "../Round/PlayerRaiting";
 import Raiting from "../Round/Raiting";
 
-export default function Rounds({ tourney }) {
+export default function Rounds({ tourney, readOnly }) {
   const { token, lang } = useAppContext();
   const [rounds, setRounds] = useState([]);
   const [activeTab, setActiveTab] = useState("1");
@@ -293,8 +293,8 @@ export default function Rounds({ tourney }) {
             ))}
           </div>
 
-          { activeRound && activeRound.status_name!=="INITIADED" && 
-            <Button  className="btn btn-sm btn-success" onClick={handleSubmit}>              
+          { activeRound && activeRound.status_name!=="INITIADED" && activeRound.status_name !== "FINALIZED" && 
+            <Button className="btn btn-sm btn-success" onClick={handleSubmit}>              
               {activeRound.status_name==="CREATED" && (
                 <><i class="bi bi-gear"></i>&nbsp;Configurar</>
               )}
@@ -311,19 +311,20 @@ export default function Rounds({ tourney }) {
         {activeRound && <Card className="flex-fill">
           <CardBody className="p-4">
 
-              <div className="d-flex flex-wrap gap-2 justify-content-between px-2 pb-4">
-                {activeRound && <span>Ronda No. <b>{activeRound.round_number}</b></span>}
-                {activeRound && <span>Estado: <b>{activeRound.status_description}</b></span>}
-                {activeRound && <span>Mesas: <b>{activeRound.amount_tables}</b></span>}
-                {activeRound && <span>Mesas Jugando: <b>{activeRound.amount_tables_playing}</b></span>}
-                {activeRound && <span>Competidores Jugando: <b>{activeRound.amount_players_playing}</b></span>}
-                {activeRound && <span>Competidores en Espera: <b>{activeRound.amount_players_waiting}</b></span>}
-                {activeRound && <span>Competidores en Pausa: <b>{activeRound.amount_players_pause}</b></span>}
-                {activeRound && <span>Competidores Expulsador: <b>{activeRound.amount_players_expelled}</b></span>}
+              <div className="d-flex flex-wrap gap-1 px-2 pb-4 text-center">
+                {activeRound && <span className="rounded p-1 bg-info text-white">Ronda No. <b>{activeRound.round_number}</b></span>}
+                {activeRound && <span className="rounded p-1 bg-info text-white">Estado: <b>{activeRound.status_description}</b></span>}
+                {activeRound && <span className="rounded p-1 bg-info text-white">Mesas: <b>{activeRound.amount_tables}</b></span>}
+                {activeRound && <span className="rounded p-1 bg-info text-white">Mesas Jugando: <b>{activeRound.amount_tables_playing}</b></span>}
+                {activeRound && <span className="rounded p-1 bg-info text-white">Competidores Jugando: <b>{activeRound.amount_players_playing}</b></span>}
+                {activeRound && <span className="rounded p-1 bg-info text-white">Competidores en Espera: <b>{activeRound.amount_players_waiting}</b></span>}
+                {activeRound && <span className="rounded p-1 bg-info text-white">Competidores en Pausa: <b>{activeRound.amount_players_pause}</b></span>}
+                {activeRound && <span className="rounded p-1 bg-info text-white">Competidores Expulsador: <b>{activeRound.amount_players_expelled}</b></span>}
               </div>
 
               <Nav tabs>
-                <NavItem>
+
+                {(activeRound.status_name!=="FINALIZED" && !readOnly) && <NavItem>
                   <NavLink
                     href="#"
                     className={classnames({ active: activeTab === "1" })}
@@ -333,7 +334,7 @@ export default function Rounds({ tourney }) {
                   >
                     Sorteo
                   </NavLink>
-                </NavItem>
+                </NavItem>}
 
                 {(activeRound.status_name!=="CREATED" && activeRound.modality === "Individual") && <NavItem>
                   <NavLink
@@ -373,7 +374,7 @@ export default function Rounds({ tourney }) {
                   </NavLink>
                 </NavItem>}
 
-                {(activeRound.status_name==="INITIADED" || activeRound.status_name==="REVIEW") &&
+                {(activeRound.status_name==="INITIADED" || activeRound.status_name==="FINALIZED" || activeRound.status_name==="REVIEW") &&
                 <NavItem>
                   <NavLink
                     href="#"
@@ -382,7 +383,7 @@ export default function Rounds({ tourney }) {
                       toggleTab("5");
                     }}
                   >
-                    Entrada de Datos
+                    {readOnly ? "Puntuaciones" : "Entrada de Datos"}
                   </NavLink>
                 </NavItem>}
 
@@ -400,14 +401,14 @@ export default function Rounds({ tourney }) {
               </Nav>
 
               <TabContent activeTab={activeTab}>
-                <TabPane tabId="1">
+              {(activeRound.status_name!=="FINALIZED" && !readOnly) && <TabPane tabId="1">
                   <Lottery 
                     activeRound={activeRound} 
                     tourney={tourney} 
                     selected={selected}
                     setSelected={setSelected}
                   />
-                </TabPane>
+                </TabPane>}
                 {(activeRound.status_name!=="CREATED" && activeRound.modality === "Individual") &&
                 <TabPane tabId="2">
                   <PlayerRaiting tourney={tourney} round={activeRound}/>
@@ -426,9 +427,9 @@ export default function Rounds({ tourney }) {
                   <Tables round={activeRound.id} edited={false} />
                 </TabPane>}
 
-                {(activeRound.status_name==="INITIADED" || activeRound.status_name==="REVIEW") &&
+                {(activeRound.status_name==="INITIADED" || activeRound.status_name==="FINALIZED" || activeRound.status_name==="REVIEW") &&
                 <TabPane tabId="5">
-                  <Info round={activeRound} edited={true} setActiveRound={setActiveRound} />
+                  <Info round={activeRound} readOnly={readOnly} setActiveRound={setActiveRound}/>
                 </TabPane>}
 
                 <TabPane tabId="6">

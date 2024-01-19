@@ -10,6 +10,7 @@ import Header from "../../../components/Header/Header";
 import Footer from "../../../components/Footers/Footer";
 import { eventDate } from "../../../_functions";
 import classnames from "classnames";
+import Rounds from "../../../components/Tourney/Rounds";
 
 export default function Detail() {
   const { token, lang } = useAppContext();
@@ -208,9 +209,52 @@ export default function Detail() {
                 </span>
               </div>
 
-              <div className="row px-4" style={{ fontSize: "14px" }}>
-                <span className="mb-2 text-muted">{tourney.summary}</span>
+              <div className="d-flex flex-row flex-wrap gap-2 px-4">
+                <span
+                  className="rounded mb-2 bg-primary text-light p-1"
+                  style={{ fontSize: "14px", fontWeight: "600" }}
+                >
+                  Rondas: {tourney.number_rounds}
+                </span>
+
+                <span
+                  className="rounded mb-2 bg-primary text-light p-1"
+                  style={{ fontSize: "14px", fontWeight: "600" }}
+                >
+                  Puntos para Ganar: {tourney.number_rounds}
+                </span>
+
+                <span
+                  className="rounded mb-2 bg-primary text-light p-1"
+                  style={{ fontSize: "14px", fontWeight: "600" }}
+                >
+                  Tiempo para Ganar: {tourney.number_rounds} min.
+                </span>
+
+                <span
+                  className="rounded mb-2 bg-primary text-light p-1"
+                  style={{ fontSize: "14px", fontWeight: "600" }}
+                >
+                  Usar Peniladades: {"Sí"}
+                </span>
+
+                <span
+                  className="rounded mb-2 bg-primary text-light p-1"
+                  style={{ fontSize: "14px", fontWeight: "600" }}
+                >
+                  Usar Bonificaciones: {"No"}
+                </span>
+
+                <span
+                  className="rounded mb-2 bg-primary text-light p-1"
+                  style={{ fontSize: "14px", fontWeight: "600" }}
+                >
+                  Usar Segmentación: {"Sí"}
+                </span>
+
+
               </div>
+
             </div>
           </div>
 
@@ -218,56 +262,7 @@ export default function Detail() {
             <hr></hr>
           </div>
 
-
-
-          <div className="pt-2 px-4 pb-4">
-
-            <Nav tabs>
-              <NavItem>
-                <NavLink
-                  href="#"
-                  className={classnames({ active: activeTab === "1" })}
-                  onClick={() => {
-                    toggleTab("1");
-                  }}
-                >
-                  Información
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink
-                  href="#"
-                  className={classnames({ active: activeTab === "2" })}
-                  onClick={() => {
-                    toggleTab("2");
-                  }}
-                >
-                  Posiciones
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink
-                  href="#"
-                  className={classnames({ active: activeTab === "2" })}
-                  onClick={() => {
-                    toggleTab("3");
-                  }}
-                >
-                  Prueba
-                </NavLink>
-              </NavItem>
-            </Nav>
-
-            <TabContent activeTab={activeTab}>
-              <TabPane tabId="1">
-              </TabPane>
-              <TabPane tabId="2">
-              </TabPane>
-              <TabPane tabId="3">
-              </TabPane>
-            </TabContent>
-
-          </div>
+          <Rounds tourney={tourney} readOnly={true} />
 
         </div>
           

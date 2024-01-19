@@ -13,7 +13,7 @@ import {
 } from "reactstrap";
 import Boletus from "./Boletus";
 
-export default function Info({ round, edited, setActiveRound }) {
+export default function Info({ round, readOnly, setActiveRound }) {
   const { token, lang } = useAppContext();
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -264,7 +264,13 @@ export default function Info({ round, edited, setActiveRound }) {
         )}
 
 
-        <Boletus open={open} close={closeBoletus} record={record} edited={edited} setActiveRound={setActiveRound}/>
+        <Boletus 
+          open={open} 
+          close={closeBoletus} 
+          record={record} 
+          readOnly={readOnly} 
+          setActiveRound={setActiveRound} 
+        />
       </div>
     </>
   );
