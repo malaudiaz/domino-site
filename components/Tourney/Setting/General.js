@@ -1,30 +1,26 @@
 import {
   FormGroup,
-  Label,
-  Input,
   Col,
+  Label,
   InputGroup,
+  Input,
   FormFeedback,
-  Card,
-  CardHeader,
-  CardBody,
-  Row,
 } from "reactstrap";
 
 export default function General({ formValues, setFormValues }) {
   const handleChange = (e) => {
     const name = e.target.name;
 
-    const value = event.target.type === "checkbox"
+    const value =
+      event.target.type === "checkbox"
         ? event.target.checked
-        : event.target.value;    
-    
+        : event.target.value;
 
     setFormValues({
-      ...formValues,     
+      ...formValues,
       [name]: {
         ...formValues[name],
-        value: value
+        value: value,
       },
     });
   };
@@ -32,297 +28,181 @@ export default function General({ formValues, setFormValues }) {
   return (
     <div className="tab-content pt-2">
       <FormGroup row className="pt-2 ps-4 pe-4">
-        <Label size="sm" sm={3}>
-          Cantidad de Mesas
+        <Label size="sm" sm={2}>
+          Nombre del Torneo
         </Label>
-        <Col sm={3}>
+        <Col sm={4}>
           <InputGroup size="sm">
             <Input
               type="text"
-              name="amountTtable"
-              id="amountTable"
-              value={formValues.amountTable.value}
-              disabled
+              name="name"
+              id="name"
+              placeholder={"Nombre del Torneo"}
+              invalid={formValues.name.error}
+              value={formValues.name.value}
+              onChange={handleChange}
+              autoComplete="off"
+              onKeyPress={(event) => {
+                if (!/^[A-Za-z_0-9.áéíóúÑñ\s]*$/.test(event.key)) {
+                  event.preventDefault();
+                }
+              }}
             />
+            <FormFeedback>{formValues.name.errorMessage}</FormFeedback>
           </InputGroup>
         </Col>
-
-        <Label size="sm" sm={3}>
-          Cantidad de Mesas Inteligentes
+      </FormGroup>
+      <FormGroup row className="pt-2 ps-4 pe-4">
+        <Label size="sm" sm={2}>
+          Modalidad
         </Label>
-        <Col sm={3}>
+        <Col sm={4}>
           <InputGroup size="sm">
             <Input
-              type="number"
-              name="smartTable"
-              id="smartTable"
-              invalid={formValues.smartTable.error}
-              value={formValues.smartTable.value}
+              id="modality"
+              name="modality"
+              type="select"
+              value={formValues.modality.value}
+              invalid={formValues.modality.error}
               onChange={handleChange}
-              // disabled={
-              //     formValues.statusName.value === "CONFIGURATED" ||
-              //     formValues.statusName.value === "INITIADED"
-              // }
-            />
+            >
+              <option value="">Modalidad</option>
+              <option value="Individual">Individual</option>
+              <option value="Parejas">Parejas</option>
+              <option value="Equipo">Equipo</option>
+            </Input>
             <FormFeedback>
-              La cantidad de mesas inteligentes es requerida.
+              Por favor, seleccione la modalidad del torneo
+            </FormFeedback>
+          </InputGroup>
+        </Col>
+      </FormGroup>
+      <FormGroup row className="pt-2 ps-4 pe-4">
+        <Label size="sm" sm={2}>
+          Rondas
+        </Label>
+        <Col sm={4}>
+          <InputGroup size="sm">
+            <Input
+              id="number_rounds"
+              name="number_rounds"
+              type="number"
+              placeholder="Rondas"
+              invalid={formValues.number_rounds.error}
+              value={formValues.number_rounds.value}
+              onChange={handleChange}
+              autoComplete="off"
+            />
+            <FormFeedback>{formValues.number_rounds.errorMessage}</FormFeedback>
+          </InputGroup>
+        </Col>
+      </FormGroup>
+      <FormGroup row className="pt-2 ps-4 pe-4">
+        <Label size="sm" sm={2}>
+          Fecha de Inicio
+        </Label>
+        <Col sm={4}>
+          <InputGroup size="sm">
+            <Input
+              id="startDate"
+              name="startDate"
+              placeholder="Fecha"
+              type="date"
+              invalid={formValues.startDate.error}
+              value={formValues.startDate.value}
+              onChange={handleChange}
+            />
+            <FormFeedback>{formValues.startDate.errorMessage}</FormFeedback>
+          </InputGroup>
+        </Col>
+      </FormGroup>
+
+      <FormGroup row className="pt-2 ps-4 pe-4">
+        <Label size="sm" sm={2}>
+          Alcance
+        </Label>
+        <Col sm={4}>
+          <InputGroup size="sm">
+            <Input
+              id="scope"
+              name="scope"
+              type="select"
+              value={formValues.scope.value}
+              invalid={formValues.scope.error}
+              onChange={handleChange}
+            >
+              <option value="">Seleccione</option>
+              <option value="1">Local</option>
+              <option value="2">Nacional</option>
+              <option value="3">Internacional</option>
+            </Input>
+            <FormFeedback>
+              Por favor, seleccione el alcance del torneo
             </FormFeedback>
           </InputGroup>
         </Col>
       </FormGroup>
 
-      <FormGroup row className="ps-4 pe-4">
-        <Label size="sm" sm={3}>
-          Puntos para ganar ronda
+      <FormGroup row className="pt-2 ps-4 pe-4">
+        <Label size="sm" sm={2}>
+          Nivel:
         </Label>
-        <Col sm={3}>
-          <InputGroup size="sm">
-            <Input
-              type="number"
-              name="pointRound"
-              id="pointRound"
-              invalid={formValues.pointRound.error}
-              value={formValues.pointRound.value}
-              onChange={handleChange}
-              onKeyPress={(event) => {
-                if (!/[0-9]/.test(event.key)) {
-                  event.preventDefault();
-                }
-              }}              
-            />
-          </InputGroup>
-        </Col>
-
-        <Label size="sm" sm={3}>
-          Tiempo máximo para ganar (min.)
-        </Label>
-        <Col sm={3}>
-          <InputGroup size="sm">
-            <Input
-              type="number"
-              name="timeRound"
-              id="timeRound"
-              invalid={formValues.timeRound.error}
-              value={formValues.timeRound.value}
-              onChange={handleChange}
-              onKeyPress={(event) => {
-                if (!/[0-9]/.test(event.key)) {
-                  event.preventDefault();
-                }
-              }}              
-            />
-          </InputGroup>
-        </Col>
-      </FormGroup>
-
-      <FormGroup row className="ps-4 pe-4">
-        <Label size="sm" sm={3}>
-          Tipo de Sorteo
-        </Label>
-        <Col sm={3}>
-          <InputGroup size="sm">
-            <Input
-              type="select"
-              name="lottery"
-              id="lottery"
-              placeholder="Sorteo"
-              value={formValues.lottery.value}
-              onChange={handleChange}
-            >
-              <option key={1} value="MANUAL">
-                Manual
-              </option>
-              <option key={2} value="AUTOMATIC">
-                Automático
-              </option>
-            </Input>
-          </InputGroup>
-        </Col>
-
-        <Label size="sm" sm={3}>
-          Constante de Crecimiento del ELO
-        </Label>
-        <Col sm={3}>
-          <InputGroup size="sm">
-            <Input
-              type="number"
-              name="constant_increase_ELO"
-              id="constant_increase_ELO"
-              invalid={formValues.constant_increase_ELO.error}
-              value={formValues.constant_increase_ELO.value}
-              onChange={handleChange}
-            />
-          </InputGroup>
-        </Col>
-      </FormGroup>
-
-      <Row className="ps-4 pe-4">
-        <Col sm={6}>
+        <Col sm={4}>
           <FormGroup check inline>
             <Input
-              type="checkbox"
-              id="usePenalty"
-              name="usePenalty"
-              value={formValues.usePenalty.value}
-              checked={formValues.usePenalty.value}
+              id="level"
+              name="level"
+              value={1}
               onChange={handleChange}
-            />
-            <Label check>Usar Penalización</Label>
+              type="radio"
+            />{" "}
+            <Label check>1</Label>
           </FormGroup>
-        </Col>
-
-        <Col sm={6}>
           <FormGroup check inline>
             <Input
-              type="checkbox"
-              id="useBonus"
-              name="useBonus"
-              value={formValues.useBonus.value}
-              checked={formValues.useBonus.value}
+              id="level"
+              name="level"
+              value={2}
               onChange={handleChange}
-            />
-            <Label check>Usar Bonificación</Label>
+              type="radio"
+            />{" "}
+            <Label check>2</Label>
+          </FormGroup>
+          <FormGroup check inline>
+            <Input
+              id="level"
+              name="level"
+              value={3}
+              onChange={handleChange}
+              type="radio"
+            />{" "}
+            <Label check>3</Label>
           </FormGroup>
         </Col>
-      </Row>
+      </FormGroup>
 
       <FormGroup row className="pt-2 ps-4 pe-4">
-        <Col sm={6}>
-          <Card style={{ height: "240px" }}>
-            <CardHeader>Penalizaciones</CardHeader>
-            <CardBody className="p-4">
-              <FormGroup row className="ps-4 pe-4">
-                <Label size="sm" sm={6}>
-                  Límite de Puntos por Penalización
-                </Label>
-                <Col sm={6}>
-                  <InputGroup size="sm">
-                    <Input
-                      type="number"
-                      name="limitPenaltyPoints"
-                      id="limitPenaltyPoints"
-                      invalid={formValues.limitPenaltyPoints.error}
-                      value={formValues.limitPenaltyPoints.value}
-                      disabled={formValues.usePenalty.value===false}
-                      onChange={handleChange}
-                      onKeyPress={(event) => {
-                        if (!/[0-9]/.test(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}              
-                    />
-                  </InputGroup>
-                </Col>
-              </FormGroup>
-
-              <FormGroup row className="ps-4 pe-4">
-                <Label size="sm" sm={6}>
-                  Punto de penalización por tarjeta amarilla
-                </Label>
-                <Col sm={6}>
-                  <InputGroup size="sm">
-                    <Input
-                      type="number"
-                      name="points_penalty_yellow"
-                      id="points_penalty_yellow"
-                      invalid={formValues.points_penalty_yellow.error}
-                      value={formValues.points_penalty_yellow.value}
-                      disabled={formValues.usePenalty.value===false}
-                      onChange={handleChange}
-                      onKeyPress={(event) => {
-                        if (!/[0-9]/.test(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}              
-                    />
-                  </InputGroup>
-                </Col>
-              </FormGroup>
-
-              <FormGroup row className="ps-4 pe-4">
-                <Label size="sm" sm={6}>
-                  Puntos de penalización por tarjeta rojas
-                </Label>
-                <Col sm={6}>
-                  <InputGroup size="sm">
-                    <Input
-                      type="number"
-                      name="points_penalty_red"
-                      id="points_penalty_red"
-                      invalid={formValues.points_penalty_red.error}
-                      value={formValues.points_penalty_red.value}
-                      disabled={formValues.usePenalty.value===false}
-                      onChange={handleChange}
-                      onKeyPress={(event) => {
-                        if (!/[0-9]/.test(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}              
-                    />
-                  </InputGroup>
-                </Col>
-              </FormGroup>
-            </CardBody>
-          </Card>
-        </Col>
-        <Col sm={6}>
-          <Card style={{ height: "240px" }}>
-            <CardHeader>Bonificaciones</CardHeader>
-            <CardBody className="p-4">
-              <FormGroup row className="ps-4 pe-4">
-                <Label size="sm" sm={6}>
-                  Cantidad de Mesa a Bonificar:
-                </Label>
-                <Col sm={6}>
-                  <InputGroup size="sm">
-                    <Input
-                      type="number"
-                      name="amountBonusTables"
-                      id="amountBonusTables"
-                      invalid={formValues.amountBonusTables.error}
-                      value={formValues.amountBonusTables.value}
-                      disabled={formValues.useBonus.value===false}
-                      onChange={handleChange}
-                      onKeyPress={(event) => {
-                        if (!/[0-9]/.test(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}              
-                    />
-                    <FormFeedback>
-                      {formValues.amountBonusTables.errorMessage}
-                    </FormFeedback>
-                  </InputGroup>
-                </Col>
-              </FormGroup>
-              <FormGroup row className="ps-4 pe-4">
-                <Label size="sm" sm={6}>
-                  Cantidad de Puntos a Bonificar:
-                </Label>
-                <Col sm={6}>
-                  <InputGroup size="sm">
-                    <Input
-                      type="number"
-                      name="amountBonusPoints"
-                      id="amountBonusPoints"
-                      invalid={formValues.amountBonusPoints.error}
-                      value={formValues.amountBonusPoints.value}
-                      disabled={formValues.useBonus.value===false}
-                      onChange={handleChange}
-                      onKeyPress={(event) => {
-                        if (!/[0-9]/.test(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}              
-                    />
-                    <FormFeedback>
-                      {formValues.amountBonusPoints.errorMessage}
-                    </FormFeedback>
-                  </InputGroup>
-                </Col>
-              </FormGroup>
-            </CardBody>
-          </Card>
+        <Label size="sm" sm={2}>
+          Comentario
+        </Label>
+        <Col sm={4}>
+          <InputGroup size="sm">
+            <Input
+              type="text"
+              name="summary"
+              id="summary"
+              placeholder={"Comentario"}
+              invalid={formValues.summary.error}
+              value={formValues.summary.value}
+              onChange={handleChange}
+              autoComplete="off"
+              onKeyPress={(event) => {
+                if (!/^[A-Za-z_0-9.áéíóúÑñ\s]*$/.test(event.key)) {
+                  event.preventDefault();
+                }
+              }}
+            />
+          </InputGroup>
         </Col>
       </FormGroup>
     </div>

@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
 import classnames from "classnames";
-import Raiting from "./Raiting";
+import RoundPositions from "../Raiting/Player/Round/Index";
+import AcumulatedPositions from "../Raiting/Player/Acumulated/Index";
 
 export default function PlayerRaiting({ tourney, round }) {
     const [activeTab, setActiveTab] = useState("1");
@@ -49,14 +50,12 @@ export default function PlayerRaiting({ tourney, round }) {
 
             <TabContent activeTab={activeTab}>
                 <TabPane tabId="1">
-                    <Raiting id={round.id} type="current"/>
+                    <RoundPositions id={round.id}/>
                 </TabPane>
                 <TabPane tabId="2">
-                    <Raiting id={tourney.id} type="accumulated"/>
+                    <AcumulatedPositions id={tourney.id}/>
                 </TabPane>
             </TabContent>
-
-
 
         </div>
     )

@@ -9,7 +9,7 @@ import Lottery from "../Round/Lottery";
 import Tables from "../../components/Round/Tables";
 import Info from "../../components/Round/Info";
 import PlayerRaiting from "../Round/PlayerRaiting";
-import Raiting from "../Round/Raiting";
+import PairsRaiting from "../Round/PairsRaiting";
 
 export default function Rounds({ tourney, readOnly }) {
   const { token, lang } = useAppContext();
@@ -279,6 +279,7 @@ export default function Rounds({ tourney, readOnly }) {
                 <span 
                   className={activeRound && item.id!==activeRound.id ? "round badge bg-primary rounded-circle fs-6" : "round badge bg-success rounded-circle fs-6"}
                   id={`outlineTooltip_${idx}`}
+                  title={item.summary+" ("+item.status_description.toUpperCase()+")"}
                 >
                   {item.round_number}
                 </span>
@@ -324,7 +325,7 @@ export default function Rounds({ tourney, readOnly }) {
 
               <Nav tabs>
 
-                {(activeRound.status_name!=="FINALIZED" && !readOnly) && <NavItem>
+                {(activeRound.is_first && !readOnly) && <NavItem>
                   <NavLink
                     href="#"
                     className={classnames({ active: activeTab === "1" })}
@@ -336,7 +337,8 @@ export default function Rounds({ tourney, readOnly }) {
                   </NavLink>
                 </NavItem>}
 
-                {(activeRound.status_name!=="CREATED" && activeRound.modality === "Individual") && <NavItem>
+                {activeRound.status_name!=="CREATED" &&
+                <NavItem>
                   <NavLink
                     href="#"
                     className={classnames({ active: activeTab === "2" })}
@@ -344,12 +346,13 @@ export default function Rounds({ tourney, readOnly }) {
                       toggleTab("2");
                     }}
                   >
-                    Posiciones por Jugador
+                    Posiciones por Mesa
                   </NavLink>
                 </NavItem>}
 
-                {activeRound.status_name!=="CREATED" &&
-                <NavItem>
+
+
+                {(activeRound.status_name!=="CREATED" && activeRound.modality === "Individual") && <NavItem>
                   <NavLink
                     href="#"
                     className={classnames({ active: activeTab === "3" })}
@@ -357,7 +360,7 @@ export default function Rounds({ tourney, readOnly }) {
                       toggleTab("3");
                     }}
                   >
-                    Posiciones por Pareja
+                    Posiciones por Jugador
                   </NavLink>
                 </NavItem>}
 
@@ -370,7 +373,7 @@ export default function Rounds({ tourney, readOnly }) {
                       toggleTab("4");
                     }}
                   >
-                    Posiciones por Mesa
+                    Posiciones por Pareja
                   </NavLink>
                 </NavItem>}
 
@@ -401,7 +404,7 @@ export default function Rounds({ tourney, readOnly }) {
               </Nav>
 
               <TabContent activeTab={activeTab}>
-              {(activeRound.status_name!=="FINALIZED" && !readOnly) && <TabPane tabId="1">
+              {(activeRound.is_first && !readOnly) && <TabPane tabId="1">
                   <Lottery 
                     activeRound={activeRound} 
                     tourney={tourney} 
@@ -409,22 +412,20 @@ export default function Rounds({ tourney, readOnly }) {
                     setSelected={setSelected}
                   />
                 </TabPane>}
-                {(activeRound.status_name!=="CREATED" && activeRound.modality === "Individual") &&
+
+                {activeRound.status_name!=="CREATED" &&
                 <TabPane tabId="2">
+                  <Tables round={activeRound.id} edited={false} />
+                </TabPane>}
+
+                {(activeRound.status_name!=="CREATED" && activeRound.modality === "Individual") &&
+                <TabPane tabId="3">
                   <PlayerRaiting tourney={tourney} round={activeRound}/>
                 </TabPane>}
 
                 {activeRound.status_name!=="CREATED" &&
-                <TabPane tabId="3">
-                  <div className="p-4">
-                    <h5 className="text-center py-2">Tabla de Posiciones por Parejas</h5>
-                    <Raiting id={activeRound.id} type={"pairs"}/>
-                  </div>
-                </TabPane>}
-
-                {activeRound.status_name!=="CREATED" &&
                 <TabPane tabId="4">
-                  <Tables round={activeRound.id} edited={false} />
+                    <PairsRaiting tourney={tourney} round={activeRound}/>
                 </TabPane>}
 
                 {(activeRound.status_name==="INITIADED" || activeRound.status_name==="FINALIZED" || activeRound.status_name==="REVIEW") &&

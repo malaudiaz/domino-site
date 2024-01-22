@@ -26,6 +26,22 @@ const Sidebar = () => {
         </li>
 
         <li className="nav-item">
+          <Link href={"/dashboard"}>
+            <a
+              className={
+                router.asPath === "/dashboard"
+                  ? "nav-link active"
+                  : "nav-link collapsed"
+              }
+            >
+              <i className={"bi bi-house-door"}></i>
+              <span>Panel</span>
+            </a>
+          </Link>
+        </li>
+
+
+        <li className="nav-item">
           <a
             className="nav-link"
             data-bs-target="#MyProfile"

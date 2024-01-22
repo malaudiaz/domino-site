@@ -21,8 +21,10 @@ import {
   FormFeedback
 } from "reactstrap";
 
-import General from "./Setting/General";
+import Settings from "./Setting/Settings";
 import Category from "./Setting/Category";
+import Criteria from "./Setting/Criteria";
+import General from "./Setting/General";
 
 export default function Setting({ tourney }) {
   const { token, lang } = useAppContext();
@@ -54,6 +56,16 @@ export default function Setting({ tourney }) {
       value: "",
       error: false,
       errorMessage: "Fecha de Inicio del torneo, requerido"
+    },
+    scope: {
+      value: "",
+      error: false,
+      errorMessage: "Alcance del torneo, requerido"
+    },
+    level: {
+      value: "",
+      error: false,
+      errorMessage: "Nilve del torneo, requerido"
     },
     summary: {
       value: "",
@@ -105,6 +117,8 @@ export default function Setting({ tourney }) {
       error: false,
       errorMessage: 'Tipo de Sorteo es requerido'
     },
+    
+    
     amountBonusPoints: {
       value: 0,
       error:false,
@@ -115,6 +129,13 @@ export default function Setting({ tourney }) {
       error:false,
       errorMessage:""
     },
+    amountBonusPointsRounds: {
+      value: 0,
+      error:false,
+      errorMessage:""
+    },
+
+
     limitPenaltyPoints: {
       value: 0,
       error: false,
@@ -130,25 +151,43 @@ export default function Setting({ tourney }) {
       error: false,
       errorMessage: "Puntos de penalización por tarjetas rojas requerido"
     },
+    
     event_ordering_one: {
       value: "",
       error: false,
-      errorMessage: "Críterio de orden de torneo requerido"
+      errorMessage: "Primer críterio de orden de torneo requerido"
     },
     event_ordering_two: {
       value: "",
       error: false,
-      errorMessage: "Críterio de orden de torneo requerido"
+      errorMessage: "Segundo Críterio de orden de torneo requerido"
     },
     event_ordering_three: {
       value: "",
       error: false,
-      errorMessage: "Críterio de orden de torneo requerido"
+      errorMessage: "Tercer críterio de orden de torneo requerido"
     },
+
+    event_ordering_dir_one: {
+      value: "",
+      error: false,
+      errorMessage: ""
+    },
+    event_ordering_dir_two: {
+      value: "",
+      error: false,
+      errorMessage: ""
+    },
+    event_ordering_dir_three: {
+      value: "",
+      error: false,
+      errorMessage: ""
+    },
+
     round_ordering_one: {
       value: "",
       error: false,
-      errorMessage: "Críterio de orden de ronda requerido"
+      errorMessage: "Primer críterio de orden de ronda requerido"
     },
     round_ordering_two: {
       value: "",
@@ -160,6 +199,24 @@ export default function Setting({ tourney }) {
       error: false,
       errorMessage: "Críterio de orden de ronda requerido"
     },
+
+
+    round_ordering_dir_one: {
+      value: "",
+      error: false,
+      errorMessage: ""
+    },
+    round_ordering_dir_two: {
+      value: "",
+      error: false,
+      errorMessage: ""
+    },
+    round_ordering_dir_three: {
+      value: "",
+      error: false,
+      errorMessage: ""
+    },
+
     statusId: {
       value: "",
       error: false,
@@ -201,36 +258,7 @@ export default function Setting({ tourney }) {
       errorMessage: ""
     }
   }); 
-  
-  const criteriaTourney = [
-    {
-      key: "JG",
-      value: "Juegos Ganados"
-    },
-    {
-      key: "BONUS",
-      value: "Bonificación"
-    },
-    {
-      key: "ELO",
-      value: "ELO"
-    }
-  ];
 
-  const criteriaRound = [
-    {
-      key: "JG",
-      value: "Juegos Ganados"
-    },
-    {
-      key: "ERA",
-      value: "ELO Real Acumulado"
-    },
-    {
-      key: "DP",
-      value: "Díferencia de Puntos"
-    }
-  ];
 
   const config = {
     headers: {
@@ -273,6 +301,16 @@ export default function Setting({ tourney }) {
             value: data.data.start_date,
             error: false,
             errorMessage: "Fecha de Inicio del torneo, requerido"
+          },
+          scope: {
+            value: "",
+            error: false,
+            errorMessage: "Alcance del torneo, requerido"
+          },
+          level: {
+            value: "",
+            error: false,
+            errorMessage: "Nivel del torneo, requerido"
           },
           summary: {
             value: data.data.summary,
@@ -329,6 +367,7 @@ export default function Setting({ tourney }) {
             error:false,
             errorMessage:'Tipo de Sorteo es requerido'
           },
+          
           amountBonusPoints: {
             value: data.data.amount_bonus_points,
             error: false,
@@ -339,6 +378,12 @@ export default function Setting({ tourney }) {
             error: false,
             errorMessage: ""
           },
+          amountBonusPointsRounds: {
+            value: data.data.amount_bonus_points_rounds,
+            error:false,
+            errorMessage:""
+          },      
+
           limitPenaltyPoints: {
             value: data.data.penalties_limit,
             error: false,
@@ -354,6 +399,7 @@ export default function Setting({ tourney }) {
             error:false,
             errorMessage: "Puntos de penalización por tarjetas rojas requerido"
           },
+
           event_ordering_one: {
             value: data.data.event_ordering_one,
             error: false,
@@ -369,6 +415,25 @@ export default function Setting({ tourney }) {
             error: false,
             errorMessage: "Críterio de orden de torneo requerido"
           },
+
+          event_ordering_dir_one: {
+            value: data.data.event_ordering_dir_one,
+            error: false,
+            errorMessage: ""
+          },
+
+          event_ordering_dir_two: {
+            value: data.data.event_ordering_dir_two,
+            error: false,
+            errorMessage: ""
+          },
+          event_ordering_dir_three: {
+            value: data.data.event_ordering_dir_three,
+            error: false,
+            errorMessage: ""
+          },
+      
+
           round_ordering_one: {
             value: data.data.round_ordering_one,
             error: false,
@@ -383,7 +448,25 @@ export default function Setting({ tourney }) {
             value: data.data.round_ordering_three,
             error: false,
             errorMessage: "Críterio de orden de ronda requerido"
-          },     
+          },   
+          
+          round_ordering_dir_one: {
+            value: data.data.round_ordering_dir_one,
+            error: false,
+            errorMessage: ""
+          },
+          round_ordering_dir_two: {
+            value: data.data.round_ordering_dir_two,
+            error: false,
+            errorMessage: ""
+          },
+          round_ordering_dir_three: {
+            value: data.data.round_ordering_dir_three,
+            error: false,
+            errorMessage: ""
+          },
+      
+
           statusId: {
             value: data.data.status_id,
             error: false,
@@ -469,19 +552,6 @@ export default function Setting({ tourney }) {
     }
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    setFormValues({
-      ...formValues,
-      [name]: {
-        ...formValues[name],
-        error: value === "",
-        value,
-      },
-    });
-  };
-
   const hasError = () => {
     let res = false;
     res = formValues.amountTable.error || formValues.smartTable.error || formValues.pointRound.error || formValues.timeRound.error || formValues.playSystem.error || formValues.lottery.error || formValues.limitPenaltyPoints.error;
@@ -512,16 +582,30 @@ export default function Setting({ tourney }) {
         "limitPenaltyPoints": formValues.limitPenaltyPoints.value,
         "points_penalty_yellow": formValues.points_penalty_yellow.value,
         "points_penalty_red": formValues.points_penalty_red.value,
+        
         "use_bonus": formValues.useBonus.value,
+
         "amount_bonus_points": formValues.amountBonusPoints.value,
         "amount_bonus_tables": formValues.amountBonusTables.value,
+        "amount_bonus_points_rounds": formValues.amountBonusPointsRounds.value,
+        
         "use_segmentation": formValues.usesSegmentation.value,
+        "scope": formValues.scope.value,
+        "level": formValues.level.value,
+
         "event_ordering_one": formValues.event_ordering_one.value,
+        "event_ordering_dir_one": formValues.event_ordering_dir_one.value,
         "event_ordering_two": formValues.event_ordering_two.value,
+        "event_ordering_dir_two": formValues.event_ordering_dir_two.value,
         "event_ordering_three": formValues.event_ordering_three.value,
+        "event_ordering_dir_three": formValues.event_ordering_dir_three.value,
+
         "round_ordering_one": formValues.round_ordering_one.value,
+        "round_ordering_dir_one": formValues.round_ordering_dir_one.value,
         "round_ordering_two": formValues.round_ordering_two.value,
-        "round_ordering_three": formValues.round_ordering_three.value
+        "round_ordering_dir_two": formValues.round_ordering_dir_one.value,
+        "round_ordering_three": formValues.round_ordering_three.value,
+        "round_ordering_dir_three": formValues.round_ordering_dir_one.value
       }
 
       try {
@@ -649,124 +733,12 @@ export default function Setting({ tourney }) {
 
               <TabContent activeTab={activeTab}>
                 <TabPane tabId="1">
-                  <div className="tab-content pt-2">
-                    <FormGroup row className="pt-2 ps-4 pe-4">
-                      <Label size="sm" sm={2}>
-                        Nombre del Torneo
-                      </Label>
-                      <Col sm={4}>
-                        <InputGroup size="sm">
-                          <Input
-                            type="text"
-                            name="name"
-                            id="name"
-                            placeholder={"Nombre del Torneo"}
-                            invalid={formValues.name.error}
-                            value={formValues.name.value}
-                            onChange={handleChange}
-                            autoComplete="off"
-                            onKeyPress={(event) => {
-                              if (!/^[A-Za-z_0-9.áéíóúÑñ\s]*$/.test(event.key)) {
-                                event.preventDefault();
-                              }
-                            }}
-                          />
-                          <FormFeedback>
-                            {formValues.name.errorMessage}
-                          </FormFeedback>
-                        </InputGroup>
-                      </Col>
-                    </FormGroup>
-                    <FormGroup row className="pt-2 ps-4 pe-4">
-                      <Label size="sm" sm={2}>Modalidad</Label>
-                      <Col sm={4}>
-                        <InputGroup size="sm">
-                          <Input
-                            id="modality"
-                            name="modality"
-                            type="select"
-                            value={formValues.modality.value}
-                            invalid={formValues.modality.error}
-                            onChange={handleChange}
-                          >
-                            <option value="">Modalidad</option>
-                            <option value="Individual">Individual</option>
-                            <option value="Parejas">Parejas</option>
-                            <option value="Equipo">Equipo</option>
-                          </Input>
-                          <FormFeedback>
-                            Por favor, seleccione la modalidad del torneo
-                          </FormFeedback>
-                        </InputGroup>
-                      </Col>
-                    </FormGroup>
-                    <FormGroup row className="pt-2 ps-4 pe-4">
-                      <Label size="sm" sm={2}>Rondas</Label>
-                      <Col sm={4}>
-                        <InputGroup size="sm">
-                          <Input
-                            id="number_rounds"
-                            name="number_rounds"
-                            type="number"
-                            placeholder="Rondas"
-                            invalid={formValues.number_rounds.error}
-                            value={formValues.number_rounds.value}
-                            onChange={handleChange}
-                            autoComplete="off"
-                          />
-                          <FormFeedback>
-                            {formValues.number_rounds.errorMessage}
-                          </FormFeedback>
-                        </InputGroup>
-                      </Col>
-                    </FormGroup>
-                    <FormGroup row className="pt-2 ps-4 pe-4">
-                      <Label size="sm" sm={2}>Fecha de Inicio</Label>
-                      <Col sm={4}>
-                        <InputGroup size="sm">
-                          <Input
-                            id="startDate"
-                            name="startDate"
-                            placeholder="Fecha"
-                            type="date"
-                            invalid={formValues.startDate.error}
-                            value={formValues.startDate.value}
-                            onChange={handleChange}
-                          />
-                          <FormFeedback>
-                            {formValues.startDate.errorMessage}
-                          </FormFeedback>
-                        </InputGroup>
-                      </Col>
-                    </FormGroup>
-                    <FormGroup row className="pt-2 ps-4 pe-4">
-                      <Label size="sm" sm={2}>Comentario</Label>
-                      <Col sm={4}>
-                        <InputGroup size="sm">
-                          <Input
-                            type="text"
-                            name="summary"
-                            id="summary"
-                            placeholder={"Comentario"}
-                            invalid={formValues.summary.error}
-                            value={formValues.summary.value}
-                            onChange={handleChange}
-                            autoComplete="off"
-                            onKeyPress={(event) => {
-                              if (!/^[A-Za-z_0-9.áéíóúÑñ\s]*$/.test(event.key)) {
-                                event.preventDefault();
-                              }
-                            }}
-                          />
-                        </InputGroup>
-                      </Col>
-                    </FormGroup>
-                  </div>
+                  <General formValues={formValues} setFormValues={setFormValues}/>
                 </TabPane>
 
                 <TabPane tabId="2">
 
-                    <General formValues={formValues} setFormValues={setFormValues}/>
+                    <Settings formValues={formValues} setFormValues={setFormValues}/>
 
                 </TabPane>
                 <TabPane tabId="3">
@@ -776,168 +748,7 @@ export default function Setting({ tourney }) {
                 </TabPane>
 
                 <TabPane tabId="4">
-                    <div className="tab-content pt-2">
-
-                      <FormGroup row className="pt-2 ps-4 pe-4">
-                        <Col sm={6}>
-                          <Card>
-                            <CardHeader>Críterios de Organización para Torneo</CardHeader>
-                            <CardBody className="p-4">
-                              <FormGroup row>
-                                <Label size="sm" sm={2}>
-                                  Críterio # 1:
-                                </Label>
-                                <Col sm={10}>
-                                  <InputGroup size="sm">
-                                    <Input
-                                      type="select"
-                                      name="event_ordering_one"
-                                      id="event_ordering_one"
-                                      placeholder="Críterio # 1"
-                                      value={formValues.event_ordering_one.value}
-                                      onChange={handleChange}
-                                    >
-                                      <option key={0} value="">Seleccione</option>
-                                      {criteriaTourney.map(({key, value},i)=>(
-                                        (key!==formValues.event_ordering_two.value && key!==formValues.event_ordering_three.value) &&
-                                          <option key={i+1} value={key}>{value}</option>                        
-                                      ))}
-                                    </Input>
-                                  </InputGroup>
-                                </Col>
-                              </FormGroup>
-
-                              <FormGroup row>
-                                <Label size="sm" sm={2}>
-                                  Críterio # 2:
-                                </Label>
-                                <Col sm={10}>
-                                  <InputGroup size="sm">
-                                    <Input
-                                      type="select"
-                                      name="event_ordering_two"
-                                      id="event_ordering_two"
-                                      placeholder="Críterio # 2"
-                                      value={formValues.event_ordering_two.value}
-                                      onChange={handleChange}
-                                    >
-                                      <option key={0} value="">Seleccione</option>
-                                      {criteriaTourney.map(({key, value},i)=>(
-                                        (key!==formValues.event_ordering_one.value && key!==formValues.event_ordering_three.value) &&
-                                          <option key={i+1} value={key}>{value}</option>                        
-                                      ))}
-                                    </Input>
-                                  </InputGroup>
-                                </Col>
-                              </FormGroup>
-
-                              <FormGroup row>
-                                <Label size="sm" sm={2}>
-                                  Críterio # 3:
-                                </Label>
-                                <Col sm={10}>
-                                  <InputGroup size="sm">
-                                    <Input
-                                      type="select"
-                                      name="event_ordering_three"
-                                      id="event_ordering_three"
-                                      placeholder="Críterio # 2"
-                                      value={formValues.event_ordering_three.value}
-                                      onChange={handleChange}
-                                    >
-                                      <option key={0} value="">Seleccione</option>
-                                      {criteriaTourney.map(({key, value},i)=>(
-                                        (key!==formValues.event_ordering_one.value && key!==formValues.event_ordering_two.value) &&
-                                          <option key={i+1} value={key}>{value}</option>                        
-                                    ))}
-                                    </Input>
-                                  </InputGroup>
-                                </Col>
-                              </FormGroup>
-                            </CardBody>
-                          </Card>
-                        </Col>
-                        <Col sm={6}>
-                          <Card>
-                            <CardHeader>Críterios de Organización para Rondas</CardHeader>
-                            <CardBody className="p-4">
-                              <FormGroup row>
-                                <Label size="sm" sm={2}>
-                                  Críterio # 1:
-                                </Label>
-                                <Col sm={10}>
-                                  <InputGroup size="sm">
-                                    <Input
-                                      type="select"
-                                      id="round_ordering_one"
-                                      name="round_ordering_one"
-                                      placeholder="Críterio # 1"
-                                      value={formValues.round_ordering_one.value}
-                                      onChange={handleChange}
-                                    >
-                                      <option key={0} value="">Seleccione</option>
-                                      {criteriaRound.map(({key, value},i)=>(
-                                        (key!==formValues.round_ordering_two.value && key!==formValues.round_ordering_three.value) &&
-                                          <option key={i+1} value={key}>{value}</option>                        
-                                      ))}
-                                    </Input>
-                                  </InputGroup>
-                                </Col>
-                              </FormGroup>
-
-                              <FormGroup row>
-                                <Label size="sm" sm={2}>
-                                  Críterio # 2:
-                                </Label>
-                                <Col sm={10}>
-                                  <InputGroup size="sm">
-                                    <Input
-                                      type="select"
-                                      id="round_ordering_two"
-                                      name="round_ordering_two"
-                                      placeholder="Críterio # 2"
-                                      value={formValues.round_ordering_two.value}
-                                      onChange={handleChange}
-                                    >
-                                      <option key={0} value="">Seleccione</option>
-                                      {criteriaRound.map(({key, value},i)=>(
-                                        (key!==formValues.round_ordering_one.value && key!==formValues.round_ordering_three.value) &&
-                                          <option key={i+1} value={key}>{value}</option>                        
-                                    ))}
-                                    </Input>
-                                  </InputGroup>
-                                </Col>
-                              </FormGroup>
-
-                              <FormGroup row>
-                                <Label size="sm" sm={2}>
-                                  Críterio # 3:
-                                </Label>
-                                <Col sm={10}>
-                                  <InputGroup size="sm">
-                                    <Input
-                                      type="select"
-                                      id="round_ordering_three"
-                                      name="round_ordering_three"
-                                      placeholder="Críterio # 3"
-                                      value={formValues.round_ordering_three.value}
-                                      onChange={handleChange}
-                                    >
-                                      <option key={0} value="">Seleccione</option>
-                                      {criteriaRound.map(({key, value},i)=>(
-                                        (key!==formValues.round_ordering_one.value && key!==formValues.round_ordering_two.value) &&
-                                          <option key={i+1} value={key}>{value}</option>                        
-                                    ))}
-                                    </Input>
-                                  </InputGroup>
-                                </Col>
-                              </FormGroup>
-                            </CardBody>
-                          </Card>
-                        </Col>
-                      </FormGroup>
-
-                    </div>
+                    <Criteria formValues={formValues} setFormValues={setFormValues}/>
                 </TabPane>
 
               </TabContent>
