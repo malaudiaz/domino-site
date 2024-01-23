@@ -6,6 +6,7 @@ import { Label, InputGroup, Input, Button,InputGroupText } from "reactstrap";
 import Pagination from "../../Pagination/Pagination";
 import { useAppContext } from "../../../AppContext";
 import Empty from "../../Empty/Empty";
+import Register from "./Register"
 
 export default function Players({tourney}) {
     const { token, lang } = useAppContext();
@@ -15,6 +16,7 @@ export default function Players({tourney}) {
     const [total, setTotal] = useState(0);
     const [filter, setFilter] = useState(0);
     const [refresh, setRefresh] = useState(false);
+    const [register, setRegister] = useState(false);
     const [playerName, setPlayerName] = useState("");
     const [message, setMessage] = useState("");
     const rowsPerPage = 12;
@@ -187,6 +189,10 @@ export default function Players({tourney}) {
         }
     }
 
+    const onClose = () => {
+        setRegister(false);
+    }
+
     return (
         <div className="tab-content pt-2"> 
             <div className="d-flex flex-wrap gap-2 justify-content-between align-items-center pt-2 px-4 pb-1">
@@ -248,6 +254,11 @@ export default function Players({tourney}) {
                     </InputGroup>
 
                 </div>
+
+                {filter==1 && <Button className="btn btn-sm btn-success" title="Registrar Jugador" onClick={(e)=>{e.preventDefault(); setRegister(true)}}>
+                    <i class="bi bi-person-plus"/>&nbsp;
+                    Registrar
+                </Button>}
 
             </div>
 
@@ -373,6 +384,8 @@ export default function Players({tourney}) {
                     />
                 </div>          
             }
+
+            <Register tourney={tourney} open={register} close={onClose}/>
         </div>
     )
 };

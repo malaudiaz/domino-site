@@ -9,7 +9,6 @@ import {
 import classnames from "classnames";
 import Invitations from "./Competitors/Invitations";
 import Players from "./Competitors/Players";
-import Register from "./Competitors/Register";
 
 export default function Response({ tourney }) {
   const [activeTab, setActiveTab] = useState("1");
@@ -28,7 +27,7 @@ export default function Response({ tourney }) {
 
       <div className="p-2">
          <Nav tabs>
-           <NavItem>
+            <NavItem>
                 <NavLink
                     href="#"
                     className={classnames({ active: activeTab === "1" })}
@@ -36,7 +35,7 @@ export default function Response({ tourney }) {
                     toggleTab("1");
                     }}
                 >
-                    Registro
+                    Invitaciones
                 </NavLink>
             </NavItem>
             <NavItem>
@@ -47,17 +46,6 @@ export default function Response({ tourney }) {
                     toggleTab("2");
                     }}
                 >
-                    Invitaciones
-                </NavLink>
-            </NavItem>
-            <NavItem>
-                <NavLink
-                    href="#"
-                    className={classnames({ active: activeTab === "3" })}
-                    onClick={() => {
-                    toggleTab("3");
-                    }}
-                >
                     Jugadores
                 </NavLink>
             </NavItem>
@@ -65,12 +53,9 @@ export default function Response({ tourney }) {
 
         <TabContent activeTab={activeTab}>
             <TabPane tabId="1">
-              <Register tourney={tourney}/>
-            </TabPane>
-            <TabPane tabId="2">
                 <Invitations tourney={tourney} />
             </TabPane>
-            <TabPane tabId="3">
+            <TabPane tabId="2">
                 <Players tourney={tourney} />
             </TabPane>
         </TabContent>

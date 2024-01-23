@@ -34,7 +34,7 @@ const Sidebar = () => {
                   : "nav-link collapsed"
               }
             >
-              <i className={"bi bi-house-door"}></i>
+              <i className={"bi bi-columns-gap"}></i>
               <span>Panel</span>
             </a>
           </Link>
