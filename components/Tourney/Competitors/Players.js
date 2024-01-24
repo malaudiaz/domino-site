@@ -19,6 +19,7 @@ export default function Players({tourney}) {
     const [register, setRegister] = useState(false);
     const [playerName, setPlayerName] = useState("");
     const [message, setMessage] = useState("");
+    const [item, setItem] = useState([]);
     const rowsPerPage = 12;
 
     const config = {
@@ -193,6 +194,11 @@ export default function Players({tourney}) {
         setRegister(false);
     }
 
+    const onEdit = (record) => {
+        setItem(record);
+        setRegister(true);
+    }
+
     return (
         <div className="tab-content pt-2"> 
             <div className="d-flex flex-wrap gap-2 justify-content-between align-items-center pt-2 px-4 pb-1">
@@ -355,6 +361,21 @@ export default function Players({tourney}) {
                                         </div>
                                     )}
 
+                                    {filter==1 && (
+                                        <div className="d-flex">
+                                            <div
+                                                className="rounded p-1 trash-effect"
+                                                title="Editar Jugador"
+                                                onClick={(e) => {onEdit(item)}}
+                                            >
+                                                <i
+                                                    className="rounded-circle bg-primary text-white bi bi-pencil-square p-1"
+                                                    style={{ fontSize: "16px" }}
+                                                ></i>
+                                            </div>
+                                        </div>
+                                    )}
+
                                 </div>
 
                                 <div className="d-flex flex-row justify-content-between align-items-center px-2 py-2">
@@ -385,7 +406,7 @@ export default function Players({tourney}) {
                 </div>          
             }
 
-            <Register tourney={tourney} open={register} close={onClose}/>
+            <Register tourney={tourney} open={register} close={onClose} playerId={item.id}/>
         </div>
     )
 };

@@ -14,13 +14,13 @@ import {
 
 import CountryComboBox from "../../Country/CountryComboBox";
 import CityComboBox from "../../City/CityComboBox";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppContext } from "../../../AppContext";
 import axios from "axios";
 import Swal from "sweetalert2";
 
 
-export default function Register({ tourney, open, close }) {
+export default function Register({ tourney, open, close, playerId }) {
   const { token, lang } = useAppContext();
 
   const toggle = () => {
@@ -104,7 +104,61 @@ export default function Register({ tourney, open, close }) {
       "accept-Language": lang,
       "Authorization": `Bearer ${token}`,
     }
-  };  
+  };
+  
+  const fetchData = async () => {
+    const url = `${process.env.NEXT_PUBLIC_API_URL}player/register/${playerId}`;
+
+    try {
+      const { data } = await axios.get(url, {}, config);
+      if (data.success) {
+
+        setFormValues({
+          ...formValues,
+          username: {
+            ...formValues["username"],
+            value: data.data.username,
+          },
+          first_name: {
+            ...formValues["first_name"],
+            value: data.data.first_name,
+          },
+        });
+    
+      }
+    } catch ({code, message, name, request}) {
+      if (code === "ERR_NETWORK") {
+        Swal.fire({
+          title: "Cargando Jugador",
+          text: "Error en su red, consulte a su proveedor de servicio",
+          icon: "error",
+          showCancelButton: false,
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Aceptar",
+        });
+      } else {
+        if (code === "ERR_BAD_REQUEST") {
+          const {detail} = JSON.parse(request.response)
+          Swal.fire({
+            title: "Cargando Jugador",
+            text: detail,
+            icon: "error",
+            showCancelButton: false,
+            allowOutsideClick: false,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Aceptar",
+          });  
+        }
+      }
+    }    
+  }
+
+  useEffect(()=>{
+    if (playerId) {
+      fetchData()
+    }
+  },[playerId])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
