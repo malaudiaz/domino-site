@@ -110,7 +110,7 @@ export default function Register({ tourney, open, close, playerId }) {
     const url = `${process.env.NEXT_PUBLIC_API_URL}player/register/${playerId}`;
 
     try {
-      const { data } = await axios.get(url, {}, config);
+      const { data } = await axios.get(url, config);
       if (data.success) {
 
         setFormValues({
@@ -123,8 +123,39 @@ export default function Register({ tourney, open, close, playerId }) {
             ...formValues["first_name"],
             value: data.data.first_name,
           },
+          last_name: {
+            ...formValues["last_name"],
+            value: data.data.last_name,
+          },
+          alias: {
+            ...formValues["alias"],
+            value: data.data.alias,
+          },
+          phone: {
+            ...formValues["phone"],
+            value: data.data.phone,
+          },
+          email: {
+            ...formValues["email"],
+            value: data.data.email,
+          },
+          level: {
+            ...formValues["level"],
+            value: data.data.level,
+          },
+          elo: {
+            ...formValues["elo"],
+            value: data.data.elo,
+          },
+          country: {
+            ...formValues["country"],
+            value: data.data.country_id,
+          },
+          city: {
+            ...formValues["city"],
+            value: data.data.city_id,
+          }
         });
-    
       }
     } catch ({code, message, name, request}) {
       if (code === "ERR_NETWORK") {
@@ -163,7 +194,11 @@ export default function Register({ tourney, open, close, playerId }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const url = `${process.env.NEXT_PUBLIC_API_URL}player/register/${tourney.id}`;
+    let url = `${process.env.NEXT_PUBLIC_API_URL}player/register/${tourney.id}`;
+
+    if (playerId) {
+      url = `${process.env.NEXT_PUBLIC_API_URL}player/register/${playerId}`;
+    }
 
     const body = {
       "username": formValues.username.value,
@@ -179,9 +214,15 @@ export default function Register({ tourney, open, close, playerId }) {
     };  
 
     try {
-      const { data } = await axios.post(url, body, config);
+      const { data } = await axios[playerId ? "put" : "post"](url, body, config);
       if (data.success) {
-
+        Swal.fire({
+          icon: "success",
+          title: "Registrando Jugadores",
+          text: data.detail,
+          showConfirmButton: true,
+        });
+        close();
       }
     } catch ({code, message, name, request}) {
       if (code === "ERR_NETWORK") {
