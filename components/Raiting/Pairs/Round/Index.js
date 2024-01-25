@@ -89,6 +89,7 @@ export default function PairsPositions({ id }) {
                         <thead>
                             <tr>
                                 <th className="text-center" rowSpan={2}>Pos</th>
+                                <th className="text-center" rowSpan={2}>Mesa</th>
                                 <th className="text-center" rowSpan={2}>Nombre</th>
 
                                 <th className="text-center" rowSpan={2}>
@@ -112,7 +113,7 @@ export default function PairsPositions({ id }) {
 
                                 <th className="text-center" colSpan={2}>Puntuación</th>
 
-                                <th className="text-center" colSpan={5}>ELO</th>
+                                <th className="text-center" colSpan={4}>ELO</th>
 
                                 <th className="text-center" rowSpan={2}>
                                     BON
@@ -133,13 +134,10 @@ export default function PairsPositions({ id }) {
                                     Rival
                                 </th>
                                 <th>
-                                    Obtenido
+                                    Var.
                                 </th>
                                 <th>
                                     Final
-                                </th>
-                                <th>
-                                    FC
                                 </th>
                             </tr>
                         </thead>
@@ -150,6 +148,9 @@ export default function PairsPositions({ id }) {
                                 <tr key={idx} style={{verticalAlign: "middle"}}>
                                     <th scope="row" className="text-center">
                                         {item.position_number}
+                                    </th>
+                                    <th scope="row" className="text-center">
+                                        {item.table_number}
                                     </th>
                                     <td>
                                         {item.name}
@@ -192,10 +193,6 @@ export default function PairsPositions({ id }) {
                                     </td>
                                     <td className="text-center">
                                         {item.elo_at_end}
-                                    </td>
-
-                                    <td className="text-center">
-                                        {item.k_value}
                                     </td>
 
                                     <td className="text-center">

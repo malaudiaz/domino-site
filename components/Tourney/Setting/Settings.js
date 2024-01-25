@@ -324,7 +324,7 @@ export default function Settings({ formValues, setFormValues }) {
 
               <FormGroup row className="ps-4 pe-4">
                 <Label size="sm" sm={6}>
-                  Cant. Puntos por Ronda:
+                  Incremento de Puntos por Ronda:
                 </Label>
                 <Col sm={6}>
                   <InputGroup size="sm">

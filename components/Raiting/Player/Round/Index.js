@@ -139,7 +139,7 @@ export default function RoundPositions({ id }) {
                                     Final
                                 </th>
                                 <th>
-                                    FC
+                                    R. Ant.
                                 </th>
                                 <th>
                                     Total
@@ -200,7 +200,7 @@ export default function RoundPositions({ id }) {
                                         {item.elo_at_end}
                                     </td>
                                     <td className="text-center">
-                                        {item.k_value}
+                                        {/* {item.elo_ra} */}
                                     </td>
 
                                     <td className="text-center">

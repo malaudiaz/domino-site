@@ -91,6 +91,8 @@ export default function AcumulatedPositions({ id }) {
                                 <th className="text-center" rowSpan={2}>Pos</th>
                                 <th className="text-center" rowSpan={2}>Nombre</th>
 
+                                <th className="text-center" rowSpan={2}>Estado</th>
+
                                 <th className="text-center" rowSpan={2}>
                                     JJ
                                 </th>
@@ -112,7 +114,9 @@ export default function AcumulatedPositions({ id }) {
 
                                 <th className="text-center" colSpan={2}>Puntuación</th>
 
-                                <th className="text-center" colSpan={4}>ELO</th>
+                                <th className="text-center" colSpan={3}>ELO</th>
+
+                                <th className="text-center" colSpan={4}>FC</th>
 
                                 <th className="text-center" rowSpan={2}>
                                     BON
@@ -139,7 +143,16 @@ export default function AcumulatedPositions({ id }) {
                                     Final
                                 </th>
                                 <th>
-                                    FC
+                                    K1
+                                </th>
+                                <th>
+                                    K2
+                                </th>
+                                <th>
+                                    K3
+                                </th>
+                                <th>
+                                    K
                                 </th>
                                 <th>
                                     Total
@@ -162,6 +175,10 @@ export default function AcumulatedPositions({ id }) {
                                     </th>
                                     <td>
                                         {item.name}
+                                    </td>
+
+                                    <td>
+                                        {item.status_description}
                                     </td>
 
                                     <td className="text-center">
@@ -199,8 +216,18 @@ export default function AcumulatedPositions({ id }) {
                                     <td className="text-center">
                                         {item.elo_at_end}
                                     </td>
+
                                     <td className="text-center">
-                                        {item.k_value}
+                                        {"K1"}
+                                    </td>
+                                    <td className="text-center">
+                                        {"K2"}
+                                    </td>
+                                    <td className="text-center">
+                                        {"K3"}
+                                    </td>
+                                    <td className="text-center">
+                                        {"K"}
                                     </td>
 
                                     <td className="text-center">
