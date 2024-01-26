@@ -14,6 +14,12 @@ export default function TournerResult({ id }) {
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [total, setTotal] = useState(0);
+
+    const openInNewTab = (url) => {
+        const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
+        if (newWindow) newWindow.opener = null
+    }
+ 
     const rowsPerPage = 20;
   
     const config = {
@@ -80,7 +86,10 @@ export default function TournerResult({ id }) {
             <Card
                 style={{ borderRadius: "10px", cursor: "default" }}
             >
-                <CardHeader>Resultados del Torneo</CardHeader>
+                <CardHeader className="d-flex justify-content-between align-items-center">
+                    <span>Resultados del Torneo</span>
+                    <button className="btn btn-sm btn-primary" onClick={() => openInNewTab(`/sliders/${id}`)}>Slider</button>
+                </CardHeader>
                 <CardBody className="p-4">
 
                     {raiting.length > 0 ? (
@@ -294,7 +303,6 @@ export default function TournerResult({ id }) {
 
                 </CardBody>                
             </Card>
-
         </div>
     );     
 }

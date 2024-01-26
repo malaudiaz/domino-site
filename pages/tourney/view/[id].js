@@ -223,91 +223,101 @@ export default function View() {
           </div>
 
           <div
-            className="px-4 pb-4"
-            style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
+            className="d-flex justify-content-between px-4 pb-4"
           >
-            <button
-              type="button"
-              style={
-                menu === "COMPETITORS"
+            <div className="d-flex flex-wrap gap-2">
+              <button
+                type="button"
+                style={
+                  menu === "COMPETITORS"
+                    ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
+                    : { background: "#e4e6eb" }
+                }
+                className="btn btn-sm"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleButton("COMPETITORS");
+                }}
+              >
+                <i className="bi bi-envelope-check"></i> Competidores
+              </button>
+
+              <button 
+                type="button" 
+                style={
+                  menu === "SETTING"
                   ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
                   : { background: "#e4e6eb" }
-              }
-              className="btn btn-sm"
-              onClick={(e) => {
-                e.preventDefault();
-                handleButton("COMPETITORS");
-              }}
-            >
-              <i className="bi bi-envelope-check"></i> Competidores
-            </button>
+                }
+                className="btn btn-sm"
+                onClick={(e)=>{
+                  e.preventDefault();
+                  handleButton("SETTING");
+                }}
+              >
+                <i className="bi bi-gear"></i> Configurar Torneo
+              </button>
 
-            <button 
-              type="button" 
-              style={
-                menu === "SETTING"
-                ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
-                : { background: "#e4e6eb" }
-              }
-              className="btn btn-sm"
-              onClick={(e)=>{
-                e.preventDefault();
-                handleButton("SETTING");
-              }}
-            >
-              <i className="bi bi-gear"></i> Configurar Torneo
-            </button>
+              <button
+                type="button"
+                style={
+                  menu === "TABLES"
+                    ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
+                    : { background: "#e4e6eb" }
+                }
+                className="btn btn-sm"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleButton("TABLES");
+                }}
+              >
+                <i className="bi bi-bounding-box"></i> Mesas
+              </button>
+
+              <button
+                type="button"
+                style={
+                  menu === "PLAY"
+                    ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
+                    : { background: "#e4e6eb" }
+                }
+                className="btn btn-sm"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleButton("PLAY");
+                }}
+              >
+                <i className="bi bi-collection-play"></i> Rondas
+              </button>
+
+              {tourney.status_name==="FINALIZED" &&
+              <button
+                type="button"
+                style={
+                  menu === "RESULT"
+                    ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
+                    : { background: "#e4e6eb" }
+                }
+                className="btn btn-sm"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleButton("RESULT");
+                }}
+              >
+                <i className="bi bi-graph-up-arrow"></i> Resultados
+              </button>}
+            </div>
 
             <button
-              type="button"
-              style={
-                menu === "TABLES"
-                  ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
-                  : { background: "#e4e6eb" }
-              }
-              className="btn btn-sm"
-              onClick={(e) => {
-                e.preventDefault();
-                handleButton("TABLES");
-              }}
-            >
-              <i className="bi bi-bounding-box"></i> Mesas
-            </button>
-
-
-            <button
-              type="button"
-              style={
-                menu === "PLAY"
-                  ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
-                  : { background: "#e4e6eb" }
-              }
-              className="btn btn-sm"
-              onClick={(e) => {
-                e.preventDefault();
-                handleButton("PLAY");
-              }}
-            >
-              <i className="bi bi-collection-play"></i> Rondas
-            </button>
-
-            {tourney.status_name==="FINALIZED" &&
-            <button
-              type="button"
-              style={
-                menu === "RESULT"
-                  ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
-                  : { background: "#e4e6eb" }
-              }
-              className="btn btn-sm"
-              onClick={(e) => {
-                e.preventDefault();
-                handleButton("RESULT");
-              }}
-            >
-              <i class="bi bi-graph-up-arrow"></i> Resultados
-            </button>}
-
+                type="button"
+                title="Cerrar el Torneo"
+                className="btn btn-sm btn-danger"
+                onClick={(e) => {
+                  e.preventDefault();
+                }}
+              >
+                <i className="bi bi-lightning"></i> Cerrar Torneo
+              </button>
 
           </div>
 

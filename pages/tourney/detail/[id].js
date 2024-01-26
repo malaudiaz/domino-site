@@ -210,52 +210,6 @@ export default function Detail() {
                 </span>
               </div>
 
-              {/* <div className="d-flex flex-row flex-wrap gap-2 px-4">
-                <span
-                  className="rounded mb-2 bg-primary text-light p-1"
-                  style={{ fontSize: "14px", fontWeight: "600" }}
-                >
-                  Rondas: {tourney.number_rounds}
-                </span>
-
-                <span
-                  className="rounded mb-2 bg-primary text-light p-1"
-                  style={{ fontSize: "14px", fontWeight: "600" }}
-                >
-                  Puntos para Ganar: {tourney.number_rounds}
-                </span>
-
-                <span
-                  className="rounded mb-2 bg-primary text-light p-1"
-                  style={{ fontSize: "14px", fontWeight: "600" }}
-                >
-                  Tiempo para Ganar: {tourney.number_rounds} min.
-                </span>
-
-                <span
-                  className="rounded mb-2 bg-primary text-light p-1"
-                  style={{ fontSize: "14px", fontWeight: "600" }}
-                >
-                  Usar Peniladades: {"Sí"}
-                </span>
-
-                <span
-                  className="rounded mb-2 bg-primary text-light p-1"
-                  style={{ fontSize: "14px", fontWeight: "600" }}
-                >
-                  Usar Bonificaciones: {"No"}
-                </span>
-
-                <span
-                  className="rounded mb-2 bg-primary text-light p-1"
-                  style={{ fontSize: "14px", fontWeight: "600" }}
-                >
-                  Usar Segmentación: {"Sí"}
-                </span>
-
-
-              </div> */}
-
             </div>
           </div>
 
@@ -275,7 +229,7 @@ export default function Detail() {
                 toggleTab("1");
               }}
             >
-              <i className="bi bi-plus-circle"></i> Resultados del Torneo
+              <i className="bi bi-journal-check"></i> Resultados del Torneo
             </button>
 
             <button
@@ -286,7 +240,7 @@ export default function Detail() {
                 toggleTab("2");
               }}
             >
-              <i className="bi bi-plus-circle"></i> Resultados de la Ronda
+              <i className="bi bi-journal-text"></i> Resultados por Rondas
             </button>
 
           </div>
