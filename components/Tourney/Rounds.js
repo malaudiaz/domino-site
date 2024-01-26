@@ -206,6 +206,53 @@ export default function Rounds({ tourney, readOnly }) {
     }
   };
 
+  const closeTourney = async () => {
+    const url = `${process.env.NEXT_PUBLIC_API_URL}tourney/close/${tourney.id}`;
+
+    try {
+      const { data } = await axios.post(url, {}, config);
+      if (data.success) {
+
+        Swal.fire({
+          icon: "success",
+          title: "Cerrando el Torneo",
+          text: data.detail,
+          showConfirmButton: true,
+        });
+
+        setActiveRound(data.data);
+        setReload(true);
+
+      }
+    } catch ({code, message, name, request}) {
+      console.log(message);
+      if (code === "ERR_NETWORK") {
+        Swal.fire({
+          title: "Cerrando el Torneo",
+          text: "Error en su red, consulte a su proveedor de servicio",
+          icon: "error",
+          showCancelButton: false,
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Aceptar",
+        });
+      } else {
+        if (code === "ERR_BAD_REQUEST") {
+          const {detail} = JSON.parse(request.response)
+          Swal.fire({
+            title: "Cerrando el Torneo",
+            text: detail,
+            icon: "error",
+            showCancelButton: false,
+            allowOutsideClick: false,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Aceptar",
+          });  
+        }
+      }
+    }
+  }
+
   const handleSubmit = async () => {
 
     if (selected.length === activeRound.amount_players_playing || activeRound.status_name !== "CREATED") {
@@ -261,7 +308,10 @@ export default function Rounds({ tourney, readOnly }) {
                 confirmButtonText: "Sí",
               }).then((result) => {
                 if (result.isConfirmed) {
-                  createRound()
+                  createRound();
+                } else {
+                  // Cerrar el torneo
+                  closeTourney();
                 }
               });
             
@@ -426,18 +476,6 @@ export default function Rounds({ tourney, readOnly }) {
                     {readOnly ? "Puntuaciones" : "Entrada de Datos"}
                   </NavLink>
                 </NavItem>}
-
-                {/* <NavItem>
-                  <NavLink
-                    href="#"
-                    className={classnames({ active: activeTab === "6" })}
-                    onClick={() => {
-                      toggleTab("6");
-                    }}
-                  >
-                    Resultados
-                  </NavLink>
-                </NavItem> */}
               </Nav>
 
               <TabContent activeTab={activeTab}>
