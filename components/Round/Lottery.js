@@ -146,7 +146,7 @@ export default function Lottery({ activeRound, tourney, selected, setSelected })
 
   return (
     <div className="tab-content pt-4">
-      <div className="d-flex flex-wrap ps-4">
+      <div className="d-flex flex-wrap gap-2 ps-4">
         <h6 className="title flex-grow-1">{activeRound.lottery_type === "MANUAL" ? "Sorteo Manual" : "Sorteo Automático"}</h6>
         <div className="d-flex pe-2">
           <InputGroup size="sm" className="ms-2">

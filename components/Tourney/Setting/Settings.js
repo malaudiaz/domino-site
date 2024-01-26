@@ -148,6 +148,7 @@ export default function Settings({ formValues, setFormValues }) {
               type="number"
               name="constant_increase_ELO"
               id="constant_increase_ELO"
+              disabled={true}
               invalid={formValues.constant_increase_ELO.error}
               value={formValues.constant_increase_ELO.value}
               onChange={handleChange}
@@ -156,8 +157,8 @@ export default function Settings({ formValues, setFormValues }) {
         </Col>
       </FormGroup>
 
-      <Row className="ps-4 pe-4">
-        <Col sm={6}>
+      <div className="container-setting ps-4 pe-4">
+        <div className="row ps-2 pe-2">
           <FormGroup check inline>
             <Input
               type="checkbox"
@@ -169,28 +170,10 @@ export default function Settings({ formValues, setFormValues }) {
             />
             <Label check>Usar Penalización</Label>
           </FormGroup>
-        </Col>
 
-        <Col sm={6}>
-          <FormGroup check inline>
-            <Input
-              type="checkbox"
-              id="useBonus"
-              name="useBonus"
-              value={formValues.useBonus.value}
-              checked={formValues.useBonus.value}
-              onChange={handleChange}
-            />
-            <Label check>Usar Bonificación</Label>
-          </FormGroup>
-        </Col>
-      </Row>
-
-      <FormGroup row className="pt-2 ps-4 pe-4">
-        <Col sm={6}>
-          <Card style={{ height: "240px" }}>
+          <Card>
             <CardHeader>Penalizaciones</CardHeader>
-            <CardBody className="p-4">
+            <CardBody className="d-grid p-4">
               <FormGroup row className="ps-4 pe-4">
                 <Label size="sm" sm={6}>
                   Límite de Puntos por Penalización
@@ -264,9 +247,22 @@ export default function Settings({ formValues, setFormValues }) {
               </FormGroup>
             </CardBody>
           </Card>
-        </Col>
-        <Col sm={6}>
-          <Card style={{ height: "240px" }}>
+
+        </div>
+
+        <div className="row ps-2 pe-2">
+          <FormGroup check inline>
+            <Input
+              type="checkbox"
+              id="useBonus"
+              name="useBonus"
+              value={formValues.useBonus.value}
+              checked={formValues.useBonus.value}
+              onChange={handleChange}
+            />
+            <Label check>Usar Bonificación</Label>
+          </FormGroup>
+          <Card>
             <CardHeader>Bonificaciones</CardHeader>
             <CardBody className="p-4">
               <FormGroup row className="ps-4 pe-4">
@@ -351,8 +347,9 @@ export default function Settings({ formValues, setFormValues }) {
 
             </CardBody>
           </Card>
-        </Col>
-      </FormGroup>
+        </div>
+
+      </div>
     </div>
   );
 }

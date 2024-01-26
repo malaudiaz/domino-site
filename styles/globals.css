@@ -1644,6 +1644,17 @@ h6 {
     grid-template-columns: repeat(5, 1fr);
     gap: 20px;
   }
+  .container-criteria {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .container-setting {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
 }
 
 

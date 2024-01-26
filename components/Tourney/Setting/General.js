@@ -153,6 +153,7 @@ export default function General({ formValues, setFormValues }) {
               id="level"
               name="level"
               value={1}
+              checked={formValues.level.value==1 ? true : false}
               onChange={handleChange}
               type="radio"
             />{" "}
@@ -163,6 +164,7 @@ export default function General({ formValues, setFormValues }) {
               id="level"
               name="level"
               value={2}
+              checked={formValues.level.value==2 ? true : false}
               onChange={handleChange}
               type="radio"
             />{" "}
@@ -173,6 +175,7 @@ export default function General({ formValues, setFormValues }) {
               id="level"
               name="level"
               value={3}
+              checked={formValues.level.value==3 ? true : false}
               onChange={handleChange}
               type="radio"
             />{" "}

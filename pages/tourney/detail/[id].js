@@ -11,6 +11,7 @@ import Footer from "../../../components/Footers/Footer";
 import { eventDate } from "../../../_functions";
 import classnames from "classnames";
 import Rounds from "../../../components/Tourney/Rounds";
+import TournerResult from "../../../components/Raiting/Tourney/Index";
 
 export default function Detail() {
   const { token, lang } = useAppContext();
@@ -209,7 +210,7 @@ export default function Detail() {
                 </span>
               </div>
 
-              <div className="d-flex flex-row flex-wrap gap-2 px-4">
+              {/* <div className="d-flex flex-row flex-wrap gap-2 px-4">
                 <span
                   className="rounded mb-2 bg-primary text-light p-1"
                   style={{ fontSize: "14px", fontWeight: "600" }}
@@ -253,7 +254,7 @@ export default function Detail() {
                 </span>
 
 
-              </div>
+              </div> */}
 
             </div>
           </div>
@@ -262,7 +263,40 @@ export default function Detail() {
             <hr></hr>
           </div>
 
-          <Rounds tourney={tourney} readOnly={true} />
+          <div
+            className="px-4 pb-2"
+            style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
+          >
+            <button
+              type="button"
+              className={activeTab==="1" ? "btn btn-sm btn-primary" : "btn btn-sm btn-secondary"}
+              onClick={(e) => {
+                e.preventDefault();
+                toggleTab("1");
+              }}
+            >
+              <i className="bi bi-plus-circle"></i> Resultados del Torneo
+            </button>
+
+            <button
+              type="button"
+              className={activeTab==="2" ? "btn btn-sm btn-primary" : "btn btn-sm btn-secondary"}
+              onClick={(e) => {
+                e.preventDefault();
+                toggleTab("2");
+              }}
+            >
+              <i className="bi bi-plus-circle"></i> Resultados de la Ronda
+            </button>
+
+          </div>
+
+
+          <div className="d-grid pt-3 px-4">
+            {activeTab==="1" && <TournerResult id={tourneyId}/>}
+            {activeTab==="2" && <Rounds tourney={tourney} readOnly={true}/>}
+          </div>
+
 
         </div>
           

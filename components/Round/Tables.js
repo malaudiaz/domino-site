@@ -96,14 +96,14 @@ export default function Tables({ round, edited }) {
 
 
   return (
-    <div className="pt-3 px-4 pb-4" style={{ display: "grid" }}>
+    <div className="pt-3 pb-4" style={{ display: "grid" }}>
       {tables.length > 0 ? (
         <div className="container-events">
           {tables.map((item, idx) => (
             <Card
               key={idx}
               className="d-flex flex-column align-items-center rounded"
-              style={{ height: edited ? "400px" : "350px", background: "#ebebeb" }}
+              style={{ background: "#ebebeb" }}
             >
               <CardHeader className="w-100">Mesa <b>{item.number}</b> - {item.type}</CardHeader>
               <div className="container-fluid pt-2">
@@ -111,9 +111,10 @@ export default function Tables({ round, edited }) {
                   <div className="image_with_badge_container">
                     <Image
                       alt="Avatar Player 1"
+                      style={{maxWidth: "40px", minHeight: "40px"}}
                       src={item.playerOne ? item.playerOne.avatar : "/profile/user-vector.jpg"}
-                      width={60}
-                      height={60}
+                      width={"40px"}
+                      height={"40px"}
                       className="rounded-image"
                     />
                     <span className="badge bg-primary rounded badge-on-image-y">
@@ -122,16 +123,15 @@ export default function Tables({ round, edited }) {
                   </div>
                   <small>{item.playerOne ? item.playerOne.name : "Vacante"}</small>
                 </div>
-
                 <div className="row">
-
                   <div className="col-3 d-flex flex-column justify-content-center text-center">
                     <div className="image_with_badge_container">
                       <Image
                         alt="Avatar Player 2"
+                        style={{maxWidth: "40px", minHeight: "40px"}}
                         src={item.playerTwo ? item.playerTwo.avatar : "/profile/user-vector.jpg"}
-                        width={60}
-                        height={60}
+                        width={"40px"}
+                        height={"40px"}
                         className="rounded-image"
                       />
                       <span className="badge bg-primary rounded badge-on-image-x">
@@ -143,22 +143,18 @@ export default function Tables({ round, edited }) {
 
                   <div
                     className="col-6 d-flex flex-column justify-content-center align-items-center border border-primary bg-white"
-                    style={{ 
-                      height: "100px", 
-                      backgroundImage: "url(" + `${item.image}` + ")", 
-                      backgroundSize: "cover", 
-                      backgroundRepeat: "no-repeat" }}
                   >
 
-                    {/* <Image
+                    <Image
                       alt="Foto de Publicidad para la Mesa"
+                      style={{maxWidth: "400px", minHeight: "300px"}}
                       src={item.image}
-                      width={400}
-                      height={350}
+                      width={"400px"}
+                      height={"300px"}
                       quality={50}
                       priority
                       layout="intrinsic"
-                    /> */}
+                    />
 
                   </div>
 
@@ -166,9 +162,10 @@ export default function Tables({ round, edited }) {
                       <div className="image_with_badge_container">
                         <Image
                           alt="Avatar Player 4"
+                          style={{maxWidth: "40px", minHeight: "40px"}}
                           src={item.playerFour ? item.playerFour.avatar : "/profile/user-vector.jpg"}
-                          width={60}
-                          height={60}
+                          width={"40px"}
+                          height={"40px"}
                           className="rounded-image"
                         />
                         <span className="badge bg-primary rounded badge-on-image-x">
@@ -248,9 +245,10 @@ export default function Tables({ round, edited }) {
                   <div className="image_with_badge_container">
                     <Image
                       alt="Avatar Player 3"
+                      style={{maxWidth: "40px", minHeight: "40px"}}
                       src={item.playerThree ? item.playerThree.avatar : "/profile/user-vector.jpg"}
-                      width={60}
-                      height={60}
+                      width={"40px"}
+                      height={"40px"}
                       className="rounded-image"
                     />
                     <span className="badge bg-primary rounded badge-on-image-y">{item.playerThree ? item.playerThree.index : "-"}</span>

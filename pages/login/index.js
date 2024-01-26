@@ -182,7 +182,6 @@ export default function Login() {
                           )}
                         </a>
                       </InputGroupText>
-
                       <FormFeedback>{t.passwordFeed}</FormFeedback>
                     </InputGroup>
                   </FormGroup>

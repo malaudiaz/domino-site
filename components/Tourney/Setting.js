@@ -7,18 +7,11 @@ import classnames from "classnames";
 import {
   Card,
   CardBody,
-  FormGroup,
   Nav, 
   NavItem,
   NavLink,
   TabContent,
   TabPane,
-  Col,
-  CardHeader,
-  Label,
-  InputGroup,
-  Input,
-  FormFeedback
 } from "reactstrap";
 
 import Settings from "./Setting/Settings";
@@ -303,12 +296,12 @@ export default function Setting({ tourney }) {
             errorMessage: "Fecha de Inicio del torneo, requerido"
           },
           scope: {
-            value: "",
+            value: data.data.scope,
             error: false,
             errorMessage: "Alcance del torneo, requerido"
           },
           level: {
-            value: "",
+            value: data.data.level,
             error: false,
             errorMessage: "Nivel del torneo, requerido"
           },
@@ -464,8 +457,7 @@ export default function Setting({ tourney }) {
             value: data.data.round_ordering_dir_three,
             error: false,
             errorMessage: ""
-          },
-      
+          },   
 
           statusId: {
             value: data.data.status_id,

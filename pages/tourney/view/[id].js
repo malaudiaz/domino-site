@@ -12,8 +12,8 @@ import Response from "../../../components/Tourney/Response";
 import Tables from "../../../components/Tourney/Tables";
 import Setting from "../../../components/Tourney/Setting";
 import Rounds from "../../../components/Tourney/Rounds";
-
 import { eventDate } from "../../../_functions";
+import TournerResult from "../../../components/Raiting/Tourney/Index";
 
 export default function View() {
   const { token, lang } = useAppContext();
@@ -254,14 +254,12 @@ export default function View() {
                 e.preventDefault();
                 handleButton("SETTING");
               }}
-              // disabled={tourney.amount_player===0}
             >
               <i className="bi bi-gear"></i> Configurar Torneo
             </button>
 
             <button
               type="button"
-              // disabled={tourney.status_name==="CREATED"}
               style={
                 menu === "TABLES"
                   ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
@@ -279,7 +277,6 @@ export default function View() {
 
             <button
               type="button"
-              // disabled={tourney.status_name==="CREATED"}
               style={
                 menu === "PLAY"
                   ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
@@ -294,6 +291,22 @@ export default function View() {
               <i className="bi bi-collection-play"></i> Rondas
             </button>
 
+            {tourney.status_name==="FINALIZED" &&
+            <button
+              type="button"
+              style={
+                menu === "RESULT"
+                  ? { background: "#e4e6eb", color: "blue", fontWeight: "500" }
+                  : { background: "#e4e6eb" }
+              }
+              className="btn btn-sm"
+              onClick={(e) => {
+                e.preventDefault();
+                handleButton("RESULT");
+              }}
+            >
+              <i class="bi bi-graph-up-arrow"></i> Resultados
+            </button>}
 
 
           </div>
@@ -302,6 +315,7 @@ export default function View() {
           {menu === "SETTING" && <Setting tourney={tourney} setMenu={setMenu} setRefresh={setRefresh} />}
           {menu === "TABLES" && <Tables tourney={tourney}/>}
           {menu === "PLAY" && <Rounds tourney={tourney} readOnly={false} />}
+          {menu === "RESULT" && <TournerResult id={tourneyId}/>}
           
         </div>
       </main>

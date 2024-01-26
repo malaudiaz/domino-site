@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useAppContext } from "../../AppContext";
-import OutlineTooltip from "../Tooltip/OutlineTooltip";
 import { Button, Card, CardBody, Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
 import classnames from "classnames";
 import Lottery from "../Round/Lottery";
@@ -96,26 +95,6 @@ export default function Rounds({ tourney, readOnly }) {
     }
   }, [tourney.id, selected, reload]);
 
-  const roundTipInfo = (item) => {
-    return (
-      <div className="d-flex flex-column flex-fill ms-4">
-        <h6><b>{item.summary}</b></h6>
-        <small className="comment-text fs-12">
-            Fecha Inicio: <b>{item.start_date}</b>
-        </small>
-        {item.close_date !== "" &&
-            <small className="comment-text fs-12">
-                Fecha Final: <b>{item.close_date}</b>
-            </small>
-        }
-        <small className="comment-text fs-12">
-            Estado: <b>{item.status_description.toUpperCase()}</b>
-        </small>
-      </div>
-
-    )
-  }
-
   const handleRound = async (id) => {
     const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/actions/aperture/${id}`;
 
@@ -180,6 +159,53 @@ export default function Rounds({ tourney, readOnly }) {
     }
   };
 
+  const createRound = async () => {
+    const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/actions/create/${tourney.id}`;
+
+    try {
+      const { data } = await axios.post(url, {}, config);
+      if (data.success) {
+
+        Swal.fire({
+          icon: "success",
+          title: "Creando Ronda",
+          text: data.detail,
+          showConfirmButton: true,
+        });
+
+        setActiveRound(data.data);
+        setReload(true);
+
+      }
+    } catch ({code, message, name, request}) {
+      console.log(message);
+      if (code === "ERR_NETWORK") {
+        Swal.fire({
+          title: "Creando Ronda",
+          text: "Error en su red, consulte a su proveedor de servicio",
+          icon: "error",
+          showCancelButton: false,
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Aceptar",
+        });
+      } else {
+        if (code === "ERR_BAD_REQUEST") {
+          const {detail} = JSON.parse(request.response)
+          Swal.fire({
+            title: "Creando Ronda",
+            text: detail,
+            icon: "error",
+            showCancelButton: false,
+            allowOutsideClick: false,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Aceptar",
+          });  
+        }
+      }
+    }
+  };
+
   const handleSubmit = async () => {
 
     if (selected.length === activeRound.amount_players_playing || activeRound.status_name !== "CREATED") {
@@ -220,11 +246,30 @@ export default function Rounds({ tourney, readOnly }) {
           });
 
           setActiveRound(data.data);
-          if (activeRound.status_name === "REVIEW") {
-            setActiveRound(null);
-            setReload(true);
-          }
 
+          if (activeRound.status_name === "REVIEW") {
+            if (activeRound.is_last) {
+
+              Swal.fire({
+                title: "Cerrar Ronda",
+                text: "Se va a cerrar la última ronda del torneo, ¿ Desea crear otra ronda ?",
+                icon: "question",
+                showCancelButton: true,
+                cancelButtonText: "No",
+                allowOutsideClick: false,
+                confirmButtonColor: "#3085d6",
+                confirmButtonText: "Sí",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  createRound()
+                }
+              });
+            
+            } else {  
+              setActiveRound(null);
+              setReload(true);
+            }
+          }  
         }
       } catch ({code, message, name, request}) {
         console.log(message);
@@ -270,31 +315,24 @@ export default function Rounds({ tourney, readOnly }) {
   return (
     <div>
       <div className="d-flex flex-column flex-wrap gap-1 ps-4">
-        <h1 className="title">Rondas</h1>
+        {!readOnly && <h1 className="title">Rondas</h1>}
         <div className="d-flex flex-row flex-wrap gap-1 justify-content-between align-items-center pe-4">
           <div className="d-flex flex-row flex-wrap gap-1 align-items-center">
             {rounds.map((item, idx) => (
               <a key={idx} className="ms-2" style={{cursor: "pointer"}} onClick={(e)=>{e.preventDefault(); handleClick(item);}}>
 
                 <span 
-                  className={activeRound && item.id!==activeRound.id ? "round badge bg-primary rounded-circle fs-6" : "round badge bg-success rounded-circle fs-6"}
+                  className={activeRound && item.id!==activeRound.id ? "round badge bg-success rounded-circle fs-6" : "round badge bg-primary rounded-circle fs-6"}
                   id={`outlineTooltip_${idx}`}
                   title={item.summary+" ("+item.status_description.toUpperCase()+")"}
                 >
                   {item.round_number}
                 </span>
-
-                {/* <OutlineTooltip
-                  id={`tooltip_${idx}`}
-                  placement="bottom"
-                  // target={`outlineTooltip_${idx}`}
-                  message={roundTipInfo(item)}
-                />     */}
               </a>                            
             ))}
           </div>
 
-          { activeRound && activeRound.status_name!=="INITIADED" && activeRound.status_name !== "FINALIZED" && 
+          { activeRound && activeRound.status_name!=="INITIADED" && activeRound.status_name !== "FINALIZED" && !readOnly && 
             <Button className="btn btn-sm btn-success" onClick={handleSubmit}>              
               {activeRound.status_name==="CREATED" && (
                 <><i class="bi bi-gear"></i>&nbsp;Configurar</>
@@ -304,7 +342,6 @@ export default function Rounds({ tourney, readOnly }) {
               {activeRound.status_name==="REVIEW" && (<><i class="bi bi-door-closed"/>&nbsp;Cerrar</>)}
             </Button> 
           }
-
         </div>
       </div>
 
