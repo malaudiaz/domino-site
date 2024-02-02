@@ -5,6 +5,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { CardBody, CardHeader, Table } from "reactstrap";
 import { Card } from "reactstrap";
+import Head from "next/head";
 
 export default function TournerResult({ id }) {
     const { token, lang } = useAppContext();
@@ -82,7 +83,10 @@ export default function TournerResult({ id }) {
 
     return (
         <div className="d-grid pt-3 px-4">
-
+            <Head>
+                <link rel="shortcut icon" href="/smartdomino.ico" />
+                <title>Resultados del Torneo</title>
+            </Head>
             <Card
                 style={{ borderRadius: "10px", cursor: "default" }}
             >

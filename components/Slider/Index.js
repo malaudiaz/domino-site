@@ -79,7 +79,7 @@ export default function SliderResult({id}) {
       if (id) {
         fetchData();
       }
-    }, [id, activeIndex]); 
+    }, [id, page, activeIndex]); 
 
   const next = () => {
     if (animating) return;
@@ -279,10 +279,10 @@ export default function SliderResult({id}) {
                 </tbody>
             </Table>
 
-            <CarouselCaption
+            {/* <CarouselCaption
                 captionText={item.caption}
                 captionHeader={item.caption}
-            />            
+            />             */}
 
         </CarouselItem>
     );
@@ -294,16 +294,17 @@ export default function SliderResult({id}) {
       next={next}
       interval={5000}
       previous={previous}
+      dark={true}
     >
-      <CarouselIndicators
+      {/* <CarouselIndicators
         items={items}
         activeIndex={activeIndex}
         onClickHandler={goToIndex}
-      />
+      /> */}
 
         {slides}
 
-      <CarouselControl
+      {/* <CarouselControl
         direction="prev"
         directionText="Previous"
         onClickHandler={previous}
@@ -312,7 +313,7 @@ export default function SliderResult({id}) {
         direction="next"
         directionText="Next"
         onClickHandler={next}
-      />
+      /> */}
     </Carousel>
   );
 };

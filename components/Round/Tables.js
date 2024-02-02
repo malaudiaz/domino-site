@@ -5,15 +5,19 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { useAppContext } from "../../AppContext";
 import { Card, CardHeader, Label, Input } from "reactstrap";
+import Boletus from "./Boletus";
 
 export default function Tables({ round, edited }) {
   const { token, lang } = useAppContext();
 
   const [tables, setTables] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [record, setRecord] = useState([]);
 
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [total, setTotal] = useState(0);
+
   const rowsPerPage = 8;
 
   const config = {
@@ -94,6 +98,14 @@ export default function Tables({ round, edited }) {
     }  
   }
 
+  const handleClick = (item) => {
+    setRecord(item);
+    setOpen(true);
+  };
+
+  const closeBoletus = () => {
+    setOpen(false);
+  };
 
   return (
     <div className="pt-3 pb-4" style={{ display: "grid" }}>
@@ -102,8 +114,12 @@ export default function Tables({ round, edited }) {
           {tables.map((item, idx) => (
             <Card
               key={idx}
-              className="d-flex flex-column align-items-center rounded"
+              className="card-info"
               style={{ background: "#ebebeb" }}
+              onClick={(e) => {
+                e.preventDefault();
+                handleClick(item);
+              }}
             >
               <CardHeader className="w-100">Mesa <b>{item.number}</b> - {item.type}</CardHeader>
               <div className="container-fluid pt-2">
@@ -290,6 +306,15 @@ export default function Tables({ round, edited }) {
           />
         </div>
       )}
+
+      <Boletus 
+          open={open} 
+          close={closeBoletus} 
+          record={record} 
+          readOnly={true} 
+      />
+
+
     </div>
   );
 }

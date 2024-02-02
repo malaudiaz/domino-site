@@ -74,7 +74,7 @@ export default function Info({ round, readOnly, setActiveRound }) {
     if (round.id && !open) {
       fetchData();
     }
-  }, [round.id, open, record]);
+  }, [round.id, open, record, page]);
 
   const handleClick = (item) => {
     setRecord(item);
@@ -101,7 +101,7 @@ export default function Info({ round, readOnly, setActiveRound }) {
             <Card
               className="card-info"
               key={idx}
-              style={{ height: "310px", background: "#ebebeb" }}
+              style={{ background: "#ebebeb" }}
               onClick={(e) => {
                 e.preventDefault();
                 handleClick(item);

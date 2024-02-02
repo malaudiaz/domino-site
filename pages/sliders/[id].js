@@ -3,6 +3,7 @@ import { CardBody, CardHeader} from "reactstrap";
 import { Card } from "reactstrap";
 import Image from "next/image";
 import SliderResult from "../../components/Slider/Index";
+import Head from "next/head";
 
 export default function Sliders() {
     const router = useRouter();
@@ -10,6 +11,10 @@ export default function Sliders() {
 
     return (
         <div className="d-flex flex-column min-vh-100" on>
+            <Head>
+                <link rel="shortcut icon" href="/smartdomino.ico" />
+                <title>Resultados del Torneo</title>
+            </Head>
             <div className="container pt-4">
                 <div className="d-flex align-items-center justify-content-between pb-4">
                     <Image alt="SmartDomino" src="/Logo-H.png" width={250} height={40} style={{cursor: "pointer"}} />

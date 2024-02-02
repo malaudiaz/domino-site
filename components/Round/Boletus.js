@@ -165,14 +165,17 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
 
       if (data.success) {
 
-        setActiveRound(data.data)
+        if (setActiveRound) {
+          setActiveRound(data.data)
+        }
 
-        Swal.fire({
-          icon: "success",
-          title: "Guardando Data",
-          text: data.detail,
-          showConfirmButton: true,
-        });
+        // Swal.fire({
+        //   icon: "success",
+        //   title: "Guardando Data",
+        //   text: data.detail,
+        //   showConfirmButton: true,
+        // });
+
         setData({
           pair: {
             value: "",
@@ -185,7 +188,7 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
             errorMessage: "Teclee los puntos obtenidos",
           },
         })
-        setOpenData(false);
+        // setOpenData(false);
         setReload(true);
       }
     } catch ({ code, message, name, request }) {
@@ -306,8 +309,6 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
         closeByTime();
       }
     });
-
-
   };
 
   return (
@@ -323,7 +324,7 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
       >
         <small>Boleta</small>
       </ModalHeader>
-      <ModalBody>
+      <ModalBody style={{height: "550px", overflowY: "auto"}}>
         <div className="d-flex flex-row justify-content-between align-items-center px-4 py-2">
           <div className="d-flex flex-row">
             <strong>Ronda: {boletus.round_number}</strong>
@@ -401,6 +402,7 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
               <th className="text-center">
                 {boletus.pair_two && boletus.pair_two.total_point}
               </th>
+              <th className="text-center">&nbsp;</th>
             </tr>
           </tfoot>
         </Table>
