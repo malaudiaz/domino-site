@@ -28,7 +28,7 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
   const [reload, setReload] = useState(true)
   const [isNew, setIsNew] = useState(true);
 
-  const [data, setData] = useState({
+  const [frmData, setFrmData] = useState({
     id: {
       value: "",
       error: false,
@@ -107,7 +107,7 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
   const handleNew = (item) => {
     if (item) {                          
       if (item.pair_one > item.pair_two) {
-        setData({
+        setFrmData({
           id: {
             value: item.data_id,
             error: false,
@@ -125,7 +125,7 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
           }            
         })
       } else {
-        setData({
+        setFrmData({
           id: {
             value: item.data_id,
             error: false,
@@ -153,11 +153,11 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/boletus/data/${isNew ? record.boletus_id : data.id.value}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/boletus/data/${isNew ? record.boletus_id : frmData.id.value}`;
 
     const body = {
-      pair: data.pair.value,
-      point: data.point.value
+      pair: frmData.pair.value,
+      point: frmData.point.value
     };
 
     try {
@@ -176,9 +176,10 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
         //   showConfirmButton: true,
         // });
 
-        setData({
+        setFrmData({
+          ...frmData,
           pair: {
-            value: "",
+            value: frmData.pair.value,
             error: false,
             errorMessage: "Debe seleccionar la pareja Ganadora",
           },
@@ -188,8 +189,20 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
             errorMessage: "Teclee los puntos obtenidos",
           },
         })
-        // setOpenData(false);
         setReload(true);
+
+        if (boletus.pair_one.pairs_id === frmData.pair.value) {
+          if ((boletus.pair_one.total_point+parseInt(frmData.point.value)) >= boletus.number_points_to_win) {
+            setGameOver(true);
+            setOpenData(false);
+          }
+        } else {
+          if ((boletus.pair_two.total_point+parseInt(frmData.point.value)) >= boletus.number_points_to_win) {
+            setGameOver(true);
+            setOpenData(false);
+          }
+        }
+
       }
     } catch ({ code, message, name, request }) {
       if (code === "ERR_NETWORK") {
@@ -226,10 +239,10 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
         ? event.target.checked
         : event.target.value;    
 
-    setData({
-      ...data,
+    setFrmData({
+      ...frmData,
       [name]: {
-        ...data[name],
+        ...frmData[name],
         error: value === "",
         value,
       },
@@ -249,7 +262,7 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
           text: data.detail,
           showConfirmButton: true,
         });
-        setData({
+        setFrmData({
           pair: {
             value: "",
             error: false,
@@ -420,7 +433,7 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
               setOpenData(false);
             }}
           >
-            <small>{data.id==="" ? "Nueva Data" : "Modificar Data"}</small>
+            <small>{frmData.id==="" ? "Nueva Data" : "Modificar Data"}</small>
           </ModalHeader>
           <Form onSubmit={handleSubmit} autoComplete="off">
             <ModalBody>
@@ -434,7 +447,7 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
                       id="pair"
                       name="pair"
                       value={boletus.pair_one ? boletus.pair_one.pairs_id : ""}
-                      checked={boletus.pair_one ? (boletus.pair_one.pairs_id === data.pair.value ? true : false) : false}
+                      checked={boletus.pair_one ? (boletus.pair_one.pairs_id === frmData.pair.value ? true : false) : false}
                       onChange={handleChange}
                       type="radio"
                     />
@@ -448,7 +461,7 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
                       id="pair"
                       name="pair"
                       value={boletus.pair_two ? boletus.pair_two.pairs_id : ""}
-                      checked={boletus.pair_two ? (boletus.pair_two.pairs_id === data.pair.value ? true : false) : false}
+                      checked={boletus.pair_two ? (boletus.pair_two.pairs_id === frmData.pair.value ? true : false) : false}
                       onChange={handleChange}
                       type="radio"
                     />
@@ -470,12 +483,12 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
                       id="point"
                       name="point"
                       size="sm"
-                      invalid={data.point.error}
-                      value={data.point.value}
+                      invalid={frmData.point.error}
+                      value={frmData.point.value}
                       placeholder="Puntos"
                       onChange={handleChange}
                     />
-                    <FormFeedback>{data.point.errorMessage}</FormFeedback>
+                    <FormFeedback>{frmData.point.errorMessage}</FormFeedback>
                   </InputGroup>
                 </Col>
               </FormGroup>
