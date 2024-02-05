@@ -355,8 +355,36 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
                   handleNew();
                 }}
               >
-                <i class="bi bi-plus-circle"></i>&nbsp;Nueva
+                <i class="bi bi-plus-circle"></i>
               </Button>&nbsp;
+
+              <Button
+                color="warning"
+                size="sm"
+                title="Penalizaciones"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNew();
+                }}
+              >
+                <i class="bi bi-hand-thumbs-down"></i>
+              </Button>&nbsp;
+
+
+              <Button
+                color="success"
+                size="sm"
+                title="Ausencias"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNew();
+                }}
+              >
+                <i class="bi bi-x-square"></i>
+              </Button>&nbsp;
+
+
+
               <Button 
                 color="danger" 
                 size="sm" 
@@ -365,7 +393,7 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
                   handleClose(e);
                 }}
               >
-                <i class="bi bi-hourglass-split"></i>&nbsp;Tiempo
+                <i class="bi bi-clock-history"></i>
               </Button>
             </div>
           )}

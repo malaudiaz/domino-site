@@ -191,7 +191,7 @@ export default function Info({ round, readOnly, setActiveRound }) {
                       width={60}
                       height={60}
                       className="rounded-image"
-                      title={item.pair_one.player_one + " - " + item.pair_one.elo_one}
+                      title={item.pair_two.player_one + " - " + item.pair_two.elo_one}
                     />
                   </div>
                   <div

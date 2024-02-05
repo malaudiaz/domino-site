@@ -508,8 +508,6 @@ export default function Rounds({ tourney, readOnly }) {
                   <Info round={activeRound} readOnly={readOnly} setActiveRound={setActiveRound}/>
                 </TabPane>}
 
-                <TabPane tabId="6">
-                </TabPane>
               </TabContent>
           </CardBody>
         </Card>}
