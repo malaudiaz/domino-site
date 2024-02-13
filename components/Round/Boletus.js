@@ -13,6 +13,7 @@ import {
   FormGroup,
   Label,
   Form,
+  Badge
 } from "reactstrap";
 
 import { useAppContext } from "../../AppContext";
@@ -27,6 +28,7 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
   const [gameOver, setGameOver] = useState(false);
   const [reload, setReload] = useState(true)
   const [isNew, setIsNew] = useState(true);
+  const [modalOpt, setModalOpt] = useState("");
 
   const [frmData, setFrmData] = useState({
     id: {
@@ -45,6 +47,31 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
       errorMessage: "Teclee los puntos obtenidos",
     }
   });
+
+  const [frmNull, setFrmNull] = useState({
+    motive: "",
+    player: "",
+    isOut: false
+  });
+
+  const [frmPenalty, setFrmPenalty] = useState({
+    motive: "",
+    player_0: "",
+    player_1: "",
+    player_2: "",
+    player_3: "",
+    point: ""
+  });
+
+  const [frmAbsent, setFrmAbsent] = useState({
+    motive: "",
+    player_0: "",
+    player_1: "",
+    player_2: "",
+    player_3: "",
+    point: ""
+  });
+
 
   const config = {
     headers: {
@@ -104,7 +131,7 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
     }
   }, [record, reload, gameOver]);
 
-  const handleNew = (item) => {
+  const handleNew = (item, btn) => {
     if (item) {                          
       if (item.pair_one > item.pair_two) {
         setFrmData({
@@ -147,12 +174,11 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
     } else {
       setIsNew(true);
     }
+    setModalOpt(btn);
     setOpenData(true);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const saveData = async () => {
     const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/boletus/data/${isNew ? record.boletus_id : frmData.id.value}`;
 
     const body = {
@@ -168,13 +194,6 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
         if (setActiveRound) {
           setActiveRound(data.data)
         }
-
-        // Swal.fire({
-        //   icon: "success",
-        //   title: "Guardando Data",
-        //   text: data.detail,
-        //   showConfirmButton: true,
-        // });
 
         setFrmData({
           ...frmData,
@@ -230,6 +249,188 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
         }
       }
     }
+  }
+
+  const saveNull = async () => {
+    console.log(frmNull);
+
+    // const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/boletus/data/${isNew ? record.boletus_id : frmData.id.value}`;
+
+    // const body = {
+    //   player_id: frmNull.player,
+    //   motive: frmNull.motive,
+    //   out: frmNull.isOut
+    // };
+
+    // try {
+    //   const { data } = await axios.post(url, body, config);
+
+    //   if (data.success) {
+    //     setFrmNull({
+    //       motive: "",
+    //       player: "",
+    //       isOut: false
+    //     });
+
+    //     setGameOver(true);
+    //     setOpenData(false);
+
+    //   }
+    // } catch ({ code, message, name, request }) {
+    //   if (code === "ERR_NETWORK") {
+    //     Swal.fire({
+    //       title: "Anular Boleta",
+    //       text: "Error en su red, consulte a su proveedor de servicio",
+    //       icon: "error",
+    //       showCancelButton: false,
+    //       allowOutsideClick: false,
+    //       confirmButtonColor: "#3085d6",
+    //       confirmButtonText: "Aceptar",
+    //     });
+    //   } else {
+    //     if (code === "ERR_BAD_REQUEST") {
+    //       const { detail } = JSON.parse(request.response);
+    //       Swal.fire({
+    //         title: "Anular Boleta",
+    //         text: detail,
+    //         icon: "error",
+    //         showCancelButton: false,
+    //         allowOutsideClick: false,
+    //         confirmButtonColor: "#3085d6",
+    //         confirmButtonText: "Aceptar",
+    //       });
+    //     }
+    //   }
+    // }
+  }
+
+  const savePenalty = async () => {
+    console.log(frmPenalty);
+
+    // const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/boletus/data/${isNew ? record.boletus_id : frmData.id.value}`;
+
+    // const body = {
+    //   player_id: frmNull.player,
+    //   motive: frmNull.motive,
+    //   out: frmNull.isOut
+    // };
+
+    // try {
+    //   const { data } = await axios.post(url, body, config);
+
+    //   if (data.success) {
+    //     setFrmNull({
+    //       motive: "",
+    //       player: "",
+    //       isOut: false
+    //     });
+
+    //     setGameOver(true);
+    //     setOpenData(false);
+
+    //   }
+    // } catch ({ code, message, name, request }) {
+    //   if (code === "ERR_NETWORK") {
+    //     Swal.fire({
+    //       title: "Anular Boleta",
+    //       text: "Error en su red, consulte a su proveedor de servicio",
+    //       icon: "error",
+    //       showCancelButton: false,
+    //       allowOutsideClick: false,
+    //       confirmButtonColor: "#3085d6",
+    //       confirmButtonText: "Aceptar",
+    //     });
+    //   } else {
+    //     if (code === "ERR_BAD_REQUEST") {
+    //       const { detail } = JSON.parse(request.response);
+    //       Swal.fire({
+    //         title: "Anular Boleta",
+    //         text: detail,
+    //         icon: "error",
+    //         showCancelButton: false,
+    //         allowOutsideClick: false,
+    //         confirmButtonColor: "#3085d6",
+    //         confirmButtonText: "Aceptar",
+    //       });
+    //     }
+    //   }
+    // }
+  }
+
+  const saveAbsent = async () => {
+    console.log(frmAbsent);
+
+    // const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/boletus/data/${isNew ? record.boletus_id : frmData.id.value}`;
+
+    // const body = {
+    //   player_id: frmNull.player,
+    //   motive: frmNull.motive,
+    //   out: frmNull.isOut
+    // };
+
+    // try {
+    //   const { data } = await axios.post(url, body, config);
+
+    //   if (data.success) {
+    //     setFrmAbsent({
+    //       motive: "",
+    //       player_0: "",
+    //       player_1: "",
+    //       player_2: "",
+    //       player_3: "",
+    //       point: ""
+    //     });
+
+    //     setGameOver(true);
+    //     setOpenData(false);
+
+    //   }
+    // } catch ({ code, message, name, request }) {
+    //   if (code === "ERR_NETWORK") {
+    //     Swal.fire({
+    //       title: "Anular Boleta",
+    //       text: "Error en su red, consulte a su proveedor de servicio",
+    //       icon: "error",
+    //       showCancelButton: false,
+    //       allowOutsideClick: false,
+    //       confirmButtonColor: "#3085d6",
+    //       confirmButtonText: "Aceptar",
+    //     });
+    //   } else {
+    //     if (code === "ERR_BAD_REQUEST") {
+    //       const { detail } = JSON.parse(request.response);
+    //       Swal.fire({
+    //         title: "Anular Boleta",
+    //         text: detail,
+    //         icon: "error",
+    //         showCancelButton: false,
+    //         allowOutsideClick: false,
+    //         confirmButtonColor: "#3085d6",
+    //         confirmButtonText: "Aceptar",
+    //       });
+    //     }
+    //   }
+    // }
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    switch (modalOpt) {
+      case "DATA":
+        saveData();
+        break;
+      case "PENALTY":
+        console.log(frmPenalty);
+        savePenalty();
+        break;
+      case "ABSENT":
+        saveAbsent();
+        break;
+      case "NULL": 
+        saveNull()
+        break;
+    }
   };
 
   const handleChange = (e) => {
@@ -239,14 +440,31 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
         ? event.target.checked
         : event.target.value;    
 
-    setFrmData({
-      ...frmData,
-      [name]: {
-        ...frmData[name],
-        error: value === "",
-        value,
-      },
-    });
+    if (modalOpt === "DATA") {
+      setFrmData({
+        ...frmData,
+        [name]: {
+          ...frmData[name],
+          error: value === "",
+          value,
+        },
+      });
+    }
+
+    if (modalOpt === "NULL") {
+      setFrmNull({
+        ...frmNull,
+        [name]: value
+      })
+    }
+
+    if (modalOpt === "PENALTY") {
+      setFrmPenalty({
+        ...frmPenalty,
+        [name]: value
+      })
+    }
+    
   };
 
   const closeByTime = async () => {
@@ -352,19 +570,19 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
                 title="Nueva Data"
                 onClick={(e) => {
                   e.preventDefault();
-                  handleNew();
+                  handleNew(null, 'DATA');
                 }}
               >
                 <i class="bi bi-plus-circle"></i>
               </Button>&nbsp;
 
               <Button
-                color="warning"
+                color="secondary"
                 size="sm"
                 title="Penalizaciones"
                 onClick={(e) => {
                   e.preventDefault();
-                  handleNew();
+                  handleNew(null, 'PENALTY');
                 }}
               >
                 <i class="bi bi-hand-thumbs-down"></i>
@@ -372,18 +590,28 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
 
 
               <Button
-                color="success"
+                color="secondary"
                 size="sm"
                 title="Ausencias"
                 onClick={(e) => {
                   e.preventDefault();
-                  handleNew();
+                  handleNew(null, 'ABSENT');
                 }}
               >
-                <i class="bi bi-x-square"></i>
+                <i class="bi bi-person-dash"></i>
               </Button>&nbsp;
 
-
+              <Button
+                color="secondary"
+                size="sm"
+                title="Anular Boleta"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNew(null, 'NULL');
+                }}
+              >
+                <i class="bi bi-file-earmark-x"></i>
+              </Button>&nbsp;
 
               <Button 
                 color="danger" 
@@ -425,7 +653,7 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
                       onClick={
                         (e)=>{
                           e.preventDefault();
-                          handleNew(item);
+                          handleNew(item, 'DATA');
                         }
                       }>
                       <i class="bi bi-pencil-square"></i>
@@ -461,10 +689,13 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
               setOpenData(false);
             }}
           >
-            <small>{frmData.id==="" ? "Nueva Data" : "Modificar Data"}</small>
+            {modalOpt === "DATA" && <small>{frmData.id==="" ? "Nueva Data" : "Modificar Data"}</small>}
+            {modalOpt === "PENALTY" && <small>Penalizaciones</small>}
+            {modalOpt === "ABSENT" && <small>Ausencias</small>}
+            {modalOpt === "NULL" && <small>Anular Boleta</small>}
           </ModalHeader>
           <Form onSubmit={handleSubmit} autoComplete="off">
-            <ModalBody>
+            {modalOpt === "DATA" && <ModalBody>
               <FormGroup row>
                 <Label size="sm" sm={3}>
                   Ganador:
@@ -521,7 +752,178 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
                 </Col>
               </FormGroup>
 
-            </ModalBody>
+            </ModalBody>}
+            {modalOpt === "PENALTY" && <ModalBody>
+
+              <FormGroup row>
+                <Label size="sm" sm={3}>
+                  Motivo:
+                </Label>
+                <Col sm={9}>
+                  <InputGroup size="sm">
+                    <Input
+                      type="select"
+                      name="motive"
+                      id="motive"
+                      placeholder="Motivo"
+                      defaultValue={frmPenalty.motive}
+                      onChange={handleChange}
+                    >
+                      <option value="">Seleccione Motivo</option>
+                      <option value="0">Amonestaciones</option>
+                      <option value="1">Tarjeta Amarilla</option>
+                      <option value="2">Tarjeta Roja</option>
+                    </Input>
+                  </InputGroup>
+                </Col>
+              </FormGroup>
+
+              <FormGroup tag="fieldset">
+
+                <h5>Jugadores:</h5>
+
+                {boletus.lst_players.map((player, idx) => (
+                  <FormGroup check key={idx}>
+                    <Input type="radio" name={"player_"+idx} value={player.profile_id} onChange={handleChange} />
+                    {' '}
+                    <Label check>
+                      <Badge color="info" pill>{player.position_id}</Badge> {player.profile_name}
+                    </Label>
+                  </FormGroup>
+                ))}
+
+              </FormGroup>
+
+              <FormGroup row>
+                <Label size="sm" sm={3}>
+                  Puntos:
+                </Label>
+                <Col sm={9}>
+                  <InputGroup size="sm">
+                    <Input
+                      id="point"
+                      name="point"
+                      size="sm"
+                      value={frmPenalty.point}
+                      placeholder="Puntos"
+                      onChange={handleChange}
+                    />
+                  </InputGroup>
+                </Col>
+              </FormGroup>
+
+            </ModalBody>}
+            {modalOpt === "ABSENT" && <ModalBody>
+
+
+              <FormGroup tag="fieldset">
+                <FormGroup inline check>
+                  <Input
+                    name="motive"
+                    type="radio"
+                    checked={frmAbsent.motive==="0"}
+                    value={frmAbsent.motive}
+                  />
+                  {' '}
+                  <Label check>
+                    Llegada Tarde
+                  </Label>
+                </FormGroup>
+                <FormGroup inline check>
+                  <Input
+                    name="motive"
+                    type="radio"
+                    checked={frmAbsent.motive==="1"}
+                    value={frmAbsent.motive}
+                  />
+                  {' '}
+                  <Label check>
+                    Abandono
+                  </Label>
+                </FormGroup>
+              </FormGroup>
+
+
+              <FormGroup tag="fieldset">
+
+                <h5>Jugadores:</h5>
+
+                {boletus.lst_players.map((player, idx) => (
+
+                  <FormGroup check key={idx}>
+                    <Input type="radio" name={"player_"+idx} value={player.profile_id} onChange={handleChange} />
+                    {' '}
+                    <Label check>
+                      <Badge color="info" pill>{player.position_id}</Badge> {player.profile_name}
+                    </Label>
+                  </FormGroup>
+
+                ))}
+
+              </FormGroup>
+
+              </ModalBody>}
+
+              {modalOpt === "NULL" && <ModalBody>
+                <FormGroup row>
+                  <Label size="sm" sm={2}>
+                    Motivo:
+                  </Label>
+                  <Col sm={10}>
+                    <InputGroup size="sm">
+                      <Input
+                        type="select"
+                        name="motive"
+                        id="motive"
+                        placeholder="Motivo de Anulación de la Boleta"
+                        defaultValue={frmNull.motive}
+                        onChange={handleChange}
+                      >
+                        <option value="">Selecciones el Motivo</option>
+                        <option value="0">Sentarse Incorrectamene</option>
+                        <option value="1">Error de Anotación</option>
+                        <option value="2">Conducta Antideportiva</option>
+                      </Input>
+                    </InputGroup>
+                  </Col>
+                </FormGroup>
+
+                {frmNull.motive==2 &&
+                  <>
+                    <FormGroup tag="fieldset">
+
+                      <h5>Jugadores:</h5>
+
+                      {boletus.lst_players.map((player, idx) => (
+
+                        <FormGroup check key={idx}>
+                          <Input
+                            name="player"
+                            type="radio"
+                            value={player.profile_id}
+                            checked={frmNull.player === player.profile_id}
+                            onChange={handleChange}
+                          />
+                          {' '}
+                          <Label check>
+                            <Badge color="info" pill>{player.position_id}</Badge> {player.profile_name}
+                          </Label>
+                        </FormGroup>
+
+                      ))}
+
+                    </FormGroup>
+
+                    <Input type="checkbox" name="isOut" checked={frmNull.isOut} onChange={handleChange} />
+                    {' '}
+                    <Label check>
+                      El jugador es Expulsado.
+                    </Label>
+                  </>
+                }
+
+            </ModalBody>}
+
             <ModalFooter>
               <Button type="submit" color="primary" size="sm">
                 Aceptar

@@ -47,8 +47,11 @@ export default function Settings({ formValues, setFormValues }) {
           </InputGroup>
         </Col>
 
+      </FormGroup>
+
+      <FormGroup row className="ps-4 pe-4">
         <Label size="sm" sm={3}>
-          Cantidad de Mesas Inteligentes
+            Cantidad de Mesas Inteligentes
         </Label>
         <Col sm={3}>
           <InputGroup size="sm">
@@ -59,10 +62,6 @@ export default function Settings({ formValues, setFormValues }) {
               invalid={formValues.smartTable.error}
               value={formValues.smartTable.value}
               onChange={handleChange}
-              // disabled={
-              //     formValues.statusName.value === "CONFIGURATED" ||
-              //     formValues.statusName.value === "INITIADED"
-              // }
             />
             <FormFeedback>
               La cantidad de mesas inteligentes es requerida.
@@ -92,7 +91,9 @@ export default function Settings({ formValues, setFormValues }) {
             />
           </InputGroup>
         </Col>
+      </FormGroup>
 
+      <FormGroup row className="ps-4 pe-4">
         <Label size="sm" sm={3}>
           Tiempo máximo para ganar (min.)
         </Label>
@@ -113,7 +114,7 @@ export default function Settings({ formValues, setFormValues }) {
             />
           </InputGroup>
         </Col>
-      </FormGroup>
+      </FormGroup>      
 
       <FormGroup row className="ps-4 pe-4">
         <Label size="sm" sm={3}>
@@ -138,9 +139,11 @@ export default function Settings({ formValues, setFormValues }) {
             </Input>
           </InputGroup>
         </Col>
+      </FormGroup>
 
+      <FormGroup row className="ps-4 pe-4">
         <Label size="sm" sm={3}>
-          Factor de Escala
+          Factor de Crecimiento del ELO
         </Label>
         <Col sm={3}>
           <InputGroup size="sm">
@@ -148,7 +151,7 @@ export default function Settings({ formValues, setFormValues }) {
               type="number"
               name="constant_increase_ELO"
               id="constant_increase_ELO"
-              disabled={true}
+              // disabled={true}
               invalid={formValues.constant_increase_ELO.error}
               value={formValues.constant_increase_ELO.value}
               onChange={handleChange}
@@ -157,7 +160,7 @@ export default function Settings({ formValues, setFormValues }) {
         </Col>
       </FormGroup>
 
-      <div className="container-setting ps-4 pe-4">
+      {/* <div className="container-setting ps-4 pe-4">
         <div className="row ps-2 pe-2">
           <FormGroup check inline>
             <Input
@@ -349,7 +352,8 @@ export default function Settings({ formValues, setFormValues }) {
           </Card>
         </div>
 
-      </div>
+      </div> */}
+      
     </div>
   );
 }
