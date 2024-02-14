@@ -53,10 +53,10 @@ export default function Absent({ open, setOpen, boletus, record }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const players = [];
+    const players = "";
     for (let i=0; i<4; i++) {
       if (frmData["player_"+i] !== "") {
-        players.push(frmData["player_"+i]);
+        players.concat(frmData["player_"+i]);
       }
     }
 
