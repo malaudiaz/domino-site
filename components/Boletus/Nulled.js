@@ -17,6 +17,9 @@ import {
 
 import { useAppContext } from "../../AppContext";
 
+import axios from "axios";
+import Swal from "sweetalert2";
+
 export default function Nulled({ open, setOpen, boletus, record }) {
   const { token, lang } = useAppContext();
   const [frmData, setFrmData] = useState({
@@ -49,8 +52,6 @@ export default function Nulled({ open, setOpen, boletus, record }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    console.log(boletus);
 
     if (frmData.motive !== "" && frmData.player !== "") {
         console.log(frmData);

@@ -14,7 +14,10 @@ import {
 
 import { useAppContext } from "../../AppContext";
 
-export default function Absent({ open, setOpen, record }) {
+import axios from "axios";
+import Swal from "sweetalert2";
+
+export default function Absent({ open, setOpen, boletus, record }) {
   const { token, lang } = useAppContext();
   const [frmData, setFrmData] = useState({
     motive: "",
