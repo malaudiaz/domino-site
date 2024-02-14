@@ -221,7 +221,7 @@ export default function ListData({ record, readOnly, setActiveRound }) {
         <div>
           <h6>Resumen de la Partida</h6>
         </div>
-        {record.status === "0" && readOnly === false && gameOver === false && (
+        {record.status === "0" && record.can_update && readOnly === false && gameOver === false && (
           <div>
             <Button
               color="primary"

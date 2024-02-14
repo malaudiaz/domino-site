@@ -199,7 +199,7 @@ export default function Boletus({
             <strong className="ps-4">Mesa: {boletus.table_number}</strong>
           </div>
 
-          {record.status === "0" && readOnly === false && (
+          {record.status === "0" && record.can_update && readOnly === false && (
             <div>
               <Button
                 color="secondary"
