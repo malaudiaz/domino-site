@@ -5,9 +5,9 @@ import {
   ModalBody,
   Button,
   Nav,
-  NavItem, 
+  NavItem,
   NavLink,
-  TabContent, 
+  TabContent,
   TabPane,
   ModalFooter,
   FormFeedback,
@@ -17,7 +17,7 @@ import {
   FormGroup,
   Label,
   Form,
-  Badge
+  Badge,
 } from "reactstrap";
 
 import { useAppContext } from "../../AppContext";
@@ -30,13 +30,18 @@ import Absent from "../Boletus/Absent";
 import Nulled from "../Boletus/Nulled";
 import ListPenalty from "../Boletus/ListPenalty";
 
-export default function Boletus({ open, close, record, readOnly, setActiveRound}) {
+export default function Boletus({
+  open,
+  close,
+  record,
+  readOnly,
+  setActiveRound,
+}) {
   const { token, lang } = useAppContext();
   const [boletus, setBoletus] = useState([]);
   const [activeTab, setActiveTab] = useState("1");
   const [openAbsent, setOpenAbsent] = useState(false);
   const [openNulled, setOpenNulled] = useState(false);
-
 
   const toggleTab = (tab) => {
     if (activeTab !== tab) {
@@ -47,15 +52,15 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
   const config = {
     headers: {
       "Content-Type": "application/json",
-      "Accept": "application/json",
+      Accept: "application/json",
       "accept-Language": lang,
-      "Authorization": `Bearer ${token}`,
-    }
+      Authorization: `Bearer ${token}`,
+    },
   };
 
   const toggle = () => {
     close();
-  }
+  };
 
   const fetchData = async () => {
     const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/boletus/data/${record.boletus_id}`;
@@ -127,7 +132,7 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
             error: false,
             errorMessage: "Teclee los puntos obtenidos",
           },
-        })
+        });
       }
     } catch ({ code, message, name, request }) {
       if (code === "ERR_NETWORK") {
@@ -184,9 +189,7 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
       keyboard={true}
       centered={true}
     >
-      <ModalHeader
-        toggle={toggle}
-      >
+      <ModalHeader toggle={toggle}>
         <small>Boleta</small>
       </ModalHeader>
       <ModalBody>
@@ -196,7 +199,7 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
             <strong className="ps-4">Mesa: {boletus.table_number}</strong>
           </div>
 
-          {(record.status === "0" && readOnly === false) && (
+          {record.status === "0" && readOnly === false && (
             <div>
               <Button
                 color="secondary"
@@ -208,8 +211,8 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
                 }}
               >
                 <i class="bi bi-person-dash"></i>
-              </Button>&nbsp;
-
+              </Button>
+              &nbsp;
               <Button
                 color="secondary"
                 size="sm"
@@ -220,13 +223,13 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
                 }}
               >
                 <i class="bi bi-file-earmark-x"></i>
-              </Button>&nbsp;
-
-              <Button 
-                color="danger" 
-                size="sm" 
+              </Button>
+              &nbsp;
+              <Button
+                color="danger"
+                size="sm"
                 title="Cerrar por Tiempo"
-                onClick={(e)=>{
+                onClick={(e) => {
                   handleClose(e);
                 }}
               >
@@ -247,7 +250,7 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
             >
               DATAS
             </NavLink>
-          </NavItem>          
+          </NavItem>
           <NavItem>
             <NavLink
               href="#"
@@ -258,23 +261,43 @@ export default function Boletus({ open, close, record, readOnly, setActiveRound}
             >
               PENALIZACIONES
             </NavLink>
-          </NavItem>          
+          </NavItem>
         </Nav>
 
         <TabContent activeTab={activeTab}>
           <TabPane tabId="1">
-            <ListData record={record} readOnly={readOnly} setActiveRound={setActiveRound} />
+            <ListData
+              record={record}
+              readOnly={readOnly}
+              setActiveRound={setActiveRound}
+            />
           </TabPane>
           <TabPane tabId="2">
-            <ListPenalty record={record} readOnly={readOnly} setActiveRound={setActiveRound} />
+            <ListPenalty
+              record={record}
+              readOnly={readOnly}
+              setActiveRound={setActiveRound}
+            />
           </TabPane>
         </TabContent>
-
       </ModalBody>
 
-      {Object.entries(boletus).length > 0 && <Absent open={openAbsent} setOpen={setOpenAbsent} boletus={boletus} />}
-      {Object.entries(boletus).length > 0 && <Nulled open={openNulled} setOpen={setOpenNulled} boletus={boletus} />}
-
+      {Object.entries(boletus).length > 0 && (
+        <Absent
+          open={openAbsent}
+          setOpen={setOpenAbsent}
+          boletus={boletus}
+          record={record}
+        />
+      )}
+      {Object.entries(boletus).length > 0 && (
+        <Nulled
+          open={openNulled}
+          setOpen={setOpenNulled}
+          boletus={boletus}
+          record={record}
+        />
+      )}
     </Modal>
   );
 }

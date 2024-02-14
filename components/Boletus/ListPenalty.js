@@ -203,7 +203,7 @@ export default function ListPenalty({ record, readOnly, setActiveRound }) {
     } catch ({ code, message, name, request }) {
       if (code === "ERR_NETWORK") {
         Swal.fire({
-          title: "Guardando Data",
+          title: "Guardando Penalizaciones",
           text: "Error en su red, consulte a su proveedor de servicio",
           icon: "error",
           showCancelButton: false,
@@ -215,7 +215,7 @@ export default function ListPenalty({ record, readOnly, setActiveRound }) {
         if (code === "ERR_BAD_REQUEST") {
           const { detail } = JSON.parse(request.response);
           Swal.fire({
-            title: "Guardando Data",
+            title: "Guardando Penalizaciones",
             text: detail,
             icon: "error",
             showCancelButton: false,

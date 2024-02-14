@@ -17,7 +17,7 @@ import {
 
 import { useAppContext } from "../../AppContext";
 
-export default function Nulled({ open, setOpen, boletus }) {
+export default function Nulled({ open, setOpen, boletus, record }) {
   const { token, lang } = useAppContext();
   const [frmData, setFrmData] = useState({
     motive: "",
@@ -50,8 +50,57 @@ export default function Nulled({ open, setOpen, boletus }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    console.log(boletus);
+
     if (frmData.motive !== "" && frmData.player !== "") {
         console.log(frmData);
+
+        const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/boletus/annulled/${record.boletus_id}`;
+
+        const body = {
+          player_id: frmData.player,
+          annulled_type: frmData.motive,
+          was_expelled: frmData.isOut
+        };
+    
+        try {
+          const { data } = await axios.post(url, body, config);
+    
+          if (data.success) {
+    
+            setFrmData({
+              motive: "",
+              player: "",
+              isOut: false
+            })
+    
+          }
+        } catch ({ code, message, name, request }) {
+          if (code === "ERR_NETWORK") {
+            Swal.fire({
+              title: "Anulando Boleta",
+              text: "Error en su red, consulte a su proveedor de servicio",
+              icon: "error",
+              showCancelButton: false,
+              allowOutsideClick: false,
+              confirmButtonColor: "#3085d6",
+              confirmButtonText: "Aceptar",
+            });
+          } else {
+            if (code === "ERR_BAD_REQUEST") {
+              const { detail } = JSON.parse(request.response);
+              Swal.fire({
+                title: "Anulando Boleta",
+                text: detail,
+                icon: "error",
+                showCancelButton: false,
+                allowOutsideClick: false,
+                confirmButtonColor: "#3085d6",
+                confirmButtonText: "Aceptar",
+              });
+            }
+          }
+        }
     }
   };
 

@@ -6,9 +6,7 @@ import {
   Button,
   ModalFooter,
   Badge,
-  Col,
   Input,
-  InputGroup,
   FormGroup,
   Label,
   Form,
@@ -16,7 +14,7 @@ import {
 
 import { useAppContext } from "../../AppContext";
 
-export default function Absent({ open, setOpen, boletus }) {
+export default function Absent({ open, setOpen, record }) {
   const { token, lang } = useAppContext();
   const [frmData, setFrmData] = useState({
     motive: "",
@@ -52,7 +50,60 @@ export default function Absent({ open, setOpen, boletus }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(frmData);
+    const players = [];
+    for (let i=0; i<4; i++) {
+      if (frmData["player_"+i] !== "") {
+        players.push(frmData["player_"+i]);
+      }
+    }
+
+    const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/boletus/absences/${record.boletus_id}`;
+
+    const body = {
+      players: players,
+    };
+
+    try {
+      const { data } = await axios.post(url, body, config);
+
+      if (data.success) {
+
+        setFrmData({
+          motive: "",
+          player_0: "",
+          player_1: "",
+          player_2: "",
+          player_3: "",
+          point: ""
+        })
+
+      }
+    } catch ({ code, message, name, request }) {
+      if (code === "ERR_NETWORK") {
+        Swal.fire({
+          title: "Guardando Ausencias",
+          text: "Error en su red, consulte a su proveedor de servicio",
+          icon: "error",
+          showCancelButton: false,
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Aceptar",
+        });
+      } else {
+        if (code === "ERR_BAD_REQUEST") {
+          const { detail } = JSON.parse(request.response);
+          Swal.fire({
+            title: "Guardando Ausencias",
+            text: detail,
+            icon: "error",
+            showCancelButton: false,
+            allowOutsideClick: false,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Aceptar",
+          });
+        }
+      }
+    }
   };
 
 
