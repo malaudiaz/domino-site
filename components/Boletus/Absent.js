@@ -67,6 +67,7 @@ export default function Absent({ open, setOpen, boletus, record }) {
     const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/boletus/absences/${record.boletus_id}`;
 
     const body = {
+      motive: frmData.motive,
       players: players,
     };
 

@@ -108,16 +108,17 @@ export default function PairsPositions({ id }) {
                                     P-
                                 </th>
                                 <th className="text-center" rowSpan={2}>
+                                    Pen.
+                                </th>
+                                <th className="text-center" rowSpan={2}>
                                     DIF
                                 </th>
+
 
                                 <th className="text-center" colSpan={2}>Puntuación</th>
 
                                 <th className="text-center" colSpan={4}>ELO</th>
 
-                                <th className="text-center" rowSpan={2}>
-                                    BON
-                                </th>
 
                             </tr>
                             <tr className="text-center">
@@ -172,6 +173,9 @@ export default function PairsPositions({ id }) {
                                         {item.points_negative}
                                     </td>
                                     <td className="text-center">
+                                        {item.penalty_points}
+                                    </td>
+                                    <td className="text-center">
                                         {item.points_difference}
                                     </td>
 
@@ -193,10 +197,6 @@ export default function PairsPositions({ id }) {
                                     </td>
                                     <td className="text-center">
                                         {item.elo_at_end}
-                                    </td>
-
-                                    <td className="text-center">
-                                        {item.bonus_points}
                                     </td>
 
                                 </tr>

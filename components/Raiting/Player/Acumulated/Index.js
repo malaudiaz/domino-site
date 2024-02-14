@@ -109,21 +109,19 @@ export default function AcumulatedPositions({ id }) {
                                     P-
                                 </th>
                                 <th className="text-center" rowSpan={2}>
+                                    Pen.
+                                </th>
+                                <th className="text-center" rowSpan={2}>
                                     DIF
                                 </th>
 
                                 <th className="text-center" colSpan={2}>Puntuación</th>
 
-                                <th className="text-center" colSpan={3}>ELO</th>
-
-                                <th className="text-center" colSpan={4}>FC</th>
-
                                 <th className="text-center" rowSpan={2}>
-                                    BON
+                                    FC
                                 </th>
 
-                                <th className="text-center" colSpan={3}>Ptos x Penaliz.</th>
-
+                                <th className="text-center" colSpan={3}>ELO</th>
 
                             </tr>
                             <tr className="text-center">
@@ -141,27 +139,6 @@ export default function AcumulatedPositions({ id }) {
                                 </th>
                                 <th>
                                     Final
-                                </th>
-                                <th>
-                                    K1
-                                </th>
-                                <th>
-                                    K2
-                                </th>
-                                <th>
-                                    K3
-                                </th>
-                                <th>
-                                    K
-                                </th>
-                                <th>
-                                    Total
-                                </th>
-                                <th>
-                                    Rojas
-                                </th>
-                                <th>
-                                    Amar.
                                 </th>
                             </tr>
                         </thead>
@@ -195,6 +172,9 @@ export default function AcumulatedPositions({ id }) {
                                     </td>
                                     <td className="text-center">
                                         {item.points_negative}
+                                    </td>
+                                    <td className="text-center">
+                                        {item.penalty_total}
                                     </td>
                                     <td className="text-center">
                                         {item.points_difference}

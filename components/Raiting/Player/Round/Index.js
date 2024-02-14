@@ -107,18 +107,15 @@ export default function RoundPositions({ id }) {
                                     P-
                                 </th>
                                 <th className="text-center" rowSpan={2}>
+                                    Pen.
+                                </th>
+                                <th className="text-center" rowSpan={2}>
                                     DIF
                                 </th>
 
                                 <th className="text-center" colSpan={2}>Puntuación</th>
 
                                 <th className="text-center" colSpan={4}>ELO</th>
-
-                                <th className="text-center" rowSpan={2}>
-                                    BON
-                                </th>
-
-                                <th className="text-center" colSpan={3}>Ptos x Penaliz.</th>
 
 
                             </tr>
@@ -140,15 +137,6 @@ export default function RoundPositions({ id }) {
                                 </th>
                                 <th>
                                     R. Ant.
-                                </th>
-                                <th>
-                                    Total
-                                </th>
-                                <th>
-                                    Rojas
-                                </th>
-                                <th>
-                                    Amar.
                                 </th>
                             </tr>
                         </thead>
@@ -184,6 +172,10 @@ export default function RoundPositions({ id }) {
                                     </td>
 
                                     <td className="text-center">
+                                        {item.penalty_total}
+                                    </td>
+
+                                    <td className="text-center">
                                         {item.score_expected}
                                     </td>
                                     <td className="text-center">
@@ -201,20 +193,6 @@ export default function RoundPositions({ id }) {
                                     </td>
                                     <td className="text-center">
                                         {/* {item.elo_ra} */}
-                                    </td>
-
-                                    <td className="text-center">
-                                        {item.bonus_points}
-                                    </td>
-
-                                    <td className="text-center">
-                                        {item.penalty_total}
-                                    </td>
-                                    <td className="text-center">
-                                        {item.penalty_red}
-                                    </td>
-                                    <td className="text-center">
-                                        {item.penalty_yellow}
                                     </td>
                                 </tr>
                             ))}
