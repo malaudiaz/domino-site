@@ -56,7 +56,11 @@ export default function Absent({ open, setOpen, boletus, record }) {
     const players = "";
     for (let i=0; i<4; i++) {
       if (frmData["player_"+i] !== "") {
-        players.concat(frmData["player_"+i]);
+        if (players==="") {
+          players = frmData["player_"+i];
+        } else {
+          players = players + "," + frmData["player_"+i];
+        }
       }
     }
 
