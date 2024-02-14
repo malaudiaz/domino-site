@@ -164,8 +164,8 @@ export default function ListPenalty({ record, readOnly, setActiveRound }) {
     }`;
 
     const body = {
-      penalty_type: frmData.motive.value,
       player_id: frmData.player.value,
+      penalty_type: frmData.motive.value,
       penalty_value: frmData.point.value
     };
 
