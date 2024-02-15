@@ -474,7 +474,7 @@ export default function Setting({ tourney }) {
 
   const hasError = () => {
     let res = false;
-    res = formValues.amountTable.error || formValues.smartTable.error || formValues.pointRound.error || formValues.timeRound.error || formValues.playSystem.error || formValues.lottery.error || formValues.limitPenaltyPoints.error;
+    res = formValues.amountTable.error || formValues.smartTable.error || formValues.pointRound.error || formValues.timeRound.error || formValues.playSystem.error || formValues.lottery.error;
 
     return res;
   }

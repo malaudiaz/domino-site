@@ -356,8 +356,9 @@ export default function Category({ formValues, setFormValues }) {
                           <InputGroup size="sm">
                             <Input
                               type="text"
-                              name="amount_segmentation_round"
-                              id="amount_segmentation_round"
+                              name="amountSegmentationRound"
+                              id="amountSegmentationRound"
+                              onChange={handleChange}
                               value={formValues.amountSegmentationRound.value}
                             />
                           </InputGroup>
