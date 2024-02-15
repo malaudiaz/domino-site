@@ -180,13 +180,15 @@ export default function AcumulatedPositions({ id }) {
                                         {item.points_difference}
                                     </td>
 
-                                    <td className="text-center">
+                                    <td className="text-end">
                                         {item.score_expected}
                                     </td>
-                                    <td className="text-center">
+                                    <td className="text-end">
                                         {item.score_obtained}
                                     </td>
-
+                                    <td className="text-center">
+                                        {item.k_value}
+                                    </td>
                                     <td className="text-center">
                                         {item.elo}
                                     </td>
@@ -197,32 +199,6 @@ export default function AcumulatedPositions({ id }) {
                                         {item.elo_at_end}
                                     </td>
 
-                                    <td className="text-center">
-                                        {"K1"}
-                                    </td>
-                                    <td className="text-center">
-                                        {"K2"}
-                                    </td>
-                                    <td className="text-center">
-                                        {"K3"}
-                                    </td>
-                                    <td className="text-center">
-                                        {"K"}
-                                    </td>
-
-                                    <td className="text-center">
-                                        {item.bonus_points}
-                                    </td>
-
-                                    <td className="text-center">
-                                        {item.penalty_total}
-                                    </td>
-                                    <td className="text-center">
-                                        {item.penalty_red}
-                                    </td>
-                                    <td className="text-center">
-                                        {item.penalty_yellow}
-                                    </td>
                                 </tr>
                             ))}
 

@@ -199,44 +199,45 @@ export default function Boletus({
             <strong className="ps-4">Mesa: {boletus.table_number}</strong>
           </div>
 
-          {record.status === "0" && record.can_update && readOnly === false && (
-            <div>
-              <Button
-                color="secondary"
-                size="sm"
-                title="Ausencias"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setOpenAbsent(true);
-                }}
-              >
-                <i class="bi bi-person-dash"></i>
-              </Button>
-              &nbsp;
-              <Button
-                color="secondary"
-                size="sm"
-                title="Anular Boleta"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setOpenNulled(true);
-                }}
-              >
-                <i class="bi bi-file-earmark-x"></i>
-              </Button>
-              &nbsp;
-              <Button
-                color="danger"
-                size="sm"
-                title="Cerrar por Tiempo"
-                onClick={(e) => {
-                  handleClose(e);
-                }}
-              >
-                <i class="bi bi-clock-history"></i>
-              </Button>
-            </div>
-          )}
+          <div>
+            <Button
+              color="secondary"
+              size="sm"
+              title="Ausencias"
+              disabled={record.status === "0" && record.can_update === false && readOnly === false}
+              onClick={(e) => {
+                e.preventDefault();
+                setOpenAbsent(true);
+              }}
+            >
+              <i class="bi bi-person-dash"></i>
+            </Button>
+            &nbsp;
+            <Button
+              color="secondary"
+              size="sm"
+              title="Anular Boleta"
+              disabled={record.status === "0" && record.can_update === false && readOnly === false}
+              onClick={(e) => {
+                e.preventDefault();
+                setOpenNulled(true);
+              }}
+            >
+              <i class="bi bi-file-earmark-x"></i>
+            </Button>
+            &nbsp;
+            <Button
+              color="danger"
+              size="sm"
+              title="Cerrar por Tiempo"
+              disabled={record.status === "0" && record.can_update === false && readOnly === false}
+              onClick={(e) => {
+                handleClose(e);
+              }}
+            >
+              <i class="bi bi-clock-history"></i>
+            </Button>
+          </div>
         </div>
 
         <Nav tabs>

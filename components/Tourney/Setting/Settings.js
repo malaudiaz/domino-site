@@ -160,6 +160,26 @@ export default function Settings({ formValues, setFormValues }) {
         </Col>
       </FormGroup>
 
+      <FormGroup row className="ps-4 pe-4">
+        <Label size="sm" sm={3}>
+          Otorgar Puntos por Ausencia o Abandono
+        </Label>
+        <Col sm={3}>
+          <InputGroup size="sm">
+            <Input
+              type="number"
+              name="absent_point"
+              id="absent_point"
+              // disabled={true}
+              invalid={formValues.absent_point.error}
+              value={formValues.absent_point.value}
+              onChange={handleChange}
+            />
+          </InputGroup>
+        </Col>
+      </FormGroup>
+
+
       {/* <div className="container-setting ps-4 pe-4">
         <div className="row ps-2 pe-2">
           <FormGroup check inline>

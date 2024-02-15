@@ -95,6 +95,13 @@ export default function Setting({ tourney }) {
       error: false,
       errorMessage: 'Constante de crecimiento del ELO es requerida'
     },
+
+    absent_point: {
+      value: "",
+      error: false,
+      errorMessage: 'Los puntos a otorgar por ausencia o abandono son requeridos'
+    },   
+
     pointRound:{
       value: "",
       error: false,
@@ -324,7 +331,14 @@ export default function Setting({ tourney }) {
             value: data.data.constant_increase_ELO,
             error: false,
             errorMessage: "ELO Mínimo, requerido"
-          },         
+          },  
+          
+          absent_point: {
+            value: data.data.constant_increase_ELO,
+            error: false,
+            errorMessage: 'Los puntos a otorgar por ausencia o abandono son requeridos'
+          },   
+
           amountTable:{
             value: data.data.amount_tables,
             error:false,
@@ -570,6 +584,9 @@ export default function Setting({ tourney }) {
         "time_to_win": formValues.timeRound.value,
         "lottery": formValues.lottery.value,
         "constant_increase_ELO": formValues.constant_increase_ELO.value,
+
+        "absent_point": formValues.absent_point.value,
+
         "use_penalty": formValues.usePenalty.value,       
         "limitPenaltyPoints": formValues.limitPenaltyPoints.value,
         "points_penalty_yellow": formValues.points_penalty_yellow.value,

@@ -9,7 +9,6 @@ import Penalty from "./Penalty";
 export default function ListPenalty({ record, readOnly, setActiveRound }) {
   const { token, lang } = useAppContext();
   const [penaltys, setPenaltys] = useState([]);
-  const [gameOver, setGameOver] = useState(false);
 
   const [reload, setReload] = useState(true);
   const [open, setOpen] = useState(false);
@@ -234,12 +233,12 @@ export default function ListPenalty({ record, readOnly, setActiveRound }) {
         <div>
           <h6>Penalizaciones por Jugador</h6>
         </div>
-        {record.status === "0" && readOnly === false && gameOver === false && (
           <div>
             <Button
               color="danger"
               size="sm"
               title="Nueva Penalización"
+              disabled={record.status === "0" && record.can_update === false && readOnly === false}
               onClick={(e) => {
                 e.preventDefault();
                 handleNew(null);
@@ -248,7 +247,6 @@ export default function ListPenalty({ record, readOnly, setActiveRound }) {
               <i class="bi bi-hand-thumbs-down"></i>
             </Button>
           </div>
-        )}
       </div>
       <Table hover responsive size="sm" striped borderless bordered>
         <thead>
