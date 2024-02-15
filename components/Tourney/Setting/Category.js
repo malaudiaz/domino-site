@@ -200,9 +200,9 @@ export default function Category({ formValues, setFormValues }) {
   const handleChange = (e) => {
     const name = e.target.name;
 
-    const value = event.target.type === "checkbox"
-        ? event.target.checked
-        : event.target.value;    
+    const value = e.target.type === "checkbox"
+        ? e.target.checked
+        : e.target.value;    
     
 
     setFormValues({

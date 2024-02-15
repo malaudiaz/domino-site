@@ -20,8 +20,8 @@ export default function Criteria({ formValues, setFormValues }) {
       value: "Juegos Ganados",
     },
     {
-      key: "BONUS",
-      value: "Bonificación",
+      key: "PF",
+      value: "Puntos a Favor",
     },
     {
       key: "ELO",
@@ -39,22 +39,26 @@ export default function Criteria({ formValues, setFormValues }) {
       value: "Juegos Ganados",
     },
     {
+      key: "PF",
+      value: "Puntos a Favor",
+    },
+    {
       key: "ERA",
       value: "ELO Ronda Anterior",
     },
     {
       key: "DP",
       value: "Díferencia de Puntos",
-    },
+    }
   ];
 
   const handleChange = (e) => {
     const name = e.target.name;
 
     const value =
-      event.target.type === "checkbox"
-        ? event.target.checked ? "DESC" : "ASC"
-        : event.target.value;
+      e.target.type === "checkbox"
+        ? e.target.checked ? "DESC" : "ASC"
+        : e.target.value;
 
     setFormValues({
       ...formValues,
