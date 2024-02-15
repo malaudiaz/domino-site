@@ -325,6 +325,43 @@ export default function Boletus({
     }
   };
 
+  const handleOpenBoletus = async () => {
+    const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/boletus/notupdate/${record.boletus_id}`;
+
+    try {
+      const { data } = await axios.post(url, {}, config);
+      if (data.success) {
+        close();
+      }
+    } catch ({ code, message, name, request }) {
+      if (code === "ERR_NETWORK") {
+        Swal.fire({
+          title: "Reabrir Boleta",
+          text: "Error en su red, consulte a su proveedor de servicio",
+          icon: "error",
+          showCancelButton: false,
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Aceptar",
+        });
+      } else {
+        if (code === "ERR_BAD_REQUEST") {
+          const { detail } = JSON.parse(request.response);
+          Swal.fire({
+            title: "Reabrir Boleta",
+            text: detail,
+            icon: "error",
+            showCancelButton: false,
+            allowOutsideClick: false,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Aceptar",
+          });
+        }
+      }
+    }
+}
+
+
 
   return (
     <Modal
@@ -430,7 +467,7 @@ export default function Boletus({
             </TabContent>
           </>
         ) : (
-          <InfoBoletus record={record} />
+          <InfoBoletus record={record} handleSubmit={handleOpenBoletus} />
         )}
       </ModalBody>
 

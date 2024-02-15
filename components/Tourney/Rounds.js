@@ -382,6 +382,10 @@ export default function Rounds({ tourney, readOnly }) {
             ))}
           </div>
 
+          {/* { activeRound && activeRound.status_name!=="INITIADED" && */}
+          <Button color="primary" className="btn btn-sm">Imprimir Boletas</Button>              
+
+
           { activeRound && activeRound.status_name!=="INITIADED" && activeRound.status_name !== "FINALIZED" && !readOnly && 
             <Button className="btn btn-sm btn-success" onClick={handleSubmit}>              
               {activeRound.status_name==="CREATED" && (

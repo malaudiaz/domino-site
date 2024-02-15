@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import { FormGroup, Label, Col, Input, InputGroup } from "reactstrap";
+import { FormGroup, Label, Col, Input, InputGroup, Button } from "reactstrap";
 
 import { useAppContext } from "../../AppContext";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-export default function InfoBoletus({ record }) {
+export default function InfoBoletus({ record, handleSubmit }) {
     const { token, lang } = useAppContext();
 
     const [frmData, setFrmData] =useState([]);
@@ -55,13 +55,11 @@ export default function InfoBoletus({ record }) {
         }
     };
     
-
     useEffect(() => {
         if (record.boletus_id !== "") {
             fetchData();
         }
     }, [record]);
-    
 
     return (
         <div className="py-3 px-4">
@@ -69,6 +67,20 @@ export default function InfoBoletus({ record }) {
                 <div>
                     <h6>Información del Cierre de Boleta</h6>
                 </div>
+                <div>
+                    <Button
+                        color="primary"
+                        size="sm"
+                        title="Volver a abrir la Boleta"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            handleSubmit();
+                        }}
+                    >
+                        <i class="bi bi-arrow-counterclockwise"></i>
+                    </Button>
+                </div>
+
             </div>
             <div>
                 <FormGroup row>

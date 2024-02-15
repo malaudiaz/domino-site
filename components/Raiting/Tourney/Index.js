@@ -131,21 +131,15 @@ export default function TournerResult({ id }) {
                                             P-
                                         </th>
                                         <th className="text-center" rowSpan={2}>
+                                            Pen.
+                                        </th>
+                                        <th className="text-center" rowSpan={2}>
                                             DIF
                                         </th>
 
                                         <th className="text-center" colSpan={2}>Puntuación</th>
 
                                         <th className="text-center" colSpan={3}>ELO</th>
-
-                                        <th className="text-center" colSpan={4}>FC</th>
-
-                                        <th className="text-center" rowSpan={2}>
-                                            BON
-                                        </th>
-
-                                        <th className="text-center" colSpan={3}>Ptos x Penaliz.</th>
-
 
                                     </tr>
                                     <tr className="text-center">
@@ -163,27 +157,6 @@ export default function TournerResult({ id }) {
                                         </th>
                                         <th>
                                             Final
-                                        </th>
-                                        <th>
-                                            K1
-                                        </th>
-                                        <th>
-                                            K2
-                                        </th>
-                                        <th>
-                                            K3
-                                        </th>
-                                        <th>
-                                            K
-                                        </th>
-                                        <th>
-                                            Total
-                                        </th>
-                                        <th>
-                                            Rojas
-                                        </th>
-                                        <th>
-                                            Amar.
                                         </th>
                                     </tr>
                                 </thead>
@@ -219,6 +192,9 @@ export default function TournerResult({ id }) {
                                                 {item.points_negative}
                                             </td>
                                             <td className="text-center">
+                                                {item.penalty_total}
+                                            </td>
+                                            <td className="text-center">
                                                 {item.points_difference}
                                             </td>
 
@@ -239,32 +215,7 @@ export default function TournerResult({ id }) {
                                                 {item.elo_at_end}
                                             </td>
 
-                                            <td className="text-center">
-                                                {"K1"}
-                                            </td>
-                                            <td className="text-center">
-                                                {"K2"}
-                                            </td>
-                                            <td className="text-center">
-                                                {"K3"}
-                                            </td>
-                                            <td className="text-center">
-                                                {"K"}
-                                            </td>
 
-                                            <td className="text-center">
-                                                {item.bonus_points}
-                                            </td>
-
-                                            <td className="text-center">
-                                                {item.penalty_total}
-                                            </td>
-                                            <td className="text-center">
-                                                {item.penalty_red}
-                                            </td>
-                                            <td className="text-center">
-                                                {item.penalty_yellow}
-                                            </td>
                                         </tr>
                                     ))}
 
