@@ -6,7 +6,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import Penalty from "./Penalty";
 
-export default function ListPenalty({ record, readOnly, setActiveRound }) {
+export default function ListPenalty({ record, readOnly }) {
   const { token, lang } = useAppContext();
   const [penaltys, setPenaltys] = useState([]);
 
@@ -59,7 +59,7 @@ export default function ListPenalty({ record, readOnly, setActiveRound }) {
         //   data.data.number_points_to_win === data.data.pair_one.total_point ||
         //   data.data.number_points_to_win === data.data.pair_two.total_point;
         // setGameOver(gover);
-        // setReload(false);
+        setReload(false);
       }
     } catch ({ code, message, name, request }) {
       if (code === "ERR_NETWORK") {
@@ -90,10 +90,10 @@ export default function ListPenalty({ record, readOnly, setActiveRound }) {
   };
 
   useEffect(() => {
-    if (record.boletus_id) {
+    if (reload) {
       fetchData();
     }
-  }, [record]);
+  }, [reload]);
 
   const parseMotive = (type) => {
     switch (type) {

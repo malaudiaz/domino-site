@@ -15,28 +15,8 @@ import {
   FormFeedback
 } from "reactstrap";
 
-import { useAppContext } from "../../AppContext";
 
-import axios from "axios";
-import Swal from "sweetalert2";
-
-export default function Nulled({ open, setOpen, boletus, record }) {
-  const { token, lang } = useAppContext();
-  const [frmData, setFrmData] = useState({
-    motive: "",
-    player: "",
-    isOut: false
-  });
-
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-      "Accept": "application/json",
-      "accept-Language": lang,
-      "Authorization": `Bearer ${token}`,
-    }
-  };
-
+export default function Nulled({ open, setOpen, frmData, setFrmData, boletus, handleSubmit }) {
   const handleChange = (e) => {
     const name = e.target.name;
 
@@ -50,60 +30,6 @@ export default function Nulled({ open, setOpen, boletus, record }) {
     })
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (frmData.motive !== "" && frmData.player !== "") {
-        console.log(frmData);
-
-        const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/boletus/annulled/${record.boletus_id}`;
-
-        const body = {
-          player_id: frmData.player,
-          annulled_type: frmData.motive,
-          was_expelled: frmData.isOut
-        };
-    
-        try {
-          const { data } = await axios.post(url, body, config);
-    
-          if (data.success) {
-    
-            setFrmData({
-              motive: "",
-              player: "",
-              isOut: false
-            })
-    
-          }
-        } catch ({ code, message, name, request }) {
-          if (code === "ERR_NETWORK") {
-            Swal.fire({
-              title: "Anulando Boleta",
-              text: "Error en su red, consulte a su proveedor de servicio",
-              icon: "error",
-              showCancelButton: false,
-              allowOutsideClick: false,
-              confirmButtonColor: "#3085d6",
-              confirmButtonText: "Aceptar",
-            });
-          } else {
-            if (code === "ERR_BAD_REQUEST") {
-              const { detail } = JSON.parse(request.response);
-              Swal.fire({
-                title: "Anulando Boleta",
-                text: detail,
-                icon: "error",
-                showCancelButton: false,
-                allowOutsideClick: false,
-                confirmButtonColor: "#3085d6",
-                confirmButtonText: "Aceptar",
-              });
-            }
-          }
-        }
-    }
-  };
 
 
   return (

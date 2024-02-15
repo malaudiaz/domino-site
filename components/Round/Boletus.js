@@ -42,6 +42,23 @@ export default function Boletus({
   const [activeTab, setActiveTab] = useState("1");
   const [openAbsent, setOpenAbsent] = useState(false);
   const [openNulled, setOpenNulled] = useState(false);
+  const [reload, setReload] = useState(true);
+
+  const [frmAbsentData, setFrmAbsentData] = useState({
+    motive: "",
+    player_0: "",
+    player_1: "",
+    player_2: "",
+    player_3: "",
+    point: ""
+  });
+
+  const [frmNullData, setFrmNullData] = useState({
+    motive: "",
+    player: "",
+    isOut: false
+  });
+
 
   const toggleTab = (tab) => {
     if (activeTab !== tab) {
@@ -72,7 +89,7 @@ export default function Boletus({
 
         // const gover = data.data.number_points_to_win === data.data.pair_one.total_point || data.data.number_points_to_win === data.data.pair_two.total_point;
         // setGameOver(gover);
-        // setReload(false);
+        setReload(false);
       }
     } catch ({ code, message, name, request }) {
       if (code === "ERR_NETWORK") {
@@ -106,7 +123,7 @@ export default function Boletus({
     if (record.boletus_id) {
       fetchData();
     }
-  }, [record]);
+  }, [record, reload]);
 
   const closeByTime = async () => {
     const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/boletus/closedata/${record.boletus_id}`;
@@ -181,6 +198,133 @@ export default function Boletus({
     });
   };
 
+  const handleSubmitAbsent = async (e) => {
+    e.preventDefault();
+
+    const players = "";
+    for (let i=0; i<4; i++) {
+      if (frmAbsentData["player_"+i] !== "") {
+        if (players==="") {
+          players = frmAbsentData["player_"+i];
+        } else {
+          players = players + "," + frmAbsentData["player_"+i];
+        }
+      }
+    }
+
+    const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/boletus/absences/${record.boletus_id}`;
+
+    const body = {
+      motive: frmAbsentData.motive,
+      players: players,
+    };
+
+    try {
+      const { data } = await axios.post(url, body, config);
+
+      if (data.success) {
+
+        setFrmAbsentData({
+          motive: "",
+          player_0: "",
+          player_1: "",
+          player_2: "",
+          player_3: "",
+          point: ""
+        });
+
+        setReload(true);
+        setOpenAbsent(false);
+        close();
+
+      }
+    } catch ({ code, message, name, request }) {
+      if (code === "ERR_NETWORK") {
+        Swal.fire({
+          title: "Guardando Ausencias",
+          text: "Error en su red, consulte a su proveedor de servicio",
+          icon: "error",
+          showCancelButton: false,
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Aceptar",
+        });
+      } else {
+        if (code === "ERR_BAD_REQUEST") {
+          const { detail } = JSON.parse(request.response);
+          Swal.fire({
+            title: "Guardando Ausencias",
+            text: detail,
+            icon: "error",
+            showCancelButton: false,
+            allowOutsideClick: false,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Aceptar",
+          });
+        }
+      }
+    }
+  };
+
+  const handleSubmitNulled = async (e) => {
+    e.preventDefault();
+
+    if (frmNullData.motive !== "") {
+        const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/boletus/annulled/${record.boletus_id}`;
+
+        const body = {
+          player_id: frmNullData.player,
+          annulled_type: frmNullData.motive,
+          was_expelled: frmNullData.isOut
+        };
+    
+        try {
+          const { data } = await axios.post(url, body, config);
+    
+          if (data.success) {
+    
+            setFrmNullData({
+              motive: "",
+              player: "",
+              isOut: false
+            });
+
+            setReload(true);
+            setOpenNulled(false);
+            close();
+    
+    
+          }
+        } catch ({ code, message, name, request }) {
+          if (code === "ERR_NETWORK") {
+            Swal.fire({
+              title: "Anulando Boleta",
+              text: "Error en su red, consulte a su proveedor de servicio",
+              icon: "error",
+              showCancelButton: false,
+              allowOutsideClick: false,
+              confirmButtonColor: "#3085d6",
+              confirmButtonText: "Aceptar",
+            });
+          } else {
+            if (code === "ERR_BAD_REQUEST") {
+              const { detail } = JSON.parse(request.response);
+              Swal.fire({
+                title: "Anulando Boleta",
+                text: detail,
+                icon: "error",
+                showCancelButton: false,
+                allowOutsideClick: false,
+                confirmButtonColor: "#3085d6",
+                confirmButtonText: "Aceptar",
+              });
+            }
+          }
+        }
+    }
+  };
+
+
   return (
     <Modal
       id="boletus"
@@ -204,7 +348,7 @@ export default function Boletus({
               color="secondary"
               size="sm"
               title="Ausencias"
-              disabled={record.status === "0" && record.can_update === false && readOnly === false}
+              disabled={record.status === "1" && record.can_update === false && readOnly === true}
               onClick={(e) => {
                 e.preventDefault();
                 setOpenAbsent(true);
@@ -217,7 +361,7 @@ export default function Boletus({
               color="secondary"
               size="sm"
               title="Anular Boleta"
-              disabled={record.status === "0" && record.can_update === false && readOnly === false}
+              disabled={record.status === "1" && record.can_update === false && readOnly === true}
               onClick={(e) => {
                 e.preventDefault();
                 setOpenNulled(true);
@@ -230,7 +374,7 @@ export default function Boletus({
               color="danger"
               size="sm"
               title="Cerrar por Tiempo"
-              disabled={record.status === "0" && record.can_update === false && readOnly === false}
+              disabled={record.status === "1" && record.can_update === false && readOnly === true}
               onClick={(e) => {
                 handleClose(e);
               }}
@@ -287,16 +431,20 @@ export default function Boletus({
         <Absent
           open={openAbsent}
           setOpen={setOpenAbsent}
+          frmData={frmAbsentData}
+          setFrmData={setFrmAbsentData}
           boletus={boletus}
-          record={record}
+          handleSubmit={handleSubmitAbsent}
         />
       )}
       {Object.entries(boletus).length > 0 && (
         <Nulled
           open={openNulled}
           setOpen={setOpenNulled}
+          frmData={frmNullData}
+          setFrmData={setFrmNullData}
           boletus={boletus}
-          record={record}
+          handleSubmit={handleSubmitNulled}
         />
       )}
     </Modal>

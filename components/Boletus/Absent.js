@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Modal,
   ModalHeader,
@@ -12,31 +11,8 @@ import {
   Form,
 } from "reactstrap";
 
-import { useAppContext } from "../../AppContext";
 
-import axios from "axios";
-import Swal from "sweetalert2";
-
-export default function Absent({ open, setOpen, boletus, record }) {
-  const { token, lang } = useAppContext();
-  const [frmData, setFrmData] = useState({
-    motive: "",
-    player_0: "",
-    player_1: "",
-    player_2: "",
-    player_3: "",
-    point: ""
-  });
-
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-      "Accept": "application/json",
-      "accept-Language": lang,
-      "Authorization": `Bearer ${token}`,
-    }
-  };
-
+export default function Absent({ open, setOpen, frmData, setFrmData, boletus, handleSubmit }) {
   const handleChange = (e) => {
     const name = e.target.name;
 
@@ -49,71 +25,6 @@ export default function Absent({ open, setOpen, boletus, record }) {
         [name]: check ? value : ""
     })
   };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const players = "";
-    for (let i=0; i<4; i++) {
-      if (frmData["player_"+i] !== "") {
-        if (players==="") {
-          players = frmData["player_"+i];
-        } else {
-          players = players + "," + frmData["player_"+i];
-        }
-      }
-    }
-
-    const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/boletus/absences/${record.boletus_id}`;
-
-    const body = {
-      motive: frmData.motive,
-      players: players,
-    };
-
-    try {
-      const { data } = await axios.post(url, body, config);
-
-      if (data.success) {
-
-        setFrmData({
-          motive: "",
-          player_0: "",
-          player_1: "",
-          player_2: "",
-          player_3: "",
-          point: ""
-        })
-
-      }
-    } catch ({ code, message, name, request }) {
-      if (code === "ERR_NETWORK") {
-        Swal.fire({
-          title: "Guardando Ausencias",
-          text: "Error en su red, consulte a su proveedor de servicio",
-          icon: "error",
-          showCancelButton: false,
-          allowOutsideClick: false,
-          confirmButtonColor: "#3085d6",
-          confirmButtonText: "Aceptar",
-        });
-      } else {
-        if (code === "ERR_BAD_REQUEST") {
-          const { detail } = JSON.parse(request.response);
-          Swal.fire({
-            title: "Guardando Ausencias",
-            text: detail,
-            icon: "error",
-            showCancelButton: false,
-            allowOutsideClick: false,
-            confirmButtonColor: "#3085d6",
-            confirmButtonText: "Aceptar",
-          });
-        }
-      }
-    }
-  };
-
 
   return (
     <Modal

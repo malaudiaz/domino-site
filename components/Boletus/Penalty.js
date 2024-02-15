@@ -15,19 +15,7 @@ import {
   FormFeedback
 } from "reactstrap";
 
-import { useAppContext } from "../../AppContext";
-
 export default function Penalty({ open, setOpen, penaltys, frmData, setFrmData, handleSubmit }) {
-  const { token, lang } = useAppContext();
-
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-      "Accept": "application/json",
-      "accept-Language": lang,
-      "Authorization": `Bearer ${token}`,
-    }
-  };
 
   const handleChange = (e) => {
     const name = e.target.name;
