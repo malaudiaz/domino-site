@@ -226,7 +226,7 @@ export default function ListData({ record, readOnly, setActiveRound }) {
               color="primary"
               size="sm"
               title="Nueva Data"
-              disabled={record.status === "1" && record.can_update === false && readOnly === true && gameOver === true}
+              disabled={record.status === "1" && record.can_update === false && readOnly === false && gameOver === false}
               onClick={(e) => {
                 e.preventDefault();
                 handleNew(null);

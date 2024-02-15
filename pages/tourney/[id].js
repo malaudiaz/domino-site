@@ -323,7 +323,7 @@ export default function Tourneys() {
 
           <div className="d-grid pt-3 px-4">
             <div className="container-events">
-              {records.map(({ id, name, modality, summary, startDate, image, status_name }, idx) => (
+              {records.map(({ id, name, modality, summary, startDate, image, status_description }, idx) => (
                 <Card
                   className="card-info" 
                   style={{ borderRadius: "10px", cursor: "default" }}
@@ -358,7 +358,7 @@ export default function Tourneys() {
                     </div>
                     <div className="d-flex justify-content-between col-12 pt-2">
                       <span>Modalidad: <b>{modality}</b></span>
-                      <span>Estado: <b>{status_name}</b></span>                      
+                      <span>Estado: <b>{status_description}</b></span>                      
                     </div>
                     <div className="col-12 pt-2 text-center">
                       <span><b>{eventDate(startDate, "")}</b></span>                      

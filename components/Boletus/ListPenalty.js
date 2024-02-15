@@ -269,6 +269,7 @@ export default function ListPenalty({ record, readOnly }) {
                 <td className="text-center">{item.penalty_type}</td>
                 <td className="text-center">{item.penalty_value}</td>
                 <td className="text-center">
+                  {record.status === "0" && record.can_update && readOnly === false ? (
                   <a
                     className="edit"
                     title="Editar"
@@ -279,6 +280,14 @@ export default function ListPenalty({ record, readOnly }) {
                   >
                     <i class="bi bi-pencil-square"></i>
                   </a>
+                  ) : (
+                    <a
+                      className="edit"
+                      title="Editar"
+                    >
+                      <i class="bi bi-pencil-square"></i>
+                    </a>
+                  )}
                 </td>
               </tr>
             ))}

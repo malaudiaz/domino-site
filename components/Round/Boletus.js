@@ -29,6 +29,7 @@ import classnames from "classnames";
 import Absent from "../Boletus/Absent";
 import Nulled from "../Boletus/Nulled";
 import ListPenalty from "../Boletus/ListPenalty";
+import InfoBoletus from "../Boletus/Info";
 
 export default function Boletus({
   open,
@@ -348,7 +349,7 @@ export default function Boletus({
               color="secondary"
               size="sm"
               title="Ausencias"
-              disabled={record.status === "1" && record.can_update === false && readOnly === true}
+              disabled={record.status === "1" && record.can_update === false && readOnly === false}
               onClick={(e) => {
                 e.preventDefault();
                 setOpenAbsent(true);
@@ -361,7 +362,7 @@ export default function Boletus({
               color="secondary"
               size="sm"
               title="Anular Boleta"
-              disabled={record.status === "1" && record.can_update === false && readOnly === true}
+              disabled={record.status === "1" && record.can_update === false && readOnly === false}
               onClick={(e) => {
                 e.preventDefault();
                 setOpenNulled(true);
@@ -374,7 +375,7 @@ export default function Boletus({
               color="danger"
               size="sm"
               title="Cerrar por Tiempo"
-              disabled={record.status === "1" && record.can_update === false && readOnly === true}
+              disabled={record.status === "1" && record.can_update === false && readOnly === false}
               onClick={(e) => {
                 handleClose(e);
               }}
@@ -384,47 +385,53 @@ export default function Boletus({
           </div>
         </div>
 
-        <Nav tabs>
-          <NavItem>
-            <NavLink
-              href="#"
-              className={classnames({ active: activeTab === "1" })}
-              onClick={() => {
-                toggleTab("1");
-              }}
-            >
-              DATAS
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink
-              href="#"
-              className={classnames({ active: activeTab === "2" })}
-              onClick={() => {
-                toggleTab("2");
-              }}
-            >
-              PENALIZACIONES
-            </NavLink>
-          </NavItem>
-        </Nav>
+        {record.status === "0" && record.can_update ? (
+          <>
+            <Nav tabs>
+              <NavItem>
+                  <NavLink
+                    href="#"
+                    className={classnames({ active: activeTab === "1" })}
+                    onClick={() => {
+                      toggleTab("1");
+                    }}
+                  >
+                    DATAS
+                  </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink
+                  href="#"
+                  className={classnames({ active: activeTab === "2" })}
+                  onClick={() => {
+                    toggleTab("2");
+                  }}
+                >
+                  PENALIZACIONES
+                </NavLink>
+              </NavItem>
+            </Nav>
 
-        <TabContent activeTab={activeTab}>
-          <TabPane tabId="1">
-            <ListData
-              record={record}
-              readOnly={readOnly}
-              setActiveRound={setActiveRound}
-            />
-          </TabPane>
-          <TabPane tabId="2">
-            <ListPenalty
-              record={record}
-              readOnly={readOnly}
-              setActiveRound={setActiveRound}
-            />
-          </TabPane>
-        </TabContent>
+            <TabContent activeTab={activeTab}>
+              <TabPane tabId="1">
+                <ListData
+                  record={record}
+                  readOnly={readOnly}
+                  setActiveRound={setActiveRound}
+                />
+              </TabPane>
+              <TabPane tabId="2">
+                <ListPenalty
+                  record={record}
+                  readOnly={readOnly}
+                  setActiveRound={setActiveRound}
+                />
+              </TabPane>
+            </TabContent>
+          </>
+        ) : (
+          <InfoBoletus record={record} />
+        )}
       </ModalBody>
 
       {Object.entries(boletus).length > 0 && (
