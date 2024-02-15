@@ -302,10 +302,6 @@ export default function Category({ formValues, setFormValues }) {
                       color="primary"
                       title="Nueva Categoría"
                       onClick={handleAdd}
-                      // disabled={
-                      //   formValues.statusName.value === "CONFIGURATED" ||
-                      //   formValues.statusName.value === "INITIADED"
-                      // }      
                   >
                       <i className="bi bi-plus"></i> Nuevo Segmento
                   </Button>
@@ -314,40 +310,61 @@ export default function Category({ formValues, setFormValues }) {
                 </CardHeader>
                 <CardBody>
                   {bombo.length > 0 ? (
-                    <Table responsive size="sm" hover>
-                      <thead>
-                          <tr>
-                              <th className="text-center">#</th>
-                              <th className="text-center">Nombre</th>
-                              <th className="text-center">ELO Max.</th>
-                              <th className="text-center">ELO Min.</th>
-                              <th className="text-center">Competidores</th>
-                              <th></th>
-                          </tr>
-                      </thead>
-                      <tbody>
-                          {bombo.map((item, idx) => (
-                              <tr key={idx}>
-                                  <td className="text-center" scope="row">{item.number}</td>
-                                  <td className="text-center">{item.title}</td>
-                                  <td className="text-center">{item.max}</td>
-                                  <td className="text-center">{item.min}</td>
-                                  <td className="text-center">{item.players}</td>
-                                  <td className="text-center">
-                                      <a
-                                        onClick={(e) => handleDelete(e, item, idx)}
-                                        style={{ cursor: "pointer" }}
-                                      >
-                                          <i
-                                              className="bi bi-trash text-danger fs-6 cursor-pointer"
-                                              title="Eliminar"
-                                          />
-                                      </a>
-                                  </td>
-                              </tr>
-                          ))}
-                      </tbody>
-                    </Table>
+                    <>
+                      <Table responsive size="sm" hover>
+                        <thead>
+                            <tr>
+                                <th className="text-center">#</th>
+                                <th className="text-center">Nombre</th>
+                                <th className="text-center">ELO Max.</th>
+                                <th className="text-center">ELO Min.</th>
+                                <th className="text-center">Competidores</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {bombo.map((item, idx) => (
+                                <tr key={idx}>
+                                    <td className="text-center" scope="row">{item.number}</td>
+                                    <td className="text-center">{item.title}</td>
+                                    <td className="text-center">{item.max}</td>
+                                    <td className="text-center">{item.min}</td>
+                                    <td className="text-center">{item.players}</td>
+                                    <td className="text-center">
+                                        <a
+                                          onClick={(e) => handleDelete(e, item, idx)}
+                                          style={{ cursor: "pointer" }}
+                                        >
+                                            <i
+                                                className="bi bi-trash text-danger fs-6 cursor-pointer"
+                                                title="Eliminar"
+                                            />
+                                        </a>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                      </Table>
+
+                      <FormGroup row className="pt-2 ps-4 pe-4">
+                        <Col sm={3}>
+                          <Label size="sm">
+                            Cant. de rondas con segmentación:
+                          </Label>
+                        </Col>
+                        <Col sm={3}>
+                          <InputGroup size="sm">
+                            <Input
+                              type="text"
+                              name="amount_segmentation_round"
+                              id="amount_segmentation_round"
+                              value={formValues.amountSegmentationRound.value}
+                            />
+                          </InputGroup>
+                        </Col>
+                      </FormGroup>
+                    </>
+
                   ) : (
                     <div
                         className="pt-3 px-4 pb-4"

@@ -25,45 +25,30 @@ export default function Setting({ tourney }) {
   const [reload, setReload] = useState(false);
 
   const [formValues, setFormValues] = useState({
-    tourneyId: {
+    absent_point: {
       value: "",
       error: false,
-      errorMessage: ""
+      errorMessage: 'Los puntos a otorgar por ausencia o abandono son requeridos'
+    },   
+    amountPlayer:{
+      value: "",
+      error: false,
+      errorMessage: 'Cantidad de Jugadores requerida'
     },
-    name: {
+    smartTable:{
       value: "",
       error: false,
-      errorMessage: "Nombre del torneo, requerido"
+      errorMessage: 'Cantidad de mesas inteligentes requerida'
     },
-    modality: {
+    amountTable:{
       value: "",
       error: false,
-      errorMessage: "Modalidad del torneo, requerido"
+      errorMessage: 'Cantidad de Mesas requerida'
     },
-    number_rounds: {
+    constant_increase_ELO: {
       value: "",
       error: false,
-      errorMessage: "Rondas del torneo, requerido"
-    },
-    startDate: {
-      value: "",
-      error: false,
-      errorMessage: "Fecha de Inicio del torneo, requerido"
-    },
-    scope: {
-      value: "",
-      error: false,
-      errorMessage: "Alcance del torneo, requerido"
-    },
-    level: {
-      value: "",
-      error: false,
-      errorMessage: "Nilve del torneo, requerido"
-    },
-    summary: {
-      value: "",
-      error: false,
-      errorMessage: ""
+      errorMessage: 'Constante de crecimiento del ELO es requerida'
     },
     eloMax:{
       value: "",
@@ -75,99 +60,6 @@ export default function Setting({ tourney }) {
       error: false,
       errorMessage: "ELO Mínimo, requerido"
     },
-    amountTable:{
-      value: "",
-      error: false,
-      errorMessage: 'Cantidad de Mesas requerida'
-    },
-    amountPlayer:{
-      value: "",
-      error: false,
-      errorMessage: 'Cantidad de Jugadores requerida'
-    },
-    smartTable:{
-      value: "",
-      error: false,
-      errorMessage: 'Cantidad de mesas inteligentes requerida'
-    },
-    constant_increase_ELO: {
-      value: "",
-      error: false,
-      errorMessage: 'Constante de crecimiento del ELO es requerida'
-    },
-
-    absent_point: {
-      value: "",
-      error: false,
-      errorMessage: 'Los puntos a otorgar por ausencia o abandono son requeridos'
-    },   
-
-    pointRound:{
-      value: "",
-      error: false,
-      errorMessage: 'Puntos por Rondas requerida'
-    },
-    timeRound:{
-      value: "",
-      error: false,
-      errorMessage: 'Tiempo por Rondas requerida'
-    },
-    lottery:{
-      value: "MANUAL",
-      error: false,
-      errorMessage: 'Tipo de Sorteo es requerido'
-    },
-    
-    
-    amountBonusPoints: {
-      value: 0,
-      error:false,
-      errorMessage:""
-    },
-    amountBonusTables: {
-      value: 0,
-      error:false,
-      errorMessage:""
-    },
-    amountBonusPointsRounds: {
-      value: 0,
-      error:false,
-      errorMessage:""
-    },
-
-
-    limitPenaltyPoints: {
-      value: 0,
-      error: false,
-      errorMessage: "Límite de puntos por penalización es requerido"
-    },
-    points_penalty_yellow: {
-      value: 0,
-      error: false,
-      errorMessage: "Puntos de penalización por tarjetas amarillas requerido"
-    },
-    points_penalty_red: {
-      value: 0,
-      error: false,
-      errorMessage: "Puntos de penalización por tarjetas rojas requerido"
-    },
-    
-    event_ordering_one: {
-      value: "",
-      error: false,
-      errorMessage: "Primer críterio de orden de torneo requerido"
-    },
-    event_ordering_two: {
-      value: "",
-      error: false,
-      errorMessage: "Segundo Críterio de orden de torneo requerido"
-    },
-    event_ordering_three: {
-      value: "",
-      error: false,
-      errorMessage: "Tercer críterio de orden de torneo requerido"
-    },
-
     event_ordering_dir_one: {
       value: "",
       error: false,
@@ -183,24 +75,41 @@ export default function Setting({ tourney }) {
       error: false,
       errorMessage: ""
     },
-
-    round_ordering_one: {
+    event_ordering_one: {
       value: "",
       error: false,
-      errorMessage: "Primer críterio de orden de ronda requerido"
+      errorMessage: "Primer críterio de orden de torneo requerido"
     },
-    round_ordering_two: {
+    event_ordering_two: {
       value: "",
       error: false,
-      errorMessage: "Críterio de orden de ronda requerido"
+      errorMessage: "Segundo Críterio de orden de torneo requerido"
     },
-    round_ordering_three: {
+    event_ordering_three: {
       value: "",
       error: false,
-      errorMessage: "Críterio de orden de ronda requerido"
+      errorMessage: "Tercer críterio de orden de torneo requerido"
     },
-
-
+    playSystem:{
+      value: "",
+      error:false,
+      errorMessage:'Sistema de Juego es requerido'
+    },
+    lottery:{
+      value: "",
+      error:false,
+      errorMessage:'Tipo de Sorteo es requerido'
+    },
+    modality: {
+      value: "",
+      error: false,
+      errorMessage: "Modalidad del torneo, requerido"
+    },
+    name: {
+      value: "",
+      error: false,
+      errorMessage: "Nombre del torneo, requerido"
+    },
     round_ordering_dir_one: {
       value: "",
       error: false,
@@ -216,7 +125,31 @@ export default function Setting({ tourney }) {
       error: false,
       errorMessage: ""
     },
-
+    round_ordering_one: {
+      value: "",
+      error: false,
+      errorMessage: "Primer críterio de orden de ronda requerido"
+    },
+    round_ordering_two: {
+      value: "",
+      error: false,
+      errorMessage: "Críterio de orden de ronda requerido"
+    },
+    round_ordering_three: {
+      value: "",
+      error: false,
+      errorMessage: "Críterio de orden de ronda requerido"
+    },
+    scope: {
+      value: "",
+      error: false,
+      errorMessage: "Alcance del torneo, requerido"
+    },
+    startDate: {
+      value: "",
+      error: false,
+      errorMessage: "Fecha de Inicio del torneo, requerido"
+    },
     statusId: {
       value: "",
       error: false,
@@ -232,27 +165,51 @@ export default function Setting({ tourney }) {
       error: false,
       errorMessage: ""
     },
-    image: {
+    summary: {
       value: "",
       error: false,
       errorMessage: ""
     },
+    timeRound:{
+      value: "",
+      error: false,
+      errorMessage: 'Tiempo por Rondas requerida'
+    },
+    pointRound:{
+      value: "",
+      error: false,
+      errorMessage: 'Puntos por Rondas requerida'
+    },
+    level: {
+      value: "",
+      error: false,
+      errorMessage: "Nilve del torneo, requerido"
+    },
+
+
     usesSegmentation: {
       value: true,
       error: false,
       errorMessage: ""
     },
-    usePenalty: {
-      value: true,
+    amountSegmentationRound: {
+      value: "",
       error: false,
-      errorMessage: ""
+      errorMessage: "Cantidad de rondas a segmentar, requerido"
     },
-    useBonus: {
-      value: true,
+    number_rounds: {
+      value: "",
       error: false,
-      errorMessage: ""
+      errorMessage: "Cantidad de rondas del torneo requeridas"
     },
+
+
     lst_categories: {
+      value: "",
+      error: false,
+      errorMessage: ""
+    },
+    tourneyId: {
       value: "",
       error: false,
       errorMessage: ""
@@ -333,12 +290,17 @@ export default function Setting({ tourney }) {
             errorMessage: "ELO Mínimo, requerido"
           },  
           
+          number_rounds: {
+            value: data.data.number_rounds,
+            error: false,
+            errorMessage: "Cantidad de rondas del torneo requeridas"
+          },
+                
           absent_point: {
-            value: data.data.constant_increase_ELO,
+            value: data.data.absences_points,
             error: false,
             errorMessage: 'Los puntos a otorgar por ausencia o abandono son requeridos'
           },   
-
           amountTable:{
             value: data.data.amount_tables,
             error:false,
@@ -374,39 +336,6 @@ export default function Setting({ tourney }) {
             error:false,
             errorMessage:'Tipo de Sorteo es requerido'
           },
-          
-          amountBonusPoints: {
-            value: data.data.amount_bonus_points,
-            error: false,
-            errorMessage: ""
-          },
-          amountBonusTables: {
-            value: data.data.amount_bonus_tables,
-            error: false,
-            errorMessage: ""
-          },
-          amountBonusPointsRounds: {
-            value: data.data.amount_bonus_points_rounds,
-            error:false,
-            errorMessage:""
-          },      
-
-          limitPenaltyPoints: {
-            value: data.data.penalties_limit,
-            error: false,
-            errorMessage: "Límite de puntos por penalización es requerido"
-          },
-          points_penalty_yellow: {
-            value: data.data.points_penalty_yellow,
-            error:false,
-            errorMessage: "Puntos de penalización por tarjetas amarillas requerido"
-          },
-          points_penalty_red: {
-            value: data.data.points_penalty_red,
-            error:false,
-            errorMessage: "Puntos de penalización por tarjetas rojas requerido"
-          },
-
           event_ordering_one: {
             value: data.data.event_ordering_one,
             error: false,
@@ -422,13 +351,11 @@ export default function Setting({ tourney }) {
             error: false,
             errorMessage: "Críterio de orden de torneo requerido"
           },
-
           event_ordering_dir_one: {
             value: data.data.event_ordering_dir_one,
             error: false,
             errorMessage: ""
           },
-
           event_ordering_dir_two: {
             value: data.data.event_ordering_dir_two,
             error: false,
@@ -439,8 +366,6 @@ export default function Setting({ tourney }) {
             error: false,
             errorMessage: ""
           },
-      
-
           round_ordering_one: {
             value: data.data.round_ordering_one,
             error: false,
@@ -456,7 +381,6 @@ export default function Setting({ tourney }) {
             error: false,
             errorMessage: "Críterio de orden de ronda requerido"
           },   
-          
           round_ordering_dir_one: {
             value: data.data.round_ordering_dir_one,
             error: false,
@@ -472,7 +396,6 @@ export default function Setting({ tourney }) {
             error: false,
             errorMessage: ""
           },   
-
           statusId: {
             value: data.data.status_id,
             error: false,
@@ -488,25 +411,16 @@ export default function Setting({ tourney }) {
             error: false,
             errorMessage: ""
           },
-          image: {
-            value: data.data.image,
-            error: false,
-            errorMessage: ""
-          },
           usesSegmentation: {
             value: data.data.use_segmentation,
             error: false,
-            errorMessage: ""
+            errorMessage: "Cantidad de rondas a segmentar, requerido"
           },
-          usePenalty: {
-            value: data.data.use_penalty,
+          amountSegmentationRound: {
+            value: data.data.amount_segmentation_round,
             error: false,
             errorMessage: ""
-          },
-          useBonus: {
-            value: data.data.use_bonus,
-            error: false,
-            errorMessage: ""
+
           },
           lst_categories: {
             value: data.data.lst_categories,
@@ -584,21 +498,13 @@ export default function Setting({ tourney }) {
         "time_to_win": formValues.timeRound.value,
         "lottery": formValues.lottery.value,
         "constant_increase_ELO": formValues.constant_increase_ELO.value,
+        "number_rounds": formValues.number_rounds.value,
 
         "absent_point": formValues.absent_point.value,
-
-        "use_penalty": formValues.usePenalty.value,       
-        "limitPenaltyPoints": formValues.limitPenaltyPoints.value,
-        "points_penalty_yellow": formValues.points_penalty_yellow.value,
-        "points_penalty_red": formValues.points_penalty_red.value,
-        
-        "use_bonus": formValues.useBonus.value,
-
-        "amount_bonus_points": formValues.amountBonusPoints.value,
-        "amount_bonus_tables": formValues.amountBonusTables.value,
-        "amount_bonus_points_rounds": formValues.amountBonusPointsRounds.value,
         
         "use_segmentation": formValues.usesSegmentation.value,
+        "amount_segmentation_round": formValues.amountSegmentationRound.value,
+
         "scope": formValues.scope.value,
         "level": formValues.level.value,
 

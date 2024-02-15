@@ -4,11 +4,7 @@ import {
   Input,
   Col,
   InputGroup,
-  FormFeedback,
-  Card,
-  CardHeader,
-  CardBody,
-  Row,
+  FormFeedback
 } from "reactstrap";
 
 export default function Settings({ formValues, setFormValues }) {
