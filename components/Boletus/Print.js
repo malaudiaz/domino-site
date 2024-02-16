@@ -59,6 +59,9 @@ export default function PrintBoletus({ open, setOpen, roundId }) {
         html = html + '<tr height="50px"><td width="300px" align="center">';
         html = html + '</td><td colspan=6 align="center">' + "Boleta de Captación de Datos" + '</td></tr>';
 
+        html = html + '<tr height="50px">';
+        html = html + '<td colspan=3 align="center"><b>' + 'Mesa: ' + data[j].table_number + '</b></td><td colspan=4 align="center"><b>' + 'Ronda No.' + data[j].round_number + '</b></td></tr>';
+
         html = html + '<tr height="30px"><td width="300px"></td><td colspan=3 align="center">Puntos</td><td colspan=3 align="center">Marcar</td></tr>';
         html = html + '<tr height="30px"><td width="300px" align="center">Jugadores</td><td width="100px"align="center">Amones.</td><td width="100px" align="center">Amarilla</td><td width="100px" align="center">Roja</td><td width="100px" align="center">Ausencia</td><td width="100px" align="center">Abandono</td><td width="100px" align="center">Expulsado.</td></tr>';
 
