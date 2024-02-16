@@ -267,7 +267,7 @@ export default function Profile() {
     }
   };
 
-  const handleUpload = async (event) => {
+  const handleUpload = (event) => {
     event.preventDefault();
     saveProfile();
   };
