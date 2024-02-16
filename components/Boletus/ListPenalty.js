@@ -54,17 +54,12 @@ export default function ListPenalty({ record, readOnly }) {
       const { data } = await axios.get(url, config);
       if (data.success) {
         setPenaltys(data.data);
-
-        // const gover =
-        //   data.data.number_points_to_win === data.data.pair_one.total_point ||
-        //   data.data.number_points_to_win === data.data.pair_two.total_point;
-        // setGameOver(gover);
         setReload(false);
       }
     } catch ({ code, message, name, request }) {
       if (code === "ERR_NETWORK") {
         Swal.fire({
-          title: "Cargando Jugadores del Torneo",
+          title: "Penalizaciones",
           text: "Error en su red, consulte a su proveedor de servicio",
           icon: "error",
           showCancelButton: false,
@@ -76,7 +71,7 @@ export default function ListPenalty({ record, readOnly }) {
         if (code === "ERR_BAD_REQUEST") {
           const { detail } = JSON.parse(request.response);
           Swal.fire({
-            title: "Cargando Jugadores del Torneo",
+            title: "Penalizaciones",
             text: detail,
             icon: "error",
             showCancelButton: false,
@@ -227,6 +222,60 @@ export default function ListPenalty({ record, readOnly }) {
     }
   };
 
+  const deleteItem = async (item) => {
+    const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/boletus/penalty/${item.id}`;
+
+    try {
+      const { data } = await axios.delete(url, config);
+
+      if (data.success) {
+        setReload(true);
+      }
+    } catch ({ code, message, name, request }) {
+      if (code === "ERR_NETWORK") {
+        Swal.fire({
+          title: "Eliminado Penalizaciones",
+          text: "Error en su red, consulte a su proveedor de servicio",
+          icon: "error",
+          showCancelButton: false,
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Aceptar",
+        });
+      } else {
+        if (code === "ERR_BAD_REQUEST") {
+          const { detail } = JSON.parse(request.response);
+          Swal.fire({
+            title: "Eliminado Penalizaciones",
+            text: detail,
+            icon: "error",
+            showCancelButton: false,
+            allowOutsideClick: false,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Aceptar",
+          });
+        }
+      }
+    }
+  }
+
+  const handleDelete = (item) => {
+    Swal.fire({
+      title: "¿ Eliminar Penalización ?",
+      text: "¿ Deseas eliminar ésta penalización ?",
+      icon: "question",
+      showCancelButton: true,
+      cancelButtonText: "No",
+      allowOutsideClick: false,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Sí",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteItem(item);
+      }
+    });
+  }
+
   return (
     <div className="py-3 px-4" style={{ height: "500px", overflowY: "auto" }}>
       <div className="d-flex flex-row justify-content-between align-items-center pb-2">
@@ -238,7 +287,7 @@ export default function ListPenalty({ record, readOnly }) {
               color="danger"
               size="sm"
               title="Nueva Penalización"
-              disabled={record.status === "0" && record.can_update === false && readOnly === false}
+              disabled={(record.status === "1" && record.can_update === false) || readOnly === true}
               onClick={(e) => {
                 e.preventDefault();
                 handleNew(null);
@@ -268,8 +317,8 @@ export default function ListPenalty({ record, readOnly }) {
                 <td className="text-center">{item.player_name}</td>
                 <td className="text-center">{item.penalty_type}</td>
                 <td className="text-center">{item.penalty_value}</td>
-                <td className="text-center">
-                  {record.status === "0" && record.can_update && readOnly === false ? (
+                {/* <td className="text-center">
+                  {record.can_update && readOnly === false ? (
                   <a
                     className="edit"
                     title="Editar"
@@ -278,14 +327,32 @@ export default function ListPenalty({ record, readOnly }) {
                       handleNew(item);
                     }}
                   >
-                    <i class="bi bi-pencil-square"></i>
+                    <i className="bi bi-pencil-square"></i>
                   </a>
                   ) : (
                     <a
                       className="edit"
                       title="Editar"
                     >
-                      <i class="bi bi-pencil-square"></i>
+                      <i className="bi bi-pencil-square"></i>
+                    </a>
+                  )}
+                </td> */}
+                <td className="text-center">
+                  {record.can_update && readOnly === false ? (
+                    <a
+                      className="edit"
+                      title="Eliminar"
+                      onClick={(e) => {e.preventDefault(); handleDelete(item)}}
+                    >
+                      <i className="bi bi-trash text-danger fs-6 cursor-pointer"></i>
+                    </a>
+                  ) : (
+                    <a
+                      className="edit"
+                      title="Eliminar"
+                    >
+                      <i className="bi bi-trash text-danger fs-6 cursor-pointer"></i>
                     </a>
                   )}
                 </td>

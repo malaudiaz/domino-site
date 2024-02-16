@@ -94,6 +94,68 @@ export default function View() {
     }
   };
 
+  const closed = async () => {
+    const url = `${process.env.NEXT_PUBLIC_API_URL}tourney/close/${tourneyId}`;
+
+    try {
+      const { data } = await axios.post(url, {}, config);
+      if (data.success) {
+        Swal.fire({
+          title: "Cerrando Torneo",
+          text: data.detail,
+          icon: "success",
+          showCancelButton: false,
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Aceptar",
+        });
+        setRefresh(true);
+      }
+    } catch ({ code, message, name, request }) {
+      if (code === "ERR_NETWORK") {
+        Swal.fire({
+          title: "Cerrando Torneo",
+          text: "Error en su red, consulte a su proveedor de servicio",
+          icon: "error",
+          showCancelButton: false,
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Aceptar",
+        });
+      } else {
+        if (code === "ERR_BAD_REQUEST") {
+          const { detail } = JSON.parse(request.response);
+          Swal.fire({
+            title: "Cerrando Torneo",
+            text: detail,
+            icon: "error",
+            showCancelButton: false,
+            allowOutsideClick: false,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Aceptar",
+          });
+        }
+      }
+    }
+  }
+
+  const closeTorney = () => {
+    Swal.fire({
+      title: "¿ Cerrar Torneo ?",
+      text: "Si continuas, el torneo se cerrara, ¿ desea continuar ?",
+      icon: "question",
+      showCancelButton: true,
+      cancelButtonText: "Cancelar",
+      allowOutsideClick: false,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Aceptar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        closed();
+      }
+    });
+  }  
+
   return (
     <>
       <Header />
@@ -314,6 +376,7 @@ export default function View() {
                 className="btn btn-sm btn-danger"
                 onClick={(e) => {
                   e.preventDefault();
+                  closeTorney();
                 }}
               >
                 <i className="bi bi-lightning"></i> Cerrar Torneo

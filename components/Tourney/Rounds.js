@@ -9,6 +9,7 @@ import Tables from "../../components/Round/Tables";
 import Info from "../../components/Round/Info";
 import PlayerRaiting from "../Round/PlayerRaiting";
 import PairsRaiting from "../Round/PairsRaiting";
+import PrintBoletus from "../Boletus/Print";
 
 export default function Rounds({ tourney, readOnly }) {
   const { token, lang } = useAppContext();
@@ -16,6 +17,7 @@ export default function Rounds({ tourney, readOnly }) {
   const [activeTab, setActiveTab] = useState("1");
   const [activeRound, setActiveRound] = useState(null);
   const [reload, setReload] = useState(true);
+  const [openPrn, setOpenPrn] = useState(false);
 
   const [selected, setSelected] = useState([]);
 
@@ -362,6 +364,58 @@ export default function Rounds({ tourney, readOnly }) {
     }
   }
 
+  const print = async () => {
+    const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/boletus/all/${activeRound.id}`;
+
+    try {
+      const { data } = await axios.get(url, config);
+      if (data.success) {
+        console.log(data);
+      }
+    } catch ({ code, message, name, request }) {
+      if (code === "ERR_NETWORK") {
+        Swal.fire({
+          title: "Imprimir Boletas",
+          text: "Error en su red, consulte a su proveedor de servicio",
+          icon: "error",
+          showCancelButton: false,
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Aceptar",
+        });
+      } else {
+        if (code === "ERR_BAD_REQUEST") {
+          const { detail } = JSON.parse(request.response);
+          Swal.fire({
+            title: "Imprimir Boletas",
+            text: detail,
+            icon: "error",
+            showCancelButton: false,
+            allowOutsideClick: false,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Aceptar",
+          });
+        }
+      }
+    }
+  }
+
+  const printBoletus = () => {
+    if (activeRound) {
+      setOpenPrn(true);
+    } else {
+      Swal.fire({
+        title: "Imprimir Boletas",
+        text: "No ha seleccionado la ronda",
+        icon: "info",
+        showCancelButton: false,
+        allowOutsideClick: false,
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "Aceptar",
+      });
+    }
+  }
+
   return (
     <div>
       <div className="d-flex flex-column flex-wrap gap-1 ps-4">
@@ -383,7 +437,9 @@ export default function Rounds({ tourney, readOnly }) {
           </div>
 
           {/* { activeRound && activeRound.status_name!=="INITIADED" && */}
-          <Button color="primary" className="btn btn-sm">Imprimir Boletas</Button>              
+          <Button color="primary" className="btn btn-sm" onClick={(e)=>{e.preventDefault(); printBoletus()}}>
+            <i class="bi bi-printer"></i>&nbsp;Imprimir Boletas
+          </Button>              
 
 
           { activeRound && activeRound.status_name!=="INITIADED" && activeRound.status_name !== "FINALIZED" && !readOnly && 
@@ -516,6 +572,9 @@ export default function Rounds({ tourney, readOnly }) {
           </CardBody>
         </Card>}
       </div>
+
+      {activeRound && <PrintBoletus open={openPrn} setOpen={setOpenPrn} roundId={activeRound.id}/>}
+
     </div>
   );
 }

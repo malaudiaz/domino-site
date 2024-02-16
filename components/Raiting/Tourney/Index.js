@@ -92,7 +92,7 @@ export default function TournerResult({ id }) {
             >
                 <CardHeader className="d-flex justify-content-between align-items-center">
                     <span>Resultados del Torneo</span>
-                    <button className="btn btn-sm btn-primary" onClick={() => openInNewTab(`/sliders/${id}`)}>Slider</button>
+                    {/* <button className="btn btn-sm btn-primary" onClick={() => openInNewTab(`/sliders/${id}`)}>Slider</button> */}
                 </CardHeader>
                 <CardBody className="p-4">
 
@@ -198,10 +198,10 @@ export default function TournerResult({ id }) {
                                                 {item.points_difference}
                                             </td>
 
-                                            <td className="text-center">
+                                            <td className="text-end">
                                                 {item.score_expected}
                                             </td>
-                                            <td className="text-center">
+                                            <td className="text-end">
                                                 {item.score_obtained}
                                             </td>
 

@@ -8,16 +8,7 @@ import {
   NavItem,
   NavLink,
   TabContent,
-  TabPane,
-  ModalFooter,
-  FormFeedback,
-  Col,
-  Input,
-  InputGroup,
-  FormGroup,
-  Label,
-  Form,
-  Badge,
+  TabPane
 } from "reactstrap";
 
 import { useAppContext } from "../../AppContext";
@@ -386,7 +377,7 @@ export default function Boletus({
               color="secondary"
               size="sm"
               title="Ausencias"
-              disabled={record.status === "1" && record.can_update === false && readOnly === false}
+              disabled={record.status === "1" || readOnly}
               onClick={(e) => {
                 e.preventDefault();
                 setOpenAbsent(true);
@@ -399,7 +390,7 @@ export default function Boletus({
               color="secondary"
               size="sm"
               title="Anular Boleta"
-              disabled={record.status === "1" && record.can_update === false && readOnly === false}
+              disabled={record.status === "1" || readOnly}
               onClick={(e) => {
                 e.preventDefault();
                 setOpenNulled(true);
@@ -412,7 +403,7 @@ export default function Boletus({
               color="danger"
               size="sm"
               title="Cerrar por Tiempo"
-              disabled={record.status === "1" && record.can_update === false && readOnly === false}
+              disabled={record.status === "1" || readOnly}
               onClick={(e) => {
                 handleClose(e);
               }}
@@ -422,7 +413,7 @@ export default function Boletus({
           </div>
         </div>
 
-        {record.status === "0" && record.can_update ? (
+        {record.can_update ? (
           <>
             <Nav tabs>
               <NavItem>

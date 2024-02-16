@@ -221,12 +221,12 @@ export default function ListData({ record, readOnly, setActiveRound }) {
         <div>
           <h6>Resumen de la Partida</h6>
         </div>
-          <div>
+        <div>
             <Button
               color="primary"
               size="sm"
               title="Nueva Data"
-              disabled={record.status === "1" && record.can_update === false && readOnly === false && gameOver === false}
+              disabled={(record.status === "1" && gameOver === true && record.can_update === false) || readOnly === true}
               onClick={(e) => {
                 e.preventDefault();
                 handleNew(null);
@@ -234,7 +234,7 @@ export default function ListData({ record, readOnly, setActiveRound }) {
             >
               <i class="bi bi-plus-circle"></i>
             </Button>
-          </div>
+        </div>
       </div>
       <Table hover responsive size="sm" striped borderless bordered>
         <thead>
@@ -257,7 +257,7 @@ export default function ListData({ record, readOnly, setActiveRound }) {
                 <td className="text-center">{item.pair_one}</td>
                 <td className="text-center">{item.pair_two}</td>
                 <td className="text-center">
-                {record.status === "0" && record.can_update && readOnly === false && gameOver === false ? (
+                {(record.status === "0" && readOnly === false && gameOver === false) || record.can_update ? (
                   <a
                     className="edit"
                     title="Editar"                    
