@@ -169,7 +169,7 @@ export default function RoundPositions({ id }) {
                                     </td>
 
                                     <td className="text-center">
-                                        {item.penalty_total}
+                                        {item.penalty_points}
                                     </td>
 
                                     <td className="text-center">

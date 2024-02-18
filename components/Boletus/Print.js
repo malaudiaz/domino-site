@@ -52,20 +52,23 @@ export default function PrintBoletus({ open, setOpen, roundId }) {
   const print = (data) => {
 
     let html = '<html><head></head><body>';
+    const logo = 'http://127.0.0.1:5000/api/default/'; //data.image;
+    const round = data.round_number;
+    const tables = data.lst_tables;
 
-    for (let j=0; j<data.length; j++) {
+    for (let j=0; j<tables.length; j++) {
         html = html + '<table border=1 cellpadding=0 cellspacing=0 width="700px" style="font: 12pt sans-serif, monospace; border: 1px solid black; border-collapse: collapse; padding: 1px; break-after: page;">';
 
-        html = html + '<tr height="50px"><td width="300px" align="center">';
-        html = html + '</td><td colspan=6 align="center">' + "Boleta de Captación de Datos" + '</td></tr>';
+        html = html + '<tr height="50px"><td width="300px" align="center">' + '<img src="' + logo + '" alt="Girl in a jacket" width="80" height="50"></img>';
+        html = html + '</td><td colspan=6 align="center"><b>' + "Boleta de Captación de Datos" + '</b></td></tr>';
 
         html = html + '<tr height="50px">';
-        html = html + '<td colspan=3 align="center"><b>' + 'Mesa: ' + data[j].table_number + '</b></td><td colspan=4 align="center"><b>' + 'Ronda No.' + data[j].round_number + '</b></td></tr>';
+        html = html + '<td colspan=3 align="center"><b>' + 'Ronda: ' + round + '</b></td><td colspan=4 align="center"><b>' + 'Mesa No.' + tables[j].table_number + '</b></td></tr>';
 
         html = html + '<tr height="30px"><td width="300px"></td><td colspan=3 align="center">Puntos</td><td colspan=3 align="center">Marcar</td></tr>';
         html = html + '<tr height="30px"><td width="300px" align="center">Jugadores</td><td width="100px"align="center">Amones.</td><td width="100px" align="center">Amarilla</td><td width="100px" align="center">Roja</td><td width="100px" align="center">Ausencia</td><td width="100px" align="center">Abandono</td><td width="100px" align="center">Expulsado.</td></tr>';
 
-        const players = data[j].lst_player;
+        const players = tables[j].lst_player;
         for (let i=0; i<players.length; i++) {
             html = html + '<tr height="30px"><td width="300px">'+players[i]+'</td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td></td></tr>';
         }
@@ -77,7 +80,7 @@ export default function PrintBoletus({ open, setOpen, roundId }) {
 
         html = html + '<tr height="30px"><td align="center" width="50px">Data</td>';
     
-        const pairs = data[j].lst_pair;
+        const pairs = tables[j].lst_pair;
         for (let i=0; i<pairs.length; i++) {
             html = html + '<td colspan=3 align="center">' + pairs[i] + '</td>'
         }
