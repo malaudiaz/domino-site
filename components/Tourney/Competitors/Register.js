@@ -218,7 +218,7 @@ export default function Register({ tourney, open, close, playerId }) {
       if (data.success) {
         Swal.fire({
           icon: "success",
-          title: "Registrando Jugadores",
+          title: playerId==="" ? "Registrando Jugador" : "Actualizando Jugador",
           text: data.detail,
           showConfirmButton: true,
         });
@@ -227,7 +227,7 @@ export default function Register({ tourney, open, close, playerId }) {
     } catch ({code, message, name, request}) {
       if (code === "ERR_NETWORK") {
         Swal.fire({
-          title: "Registrando Jugadores",
+          title: playerId==="" ? "Registrando Jugador" : "Actualizando Jugador",
           text: "Error en su red, consulte a su proveedor de servicio",
           icon: "error",
           showCancelButton: false,
@@ -239,7 +239,7 @@ export default function Register({ tourney, open, close, playerId }) {
         if (code === "ERR_BAD_REQUEST") {
           const {detail} = JSON.parse(request.response)
           Swal.fire({
-            title: "Registrando Jugadores",
+            title: playerId==="" ? "Registrando Jugador" : "Actualizando Jugador",
             text: detail,
             icon: "error",
             showCancelButton: false,
@@ -262,7 +262,7 @@ export default function Register({ tourney, open, close, playerId }) {
       centered={true}
     >
       <ModalHeader toggle={toggle}>
-        <small>Registro de Jugador</small>
+        <small>{playerId==="" ? "Registro de Jugador" : "Editar Juagador"}</small>
       </ModalHeader>
       <ModalBody>
         <FormGroup row className="ps-4 pe-4">
@@ -520,11 +520,11 @@ export default function Register({ tourney, open, close, playerId }) {
         <Button
           color="primary"
           size="sm"
-          title="Registrar Jugador"
+          title={playerId==="" ? "Registrar Jugador" : "Actualizar Jugador"}
           onClick={(e)=>{handleSubmit(e)}}
         >
           <i class="bi bi-person-check"></i>&nbsp;
-          Registrar
+          {playerId==="" ? "Registrar" : "Actualizar"}
         </Button>
       </ModalFooter>
     </Modal>

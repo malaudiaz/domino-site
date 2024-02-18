@@ -75,10 +75,10 @@ export default function Players({tourney}) {
     };
 
     useEffect(() => {
-        if (tourney.id) {
+        if (tourney.id || !register) {
             fetchData();
         }
-    }, [tourney.id, refresh, page, filter, playerName]);
+    }, [tourney.id, refresh, page, filter, playerName, register]);
 
     const onChangePage = (pageNumber) => {
         setPage(pageNumber);
