@@ -8,7 +8,7 @@ import { useAppContext } from "../../../AppContext";
 import Empty from "../../Empty/Empty";
 import Register from "./Register"
 
-export default function Players({tourney}) {
+export default function Players({tourney, active}) {
     const { token, lang } = useAppContext();
     const [players, setPlayers] = useState([]);
     const [page, setPage] = useState(1);
@@ -75,10 +75,10 @@ export default function Players({tourney}) {
     };
 
     useEffect(() => {
-        if (tourney.id || !register) {
+        if ( active && (tourney.id || !register) ) {
             fetchData();
         }
-    }, [tourney.id, refresh, page, filter, playerName, register]);
+    }, [tourney.id, refresh, page, filter, playerName, register, active]);
 
     const onChangePage = (pageNumber) => {
         setPage(pageNumber);

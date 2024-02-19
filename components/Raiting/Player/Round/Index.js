@@ -194,7 +194,7 @@ export default function RoundPositions({ id, active }) {
                                         {item.elo_at_end}
                                     </td>
                                     <td className="text-center">
-                                        {/* {item.elo_ra} */}
+                                        {item.elo_ra}
                                     </td>
                                 </tr>
                             ))}

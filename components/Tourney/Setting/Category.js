@@ -6,7 +6,7 @@ import { useAppContext } from "../../../AppContext";
 import Bombo from "../Bombo";
 import Empty from "../../Empty/Empty";
 
-export default function Category({ formValues, setFormValues }) {
+export default function Category({ formValues, setFormValues, active }) {
   const { token, lang } = useAppContext();
   const [openNewBombo, setOpenNewBombo] = useState(false);
   const [bombo, setBombo] = useState([]);
@@ -88,12 +88,10 @@ export default function Category({ formValues, setFormValues }) {
 
 
   useEffect(() => {
-    console.log(refresh);
-
-    if (formValues.tourneyId.value) {
+    if (formValues.tourneyId.value && active) {
       fechData();
     }
-}, [refresh, formValues.tourneyId.value]);
+}, [refresh, formValues.tourneyId.value, active]);
 
   const handleAdd = (e) => {
     e.preventDefault();
@@ -282,6 +280,7 @@ export default function Category({ formValues, setFormValues }) {
                   type="checkbox" 
                   id="usesSegmentation" 
                   name="usesSegmentation" 
+                  disabled={parseInt(formValues.amountPlayer.value)==0}
                   value={formValues.usesSegmentation.value} 
                   checked={formValues.usesSegmentation.value}
                   onChange={handleChange}

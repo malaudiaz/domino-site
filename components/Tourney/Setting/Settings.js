@@ -147,7 +147,6 @@ export default function Settings({ formValues, setFormValues }) {
               type="number"
               name="constant_increase_ELO"
               id="constant_increase_ELO"
-              // disabled={true}
               invalid={formValues.constant_increase_ELO.error}
               value={formValues.constant_increase_ELO.value}
               onChange={handleChange}
@@ -166,7 +165,6 @@ export default function Settings({ formValues, setFormValues }) {
               type="number"
               name="absent_point"
               id="absent_point"
-              // disabled={true}
               invalid={formValues.absent_point.error}
               value={formValues.absent_point.value}
               onChange={handleChange}
@@ -174,202 +172,7 @@ export default function Settings({ formValues, setFormValues }) {
           </InputGroup>
         </Col>
       </FormGroup>
-
-
-      {/* <div className="container-setting ps-4 pe-4">
-        <div className="row ps-2 pe-2">
-          <FormGroup check inline>
-            <Input
-              type="checkbox"
-              id="usePenalty"
-              name="usePenalty"
-              value={formValues.usePenalty.value}
-              checked={formValues.usePenalty.value}
-              onChange={handleChange}
-            />
-            <Label check>Usar Penalización</Label>
-          </FormGroup>
-
-          <Card>
-            <CardHeader>Penalizaciones</CardHeader>
-            <CardBody className="d-grid p-4">
-              <FormGroup row className="ps-4 pe-4">
-                <Label size="sm" sm={6}>
-                  Límite de Puntos por Penalización
-                </Label>
-                <Col sm={6}>
-                  <InputGroup size="sm">
-                    <Input
-                      type="number"
-                      name="limitPenaltyPoints"
-                      id="limitPenaltyPoints"
-                      invalid={formValues.limitPenaltyPoints.error}
-                      value={formValues.limitPenaltyPoints.value}
-                      disabled={formValues.usePenalty.value===false}
-                      onChange={handleChange}
-                      onKeyPress={(event) => {
-                        if (!/[0-9]/.test(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}              
-                    />
-                  </InputGroup>
-                </Col>
-              </FormGroup>
-
-              <FormGroup row className="ps-4 pe-4">
-                <Label size="sm" sm={6}>
-                  Punto de penalización por tarjeta amarilla
-                </Label>
-                <Col sm={6}>
-                  <InputGroup size="sm">
-                    <Input
-                      type="number"
-                      name="points_penalty_yellow"
-                      id="points_penalty_yellow"
-                      invalid={formValues.points_penalty_yellow.error}
-                      value={formValues.points_penalty_yellow.value}
-                      disabled={formValues.usePenalty.value===false}
-                      onChange={handleChange}
-                      onKeyPress={(event) => {
-                        if (!/[0-9]/.test(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}              
-                    />
-                  </InputGroup>
-                </Col>
-              </FormGroup>
-
-              <FormGroup row className="ps-4 pe-4">
-                <Label size="sm" sm={6}>
-                  Puntos de penalización por tarjeta rojas
-                </Label>
-                <Col sm={6}>
-                  <InputGroup size="sm">
-                    <Input
-                      type="number"
-                      name="points_penalty_red"
-                      id="points_penalty_red"
-                      invalid={formValues.points_penalty_red.error}
-                      value={formValues.points_penalty_red.value}
-                      disabled={formValues.usePenalty.value===false}
-                      onChange={handleChange}
-                      onKeyPress={(event) => {
-                        if (!/[0-9]/.test(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}              
-                    />
-                  </InputGroup>
-                </Col>
-              </FormGroup>
-            </CardBody>
-          </Card>
-
-        </div>
-
-        <div className="row ps-2 pe-2">
-          <FormGroup check inline>
-            <Input
-              type="checkbox"
-              id="useBonus"
-              name="useBonus"
-              value={formValues.useBonus.value}
-              checked={formValues.useBonus.value}
-              onChange={handleChange}
-            />
-            <Label check>Usar Bonificación</Label>
-          </FormGroup>
-          <Card>
-            <CardHeader>Bonificaciones</CardHeader>
-            <CardBody className="p-4">
-              <FormGroup row className="ps-4 pe-4">
-                <Label size="sm" sm={6}>
-                  Cant. Mesa a Bonificar:
-                </Label>
-                <Col sm={6}>
-                  <InputGroup size="sm">
-                    <Input
-                      type="number"
-                      name="amountBonusTables"
-                      id="amountBonusTables"
-                      invalid={formValues.amountBonusTables.error}
-                      value={formValues.amountBonusTables.value}
-                      disabled={formValues.useBonus.value===false}
-                      onChange={handleChange}
-                      onKeyPress={(event) => {
-                        if (!/[0-9]/.test(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}              
-                    />
-                    <FormFeedback>
-                      {formValues.amountBonusTables.errorMessage}
-                    </FormFeedback>
-                  </InputGroup>
-                </Col>
-              </FormGroup>
-              <FormGroup row className="ps-4 pe-4">
-                <Label size="sm" sm={6}>
-                  Cant. Puntos a Bonificar:
-                </Label>
-                <Col sm={6}>
-                  <InputGroup size="sm">
-                    <Input
-                      type="number"
-                      name="amountBonusPoints"
-                      id="amountBonusPoints"
-                      invalid={formValues.amountBonusPoints.error}
-                      value={formValues.amountBonusPoints.value}
-                      disabled={formValues.useBonus.value===false}
-                      onChange={handleChange}
-                      onKeyPress={(event) => {
-                        if (!/[0-9]/.test(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}              
-                    />
-                    <FormFeedback>
-                      {formValues.amountBonusPoints.errorMessage}
-                    </FormFeedback>
-                  </InputGroup>
-                </Col>
-              </FormGroup>
-
-              <FormGroup row className="ps-4 pe-4">
-                <Label size="sm" sm={6}>
-                  Incremento de Puntos por Ronda:
-                </Label>
-                <Col sm={6}>
-                  <InputGroup size="sm">
-                    <Input
-                      type="number"
-                      name="amountBonusPointsRounds"
-                      id="amountBonusPointsRounds"
-                      invalid={formValues.amountBonusPointsRounds.error}
-                      value={formValues.amountBonusPointsRounds.value}
-                      disabled={formValues.useBonus.value===false}
-                      onChange={handleChange}
-                      onKeyPress={(event) => {
-                        if (!/[0-9]/.test(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}              
-                    />
-                    <FormFeedback>
-                      {formValues.amountBonusPointsRounds.errorMessage}
-                    </FormFeedback>
-                  </InputGroup>
-                </Col>
-              </FormGroup>
-
-            </CardBody>
-          </Card>
-        </div>
-
-      </div> */}
-      
+     
     </div>
   );
 }

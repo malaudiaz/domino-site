@@ -53,10 +53,10 @@ export default function Response({ tourney }) {
 
         <TabContent activeTab={activeTab}>
             <TabPane tabId="1">
-                <Invitations tourney={tourney} />
+                <Invitations tourney={tourney} active={activeTab==="1"} />
             </TabPane>
             <TabPane tabId="2">
-                <Players tourney={tourney} />
+                <Players tourney={tourney} active={activeTab==="2"} />
             </TabPane>
         </TabContent>
       </div>

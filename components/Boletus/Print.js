@@ -19,8 +19,13 @@ import { useAppContext } from "../../AppContext";
 
 export default function PrintBoletus({ open, setOpen, roundId }) {
   const { token, lang } = useAppContext();
+  
   const [createObjectURL, setCreateObjectURL] = useState(null);
   const [image, setImage] = useState(null);
+
+  const [createLogoURL, setCreateLogoURL] = useState(null);
+  const [logo, setLogo] = useState(null);
+
 
   const [frmData, setFrmData] = useState({
     interval: "",
@@ -52,7 +57,7 @@ export default function PrintBoletus({ open, setOpen, roundId }) {
   const print = (data) => {
 
     let html = '<html><head></head><body>';
-    const logo = 'http://127.0.0.1:5000/api/default/'; //data.image;
+    const logo = 'http://127.0.0.1:3000/smartdomino.png'; //data.image;
     
     const image = createObjectURL;
 
@@ -62,7 +67,7 @@ export default function PrintBoletus({ open, setOpen, roundId }) {
     for (let j=0; j<tables.length; j++) {
         html = html + '<table border=1 cellpadding=0 cellspacing=0 width="700px" style="font: 12pt sans-serif, monospace; border: 1px solid black; border-collapse: collapse; padding: 1px; break-after: page;">';
 
-        html = html + '<tr height="50px"><td width="300px" align="center">' + '<img src="' + logo + '" alt="Logo" width="80" height="50"></img>';
+        html = html + '<tr height="50px"><td width="300px" align="center">' + '<img src=' + logo + ' alt="Logo" width="80" height="50"></img>';
         html = html + '</td><td colspan=6 align="center"><b>' + "Boleta de Captación de Datos" + '</b></td></tr>';
 
         html = html + '<tr height="50px">';
@@ -96,7 +101,7 @@ export default function PrintBoletus({ open, setOpen, roundId }) {
 
         html = html + '<tr height="30px"><td align="center" width="50px">Total</td><td colspan=3></td><td colspan=3></td></tr>'
 
-        html = html + '<tr><td colspan=8 align="center"><img src="' + image + '" alt="logo" width="600" height="200"></img></td></tr>'
+        html = html + '<tr><td colspan=8 align="center"><img src="' + image + '" alt="logo" width="700" height="200"></img></td></tr>'
 
         html = html + '</table><br>';        
     }
@@ -218,7 +223,7 @@ export default function PrintBoletus({ open, setOpen, roundId }) {
             </FormGroup>
           )}
 
-          <FormGroup row>
+          {/* <FormGroup row>
             <Label size="sm" sm={6}>
               Boletas x Hojas:
             </Label>
@@ -236,7 +241,7 @@ export default function PrintBoletus({ open, setOpen, roundId }) {
                 />
               </InputGroup>
             </Col>
-          </FormGroup>
+          </FormGroup> */}
 
           <div className="row pt-2">
             <strong>Foto de Publicidad para la Boleta</strong>

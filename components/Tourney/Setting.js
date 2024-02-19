@@ -22,7 +22,7 @@ import General from "./Setting/General";
 export default function Setting({ tourney }) {
   const { token, lang } = useAppContext();
   const [activeTab, setActiveTab] = useState("1");
-  const [reload, setReload] = useState(false);
+  const [reload, setReload] = useState(true);
 
   const [formValues, setFormValues] = useState({
     absent_point: {
@@ -461,7 +461,7 @@ export default function Setting({ tourney }) {
   };
 
   useEffect(() => {
-    if (tourney.id) {
+    if (tourney.id && reload) {
       fetchData();
     }
   }, [reload, tourney.id]);
@@ -510,13 +510,16 @@ export default function Setting({ tourney }) {
 
         "event_ordering_one": formValues.event_ordering_one.value,
         "event_ordering_dir_one": formValues.event_ordering_dir_one.value,
+
         "event_ordering_two": formValues.event_ordering_two.value,
         "event_ordering_dir_two": formValues.event_ordering_dir_two.value,
+
         "event_ordering_three": formValues.event_ordering_three.value,
         "event_ordering_dir_three": formValues.event_ordering_dir_three.value,
 
         "round_ordering_one": formValues.round_ordering_one.value,
         "round_ordering_dir_one": formValues.round_ordering_dir_one.value,
+        
         "round_ordering_two": formValues.round_ordering_two.value,
         "round_ordering_dir_two": formValues.round_ordering_dir_one.value,
         "round_ordering_three": formValues.round_ordering_three.value,
@@ -658,7 +661,7 @@ export default function Setting({ tourney }) {
                 </TabPane>
                 <TabPane tabId="3">
 
-                    <Category formValues={formValues} setFormValues={setFormValues}/>
+                    <Category formValues={formValues} setFormValues={setFormValues} active={activeTab==="3"}/>
 
                 </TabPane>
 

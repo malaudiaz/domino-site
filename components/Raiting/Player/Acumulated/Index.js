@@ -91,8 +91,6 @@ export default function AcumulatedPositions({ id, active }) {
                                 <th className="text-center" rowSpan={2}>Pos</th>
                                 <th className="text-center" rowSpan={2}>Nombre</th>
 
-                                <th className="text-center" rowSpan={2}>Estado</th>
-
                                 <th className="text-center" rowSpan={2}>
                                     JJ
                                 </th>
@@ -152,10 +150,6 @@ export default function AcumulatedPositions({ id, active }) {
                                     </th>
                                     <td>
                                         {item.name}
-                                    </td>
-
-                                    <td>
-                                        {item.status_description}
                                     </td>
 
                                     <td className="text-center">

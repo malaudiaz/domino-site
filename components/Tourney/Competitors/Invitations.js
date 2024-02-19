@@ -7,7 +7,7 @@ import Empty from "../../Empty/Empty";
 import Image from "next/image";
 import { Label, InputGroup, Input, Button,InputGroupText } from "reactstrap";
 
-export default function Invitations({ tourney }) {
+export default function Invitations({ tourney, active }) {
     const { token, lang } = useAppContext();
     const [invitations, setInvitations] = useState([]);
     const [page, setPage] = useState(1);
@@ -75,10 +75,10 @@ export default function Invitations({ tourney }) {
     };
     
     useEffect(() => {
-        if (tourney.id) {
+        if (tourney.id && active) {
           fetchData();
         }
-    }, [tourney.id, refresh, page, filter, playerName]);
+    }, [tourney.id, refresh, page, filter, playerName, active]);
     
     const onChangePage = (pageNumber) => {
         setPage(pageNumber);

@@ -16,6 +16,7 @@ import CountryComboBox from "../../Country/CountryComboBox";
 import CityComboBox from "../../City/CityComboBox";
 import { useEffect, useState } from "react";
 import { useAppContext } from "../../../AppContext";
+import Level from "../../Level/Level";
 import axios from "axios";
 import Swal from "sweetalert2";
 
@@ -79,6 +80,21 @@ export default function Register({ tourney, open, close, playerId }) {
       errorMessage: "La ciudad del usuario es requerida"
     }
   });
+
+  const playerLevel = [
+    {
+        name: "rookie",
+        description: "Novato"
+    },
+    {
+        name: "professional",
+        description: "Profesional"
+    },
+    {
+        name: "expert",
+        description: "Experto"
+    }
+  ];
 
   const handleChange = (e) => {
     const name = e.target.name;
@@ -479,24 +495,14 @@ export default function Register({ tourney, open, close, playerId }) {
           </Label>
           <Col sm={8}>
             <InputGroup size="sm">
-                <Input
-                    type="text"
-                    name="level"
-                    id="level"
-                    placeholder={"Nivel"}
-                    invalid={formValues.level.error}
-                    value={formValues.level.value}
-                    onChange={handleChange}
-                    autoComplete="off"
-                    onKeyPress={(event) => {
-                    if (!/^[A-Za-z_0-9.áéíóúÑñ\s]*$/.test(event.key)) {
-                        event.preventDefault();
-                    }
-                    }}
-                />
-                <FormFeedback>{formValues.level.errorMessage}</FormFeedback>
+              <Level 
+                name={"level"} 
+                cmbText={"Seleccione Nivel..."} 
+                valueDefault={formValues.level.value}
+                records={playerLevel}
+                onChange={handleChange}
+              />
             </InputGroup>
-
           </Col>
         </FormGroup>
 
