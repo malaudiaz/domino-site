@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import { useAppContext } from "../../../../AppContext";
 import { Table } from "reactstrap";
 
-export default function PairsPositions({ id }) {
+export default function PairsPositions({ id, active }) {
     const { token, lang } = useAppContext();
 
     const [raiting, setRaiting] = useState([]);
@@ -63,10 +63,10 @@ export default function PairsPositions({ id }) {
     };
   
     useEffect(() => {
-      if (id) {
+      if (id && active) {
         fetchData();
       }
-    }, [id, page]);
+    }, [id, page, active]);
   
     const onChangePage = (pageNumber) => {
       setPage(pageNumber);

@@ -7,7 +7,7 @@ import { useAppContext } from "../../AppContext";
 import { Card, CardHeader, Label, Input } from "reactstrap";
 import Boletus from "./Boletus";
 
-export default function Tables({ round, edited }) {
+export default function Tables({ round, edited, active }) {
   const { token, lang } = useAppContext();
 
   const [tables, setTables] = useState([]);
@@ -56,10 +56,10 @@ export default function Tables({ round, edited }) {
   };
 
   useEffect(() => {
-    if (round) {
+    if (round && active) {
       fetchData();
     }
-  }, [round, page]);
+  }, [round, page, active]);
 
   const onChangePage = (pageNumber) => {
     setPage(pageNumber);

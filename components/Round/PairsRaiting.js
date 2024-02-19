@@ -3,7 +3,7 @@ import { Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
 import classnames from "classnames";
 import PairsPositions from "../Raiting/Pairs/Round/Index";
 
-export default function PairsRaiting({ tourney, round }) {
+export default function PairsRaiting({ tourney, round, active }) {
     const [activeTab, setActiveTab] = useState("1");
 
     const toggleTab = (tab) => {
@@ -51,14 +51,14 @@ export default function PairsRaiting({ tourney, round }) {
 
                     <TabContent activeTab={activeTab}>
                         <TabPane tabId="1">
-                            <PairsPositions id={round.id}/>
+                            <PairsPositions id={round.id} active={active && round.modality!=="Individual"}/>
                         </TabPane>
                         <TabPane tabId="2">
                         </TabPane>
                     </TabContent>
                 </>
             ) : (
-                <PairsPositions id={round.id}/>
+                <PairsPositions id={round.id} active={active && round.modality==="Individual"}/>
             )}
 
         </div>

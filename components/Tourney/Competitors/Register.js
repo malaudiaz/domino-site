@@ -222,6 +222,58 @@ export default function Register({ tourney, open, close, playerId }) {
           text: data.detail,
           showConfirmButton: true,
         });
+        setFormValues({
+          username: {
+            value: "",
+            error: false,
+            errorMessage: "El nombre de usuario es requerido"
+          },
+          first_name: {
+            value: "",
+            error: false,
+            errorMessage: "El nombre es requerido"
+          },
+          last_name: {
+            value: "",
+            error: false,
+            errorMessage: "El apellido es requerido"
+          },
+          alias: {
+            value: "",
+            error: false,
+            errorMessage: "El alias es requerido"
+          },
+          email: {
+            value: "",
+            error: false,
+            errorMessage: "El correo es requerido"
+          },
+          phone: {
+            value: "",
+            error: false,
+            errorMessage: "El teléfono es requerido"
+          },
+          level: {
+            value: "",
+            error: false,
+            errorMessage: "El nivel del usuario es requerido"
+          },
+          elo: {
+            value: "",
+            error: false,
+            errorMessage: "El ELO del usuario es requerido"
+          },
+          country: {
+            value: "",
+            error: false,
+            errorMessage: "El país del usuario es requerido"
+          },
+          city: {
+            value: "",
+            error: false,
+            errorMessage: "La ciudad del usuario es requerida"
+          }      
+        })
         close();
       }
     } catch ({code, message, name, request}) {
@@ -262,7 +314,7 @@ export default function Register({ tourney, open, close, playerId }) {
       centered={true}
     >
       <ModalHeader toggle={toggle}>
-        <small>{playerId==="" ? "Registro de Jugador" : "Editar Juagador"}</small>
+        <small>{(playerId==="" || !playerId) ? "Registro de Jugador" : "Editar Jugador"}</small>
       </ModalHeader>
       <ModalBody>
         <FormGroup row className="ps-4 pe-4">
@@ -524,7 +576,7 @@ export default function Register({ tourney, open, close, playerId }) {
           onClick={(e)=>{handleSubmit(e)}}
         >
           <i class="bi bi-person-check"></i>&nbsp;
-          {playerId==="" ? "Registrar" : "Actualizar"}
+          {(playerId==="" || !playerId) ? "Registrar" : "Actualizar"}
         </Button>
       </ModalFooter>
     </Modal>

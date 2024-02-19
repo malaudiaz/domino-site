@@ -4,7 +4,7 @@ import classnames from "classnames";
 import RoundPositions from "../Raiting/Player/Round/Index";
 import AcumulatedPositions from "../Raiting/Player/Acumulated/Index";
 
-export default function PlayerRaiting({ tourney, round }) {
+export default function PlayerRaiting({ tourney, round, active }) {
     const [activeTab, setActiveTab] = useState("1");
 
     const toggleTab = (tab) => {
@@ -50,10 +50,10 @@ export default function PlayerRaiting({ tourney, round }) {
 
             <TabContent activeTab={activeTab}>
                 <TabPane tabId="1">
-                    <RoundPositions id={round.id}/>
+                    <RoundPositions id={round.id} active={active && activeTab==="1"}/>
                 </TabPane>
                 <TabPane tabId="2">
-                    <AcumulatedPositions id={tourney.id}/>
+                    <AcumulatedPositions id={tourney.id} active={active && activeTab==="2"}/>
                 </TabPane>
             </TabContent>
 

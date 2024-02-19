@@ -13,7 +13,7 @@ import {
 } from "reactstrap";
 import Boletus from "./Boletus";
 
-export default function Info({ round, readOnly, setActiveRound }) {
+export default function Info({ round, readOnly, setActiveRound, active }) {
   const { token, lang } = useAppContext();
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -71,10 +71,10 @@ export default function Info({ round, readOnly, setActiveRound }) {
   };
 
   useEffect(() => {
-    if (round.id && !open) {
+    if (round.id && !open && active) {
       fetchData();
     }
-  }, [round.id, open, record, page]);
+  }, [round.id, open, record, page, active]);
 
   const handleClick = (item) => {
     setRecord(item);

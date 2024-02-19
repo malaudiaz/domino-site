@@ -14,7 +14,7 @@ import {
 
 import Players from "../Tourney/Lottery/Players";
 
-export default function Lottery({ activeRound, tourney, selected, setSelected }) {
+export default function Lottery({ activeRound, tourney, selected, setSelected, active }) {
   const { token, lang } = useAppContext();
   const [categories, setCategories] = useState([]);
   const [filter, setFilter] = useState("");
@@ -77,10 +77,10 @@ export default function Lottery({ activeRound, tourney, selected, setSelected })
   };
 
   useEffect(() => {
-    if (refresh) {
+    if (refresh && active) {
       fetchData();
     }
-  }, [refresh]);
+  }, [refresh, active]);
 
   const handleChange = (e) => {
     setFilter(e.target.value);

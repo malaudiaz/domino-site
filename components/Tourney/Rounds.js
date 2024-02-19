@@ -436,22 +436,25 @@ export default function Rounds({ tourney, readOnly }) {
             ))}
           </div>
 
-          {/* { activeRound && activeRound.status_name!=="INITIADED" && */}
-          <Button color="primary" className="btn btn-sm" onClick={(e)=>{e.preventDefault(); printBoletus()}}>
-            <i class="bi bi-printer"></i>&nbsp;Imprimir Boletas
-          </Button>              
+          <div className="d-flex flex-row flex-wrap gap-1 align-items-center">
+            {/* { activeRound && activeRound.status_name!=="INITIADED" && */}
+            {(activeRound && activeRound.status_name!=="CREATED") &&
+            <Button color="primary" className="btn btn-sm" onClick={(e)=>{e.preventDefault(); printBoletus()}}>
+              <i class="bi bi-printer"></i>&nbsp;Imprimir Boletas
+            </Button>}
 
 
-          { activeRound && activeRound.status_name!=="INITIADED" && activeRound.status_name !== "FINALIZED" && !readOnly && 
-            <Button className="btn btn-sm btn-success" onClick={handleSubmit}>              
-              {activeRound.status_name==="CREATED" && (
-                <><i class="bi bi-gear"></i>&nbsp;Configurar</>
-              )}
-              {activeRound.status_name==="CONFIGURATED" && (<><i class="bi bi-check-all"></i>&nbsp;Publicar</>)}
-              {activeRound.status_name==="PUBLICATED" && (<><i class="bi bi-play-circle"/>&nbsp;Iniciar</>)}
-              {activeRound.status_name==="REVIEW" && (<><i class="bi bi-door-closed"/>&nbsp;Cerrar</>)}
-            </Button> 
-          }
+            { activeRound && activeRound.status_name!=="INITIADED" && activeRound.status_name !== "FINALIZED" && !readOnly && 
+              <Button className="btn btn-sm btn-success" onClick={handleSubmit}>              
+                {activeRound.status_name==="CREATED" && (
+                  <><i class="bi bi-gear"></i>&nbsp;Configurar</>
+                )}
+                {activeRound.status_name==="CONFIGURATED" && (<><i class="bi bi-check-all"></i>&nbsp;Publicar</>)}
+                {activeRound.status_name==="PUBLICATED" && (<><i class="bi bi-play-circle"/>&nbsp;Iniciar</>)}
+                {activeRound.status_name==="REVIEW" && (<><i class="bi bi-door-closed"/>&nbsp;Cerrar</>)}
+              </Button> 
+            }
+          </div>
         </div>
       </div>
 
@@ -545,27 +548,28 @@ export default function Rounds({ tourney, readOnly }) {
                     tourney={tourney} 
                     selected={selected}
                     setSelected={setSelected}
+                    active={activeTab==="1"}
                   />
                 </TabPane>}
 
                 {activeRound.status_name!=="CREATED" &&
                 <TabPane tabId="2">
-                  <Tables round={activeRound.id} edited={false} />
+                  <Tables round={activeRound.id} edited={false} active={activeTab==="2"}/>
                 </TabPane>}
 
                 {(activeRound.status_name!=="CREATED" && activeRound.modality === "Individual") &&
                 <TabPane tabId="3">
-                  <PlayerRaiting tourney={tourney} round={activeRound}/>
+                  <PlayerRaiting tourney={tourney} round={activeRound} active={activeTab==="3"}/>
                 </TabPane>}
 
                 {activeRound.status_name!=="CREATED" &&
                 <TabPane tabId="4">
-                    <PairsRaiting tourney={tourney} round={activeRound}/>
+                    <PairsRaiting tourney={tourney} round={activeRound} active={activeTab==="4"} />
                 </TabPane>}
 
                 {(activeRound.status_name==="INITIADED" || activeRound.status_name==="FINALIZED" || activeRound.status_name==="REVIEW") &&
                 <TabPane tabId="5">
-                  <Info round={activeRound} readOnly={readOnly} setActiveRound={setActiveRound}/>
+                  <Info round={activeRound} readOnly={readOnly} setActiveRound={setActiveRound} active={activeTab==="5"}/>
                 </TabPane>}
 
               </TabContent>
