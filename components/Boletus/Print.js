@@ -53,13 +53,16 @@ export default function PrintBoletus({ open, setOpen, roundId }) {
 
     let html = '<html><head></head><body>';
     const logo = 'http://127.0.0.1:5000/api/default/'; //data.image;
+    
+    const image = createObjectURL;
+
     const round = data.round_number;
     const tables = data.lst_tables;
 
     for (let j=0; j<tables.length; j++) {
         html = html + '<table border=1 cellpadding=0 cellspacing=0 width="700px" style="font: 12pt sans-serif, monospace; border: 1px solid black; border-collapse: collapse; padding: 1px; break-after: page;">';
 
-        html = html + '<tr height="50px"><td width="300px" align="center">' + '<img src="' + logo + '" alt="Girl in a jacket" width="80" height="50"></img>';
+        html = html + '<tr height="50px"><td width="300px" align="center">' + '<img src="' + logo + '" alt="Logo" width="80" height="50"></img>';
         html = html + '</td><td colspan=6 align="center"><b>' + "Boleta de Captación de Datos" + '</b></td></tr>';
 
         html = html + '<tr height="50px">';
@@ -92,6 +95,8 @@ export default function PrintBoletus({ open, setOpen, roundId }) {
         }
 
         html = html + '<tr height="30px"><td align="center" width="50px">Total</td><td colspan=3></td><td colspan=3></td></tr>'
+
+        html = html + '<tr><td colspan=8 align="center"><img src="' + image + '" alt="logo" width="600" height="200"></img></td></tr>'
 
         html = html + '</table><br>';        
     }

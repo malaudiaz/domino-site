@@ -161,26 +161,26 @@ export default function RoundPositions({ id }) {
                                     <td className="text-center">
                                         {item.games_lost}
                                     </td>
-                                    <td className="text-center">
+                                    <td className="text-end">
                                         {item.points_positive}
                                     </td>
-                                    <td className="text-center">
+                                    <td className="text-end">
                                         {item.points_negative}
                                     </td>
 
-                                    <td className="text-center">
+                                    <td className="text-end">
                                         {item.penalty_points}
                                     </td>
 
-                                    <td className="text-center">
+                                    <td className="text-end">
                                         {item.points_difference}
                                     </td>
 
 
-                                    <td className="text-center">
+                                    <td className="text-end">
                                         {item.score_expected}
                                     </td>
-                                    <td className="text-center">
+                                    <td className="text-end">
                                         {item.score_obtained}
                                     </td>
 
