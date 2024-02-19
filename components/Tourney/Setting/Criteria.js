@@ -110,6 +110,7 @@ export default function Criteria({ formValues, setFormValues }) {
                 <Input 
                   type="switch" 
                   role="switch" 
+                  checked={formValues.round_ordering_dir_one.value==="DESC" ? true : false}
                   value={formValues.round_ordering_dir_one.value}
                   name="round_ordering_dir_one" 
                   id="round_ordering_dir_one" 
@@ -155,9 +156,11 @@ export default function Criteria({ formValues, setFormValues }) {
                 <Input 
                   type="switch" 
                   role="switch" 
+                  checked={formValues.round_ordering_dir_two.value==="DESC" ? true : false}
                   value={formValues.round_ordering_dir_two.value}
                   name="round_ordering_dir_two" 
                   id="round_ordering_dir_two" 
+                  onChange={handleChange}
                 />
                 <i class="bi bi-sort-down"></i>
               </FormGroup>
@@ -199,9 +202,11 @@ export default function Criteria({ formValues, setFormValues }) {
                 <Input 
                   type="switch" 
                   role="switch" 
+                  checked={formValues.round_ordering_dir_three.value==="DESC" ? true : false}
                   value={formValues.round_ordering_dir_three.value}
                   name="round_ordering_dir_three" 
                   id="round_ordering_dir_three" 
+                  onChange={handleChange}
                 />
                 <i class="bi bi-sort-down"></i>
               </FormGroup>
@@ -248,9 +253,11 @@ export default function Criteria({ formValues, setFormValues }) {
                 <Input 
                   type="switch" 
                   role="switch" 
+                  checked={formValues.event_ordering_dir_one.value==="DESC" ? true : false}
                   value={formValues.event_ordering_dir_one.value}
                   name="event_ordering_dir_one" 
                   id="event_ordering_dir_one" 
+                  onChange={handleChange}
                 />
                 <i class="bi bi-sort-down"></i>
               </FormGroup>
@@ -292,9 +299,11 @@ export default function Criteria({ formValues, setFormValues }) {
                 <Input 
                   type="switch" 
                   role="switch" 
-                  value={formValues.round_ordering_dir_two.value}
+                  checked={formValues.event_ordering_dir_two.value==="DESC" ? true : false}
+                  value={formValues.event_ordering_dir_two.value}
                   name="event_ordering_dir_two" 
                   id="event_ordering_dir_two" 
+                  onChange={handleChange}
                 />
                 <i class="bi bi-sort-down"></i>
               </FormGroup>
@@ -336,9 +345,11 @@ export default function Criteria({ formValues, setFormValues }) {
               <Input 
                   type="switch" 
                   role="switch" 
+                  checked={formValues.event_ordering_dir_three.value==="DESC" ? true : false}
                   value={formValues.event_ordering_dir_three.value}
                   name="event_ordering_dir_three" 
                   id="event_ordering_dir_three" 
+                  onChange={handleChange}
                 />
                 <i class="bi bi-sort-down"></i>
               </FormGroup>
