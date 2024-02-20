@@ -518,7 +518,7 @@ export default function Setting({ tourney }) {
         "constant_increase_ELO": formValues.constant_increase_ELO.value,
         "number_rounds": formValues.number_rounds.value,
 
-        "absent_point": formValues.absent_point.value,
+        "absences_point": formValues.absent_point.value,
         
         "use_segmentation": formValues.usesSegmentation.value,
         "amount_segmentation_round": formValues.amountSegmentationRound.value,
