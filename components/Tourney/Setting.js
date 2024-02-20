@@ -192,11 +192,19 @@ export default function Setting({ tourney }) {
       error: false,
       errorMessage: ""
     },
+
     amountSegmentationRound: {
       value: "",
       error: false,
       errorMessage: "Cantidad de rondas a segmentar, requerido"
     },
+
+    segmentationType: {
+      value: "",
+      error: false,
+      errorMessage: "Seleccione el tipo de Segmentación a utilizar"
+    },
+
     number_rounds: {
       value: "",
       error: false,
@@ -411,11 +419,21 @@ export default function Setting({ tourney }) {
             error: false,
             errorMessage: ""
           },
+          
           usesSegmentation: {
             value: data.data.use_segmentation,
             error: false,
             errorMessage: "Cantidad de rondas a segmentar, requerido"
           },
+
+          segmentationType: {
+            value: "",
+            // value: data.data.segmentation_type,
+            error: false,
+            errorMessage: "Seleccione el tipo de Segmentación a utilizar"
+          },
+      
+
           amountSegmentationRound: {
             value: data.data.amount_segmentation_round,
             error: false,
@@ -504,6 +522,7 @@ export default function Setting({ tourney }) {
         
         "use_segmentation": formValues.usesSegmentation.value,
         "amount_segmentation_round": formValues.amountSegmentationRound.value,
+        "segmentation_type": formValues.segmentationType.value,
 
         "scope": formValues.scope.value,
         "level": formValues.level.value,

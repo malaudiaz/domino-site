@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Form, Table, Button, FormGroup, Label, Col, InputGroup, Input, Card, CardHeader, CardBody } from "reactstrap";
+import { Form, Table, Button, FormGroup, Label, Col, InputGroup, Input, Card, CardHeader, CardBody, Row } from "reactstrap";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { useAppContext } from "../../../AppContext";
@@ -212,7 +212,6 @@ export default function Category({ formValues, setFormValues, active }) {
     });
   };
 
-
   return (
     <div className="tab-content pt-2">
         <Form autoComplete="off">
@@ -269,29 +268,73 @@ export default function Category({ formValues, setFormValues, active }) {
                   />
                 </InputGroup>
               </Col>
-
-
-
             </FormGroup>
 
-            <Col className="pt-2 ps-4 pe-4" sm={12}>
-              <FormGroup check inline>
-                <Input 
-                  type="checkbox" 
-                  id="usesSegmentation" 
-                  name="usesSegmentation" 
-                  disabled={parseInt(formValues.amountPlayer.value)==0}
-                  value={formValues.usesSegmentation.value} 
-                  checked={formValues.usesSegmentation.value}
-                  onChange={handleChange}
-                />
-                <Label check>
-                  Usar Segmentación
-                </Label>
-              </FormGroup>
-            </Col>
+            <FormGroup row className="pt-2 ps-4 pe-4">
+              <Col className="pt-2 ps-4 pe-4" sm={4}>
+                <FormGroup check inline>
+                  <Input 
+                    type="checkbox" 
+                    id="usesSegmentation" 
+                    name="usesSegmentation" 
+                    disabled={parseInt(formValues.amountPlayer.value)==0}
+                    value={formValues.usesSegmentation.value} 
+                    checked={formValues.usesSegmentation.value}
+                    onChange={handleChange}
+                  />
+                  <Label check>
+                    Usar Segmentación
+                  </Label>
+                </FormGroup>
+              </Col>
 
-            {formValues.usesSegmentation.value && <Col className="pt-2 ps-4 pe-4" sm={12}>
+              {formValues.usesSegmentation.value &&
+              <>
+              <Col sm={2}>
+                <Label size="sm">
+                    Cant. rondas segmentación:
+                </Label>
+              </Col>
+              <Col sm={2}>
+                <InputGroup size="sm">
+                  <Input
+                    type="text"
+                    name="amountSegmentationRound"
+                    id="amountSegmentationRound"
+                    onChange={handleChange}
+                    value={formValues.amountSegmentationRound.value}
+                  />
+                </InputGroup>
+              </Col>
+              <Col sm={2}>
+                <Label size="sm">
+                    Segmentar por:
+                </Label>
+              </Col>
+              <Col sm={2}>
+                <InputGroup size="sm">
+                  <Input
+                    id="segmentationType"
+                    name="segmentationType"
+                    type="select"
+                    value={formValues.segmentationType.value}
+                    onChange={handleChange}
+                  >
+                    <option value="">Tipo de Segmentación</option>
+                    <option key="0" value="NIVEL">
+                      NIVEL
+                    </option>
+                    <option key="1" value="ELO">
+                      ELO
+                    </option>
+                  </Input>
+                </InputGroup>
+              </Col>
+              </>}
+            </FormGroup>
+
+
+            {formValues.segmentationType.value === "ELO" && <Col className="pt-2 ps-4 pe-4" sm={12}>
               <Card>
                 <CardHeader className="d-flex flex-row justify-content-between">
                   <h6>Segmentación</h6>
@@ -345,24 +388,6 @@ export default function Category({ formValues, setFormValues, active }) {
                         </tbody>
                       </Table>
 
-                      <FormGroup row className="pt-2 ps-4 pe-4">
-                        <Col sm={3}>
-                          <Label size="sm">
-                            Cant. de rondas con segmentación:
-                          </Label>
-                        </Col>
-                        <Col sm={3}>
-                          <InputGroup size="sm">
-                            <Input
-                              type="text"
-                              name="amountSegmentationRound"
-                              id="amountSegmentationRound"
-                              onChange={handleChange}
-                              value={formValues.amountSegmentationRound.value}
-                            />
-                          </InputGroup>
-                        </Col>
-                      </FormGroup>
                     </>
 
                   ) : (
