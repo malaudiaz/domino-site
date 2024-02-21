@@ -321,12 +321,8 @@ export default function Category({ formValues, setFormValues, active }) {
                     onChange={handleChange}
                   >
                     <option value="">Tipo de Segmentación</option>
-                    <option key="0" value="NIVEL">
-                      NIVEL
-                    </option>
-                    <option key="1" value="ELO">
-                      ELO
-                    </option>
+                    <option value="NIVEL">NIVEL</option>
+                    <option value="ELO">ELO</option>
                   </Input>
                 </InputGroup>
               </Col>

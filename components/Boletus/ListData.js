@@ -6,7 +6,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import Data from "./Data";
 
-export default function ListData({ record, readOnly, setActiveRound }) {
+export default function ListData({ record, readOnly, setActiveRound, active }) {
   const { token, lang } = useAppContext();
   const [boletus, setBoletus] = useState([]);
   const [gameOver, setGameOver] = useState(false);
@@ -83,10 +83,10 @@ export default function ListData({ record, readOnly, setActiveRound }) {
   };
 
   useEffect(() => {
-    if (reload) {
+    if (reload && active) {
       fetchData();
     }
-  }, [reload]);
+  }, [reload, active]);
 
   const handleNew = (item) => {
     if (item) {

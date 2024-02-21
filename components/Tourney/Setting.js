@@ -305,7 +305,7 @@ export default function Setting({ tourney }) {
           },
                 
           absent_point: {
-            value: data.data.absences_points,
+            value: data.data.absences_point,
             error: false,
             errorMessage: 'Los puntos a otorgar por ausencia o abandono son requeridos'
           },   
@@ -427,8 +427,7 @@ export default function Setting({ tourney }) {
           },
 
           segmentationType: {
-            value: "",
-            // value: data.data.segmentation_type,
+            value: data.data.segmentation_type,
             error: false,
             errorMessage: "Seleccione el tipo de Segmentación a utilizar"
           },

@@ -102,7 +102,7 @@ export default function InfoBoletus({ record, handleSubmit }) {
                 {frmData.motive_not_valid && 
                     <FormGroup row>
                         <Label size="sm" sm={2}>
-                            Motivo:
+                            Causa:
                         </Label>
                         <Col sm={10}>
                             <InputGroup size="sm">

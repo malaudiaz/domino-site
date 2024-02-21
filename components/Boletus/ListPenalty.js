@@ -6,7 +6,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import Penalty from "./Penalty";
 
-export default function ListPenalty({ record, readOnly }) {
+export default function ListPenalty({ record, readOnly, active }) {
   const { token, lang } = useAppContext();
   const [penaltys, setPenaltys] = useState([]);
 
@@ -85,10 +85,10 @@ export default function ListPenalty({ record, readOnly }) {
   };
 
   useEffect(() => {
-    if (reload) {
+    if (reload && active) {
       fetchData();
     }
-  }, [reload]);
+  }, [reload, active]);
 
   const parseMotive = (type) => {
     switch (type) {

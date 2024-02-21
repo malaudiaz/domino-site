@@ -124,24 +124,10 @@ export default function Boletus({
       const { data } = await axios.post(url, {}, config);
 
       if (data.success) {
-        Swal.fire({
-          icon: "success",
-          title: "Cerrar Boleta por Tiempo",
-          text: data.detail,
-          showConfirmButton: true,
-        });
-        setFrmData({
-          pair: {
-            value: "",
-            error: false,
-            errorMessage: "Debe seleccionar la pareja Ganadora",
-          },
-          point: {
-            value: "",
-            error: false,
-            errorMessage: "Teclee los puntos obtenidos",
-          },
-        });
+        if (setActiveRound) {
+          setActiveRound(data.data);
+        }
+        close();
       }
     } catch ({ code, message, name, request }) {
       if (code === "ERR_NETWORK") {
@@ -216,6 +202,10 @@ export default function Boletus({
 
       if (data.success) {
 
+        if (setActiveRound) {
+          setActiveRound(data.data);
+        }
+
         setFrmAbsentData({
           motive: "",
           player_0: "",
@@ -275,6 +265,10 @@ export default function Boletus({
     
           if (data.success) {
     
+            if (setActiveRound) {
+              setActiveRound(data.data);
+            }
+    
             setFrmNullData({
               motive: "",
               player: "",
@@ -321,7 +315,10 @@ export default function Boletus({
 
     try {
       const { data } = await axios.post(url, {}, config);
-      if (data.success) {
+      if (data) {
+        if (setActiveRound) {
+          setActiveRound(data);
+        }
         close();
       }
     } catch ({ code, message, name, request }) {
@@ -446,6 +443,7 @@ export default function Boletus({
                   record={record}
                   readOnly={readOnly}
                   setActiveRound={setActiveRound}
+                  active={activeTab==="1"}
                 />
               </TabPane>
               <TabPane tabId="2">
@@ -453,6 +451,7 @@ export default function Boletus({
                   record={record}
                   readOnly={readOnly}
                   setActiveRound={setActiveRound}
+                  active={activeTab==="2"}
                 />
               </TabPane>
             </TabContent>
