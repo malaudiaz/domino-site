@@ -84,15 +84,15 @@ export default function Register({ tourney, open, close, playerId }) {
   const playerLevel = [
     {
         name: "rookie",
-        description: "Novato"
+        description: "UNO"
     },
     {
         name: "professional",
-        description: "Profesional"
+        description: "DOS"
     },
     {
         name: "expert",
-        description: "Experto"
+        description: "TRES"
     }
   ];
 
@@ -100,9 +100,9 @@ export default function Register({ tourney, open, close, playerId }) {
     const name = e.target.name;
 
     const value =
-      event.target.type === "checkbox"
-        ? event.target.checked
-        : event.target.value;
+      e.target.type === "checkbox"
+        ? e.target.checked
+        : e.target.value;
 
     setFormValues({
       ...formValues,
@@ -207,116 +207,138 @@ export default function Register({ tourney, open, close, playerId }) {
     }
   },[playerId])
 
+
+  const validateFields = () => {
+    let valid = true;
+    for (var key in formValues) {
+      if (formValues[key].value === "") {
+        formValues[key].error = true;
+        valid = false;
+      }
+    }
+    return valid;
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    let url = `${process.env.NEXT_PUBLIC_API_URL}player/register/${tourney.id}`;
+    const isValid = validateFields();
 
-    if (playerId) {
-      url = `${process.env.NEXT_PUBLIC_API_URL}player/register/${playerId}`;
-    }
+    if (isValid) {
 
-    const body = {
-      "username": formValues.username.value,
-      "first_name": formValues.first_name.value,
-      "last_name": formValues.last_name.value,
-      "alias": formValues.alias.value,
-      "email": formValues.email.value,
-      "phone": formValues.phone.value,
-      "city_id": formValues.city.value,
-      "country_id": formValues.country.value,
-      "elo": formValues.elo.value,
-      "level": formValues.level.value
-    };  
+      let url = `${process.env.NEXT_PUBLIC_API_URL}player/register/${tourney.id}`;
 
-    try {
-      const { data } = await axios[playerId ? "put" : "post"](url, body, config);
-      if (data.success) {
-        Swal.fire({
-          icon: "success",
-          title: playerId==="" ? "Registrando Jugador" : "Actualizando Jugador",
-          text: data.detail,
-          showConfirmButton: true,
-        });
-        setFormValues({
-          username: {
-            value: "",
-            error: false,
-            errorMessage: "El nombre de usuario es requerido"
-          },
-          first_name: {
-            value: "",
-            error: false,
-            errorMessage: "El nombre es requerido"
-          },
-          last_name: {
-            value: "",
-            error: false,
-            errorMessage: "El apellido es requerido"
-          },
-          alias: {
-            value: "",
-            error: false,
-            errorMessage: "El alias es requerido"
-          },
-          email: {
-            value: "",
-            error: false,
-            errorMessage: "El correo es requerido"
-          },
-          phone: {
-            value: "",
-            error: false,
-            errorMessage: "El teléfono es requerido"
-          },
-          level: {
-            value: "",
-            error: false,
-            errorMessage: "El nivel del usuario es requerido"
-          },
-          elo: {
-            value: "",
-            error: false,
-            errorMessage: "El ELO del usuario es requerido"
-          },
-          country: {
-            value: "",
-            error: false,
-            errorMessage: "El país del usuario es requerido"
-          },
-          city: {
-            value: "",
-            error: false,
-            errorMessage: "La ciudad del usuario es requerida"
-          }      
-        })
-        close();
+      if (playerId) {
+        url = `${process.env.NEXT_PUBLIC_API_URL}player/register/${playerId}`;
       }
-    } catch ({code, message, name, request}) {
-      if (code === "ERR_NETWORK") {
-        Swal.fire({
-          title: playerId==="" ? "Registrando Jugador" : "Actualizando Jugador",
-          text: "Error en su red, consulte a su proveedor de servicio",
-          icon: "error",
-          showCancelButton: false,
-          allowOutsideClick: false,
-          confirmButtonColor: "#3085d6",
-          confirmButtonText: "Aceptar",
-        });
-      } else {
-        if (code === "ERR_BAD_REQUEST") {
-          const {detail} = JSON.parse(request.response)
+
+      const body = {
+        "username": formValues.username.value,
+        "first_name": formValues.first_name.value,
+        "last_name": formValues.last_name.value,
+        "alias": formValues.alias.value,
+        "email": formValues.email.value,
+        "phone": formValues.phone.value,
+        "city_id": formValues.city.value,
+        "country_id": formValues.country.value,
+        "elo": formValues.elo.value,
+        "level": formValues.level.value
+      };  
+
+      try {
+        const { data } = await axios[playerId ? "put" : "post"](url, body, config);
+        if (data.success) {
+          setFormValues({
+            username: {
+              value: "",
+              error: false,
+              errorMessage: "El nombre de usuario es requerido"
+            },
+            first_name: {
+              value: "",
+              error: false,
+              errorMessage: "El nombre es requerido"
+            },
+            last_name: {
+              value: "",
+              error: false,
+              errorMessage: "El apellido es requerido"
+            },
+            alias: {
+              value: "",
+              error: false,
+              errorMessage: "El alias es requerido"
+            },
+            email: {
+              value: "",
+              error: false,
+              errorMessage: "El correo es requerido"
+            },
+            phone: {
+              value: "",
+              error: false,
+              errorMessage: "El teléfono es requerido"
+            },
+            level: {
+              value: "",
+              error: false,
+              errorMessage: "El nivel del usuario es requerido"
+            },
+            elo: {
+              value: "",
+              error: false,
+              errorMessage: "El ELO del usuario es requerido"
+            },
+            country: {
+              value: "",
+              error: false,
+              errorMessage: "El país del usuario es requerido"
+            },
+            city: {
+              value: "",
+              error: false,
+              errorMessage: "La ciudad del usuario es requerida"
+            }      
+          })
+          close();
+        }
+      } catch ({code, message, name, request}) {
+        if (code === "ERR_NETWORK") {
           Swal.fire({
             title: playerId==="" ? "Registrando Jugador" : "Actualizando Jugador",
-            text: detail,
+            text: "Error en su red, consulte a su proveedor de servicio",
             icon: "error",
             showCancelButton: false,
             allowOutsideClick: false,
             confirmButtonColor: "#3085d6",
             confirmButtonText: "Aceptar",
-          });  
+          });
+        } else {
+          if (code === "ERR_BAD_REQUEST") {
+            const {detail} = JSON.parse(request.response)
+            Swal.fire({
+              title: playerId==="" ? "Registrando Jugador" : "Actualizando Jugador",
+              text: detail,
+              icon: "error",
+              showCancelButton: false,
+              allowOutsideClick: false,
+              confirmButtonColor: "#3085d6",
+              confirmButtonText: "Aceptar",
+            });  
+          }
         }
       }
+
+    } else {
+      Swal.fire({
+        title: playerId==="" ? "Registrando Jugador" : "Actualizando Jugador",
+        text: "Complete los campos obligatorios",
+        icon: "error",
+        showCancelButton: false,
+        allowOutsideClick: false,
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "Aceptar",
+      });
     }
   }
 

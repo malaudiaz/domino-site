@@ -65,43 +65,67 @@ export default function PrintBoletus({ open, setOpen, roundId }) {
     const tables = data.lst_tables;
 
     for (let j=0; j<tables.length; j++) {
-        html = html + '<table border=1 cellpadding=0 cellspacing=0 width="700px" style="font: 12pt sans-serif, monospace; border: 1px solid black; border-collapse: collapse; padding: 1px; break-after: page;">';
+        html = html + '<table border=1 cellpadding=0 cellspacing=0 width="700px" style="font: 12pt sans-serif, monospace; border: 1px solid black; border-collapse: collapse; padding: 1px;">';
 
-        html = html + '<tr height="50px"><td width="300px" align="center">' + '<img src=' + logo + ' alt="Logo" width="80" height="50"></img>';
-        html = html + '</td><td colspan=6 align="center"><b>' + "Boleta de Captación de Datos" + '</b></td></tr>';
+        html = html + '<tr height="25px"><td rowspan=2 width="100px" align="center">' + '<img src=' + logo + ' alt="Logo" width="80" height="50"></img>';
 
-        html = html + '<tr height="50px">';
-        html = html + '<td colspan=3 align="center"><b>' + 'Ronda: ' + round + '</b></td><td colspan=4 align="center"><b>' + 'Mesa No.' + tables[j].table_number + '</b></td></tr>';
+        html = html + '</td><td colspan=6 align="center"><b>' + "Boleta de Captación de Datos" + '</b></td><td rowspan=2 width="100px" align="center"></td></tr>';
+        
+        html = html + '<tr height="25px">';
+        html = html + '</td><td colspan=6 align="center"><b>Titulo del Torneo</b></td></tr>';
 
-        html = html + '<tr height="30px"><td width="300px"></td><td colspan=3 align="center">Puntos</td><td colspan=3 align="center">Marcar</td></tr>';
-        html = html + '<tr height="30px"><td width="300px" align="center">Jugadores</td><td width="100px"align="center">Amones.</td><td width="100px" align="center">Amarilla</td><td width="100px" align="center">Roja</td><td width="100px" align="center">Ausencia</td><td width="100px" align="center">Abandono</td><td width="100px" align="center">Expulsado.</td></tr>';
+        html = html + '<tr height="20px"><td width="100px" align="center" colspan=2>';
+        html = html + '<b>Ronda</b></td><td colspan=2 align="center"><b>Mesa</b></td><td colspan=2 align="center"><b>Modalidad</b></td><td colspan=2 align="center"><b>Fecha</b></td></tr>';
+
+        html = html + '<tr height="20px"><td width="100px" align="center" colspan=2>';
+        html = html + '1</td><td colspan=2 align="center">3</td><td colspan=2 align="center">Individual</td><td colspan=2 align="center">23/02/2024</td></tr>';
+
+        html = html + '</table></br>';
+
+        html = html + '<table border=1 cellpadding=0 cellspacing=0 width="700px" style="font: 12pt sans-serif, monospace; border: 1px solid black; border-collapse: collapse; padding: 1px">';
+
+        //; break-after: page;
+
+
+        html = html + '<tr height="25px"><td colspan=2 width="400px"></td><td colspan=3 align="center">Puntos</td><td colspan=3 align="center">Marcar</td></tr>';
+        html = html + '<tr height="25px"><td width="20px" align="center">Pos</td><td width="300px" align="center">Jugadores</td><td width="100px"align="center">Amon.</td><td width="100px" align="center">Amar.</td><td width="100px" align="center">Roja</td><td width="100px" align="center">Ausen.</td><td width="100px" align="center">Aban.</td><td width="100px" align="center">Expul.</td></tr>';
 
         const players = tables[j].lst_player;
         for (let i=0; i<players.length; i++) {
-            html = html + '<tr height="30px"><td width="300px">'+players[i]+'</td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td></td></tr>';
+            html = html + '<tr height="40px"><td align="center" width="20px">' + (i+1).toString() + '</td><td width="400px">'+players[i]+'</td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td></td></tr>';
         }
 
-        html = html + '<tr height="30px"><td align="center" colspan=7>' + 'ANULAR BOLETA' + '</td></tr>'; 
-        html = html + '<tr height="30px"><td align="center" colspan=2>' + 'Sentarse Incorrectamente' + '</td>';
-        html = html + '<td align="center" colspan=2>' + 'Error al Anotar' + '</td>';
-        html = html + '<td align="center" colspan=3>' + 'Conducta Antideportiva' + '</td></tr>';
+        html = html + '</table></br>';
+
+
+        html = html + '<table border=1 cellpadding=0 cellspacing=0 width="700px" style="font: 12pt sans-serif, monospace; border: 1px solid black; border-collapse: collapse; padding: 1px">';
+
+        html = html + '<tr height="20px"><td align="center" colspan=6>' + 'ANULAR BOLETA' + '</td></tr>'; 
+
+        html = html + '<tr height="35px"><td width="50px" align="center"></td><td align="center">' + 'Sentarse Incorrectamente' + '</td>';
+        html = html + '<td width="50px" align="center"></td><td align="center">' + 'Error al Anotar' + '</td>';
+        html = html + '<td width="50px" align="center"></td><td align="center">' + 'Conducta Antideportiva' + '</td></tr>';
+
+        html = html + '</table></br>';
+
+        html = html + '<table border=1 cellpadding=0 cellspacing=0 width="700px" style="font: 12pt sans-serif, monospace; border: 1px solid black; border-collapse: collapse; padding: 1px">';
 
         html = html + '<tr height="30px"><td align="center" width="50px">Data</td>';
     
         const pairs = tables[j].lst_pair;
         for (let i=0; i<pairs.length; i++) {
-            html = html + '<td colspan=3 align="center">' + pairs[i] + '</td>'
+            html = html + '<td width="400px" align="center">' + pairs[i] + '</td>'
         }
 
         html = html + '</tr>';    
 
         for (let i=0; i<10; i++) {
-            html = html + '<tr height="30px"><td align="center" width="50px">' + (i+1).toString() + '</td><td colspan=3></td><td colspan=3></td></tr>'
+            html = html + '<tr height="35px"><td align="center" width="50px">' + (i+1).toString() + '</td><td width="400px"></td><td width="400px"></td></tr>'
         }
 
-        html = html + '<tr height="30px"><td align="center" width="50px">Total</td><td colspan=3></td><td colspan=3></td></tr>'
+        html = html + '<tr height="35px"><td align="center" width="50px">Total</td><td></td><td></td></tr>'
 
-        html = html + '<tr><td colspan=8 align="center"><img src="' + image + '" alt="logo" width="700" height="200"></img></td></tr>'
+        html = html + '<tr><td colspan=3 align="center"><img src="' + image + '" alt="logo" width="700" height="200"></img></td></tr>'
 
         html = html + '</table><br>';        
     }
