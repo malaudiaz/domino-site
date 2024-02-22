@@ -28,7 +28,7 @@ export default function PlayerRaiting({ tourney, round, active }) {
                                 toggleTab("1");
                             }}
                         >
-                            Ronda
+                            {"Ronda " + round.round_number}
                         </NavLink>
                     </NavItem>
 

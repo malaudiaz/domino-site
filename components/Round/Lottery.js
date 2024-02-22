@@ -3,7 +3,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { useAppContext } from "../../AppContext";
 
-import { InputGroup, Input, InputGroupText } from "reactstrap";
+import { InputGroup, Input, InputGroupText, Badge } from "reactstrap";
 
 import {
   Accordion,
@@ -187,17 +187,19 @@ export default function Lottery({ activeRound, tourney, selected, setSelected, a
                 {categories.map((item, idx) => (
                   <AccordionItem key={idx}>
                     <AccordionHeader targetId={item.id}>
-                      {item.category_number}
+                      {item.category_number}&nbsp;<Badge color="info" pill>{item.amount_players}</Badge>
                     </AccordionHeader>
                     <AccordionBody accordionId={item.id}>
-                      <div className="d-flex flex-row justify-content-between">
-                        <small className="comment-text fs-12">
-                          ELO Máximo: <b>{item.elo_max}</b>
-                        </small>
-                        <small className="comment-text fs-12">
-                          ELO Mínimo: <b>{item.elo_min}</b>
-                        </small>
-                      </div>
+                      {item.elo_max > 0  && item.elo_min > 0 && 
+                        <div className="d-flex flex-row justify-content-between">
+                          <small className="comment-text fs-12">
+                            ELO Máximo: <b>{item.elo_max}</b>
+                          </small>
+                          <small className="comment-text fs-12">
+                            ELO Mínimo: <b>{item.elo_min}</b>
+                          </small>
+                        </div>
+                      }
                       <Players 
                         id={item.id} 
                         lotteryType={activeRound.lottery_type} 

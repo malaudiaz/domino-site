@@ -3,7 +3,7 @@ import Pagination from "../../../Pagination/Pagination";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useAppContext } from "../../../../AppContext";
-import { Table } from "reactstrap";
+import { Table, Label, FormGroup, Col, InputGroup, Input } from "reactstrap";
 
 export default function RoundPositions({ id, active }) {
     const { token, lang } = useAppContext();
@@ -13,6 +13,7 @@ export default function RoundPositions({ id, active }) {
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [total, setTotal] = useState(0);
+    const [order, setOrder] = useState(1);
     const rowsPerPage = 20;
   
     const config = {
@@ -25,7 +26,7 @@ export default function RoundPositions({ id, active }) {
     };
   
     const fetchData = async () => {
-        const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/scale/player/current/${id}?page=${page}&per_page=${rowsPerPage}`;
+        const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/scale/player/current/${id}?page=${page}&per_page=${rowsPerPage}&order=${order}`;
   
         try {
             const { data } = await axios.get(url, config);
@@ -73,135 +74,163 @@ export default function RoundPositions({ id, active }) {
       fetchData();
     };
 
+    const handleChange = (e) => {
+        const value = e.target.value;   
+        setOrder(value)
+    };
+    
+
     return (
         <div className="pt-3 pb-4">
 
             {raiting.length > 0 ? (
                 <div className="container">
 
-                    <Table
-                        bordered
-                        hover
-                        responsive
-                        size="sm"
-                        striped
-                    >
-                        <thead>
-                            <tr>
-                                <th className="text-center" rowSpan={2}>Pos</th>
-                                <th className="text-center" rowSpan={2}>Nombre</th>
+                    <div className="flex flex-column gap-4">
+                        <FormGroup row>
+                            <Label size="sm" sm={2}>
+                                Ordenar por:
+                            </Label>
+                            <Col sm={5}>
+                                <InputGroup size="sm">
+                                    <Input
+                                        type="select"
+                                        name="order"
+                                        id="order"
+                                        defaultValue={order}
+                                        onChange={handleChange}
+                                    >
+                                        <option value="1">Posiciones al Inicio</option>
+                                        <option value="2">Posiciones al Final</option>
+                                    </Input>
+                                </InputGroup>
+                            </Col>
+                        </FormGroup>
 
-                                <th className="text-center" rowSpan={2}>
-                                    JJ
-                                </th>
-                                <th className="text-center" rowSpan={2}>
-                                    JG
-                                </th>
-                                <th className="text-center" rowSpan={2}>
-                                    JP
-                                </th>
-                                <th className="text-center" rowSpan={2}>
-                                    P+
-                                </th>
-                                <th className="text-center" rowSpan={2}>
-                                    P-
-                                </th>
-                                <th className="text-center" rowSpan={2}>
-                                    Pen.
-                                </th>
-                                <th className="text-center" rowSpan={2}>
-                                    DIF
-                                </th>
+                        <Table
+                            bordered
+                            hover
+                            responsive
+                            size="sm"
+                            striped
+                        >
+                            <thead>
+                                <tr>
+                                    <th className="text-center" rowSpan={2}>Pos</th>
+                                    <th className="text-center" rowSpan={2}>Nombre</th>
 
-                                <th className="text-center" colSpan={2}>Puntuación</th>
-
-                                <th className="text-center" colSpan={4}>ELO</th>
-
-
-                            </tr>
-                            <tr className="text-center">
-                                <th>
-                                    Esperada
-                                </th>
-                                <th>
-                                    Obtenida
-                                </th>
-                                <th>
-                                    Inicio
-                                </th>
-                                <th>
-                                    Var.
-                                </th>
-                                <th>
-                                    Final
-                                </th>
-                                <th>
-                                    R. Ant.
-                                </th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-
-                            {raiting.map((item, idx) => (
-                                <tr key={idx} style={{verticalAlign: "middle"}}>
-                                    <th scope="row" className="text-center">
-                                        {item.position_number}
+                                    <th className="text-center" rowSpan={2}>
+                                        JJ
                                     </th>
-                                    <td>
-                                        {item.name}
-                                    </td>
+                                    <th className="text-center" rowSpan={2}>
+                                        JG
+                                    </th>
+                                    <th className="text-center" rowSpan={2}>
+                                        JP
+                                    </th>
+                                    <th className="text-center" rowSpan={2}>
+                                        P+
+                                    </th>
+                                    <th className="text-center" rowSpan={2}>
+                                        P-
+                                    </th>
+                                    <th className="text-center" rowSpan={2}>
+                                        Pen.
+                                    </th>
+                                    <th className="text-center" rowSpan={2}>
+                                        DIF
+                                    </th>
 
-                                    <td className="text-center">
-                                        {item.games_played}
-                                    </td>
-                                    <td className="text-center">
-                                        {item.games_won}
-                                    </td>
-                                    <td className="text-center">
-                                        {item.games_lost}
-                                    </td>
-                                    <td className="text-end">
-                                        {item.points_positive}
-                                    </td>
-                                    <td className="text-end">
-                                        {item.points_negative}
-                                    </td>
+                                    <th className="text-center" colSpan={2}>Puntuación</th>
 
-                                    <td className="text-end">
-                                        {item.penalty_points}
-                                    </td>
-
-                                    <td className="text-end">
-                                        {item.points_difference}
-                                    </td>
+                                    <th className="text-center" colSpan={4}>ELO</th>
 
 
-                                    <td className="text-end">
-                                        {item.score_expected}
-                                    </td>
-                                    <td className="text-end">
-                                        {item.score_obtained}
-                                    </td>
-
-                                    <td className="text-center">
-                                        {item.elo}
-                                    </td>
-                                    <td className="text-center">
-                                        {item.elo_variable}
-                                    </td>
-                                    <td className="text-center">
-                                        {item.elo_at_end}
-                                    </td>
-                                    <td className="text-center">
-                                        {item.elo_ra}
-                                    </td>
                                 </tr>
-                            ))}
+                                <tr className="text-center">
+                                    <th>
+                                        Esperada
+                                    </th>
+                                    <th>
+                                        Obtenida
+                                    </th>
+                                    <th>
+                                        Inicio
+                                    </th>
+                                    <th>
+                                        Var.
+                                    </th>
+                                    <th>
+                                        Final
+                                    </th>
+                                    <th>
+                                        R. Ant.
+                                    </th>
+                                </tr>
+                            </thead>
 
-                        </tbody>
-                    </Table>
+                            <tbody>
 
+                                {raiting.map((item, idx) => (
+                                    <tr key={idx} style={{verticalAlign: "middle"}}>
+                                        <th scope="row" className="text-center">
+                                            {item.position_number}
+                                        </th>
+                                        <td>
+                                            {item.name}
+                                        </td>
+
+                                        <td className="text-center">
+                                            {item.games_played}
+                                        </td>
+                                        <td className="text-center">
+                                            {item.games_won}
+                                        </td>
+                                        <td className="text-center">
+                                            {item.games_lost}
+                                        </td>
+                                        <td className="text-end">
+                                            {item.points_positive}
+                                        </td>
+                                        <td className="text-end">
+                                            {item.points_negative}
+                                        </td>
+
+                                        <td className="text-end">
+                                            {item.penalty_points}
+                                        </td>
+
+                                        <td className="text-end">
+                                            {item.points_difference}
+                                        </td>
+
+
+                                        <td className="text-end">
+                                            {item.score_expected}
+                                        </td>
+                                        <td className="text-end">
+                                            {item.score_obtained}
+                                        </td>
+
+                                        <td className="text-center">
+                                            {item.elo}
+                                        </td>
+                                        <td className="text-center">
+                                            {item.elo_variable}
+                                        </td>
+                                        <td className="text-center">
+                                            {item.elo_at_end}
+                                        </td>
+                                        <td className="text-center">
+                                            {item.elo_ra}
+                                        </td>
+                                    </tr>
+                                ))}
+
+                            </tbody>
+                        </Table>
+
+                    </div>
 
                 </div>
             ) : (
