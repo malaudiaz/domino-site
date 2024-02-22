@@ -19,6 +19,7 @@ import { useAppContext } from "../../../AppContext";
 import Level from "../../Level/Level";
 import axios from "axios";
 import Swal from "sweetalert2";
+import Combobox from "../../Combobox/Combobox";
 
 
 export default function Register({ tourney, open, close, playerId }) {
@@ -78,6 +79,16 @@ export default function Register({ tourney, open, close, playerId }) {
       value: "",
       error: false,
       errorMessage: "La ciudad del usuario es requerida"
+    },
+    federation: {
+      value: "",
+      error: false,
+      errorMessage: "La federación del usuario es requerida"
+    },
+    club: {
+      value: "",
+      error: false,
+      errorMessage: "El club del usuario es requerido"
     }
   });
 
@@ -207,7 +218,6 @@ export default function Register({ tourney, open, close, playerId }) {
     }
   },[playerId])
 
-
   const validateFields = () => {
     let valid = true;
     for (var key in formValues) {
@@ -239,6 +249,8 @@ export default function Register({ tourney, open, close, playerId }) {
         "alias": formValues.alias.value,
         "email": formValues.email.value,
         "phone": formValues.phone.value,
+        "federation_id": formValues.federation.value,
+        "club_id": formValues.club.value,
         "city_id": formValues.city.value,
         "country_id": formValues.country.value,
         "elo": formValues.elo.value,
@@ -357,7 +369,7 @@ export default function Register({ tourney, open, close, playerId }) {
       <ModalBody>
         <FormGroup row className="ps-4 pe-4">
           <Label size="sm" sm={4}>
-            Nombre de usuario
+            Nombre de usuario:
           </Label>
           <Col sm={8}>
             <InputGroup size="sm">
@@ -383,7 +395,7 @@ export default function Register({ tourney, open, close, playerId }) {
 
         <FormGroup row className="ps-4 pe-4">
           <Label size="sm" sm={4}>
-            Nombre
+            Nombre:
           </Label>
           <Col sm={8}>
             <InputGroup size="sm">
@@ -409,7 +421,7 @@ export default function Register({ tourney, open, close, playerId }) {
 
         <FormGroup row className="ps-4 pe-4">
           <Label size="sm" sm={4}>
-            Apellidos
+            Apellidos:
           </Label>
           <Col sm={8}>
             <InputGroup size="sm">
@@ -435,7 +447,7 @@ export default function Register({ tourney, open, close, playerId }) {
 
         <FormGroup row className="ps-4 pe-4">
           <Label size="sm" sm={4}>
-            Alias
+            Alias:
           </Label>
           <Col sm={8}>
             <InputGroup size="sm">
@@ -461,7 +473,7 @@ export default function Register({ tourney, open, close, playerId }) {
 
         <FormGroup row className="ps-4 pe-4">
           <Label size="sm" sm={4}>
-            Email
+            Email:
           </Label>
           <Col sm={8}>
             <InputGroup size="sm">
@@ -487,7 +499,7 @@ export default function Register({ tourney, open, close, playerId }) {
 
         <FormGroup row className="ps-4 pe-4">
           <Label size="sm" sm={4}>
-            Telefono
+            Teléfono:
           </Label>
           <Col sm={8}>
             <InputGroup size="sm">
@@ -513,7 +525,7 @@ export default function Register({ tourney, open, close, playerId }) {
 
         <FormGroup row className="ps-4 pe-4">
           <Label size="sm" sm={4}>
-            Nivel
+            Nivel:
           </Label>
           <Col sm={8}>
             <InputGroup size="sm">
@@ -530,7 +542,7 @@ export default function Register({ tourney, open, close, playerId }) {
 
         <FormGroup row className="ps-4 pe-4">
           <Label size="sm" sm={4}>
-            ELO
+            ELO:
           </Label>
           <Col sm={8}>
             <InputGroup size="sm">
@@ -556,7 +568,47 @@ export default function Register({ tourney, open, close, playerId }) {
 
         <FormGroup row className="ps-4 pe-4">
           <Label size="sm" sm={4}>
-            País
+            Federación:
+          </Label>
+          <Col sm={8}>
+            <InputGroup size="sm">
+              <Combobox 
+                name={"federation"} 
+                cmbText={"Seleccione Federación"}
+                invalid={formValues.federation.error}
+                valueDefault={formValues.federation.value}
+                onChange={handleChange}
+                url={`${process.env.NEXT_PUBLIC_API_URL}federation/all/`}
+                displayValue="name"
+                valueField="id"
+              />
+            </InputGroup>
+          </Col>
+        </FormGroup>
+
+        {formValues.federation.value !== "" && <FormGroup row className="ps-4 pe-4">
+          <Label size="sm" sm={4}>
+            Club:
+          </Label>
+          <Col sm={8}>
+            <InputGroup size="sm">
+              <Combobox 
+                name={"club"} 
+                cmbText={"Seleccione club"}
+                invalid={formValues.club.error}
+                valueDefault={formValues.club.value}
+                onChange={handleChange}
+                url={`${process.env.NEXT_PUBLIC_API_URL}club/federation/${formValues.federation.value}`}
+                displayValue="name"
+                valueField="id"
+              />
+            </InputGroup>
+          </Col>
+        </FormGroup>}
+
+        <FormGroup row className="ps-4 pe-4">
+          <Label size="sm" sm={4}>
+            País:
           </Label>
           <Col sm={8}>
             <InputGroup size="sm">
@@ -576,7 +628,7 @@ export default function Register({ tourney, open, close, playerId }) {
 
         <FormGroup row className="ps-4 pe-4">
           <Label size="sm" sm={4}>
-            Ciudad
+            Ciudad:
           </Label>
           <Col sm={8}>
             <InputGroup size="sm">
