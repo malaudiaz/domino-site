@@ -23,9 +23,11 @@ export default function PrintBoletus({ open, setOpen, roundId }) {
   const [createObjectURL, setCreateObjectURL] = useState(null);
   const [image, setImage] = useState(null);
 
-  const [createLogoURL, setCreateLogoURL] = useState(null);
-  const [logo, setLogo] = useState(null);
+  const [createLeftURL, setCreateLeftURL] = useState(null);
+  const [leftImg, setLeftImg] = useState(null);
 
+  const [createRightURL, setCreateRightURL] = useState(null);
+  const [rightImg, setRightImg] = useState(null);
 
   const [frmData, setFrmData] = useState({
     interval: "",
@@ -57,35 +59,34 @@ export default function PrintBoletus({ open, setOpen, roundId }) {
   const print = (data) => {
 
     let html = '<html><head></head><body>';
-    const logo = 'http://127.0.0.1:3000/smartdomino.png'; //data.image;
-    
+    const imgLeft = createLeftURL;
+    const imgRight = createRightURL;
+
     const image = createObjectURL;
 
-    const round = data.round_number;
     const tables = data.lst_tables;
 
     for (let j=0; j<tables.length; j++) {
         html = html + '<table border=1 cellpadding=0 cellspacing=0 width="700px" style="font: 12pt sans-serif, monospace; border: 1px solid black; border-collapse: collapse; padding: 1px;">';
 
-        html = html + '<tr height="20px"><td rowspan=2 width="100px" align="center">' + '<img src=' + logo + ' alt="Logo" width="80" height="50"></img>';
+        html = html + '<tr height="30px"><td rowspan=2 width="100px" align="center">' + '<img src=' + imgLeft + ' alt="Logo" width="80" height="35"></img>';
 
-        html = html + '</td><td colspan=6 align="center"><b>' + "Boleta de Captación de Datos" + '</b></td><td rowspan=2 width="100px" align="center"></td></tr>';
+        html = html + '</td><td colspan=6 align="center"><b>' + "Boleta de Captación de Datos" + '</b></td><td rowspan=2 width="100px" align="center">' + '<img src=' + imgRight + ' alt="Logo" width="80" height="35"></img>' + '</td></tr>';
         
         html = html + '<tr height="20px">';
-        html = html + '</td><td colspan=6 align="center"><b>Titulo del Torneo</b></td></tr>';
+        html = html + '</td><td colspan=6 align="center"><b>' + data.tourney_name + '</b></td></tr>';
 
         html = html + '<tr height="20px"><td width="100px" align="center" colspan=2>';
         html = html + '<b>Ronda</b></td><td colspan=2 align="center"><b>Mesa</b></td><td colspan=2 align="center"><b>Modalidad</b></td><td colspan=2 align="center"><b>Fecha</b></td></tr>';
 
         html = html + '<tr height="20px"><td width="100px" align="center" colspan=2>';
-        html = html + '1</td><td colspan=2 align="center">3</td><td colspan=2 align="center">Individual</td><td colspan=2 align="center">23/02/2024</td></tr>';
+        html = html + '1</td><td colspan=2 align="center">' + data.round_number + '</td><td colspan=2 align="center">' + data.modality + '</td><td colspan=2 align="center">' + data.date + '</td></tr>';
 
         html = html + '</table></br>';
 
         html = html + '<table border=1 cellpadding=0 cellspacing=0 width="700px" style="font: 12pt sans-serif, monospace; border: 1px solid black; border-collapse: collapse; padding: 1px">';
 
         //; break-after: page;
-
 
         html = html + '<tr height="20px"><td colspan=2 width="400px"></td><td colspan=3 align="center">Puntos</td><td colspan=3 align="center">Marcar</td></tr>';
         html = html + '<tr height="20px"><td width="20px" align="center">Pos</td><td width="300px" align="center">Jugadores</td><td width="100px"align="center">Amon.</td><td width="100px" align="center">Amar.</td><td width="100px" align="center">Roja</td><td width="100px" align="center">Ausen.</td><td width="100px" align="center">Aban.</td><td width="100px" align="center">Expul.</td></tr>';
@@ -251,25 +252,89 @@ export default function PrintBoletus({ open, setOpen, roundId }) {
             </FormGroup>
           )}
 
-          {/* <FormGroup row>
-            <Label size="sm" sm={6}>
-              Boletas x Hojas:
-            </Label>
-            <Col sm={6}>
-              <InputGroup size="sm">
-                <Input
-                  id="boletusPage"
-                  name="boletusPage"
-                  type="number"
-                  min={1}
-                  max={2}
-                  size="sm"
-                  value={frmData.boletusPage}
-                  onChange={handleChange}
+          <div className="d-flex gap-2">
+            <div className="col-6">
+              <strong>Img. sup. izq.</strong>
+              <Label
+                href="#"
+                className="btn btn-sm"
+                title="Imagen Superior Izquierda"
+                style={{ color: "white" }}
+              >
+                <Image
+                  alt="Imagen Superior Izquierda"
+                  title="Imagen Superior Izquierda"
+                  src={createLeftURL ? createLeftURL : "/smartdomino.png"}
+                  width={350}
+                  height={150}
+                  quality={50}
+                  priority
+                  layout="intrinsic"
                 />
-              </InputGroup>
-            </Col>
-          </FormGroup> */}
+                <Input
+                  type="file"
+                  hidden
+                  onChange={(event) => {
+                    if (event.target.files && event.target.files[0]) {
+                      const i = event.target.files[0];
+                      if (i.type.includes("image/jpeg")) {
+                        setLeftImg(i);
+                        setCreateLeftURL(URL.createObjectURL(i));
+                      } else {
+                        Swal.fire({
+                          icon: "error",
+                          title: "Cargando Imagen",
+                          text: "Ha ocurrido un error al cargar la imagen",
+                          showConfirmButton: true,
+                        });
+                      }
+                    }
+                  }}
+                />
+              </Label>
+            </div>
+            <div className="col-6">
+              <strong>Img. sup. der.</strong>
+              <Label
+                href="#"
+                className="btn btn-sm"
+                title="Imagen Superior Derecha"
+                style={{ color: "white" }}
+              >
+                <Image
+                  alt="Imagen Superior Derecha"
+                  title="Imagen Superior Derecha"
+                  src={createRightURL ? createRightURL : "/smartdomino.png"}
+                  width={350}
+                  height={150}
+                  quality={50}
+                  priority
+                  layout="intrinsic"
+                />
+                <Input
+                  type="file"
+                  hidden
+                  onChange={(event) => {
+                    if (event.target.files && event.target.files[0]) {
+                      const i = event.target.files[0];
+                      if (i.type.includes("image/jpeg")) {
+                        setRightImg(i);
+                        setCreateRightURL(URL.createObjectURL(i));
+                      } else {
+                        Swal.fire({
+                          icon: "error",
+                          title: "Cargando Imagen",
+                          text: "Ha ocurrido un error al cargar la imagen",
+                          showConfirmButton: true,
+                        });
+                      }
+                    }
+                  }}
+                />
+              </Label>
+
+            </div>
+          </div>
 
           <div className="row pt-2">
             <strong>Foto de Publicidad para la Boleta</strong>
