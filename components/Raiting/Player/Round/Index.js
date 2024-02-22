@@ -67,7 +67,7 @@ export default function RoundPositions({ id, active }) {
       if (id && active) {
         fetchData();
       }
-    }, [id, page, active]);
+    }, [id, page, active, order]);
   
     const onChangePage = (pageNumber) => {
       setPage(pageNumber);
