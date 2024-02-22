@@ -30,7 +30,7 @@ export default function PrintBoletus({ open, setOpen, roundId }) {
   const [rightImg, setRightImg] = useState(null);
 
   const [frmData, setFrmData] = useState({
-    interval: "",
+    interval: "0",
     selections: "",
     boletusPage: "",
   });
@@ -146,6 +146,16 @@ export default function PrintBoletus({ open, setOpen, roundId }) {
     winprint.print();
 
     winprint.close();
+
+    setFrmData({
+      interval: "0",      
+      selections: "",
+      boletusPage: "",
+    });
+
+    setCreateLeftURL(null);
+    setCreateRightURL(null);
+    setCreateObjectURL(null);
 
   }
 
