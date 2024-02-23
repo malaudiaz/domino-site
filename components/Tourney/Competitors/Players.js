@@ -379,6 +379,9 @@ export default function Players({tourney, active}) {
                                 </div>
 
                                 <div className="d-flex flex-row justify-content-between align-items-center px-2 py-2">
+                                    <small>
+                                        Club: <b>{item.club_siglas}</b>
+                                    </small>
                                     <small className="comment-text fs-12">Nivel: <b>{item.level}</b></small>
                                     <small className="comment-text fs-12">ELO: <b>{item.elo}</b></small>
                                 </div>

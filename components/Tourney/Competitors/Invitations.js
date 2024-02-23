@@ -93,21 +93,6 @@ export default function Invitations({ tourney, active }) {
           const { data } = await axios.post(url, {}, config);
           if (data.success) {
             setRefresh(true);
-            if (value) {
-              Swal.fire({
-                icon: "success",
-                title: "Aceptar Jugador",
-                text: "El jugador, ahora forma parte de este torneo",
-                showConfirmButton: true,
-              });
-            } else {
-              Swal.fire({
-                icon: "success",
-                title: "Rechazar Jugador",
-                text: "Este jugador no formara parte del torneo",
-                showConfirmButton: true,
-              });
-            }
           }
         } catch (errors) {
           console.log(errors);
@@ -396,6 +381,9 @@ export default function Invitations({ tourney, active }) {
                                 </div>
                 
                                 <div className="d-flex flex-row justify-content-between align-items-center px-2 py-2">
+                                    <small>
+                                        Club: <b>{item.club_siglas}</b>
+                                    </small>
                                     <small className="comment-text fs-12">
                                         Nivel: <b>{item.level}</b>
                                     </small>
