@@ -181,7 +181,16 @@ export default function Register({ tourney, open, close, playerId }) {
           city: {
             ...formValues["city"],
             value: data.data.city_id,
+          },
+          federation: {
+            ...formValues["federation"],
+            value: data.data.federation,
+          },
+          club: {
+            ...formValues["club"],
+            value: data.data.club,
           }
+
         });
       }
     } catch ({code, message, name, request}) {
@@ -566,7 +575,7 @@ export default function Register({ tourney, open, close, playerId }) {
           </Col>
         </FormGroup>
 
-        <FormGroup row className="ps-4 pe-4">
+        {formValues.federation && <FormGroup row className="ps-4 pe-4">
           <Label size="sm" sm={4}>
             Federación:
           </Label>
@@ -575,7 +584,7 @@ export default function Register({ tourney, open, close, playerId }) {
               <Combobox 
                 name={"federation"} 
                 cmbText={"Seleccione Federación"}
-                invalid={formValues.federation.error}
+                invalid={false}
                 valueDefault={formValues.federation.value}
                 onChange={handleChange}
                 url={`${process.env.NEXT_PUBLIC_API_URL}federation/all/`}
@@ -584,9 +593,9 @@ export default function Register({ tourney, open, close, playerId }) {
               />
             </InputGroup>
           </Col>
-        </FormGroup>
+        </FormGroup>}
 
-        {formValues.federation.value !== "" && <FormGroup row className="ps-4 pe-4">
+        {formValues.federation && formValues.federation.value !== "" && <FormGroup row className="ps-4 pe-4">
           <Label size="sm" sm={4}>
             Club:
           </Label>

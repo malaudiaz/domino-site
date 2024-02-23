@@ -410,7 +410,7 @@ export default function Boletus({
           </div>
         </div>
 
-        {record.can_update || !record.can_update ? (
+        {record.can_update ? (
           <>
             <Nav tabs>
               <NavItem>
