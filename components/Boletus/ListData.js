@@ -259,7 +259,7 @@ export default function ListData({ record, readOnly, setActiveRound, active }) {
                 handleNew(null);
               }}
             >
-              <i class="bi bi-plus-circle"></i>
+              <i className="bi bi-plus-circle"></i>
             </Button>
         </div>
       </div>
@@ -293,13 +293,13 @@ export default function ListData({ record, readOnly, setActiveRound, active }) {
                       handleNew(item);
                     }}
                   >
-                    <i class="bi bi-pencil-square"></i>
+                    <i className="bi bi-pencil-square"></i>
                   </a>) : (
                     <a
                       className="edit"
                       title="Editar"
                     >
-                      <i class="bi bi-pencil-square"></i>
+                      <i className="bi bi-pencil-square"></i>
                     </a>
                   )}
                 </td>

@@ -262,7 +262,7 @@ export default function Players({tourney, active}) {
                 </div>
 
                 {filter==1 && <Button className="btn btn-sm btn-success" title="Registrar Jugador" onClick={(e)=>{e.preventDefault(); setRegister(true)}}>
-                    <i class="bi bi-person-plus"/>&nbsp;
+                    <i className="bi bi-person-plus"/>&nbsp;
                     Registrar
                 </Button>}
 

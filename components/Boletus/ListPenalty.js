@@ -293,7 +293,7 @@ export default function ListPenalty({ record, readOnly, active }) {
                 handleNew(null);
               }}
             >
-              <i class="bi bi-hand-thumbs-down"></i>
+              <i className="bi bi-hand-thumbs-down"></i>
             </Button>
           </div>
       </div>

@@ -12,7 +12,8 @@ export default function Combobox({
   onChange,
   url,
   displayValue,
-  valueField
+  valueField,
+  reload
 }) {
   const { token, lang } = useAppContext([]);
   const [records, setRecords] = useState(null);
@@ -62,8 +63,10 @@ export default function Combobox({
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (reload) {
+      fetchData();
+    }
+  }, [reload]);
 
   return (
     <Input

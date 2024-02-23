@@ -77,7 +77,7 @@ export default function InfoBoletus({ record, handleSubmit }) {
                             handleSubmit();
                         }}
                     >
-                        <i class="bi bi-arrow-counterclockwise"></i>
+                        <i className="bi bi-arrow-counterclockwise"></i>
                     </Button>
                 </div>
 

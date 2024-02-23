@@ -19,7 +19,8 @@ import { useAppContext } from "../../../AppContext";
 import Level from "../../Level/Level";
 import axios from "axios";
 import Swal from "sweetalert2";
-import Combobox from "../../Combobox/Combobox";
+import FederationComboBox from "../../FederationComboBox/FederationComboBox";
+import ClubComboBox from "../../ClubComboBox/ClubComboBox";
 
 
 export default function Register({ tourney, open, close, playerId }) {
@@ -80,12 +81,12 @@ export default function Register({ tourney, open, close, playerId }) {
       error: false,
       errorMessage: "La ciudad del usuario es requerida"
     },
-    federation: {
+    federation_id: {
       value: "",
       error: false,
       errorMessage: "La federación del usuario es requerida"
     },
-    club: {
+    club_id: {
       value: "",
       error: false,
       errorMessage: "El club del usuario es requerido"
@@ -182,13 +183,13 @@ export default function Register({ tourney, open, close, playerId }) {
             ...formValues["city"],
             value: data.data.city_id,
           },
-          federation: {
-            ...formValues["federation"],
-            value: data.data.federation,
+          federation_id: {
+            ...formValues["federation_id"],
+            value: data.data.federation_id,
           },
-          club: {
-            ...formValues["club"],
-            value: data.data.club,
+          club_id: {
+            ...formValues["club_id"],
+            value: data.data.club_id,
           }
 
         });
@@ -319,7 +320,17 @@ export default function Register({ tourney, open, close, playerId }) {
               value: "",
               error: false,
               errorMessage: "La ciudad del usuario es requerida"
-            }      
+            },
+            federation_id: {
+              value: "",
+              error: false,
+              errorMessage: "La federación del usuario es requerida"
+            },
+            club_id: {
+              value: "",
+              error: false,
+              errorMessage: "El club del usuario es requerido"
+            }
           })
           close();
         }
@@ -362,7 +373,6 @@ export default function Register({ tourney, open, close, playerId }) {
       });
     }
   }
-
 
   return (
     <Modal
@@ -575,45 +585,44 @@ export default function Register({ tourney, open, close, playerId }) {
           </Col>
         </FormGroup>
 
-        {formValues.federation && <FormGroup row className="ps-4 pe-4">
+        <FormGroup row className="ps-4 pe-4">
           <Label size="sm" sm={4}>
             Federación:
           </Label>
           <Col sm={8}>
             <InputGroup size="sm">
-              <Combobox 
-                name={"federation"} 
-                cmbText={"Seleccione Federación"}
-                invalid={false}
-                valueDefault={formValues.federation.value}
-                onChange={handleChange}
-                url={`${process.env.NEXT_PUBLIC_API_URL}federation/all/`}
-                displayValue="name"
-                valueField="id"
+              <FederationComboBox 
+                  name="federation_id"
+                  placeholder={"Federación"}
+                  invalid={formValues.federation_id.error}
+                  value={formValues.federation_id.value}
+                  onChange={handleChange}
+                  cmbText="Seleccione la Federación"
+                  valueDefault={formValues.federation_id.value}
               />
             </InputGroup>
           </Col>
-        </FormGroup>}
+        </FormGroup>
 
-        {formValues.federation && formValues.federation.value !== "" && <FormGroup row className="ps-4 pe-4">
+        <FormGroup row className="ps-4 pe-4">
           <Label size="sm" sm={4}>
             Club:
           </Label>
           <Col sm={8}>
             <InputGroup size="sm">
-              <Combobox 
-                name={"club"} 
-                cmbText={"Seleccione club"}
-                invalid={formValues.club.error}
-                valueDefault={formValues.club.value}
-                onChange={handleChange}
-                url={`${process.env.NEXT_PUBLIC_API_URL}club/federation/${formValues.federation.value}`}
-                displayValue="name"
-                valueField="id"
+              <ClubComboBox 
+                  name="club_id"
+                  placeholder={"Club"}
+                  invalid={formValues.club_id.error}
+                  value={formValues.club_id.value}
+                  onChange={handleChange}
+                  cmbText="Seleccione el Club"
+                  valueDefault={formValues.club_id.value}
+                  federation_id={formValues.federation_id.value}
               />
             </InputGroup>
           </Col>
-        </FormGroup>}
+        </FormGroup>
 
         <FormGroup row className="ps-4 pe-4">
           <Label size="sm" sm={4}>
@@ -664,7 +673,7 @@ export default function Register({ tourney, open, close, playerId }) {
           title={playerId==="" ? "Registrar Jugador" : "Actualizar Jugador"}
           onClick={(e)=>{handleSubmit(e)}}
         >
-          <i class="bi bi-person-check"></i>&nbsp;
+          <i className="bi bi-person-check"></i>&nbsp;
           {(playerId==="" || !playerId) ? "Registrar" : "Actualizar"}
         </Button>
       </ModalFooter>

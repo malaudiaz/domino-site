@@ -172,7 +172,7 @@ export default function Lottery({ activeRound, tourney, selected, setSelected, a
             onClick={(e)=>{handleRestart(e)}}
             className="btn btn-sm btn-primary pe-4"
         >
-          <i class="bi bi-arrow-repeat"/>&nbsp;Reiniciar
+          <i className="bi bi-arrow-repeat"/>&nbsp;Reiniciar
         </button>
       </div>
 

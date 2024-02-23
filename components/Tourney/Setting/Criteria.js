@@ -105,7 +105,7 @@ export default function Criteria({ formValues, setFormValues }) {
               </InputGroup>
             </Col>
             <Col sm={2} className="d-flex gap-1">
-              <i class="bi bi-arrow-up"></i>
+              <i className="bi bi-arrow-up"></i>
               <FormGroup switch>
                 <Input 
                   type="switch" 
@@ -116,7 +116,7 @@ export default function Criteria({ formValues, setFormValues }) {
                   id="round_ordering_dir_one" 
                   onChange={handleChange}
                 />
-                <i class="bi bi-sort-down"></i>
+                <i className="bi bi-sort-down"></i>
               </FormGroup>
             </Col>
           </FormGroup>
@@ -151,7 +151,7 @@ export default function Criteria({ formValues, setFormValues }) {
               </InputGroup>
             </Col>
             <Col sm={2} className="d-flex gap-1">
-              <i class="bi bi-sort-up-alt"></i>
+              <i className="bi bi-sort-up-alt"></i>
               <FormGroup switch>
                 <Input 
                   type="switch" 
@@ -162,7 +162,7 @@ export default function Criteria({ formValues, setFormValues }) {
                   id="round_ordering_dir_two" 
                   onChange={handleChange}
                 />
-                <i class="bi bi-sort-down"></i>
+                <i className="bi bi-sort-down"></i>
               </FormGroup>
             </Col>
           </FormGroup>
@@ -197,7 +197,7 @@ export default function Criteria({ formValues, setFormValues }) {
               </InputGroup>
             </Col>
             <Col sm={2} className="d-flex gap-1">
-              <i class="bi bi-sort-up-alt"></i>
+              <i className="bi bi-sort-up-alt"></i>
               <FormGroup switch>
                 <Input 
                   type="switch" 
@@ -208,7 +208,7 @@ export default function Criteria({ formValues, setFormValues }) {
                   id="round_ordering_dir_three" 
                   onChange={handleChange}
                 />
-                <i class="bi bi-sort-down"></i>
+                <i className="bi bi-sort-down"></i>
               </FormGroup>
             </Col>
           </FormGroup>
@@ -248,7 +248,7 @@ export default function Criteria({ formValues, setFormValues }) {
               </InputGroup>
             </Col>
             <Col sm={2} className="d-flex gap-1">
-              <i class="bi bi-sort-up-alt"></i>
+              <i className="bi bi-sort-up-alt"></i>
               <FormGroup switch>
                 <Input 
                   type="switch" 
@@ -259,7 +259,7 @@ export default function Criteria({ formValues, setFormValues }) {
                   id="event_ordering_dir_one" 
                   onChange={handleChange}
                 />
-                <i class="bi bi-sort-down"></i>
+                <i className="bi bi-sort-down"></i>
               </FormGroup>
             </Col>
           </FormGroup>
@@ -294,7 +294,7 @@ export default function Criteria({ formValues, setFormValues }) {
               </InputGroup>
             </Col>
             <Col sm={2} className="d-flex gap-1">
-              <i class="bi bi-sort-up-alt"></i>
+              <i className="bi bi-sort-up-alt"></i>
               <FormGroup switch>
                 <Input 
                   type="switch" 
@@ -305,7 +305,7 @@ export default function Criteria({ formValues, setFormValues }) {
                   id="event_ordering_dir_two" 
                   onChange={handleChange}
                 />
-                <i class="bi bi-sort-down"></i>
+                <i className="bi bi-sort-down"></i>
               </FormGroup>
             </Col>
           </FormGroup>
@@ -340,7 +340,7 @@ export default function Criteria({ formValues, setFormValues }) {
               </InputGroup>
             </Col>
             <Col sm={2} className="d-flex gap-1">
-              <i class="bi bi-sort-up-alt"></i>
+              <i className="bi bi-sort-up-alt"></i>
               <FormGroup switch>
               <Input 
                   type="switch" 
@@ -351,7 +351,7 @@ export default function Criteria({ formValues, setFormValues }) {
                   id="event_ordering_dir_three" 
                   onChange={handleChange}
                 />
-                <i class="bi bi-sort-down"></i>
+                <i className="bi bi-sort-down"></i>
               </FormGroup>
             </Col>
           </FormGroup>

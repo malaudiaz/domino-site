@@ -404,18 +404,18 @@ export default function Rounds({ tourney, readOnly }) {
             {/* { activeRound && activeRound.status_name!=="INITIADED" && */}
             {(activeRound && activeRound.status_name!=="CREATED") &&
             <Button color="primary" className="btn btn-sm" onClick={(e)=>{e.preventDefault(); printBoletus()}}>
-              <i class="bi bi-printer"></i>&nbsp;Imprimir Boletas
+              <i className="bi bi-printer"></i>&nbsp;Imprimir Boletas
             </Button>}
 
 
             { activeRound && activeRound.status_name!=="INITIADED" && activeRound.status_name !== "FINALIZED" && !readOnly && 
               <Button className="btn btn-sm btn-success" onClick={handleSubmit}>              
                 {activeRound.status_name==="CREATED" && (
-                  <><i class="bi bi-gear"></i>&nbsp;Configurar</>
+                  <><i className="bi bi-gear"></i>&nbsp;Configurar</>
                 )}
-                {activeRound.status_name==="CONFIGURATED" && (<><i class="bi bi-check-all"></i>&nbsp;Publicar</>)}
-                {activeRound.status_name==="PUBLICATED" && (<><i class="bi bi-play-circle"/>&nbsp;Iniciar</>)}
-                {activeRound.status_name==="REVIEW" && (<><i class="bi bi-door-closed"/>&nbsp;Cerrar</>)}
+                {activeRound.status_name==="CONFIGURATED" && (<><i className="bi bi-check-all"></i>&nbsp;Publicar</>)}
+                {activeRound.status_name==="PUBLICATED" && (<><i className="bi bi-play-circle"/>&nbsp;Iniciar</>)}
+                {activeRound.status_name==="REVIEW" && (<><i className="bi bi-door-closed"/>&nbsp;Cerrar</>)}
               </Button> 
             }
           </div>

@@ -380,7 +380,7 @@ export default function Boletus({
                 setOpenAbsent(true);
               }}
             >
-              <i class="bi bi-person-dash"></i>
+              <i className="bi bi-person-dash"></i>
             </Button>
             &nbsp;
             <Button
@@ -393,7 +393,7 @@ export default function Boletus({
                 setOpenNulled(true);
               }}
             >
-              <i class="bi bi-file-earmark-x"></i>
+              <i className="bi bi-file-earmark-x"></i>
             </Button>
             &nbsp;
             <Button
@@ -405,7 +405,7 @@ export default function Boletus({
                 handleClose(e);
               }}
             >
-              <i class="bi bi-clock-history"></i>
+              <i className="bi bi-clock-history"></i>
             </Button>
           </div>
         </div>
