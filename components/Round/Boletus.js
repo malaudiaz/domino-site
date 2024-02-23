@@ -215,7 +215,7 @@ export default function Boletus({
           point: ""
         });
 
-        // setReload(true);
+        setReload(true);
         setOpenAbsent(false);
         close();
 
@@ -387,7 +387,7 @@ export default function Boletus({
               color="secondary"
               size="sm"
               title="Anular Boleta"
-              disabled={record.status === "1" || readOnly}
+              disabled={readOnly}
               onClick={(e) => {
                 e.preventDefault();
                 setOpenNulled(true);
