@@ -129,35 +129,15 @@ export default function ListData({ record, readOnly, setActiveRound, active }) {
       }
       setIsNew(false);
     } else {
-      setIsNew(true);
-    }
-    setOpenData(true);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/boletus/data/${
-      isNew ? record.boletus_id : frmData.id.value
-    }`;
-
-    const body = {
-      pair: frmData.pair.value,
-      point: frmData.point.value,
-    };
-
-    try {
-      const { data } = await axios[isNew ? "post" : "put"](url, body, config);
-
-      if (data.success) {
-        if (setActiveRound) {
-          setActiveRound(data.data);
-        }
 
         setFrmData({
-          ...frmData,
+          id: {
+            value: "",
+            error: false,
+            errorMessage: "Id de la data",
+          },
           pair: {
-            value: frmData.pair.value,
+            value: "",
             error: false,
             errorMessage: "Debe seleccionar la pareja Ganadora",
           },
@@ -165,53 +145,100 @@ export default function ListData({ record, readOnly, setActiveRound, active }) {
             value: "",
             error: false,
             errorMessage: "Teclee los puntos obtenidos",
-          },
-        });
-        setReload(true);
-
-        if (boletus.pair_one.pairs_id === frmData.pair.value) {
-          if (
-            boletus.pair_one.total_point + parseInt(frmData.point.value) >=
-            boletus.number_points_to_win
-          ) {
-            setGameOver(true);
-            setOpenData(false);
           }
-        } else {
-          if (
-            boletus.pair_two.total_point + parseInt(frmData.point.value) >=
-            boletus.number_points_to_win
-          ) {
-            setGameOver(true);
-            setOpenData(false);
+        });
+
+        setIsNew(true);
+    }
+    
+    setOpenData(true);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    frmData.pair.error = frmData.pair.value === "";
+    frmData.point.error = frmData.point.value === "";
+
+    if (!frmData.pair.error && !frmData.point.error) {
+
+      const url = `${process.env.NEXT_PUBLIC_API_URL}rounds/boletus/data/${
+        isNew ? record.boletus_id : frmData.id.value
+      }`;
+
+      const body = {
+        pair: frmData.pair.value,
+        point: frmData.point.value,
+      };
+
+      try {
+        const { data } = await axios[isNew ? "post" : "put"](url, body, config);
+
+        if (data.success) {
+          if (setActiveRound) {
+            setActiveRound(data.data);
+          }
+
+          setFrmData({
+            ...frmData,
+            pair: {
+              value: frmData.pair.value,
+              error: false,
+              errorMessage: "Debe seleccionar la pareja Ganadora",
+            },
+            point: {
+              value: "",
+              error: false,
+              errorMessage: "Teclee los puntos obtenidos",
+            },
+          });
+          setReload(true);
+
+          if (boletus.pair_one.pairs_id === frmData.pair.value) {
+            if (
+              boletus.pair_one.total_point + parseInt(frmData.point.value) >=
+              boletus.number_points_to_win
+            ) {
+              setGameOver(true);
+              setOpenData(false);
+            }
+          } else {
+            if (
+              boletus.pair_two.total_point + parseInt(frmData.point.value) >=
+              boletus.number_points_to_win
+            ) {
+              setGameOver(true);
+              setOpenData(false);
+            }
           }
         }
-      }
-    } catch ({ code, message, name, request }) {
-      if (code === "ERR_NETWORK") {
-        Swal.fire({
-          title: "Guardando Data",
-          text: "Error en su red, consulte a su proveedor de servicio",
-          icon: "error",
-          showCancelButton: false,
-          allowOutsideClick: false,
-          confirmButtonColor: "#3085d6",
-          confirmButtonText: "Aceptar",
-        });
-      } else {
-        if (code === "ERR_BAD_REQUEST") {
-          const { detail } = JSON.parse(request.response);
+      } catch ({ code, message, name, request }) {
+        if (code === "ERR_NETWORK") {
           Swal.fire({
             title: "Guardando Data",
-            text: detail,
+            text: "Error en su red, consulte a su proveedor de servicio",
             icon: "error",
             showCancelButton: false,
             allowOutsideClick: false,
             confirmButtonColor: "#3085d6",
             confirmButtonText: "Aceptar",
           });
+        } else {
+          if (code === "ERR_BAD_REQUEST") {
+            const { detail } = JSON.parse(request.response);
+            Swal.fire({
+              title: "Guardando Data",
+              text: detail,
+              icon: "error",
+              showCancelButton: false,
+              allowOutsideClick: false,
+              confirmButtonColor: "#3085d6",
+              confirmButtonText: "Aceptar",
+            });
+          }
         }
       }
+
     }
   };
 

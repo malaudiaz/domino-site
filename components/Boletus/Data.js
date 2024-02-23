@@ -52,9 +52,9 @@ export default function Data({ frmData, setFrmData, openData, setOpenData, bolet
       id="new_data"
       isOpen={openData}
       size="sm"
+      centered={false}
       backdrop={"static"}
       keyboard={true}
-      centered={true}
     >
       <ModalHeader
         toggle={(e) => {

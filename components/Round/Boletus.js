@@ -215,7 +215,7 @@ export default function Boletus({
           point: ""
         });
 
-        setReload(true);
+        // setReload(true);
         setOpenAbsent(false);
         close();
 
