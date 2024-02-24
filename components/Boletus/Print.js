@@ -79,8 +79,8 @@ export default function PrintBoletus({ open, setOpen, roundId }) {
         html = html + '<tr height="20px"><td width="100px" align="center" colspan=2>';
         html = html + '<b>Ronda</b></td><td colspan=2 align="center"><b>Mesa</b></td><td colspan=2 align="center"><b>Modalidad</b></td><td colspan=2 align="center"><b>Fecha</b></td></tr>';
 
-        html = html + '<tr height="20px"><td width="100px" align="center" colspan=2>';
-        html = html + '1</td><td colspan=2 align="center">' + data.round_number + '</td><td colspan=2 align="center">' + data.modality + '</td><td colspan=2 align="center">' + data.date + '</td></tr>';
+        html = html + '<tr height="20px"><td width="100px" align="center" colspan=2>' + tables[j].round_number;
+        html = html + '</td><td colspan=2 align="center">' + tables[j].table_number + '</td><td colspan=2 align="center">' + data.modality + '</td><td colspan=2 align="center">' + data.date + '</td></tr>';
 
         html = html + '</table></br>';
 
