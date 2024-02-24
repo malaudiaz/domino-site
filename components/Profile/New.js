@@ -84,6 +84,7 @@ export default function NewProfile({ profileType, setProfileType}) {
   });
 
   useEffect(()=>{
+    // to do llamar
   },[players]);
 
   const saveProfile = async () => {
