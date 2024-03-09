@@ -7,6 +7,7 @@ import {useAppContext} from "../../AppContext";
 export default function CityComboBox({
   country_id,
   name,
+  url,
   cmbText,
   invalid,
   valueDefault,
@@ -26,12 +27,20 @@ export default function CityComboBox({
 
   useEffect(() => {
     const fetchData = async () => {
-      const url = `${
-        process.env.NEXT_PUBLIC_API_URL
-      }city?page=${0}&per_page=${0}&criteria_key=${"country_id"}&criteria_value=${country_id}`;
+
+      let service;
+
+      if (url) {
+        service = url + country_id;
+      } else {
+        service = `${
+          process.env.NEXT_PUBLIC_API_URL
+        }city?page=${0}&per_page=${0}&criteria_key=${"country_id"}&criteria_value=${country_id}`;
+      }
+
 
       try {
-        const { data } = await axios.get(url, config);
+        const { data } = await axios.get(service, config);
 
         if (data.success) {
           setRecords(data.data);

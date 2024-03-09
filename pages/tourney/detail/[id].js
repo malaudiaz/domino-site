@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { Card, CardHeader, CardBody, CardFooter, Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
+import { Card, CardHeader, CardBody, CardFooter } from "reactstrap";
 import axios from "axios";
 import Swal from "sweetalert2";
 import Image from "next/image";
@@ -9,7 +9,6 @@ import { useAppContext } from "../../../AppContext";
 import Header from "../../../components/Header/Header";
 import Footer from "../../../components/Footers/Footer";
 import { eventDate } from "../../../_functions";
-import classnames from "classnames";
 import Rounds from "../../../components/Tourney/Rounds";
 import TournerResult from "../../../components/Raiting/Tourney/Index";
 

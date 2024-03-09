@@ -150,7 +150,7 @@ export default function Tables({ tourney }) {
                             onChange={(event) => {
                                 if (event.target.files && event.target.files[0]) {
                                     const i = event.target.files[0];
-                                    if (i.type.includes("image/jpeg")) {
+                                    if (i.type.includes("image")) {
                                         saveImage(item.id, i);
                                     } else {
                                         Swal.fire({

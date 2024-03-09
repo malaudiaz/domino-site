@@ -10,7 +10,7 @@ const Sidebar = () => {
     <aside id="sidebar" className="sidebar">
 
       <ul className="sidebar-nav" id="sidebar-nav">
-        <li className="nav-item">
+        {/* <li className="nav-item">
           <Link href={"/"}>
             <a
               className={
@@ -23,9 +23,9 @@ const Sidebar = () => {
               <span>Inicio</span>
             </a>
           </Link>
-        </li>
+        </li> */}
 
-        <li className="nav-item">
+        {/* <li className="nav-item">
           <a
             className="nav-link"
             data-bs-target="#MyProfile"
@@ -61,10 +61,147 @@ const Sidebar = () => {
             }
 
           </ul>          
-        </li>
+        </li> */}
 
         {profile.type !== "USER" &&
           <>
+
+            <li className="nav-item">
+              <Link href={"/federations"}>
+                <a
+                  className={
+                    router.asPath === "/"
+                      ? "nav-link active"
+                      : "nav-link collapsed"
+                  }
+                >
+                  <i className={"bi bi-diagram-2"}></i>
+                  <span>Federaciones</span>
+                </a>
+              </Link>
+            </li>
+
+            <li className="nav-item">
+              <Link href={"/clubs"}>
+                <a
+                  className={
+                    router.asPath === "/"
+                      ? "nav-link active"
+                      : "nav-link collapsed"
+                  }
+                >
+                  <i className={"bi bi-suit-club"}></i>
+                  <span>Clubs</span>
+                </a>
+              </Link>
+            </li>
+
+            <li className="nav-item">
+              <Link href={"/federative"}>
+                <a
+                  className={
+                    router.asPath === "/"
+                      ? "nav-link active"
+                      : "nav-link collapsed"
+                  }
+                >
+                  <i className={"bi bi-person"}></i>
+                  <span>Federativos</span>
+                </a>
+              </Link>
+            </li>
+
+            <li className="nav-item">
+              <Link href={"/players"}>
+                <a
+                  className={
+                    router.asPath === "/"
+                      ? "nav-link active"
+                      : "nav-link collapsed"
+                  }
+                >
+                  <i className={"bi bi-person-fill"}></i>
+                  <span>Jugadores</span>
+                </a>
+              </Link>
+            </li>
+
+            <li className="nav-item">
+              <Link href={"/pairs"}>
+                <a
+                  className={
+                    router.asPath === "/"
+                      ? "nav-link active"
+                      : "nav-link collapsed"
+                  }
+                >
+                  <i className={"bi bi-people"}></i>
+                  <span>Parejas</span>
+                </a>
+              </Link>
+            </li>
+
+            <li className="nav-item">
+              <Link href={"/team"}>
+                <a
+                  className={
+                    router.asPath === "/"
+                      ? "nav-link active"
+                      : "nav-link collapsed"
+                  }
+                >
+                  <i className={"bi bi-microsoft-teams"}></i>
+                  <span>Equipos</span>
+                </a>
+              </Link>
+            </li>
+
+            <li className="nav-item">
+              <Link href={"/refere"}>
+                <a
+                  className={
+                    router.asPath === "/"
+                      ? "nav-link active"
+                      : "nav-link collapsed"
+                  }
+                >
+                  <i className={"bi bi-incognito"}></i>
+                  <span>Arbitros</span>
+                </a>
+              </Link>
+            </li>
+
+            <li className="nav-item">
+              <Link href={"/inscriptions"}>
+                <a
+                  className={
+                    router.asPath === "/"
+                      ? "nav-link active"
+                      : "nav-link collapsed"
+                  }
+                >
+                  <i className={"bi bi-person-lines-fill"}></i>
+                  <span>Inscripciones</span>
+                </a>
+              </Link>
+            </li>
+
+            <li className="nav-item">
+              <Link href={"/tourney"}>
+                <a
+                  className={
+                    router.asPath === "/"
+                      ? "nav-link active"
+                      : "nav-link collapsed"
+                  }
+                >
+                  <i className={"bi bi-person-lines-fill"}></i>
+                  <span>Torneos</span>
+                </a>
+              </Link>
+            </li>
+
+
             <li className="nav-item">
               <a
                 className="nav-link"

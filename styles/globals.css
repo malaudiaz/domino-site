@@ -312,7 +312,7 @@ h6 {
 
 /* Breadcrumbs */
 .breadcrumb {
-  font-size: 14px;
+  font-size: 18px;
   font-family: "Nunito", sans-serif;
   color: #899bbd;
   font-weight: 600;
@@ -1875,6 +1875,16 @@ h6 {
   color: "#012970"
 }
 
+.delete {
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  color: "#012970"
+}
+
 .edit:hover {
+  color: green;
+}
+.delete:hover {
   color: red;
 }

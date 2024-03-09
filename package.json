@@ -37,6 +37,7 @@
     "sass": "^1.57.1",
     "socket.io-client": "^4.7.2",
     "styled-components": "^6.1.6",
-    "sweetalert2": "^11.7.0"
+    "sweetalert2": "^11.6.13",
+    "use-debounce": "^6.0.0"
   }
 }
