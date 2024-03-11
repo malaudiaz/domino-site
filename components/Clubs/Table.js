@@ -117,15 +117,15 @@ export default function ClubsTable({clubs, onDelete}) {
                 <td scope="row" className="text-center">
                   {item.siglas}
                 </td>
-                <td scope="row" className="text-center">
+                <td scope="row">
                   {item.city_name}
                 </td>
-                <td scope="row" className="text-center">
-                  {item.country_name}
+                <td scope="row">
+                  {item.federation_name}
                 </td>
                 <td scope="row" className="text-center">
                   <div className="d-flex flex-row gap-3 justify-content-center">
-                    <Link href={`/federations/${item.id}/edit`}>
+                    <Link href={`/clubs/${item.id}/edit`}>
                       <a className="edit" title="Editar">
                         <i
                           className="bi bi-pencil-square"

@@ -13,13 +13,17 @@ import Combobox from "../Combobox/Combobox";
 import Upload from "../Upload";
 import { useState } from "react";
 import CityComboBox from "../City/CityComboBox";
+import { useAppContext } from "../../AppContext";
+import axios from "axios";
+import Swal from "sweetalert2";
   
 export default function ClubForm({ formFields, setFormFields }) {
   
+    const {lang, token} = useAppContext();
     const [open, setOpen] = useState(false);
+    const [image, setImage] = useState(null);
 
     const federationUrl = `${process.env.NEXT_PUBLIC_API_URL}federation/all/`;
-
     const cityUrl = `${process.env.NEXT_PUBLIC_API_URL}federation/city/`;
   
     const handleChange = (event) => {
@@ -60,23 +64,117 @@ export default function ClubForm({ formFields, setFormFields }) {
         },
       })
   
-      return formFields.name.error && formFields.countryId.error && formFields.cityId.error;
+      return formFields.name.error && formFields.countryId.error && formFields.cityId.error && formFields.acronym.error;
     }
+
+    const config = {
+      headers: {
+        "Accept-Language": lang,
+        "Content-Type": "multipart/form-data",
+        "Authorization": `Bearer ${token}`,
+      }
+    };   
+    
+    const save = async (url, method) => {
+
+      const body = new FormData();
+      body.append("logo", image);
   
+      try {
+          const { data } = await axios[method](url, body, config);
+          if (data.success) {
+            setFormFields({
+              ...formFields,
+              id: {
+                ...formFields["id"],
+                value: "",
+                error: false
+              },
+              name: {
+                ...formFields["name"],
+                value: "",
+                error: false
+              },
+              countryId: {
+                ...formFields["federationId"],
+                value: "",
+                error: false
+              },
+              cityId: {
+                ...formFields["cityId"],
+                value: "",
+                error: false
+              },
+              acronym: {
+                ...formFields["acronym"],
+                value: "",
+                error: false
+              },
+              logo: {
+                ...formFields["logo"],
+                value: "",
+                error: false
+              }      
+            });
+            Swal.fire({
+              title: formFields.id.value==="" ? "Creando Club" : "Actualizando Club",
+              text: data.detail,
+              icon: "success",
+              showCancelButton: false,
+              allowOutsideClick: false,
+              confirmButtonColor: "#3085d6",
+              confirmButtonText: "Aceptar",
+            });  
+          }
+        } catch ({code, message, name, request}) {
+          if (code === "ERR_NETWORK") {
+            Swal.fire({
+              title: formFields.id.value==="" ? "Creando Club" : "Actualizando Club",
+              text: "Error en su red, consulte a su proveedor de servicio",
+              icon: "error",
+              showCancelButton: false,
+              allowOutsideClick: false,
+              confirmButtonColor: "#3085d6",
+              confirmButtonText: "Aceptar",
+            });
+          } else {
+            if (code === "ERR_BAD_REQUEST") {
+              const {detail} = JSON.parse(request.response)
+              Swal.fire({
+                  title: formFields.id.value==="" ? "Creando Club" : "Actualizando Club",
+                  text: detail,
+                  icon: "error",
+                  showCancelButton: false,
+                  allowOutsideClick: false,
+                  confirmButtonColor: "#3085d6",
+                  confirmButtonText: "Aceptar",
+              });  
+            }
+          }
+        }
+    }
+      
+
     const handleSubmit = (event) => {
       event.preventDefault();
     
+      let url = `${process.env.NEXT_PUBLIC_API_URL}club`; 
+      let method = "post";
+  
       if (!isValid()) {
-        console.log("ok");
+        if (formFields.id.value !== "") {
+          url = url + "/" + formFields.id.value;
+          method = "put";
+        }
+        url = url + "?name=" + formFields.name.value + "&city=" + formFields.cityId.value + "&federations_id=" + formFields.federationId .value + "&siglas=" + formFields.acronym.value;
+  
+        save(url, method);
       }
     }
   
     const handleUpload = (event) => {
       event.preventDefault();
-  
-      if (!isValid()) {
-        setOpen(true);
-      }
+      setOpen(true);
     }
   
     return (
@@ -211,6 +309,8 @@ export default function ClubForm({ formFields, setFormFields }) {
           formFields={formFields} 
           setFormFields={setFormFields}
           title="Subir Logotipo"
+          image={image}
+          setImage={setImage}
         />
   
       </form>

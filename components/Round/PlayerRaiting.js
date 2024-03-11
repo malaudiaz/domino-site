@@ -53,7 +53,7 @@ export default function PlayerRaiting({ tourney, round, active }) {
                     <RoundPositions id={round.id} active={active && activeTab==="1"}/>
                 </TabPane>
                 <TabPane tabId="2">
-                    <AcumulatedPositions id={tourney.id} active={active && activeTab==="2"}/>
+                    <AcumulatedPositions id={round.id} active={active && activeTab==="2"}/>
                 </TabPane>
             </TabContent>
 

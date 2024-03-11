@@ -172,21 +172,6 @@ const Sidebar = () => {
             </li>
 
             <li className="nav-item">
-              <Link href={"/inscriptions"}>
-                <a
-                  className={
-                    router.asPath === "/"
-                      ? "nav-link active"
-                      : "nav-link collapsed"
-                  }
-                >
-                  <i className={"bi bi-person-lines-fill"}></i>
-                  <span>Inscripciones</span>
-                </a>
-              </Link>
-            </li>
-
-            <li className="nav-item">
               <Link href={"/tourney"}>
                 <a
                   className={
@@ -197,6 +182,21 @@ const Sidebar = () => {
                 >
                   <i className={"bi bi-person-lines-fill"}></i>
                   <span>Torneos</span>
+                </a>
+              </Link>
+            </li>
+
+            <li className="nav-item">
+              <Link href={"/inscriptions"}>
+                <a
+                  className={
+                    router.asPath === "/"
+                      ? "nav-link active"
+                      : "nav-link collapsed"
+                  }
+                >
+                  <i className={"bi bi-person-lines-fill"}></i>
+                  <span>Inscripciones</span>
                 </a>
               </Link>
             </li>

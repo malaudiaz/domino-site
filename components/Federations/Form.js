@@ -82,6 +82,11 @@ export default function FederationForm({ formFields, setFormFields }) {
         if (data.success) {
           setFormFields({
             ...formFields,
+            id: {
+              ...formFields["id"],
+              value: "",
+              error: false
+            },
             name: {
               ...formFields["name"],
               value: "",
