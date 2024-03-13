@@ -10,7 +10,7 @@ const Sidebar = () => {
     <aside id="sidebar" className="sidebar">
 
       <ul className="sidebar-nav" id="sidebar-nav">
-        {/* <li className="nav-item">
+        <li className="nav-item">
           <Link href={"/"}>
             <a
               className={
@@ -23,7 +23,7 @@ const Sidebar = () => {
               <span>Inicio</span>
             </a>
           </Link>
-        </li> */}
+        </li>
 
         {/* <li className="nav-item">
           <a

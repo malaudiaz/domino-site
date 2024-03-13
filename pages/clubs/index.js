@@ -9,7 +9,7 @@ import Pagination from "../../components/Pagination/Pagination";
 import Search from "../../components/Search";
 
 export default function ClubsPage() {
-  const {lang, token} = useAppContext();
+  const {profile, lang, token} = useAppContext();
   const [clubs, setClubs] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -28,7 +28,7 @@ export default function ClubsPage() {
   };
 
   const fetchData = async () => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}club?page=${page}&per_page=${rowsPerPage}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}club/${profile.id}?page=${page}&per_page=${rowsPerPage}`;
 
     if (searchField!=="") {
       url = url + `&search=${searchField}`;
@@ -83,7 +83,7 @@ export default function ClubsPage() {
   };
 
   const delItem = async (id) => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}clubs/${id}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}club/${id}`;
 
     try {
       const { data } = await axios.delete(url, config);

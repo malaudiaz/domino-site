@@ -47,7 +47,7 @@ export default function Upload({open, setOpen, formFields, setFormFields, title,
                 <div className="d-flex flex-column gap-4">
                     <h5>{formFields.name.value}</h5>
 
-                    {formFields.id.value==="" ? (
+                    {formFields.id.value==="" || formFields.logo.value === "" ? (
 
                         !createObjectURL ? 
                             <div className="col-auto p-5 text-center rounded" style={{background: "#c7c7c7"}} >
@@ -78,7 +78,7 @@ export default function Upload({open, setOpen, formFields, setFormFields, title,
                         <div className="col-auto p-5 text-center rounded" style={{background: "#c7c7c7"}} >
                             <strong>Logotipo</strong>
                         </div>
-                )}
+                    )}
 
                     <div className="d-flex flex-row gap-2 justify-content-center item-center">
                         <Label

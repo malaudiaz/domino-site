@@ -9,7 +9,7 @@ import Pagination from "../../components/Pagination/Pagination";
 import Search from "../../components/Search";
 
 export default function FederativePage() {
-  const {lang, token} = useAppContext();
+  const {profile, lang, token} = useAppContext();
   const [federatives, setFederatives] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -28,7 +28,7 @@ export default function FederativePage() {
   };
 
   const fetchData = async () => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}federative?page=${page}&per_page=${rowsPerPage}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}federative/${profile.id}?page=${page}&per_page=${rowsPerPage}`;
 
     try {
       const { data } = await axios.get(url, config);

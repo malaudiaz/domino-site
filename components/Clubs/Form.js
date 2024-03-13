@@ -19,11 +19,11 @@ import Swal from "sweetalert2";
   
 export default function ClubForm({ formFields, setFormFields }) {
   
-    const {lang, token} = useAppContext();
+    const {profile, lang, token} = useAppContext();
     const [open, setOpen] = useState(false);
     const [image, setImage] = useState(null);
 
-    const federationUrl = `${process.env.NEXT_PUBLIC_API_URL}federation/all/`;
+    const federationUrl = `${process.env.NEXT_PUBLIC_API_URL}federation/all/${profile.id}`;
     const cityUrl = `${process.env.NEXT_PUBLIC_API_URL}federation/city/`;
   
     const handleChange = (event) => {
@@ -78,8 +78,8 @@ export default function ClubForm({ formFields, setFormFields }) {
     const save = async (url, method) => {
 
       const body = new FormData();
-      body.append("logo", image);
-  
+      body.append("logo", image ? image : '');
+    
       try {
           const { data } = await axios[method](url, body, config);
           if (data.success) {
@@ -299,7 +299,7 @@ export default function ClubForm({ formFields, setFormFields }) {
           </Link>
   
           <Button className="btn btn-sm" color="primary" type="submit">
-            Crear Club
+            {formFields.id.value === "" ? "Crear" : "Actualizar"}
           </Button>
         </div>
   

@@ -75,7 +75,7 @@ export default function FederationForm({ formFields, setFormFields }) {
   const save = async (url, method) => {
 
     const body = new FormData();
-    body.append("logo", image);
+    body.append("logo", image ? image : '');
 
     try {
         const { data } = await axios[method](url, body, config);

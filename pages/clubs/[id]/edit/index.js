@@ -73,7 +73,7 @@ export default function EditClub() {
                     },
                     acronym: {
                         ...formFields["acronym"],
-                        value: data.data.acronym
+                        value: data.data.siglas
                     },
                     federationId: {
                         ...formFields["federationId"],

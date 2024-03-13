@@ -9,7 +9,7 @@ import Pagination from "../../components/Pagination/Pagination";
 import Search from "../../components/Search";
 
 export default function FederationsPage() {
-  const {lang, token} = useAppContext();
+  const {profile, lang, token} = useAppContext();
   const [federations, setFederations] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -28,7 +28,7 @@ export default function FederationsPage() {
   };
 
   const fetchData = async () => {
-    let url = `${process.env.NEXT_PUBLIC_API_URL}federation?page=${page}&per_page=${rowsPerPage}`;
+    let url = `${process.env.NEXT_PUBLIC_API_URL}federation/${profile.id}?page=${page}&per_page=${rowsPerPage}`;
 
     if (searchField!=="") {
       url = url + `&search=${searchField}`;
