@@ -16,6 +16,7 @@ import {
   export default function FederativeForm({ formFields, setFormFields }) {
   
     const [open, setOpen] = useState(false);
+    const [image, setImage] = useState(null);
   
     const handleChange = (event) => {
       const name = event.target.name;
@@ -155,10 +156,13 @@ import {
   
         <Upload 
           open={open} 
+          key={"logo"}
           setOpen={setOpen} 
           formFields={formFields} 
           setFormFields={setFormFields}
           title="Subir Avatar"
+          image={image}
+          setImage={setImage}
         />
   
       </form>

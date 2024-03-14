@@ -291,6 +291,7 @@ export default function FederationForm({ formFields, setFormFields }) {
 
       <Upload 
         open={open} 
+        field={"logo"}
         setOpen={setOpen} 
         formFields={formFields} 
         setFormFields={setFormFields}

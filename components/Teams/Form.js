@@ -13,10 +13,9 @@ import {
   import { useState } from "react";
   import Combobox from "../Combobox/Combobox";
 
-  export default function PlayerForm({ formFields, setFormFields }) {
+  export default function TeamForm({ formFields, setFormFields }) {
   
     const [open, setOpen] = useState(false);
-    const [image, setImage] = useState(null);
   
     const handleChange = (event) => {
       const name = event.target.name;
@@ -150,7 +149,7 @@ import {
           </Link>
   
           <Button className="btn btn-sm" color="primary" type="submit">
-            Crear Jugador
+            Crear Equipos
           </Button>
         </div>
   
@@ -161,8 +160,6 @@ import {
           formFields={formFields} 
           setFormFields={setFormFields}
           title="Subir Avatar"
-          image={image}
-          setImage={setImage}
         />
   
       </form>

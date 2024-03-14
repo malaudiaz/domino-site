@@ -13,7 +13,7 @@ import {
   import { useState } from "react";
   import Combobox from "../Combobox/Combobox";
 
-  export default function PlayerForm({ formFields, setFormFields }) {
+  export default function RefereeForm({ formFields, setFormFields }) {
   
     const [open, setOpen] = useState(false);
     const [image, setImage] = useState(null);
@@ -150,7 +150,7 @@ import {
           </Link>
   
           <Button className="btn btn-sm" color="primary" type="submit">
-            Crear Jugador
+            Crear Equipos
           </Button>
         </div>
   

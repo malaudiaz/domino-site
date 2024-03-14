@@ -248,7 +248,7 @@ export default function ClubForm({ formFields, setFormFields }) {
               <InputGroup size="sm">
 
                 <CityComboBox
-                  country_id={formFields.federationId.value}
+                  country_id={profile.id}
                   name="cityId"
                   url={cityUrl}
                   cmbText="Seleccione ciudad..."
@@ -305,6 +305,7 @@ export default function ClubForm({ formFields, setFormFields }) {
   
         <Upload 
           open={open} 
+          field={"logo"}
           setOpen={setOpen} 
           formFields={formFields} 
           setFormFields={setFormFields}

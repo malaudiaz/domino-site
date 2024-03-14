@@ -127,7 +127,7 @@ const Sidebar = () => {
             </li>
 
             <li className="nav-item">
-              <Link href={"/pairs"}>
+              <Link href={"/couples"}>
                 <a
                   className={
                     router.asPath === "/"
@@ -142,7 +142,7 @@ const Sidebar = () => {
             </li>
 
             <li className="nav-item">
-              <Link href={"/team"}>
+              <Link href={"/teams"}>
                 <a
                   className={
                     router.asPath === "/"
@@ -157,7 +157,7 @@ const Sidebar = () => {
             </li>
 
             <li className="nav-item">
-              <Link href={"/refere"}>
+              <Link href={"/referees"}>
                 <a
                   className={
                     router.asPath === "/"
@@ -172,7 +172,7 @@ const Sidebar = () => {
             </li>
 
             <li className="nav-item">
-              <Link href={"/tourney"}>
+              <Link href={"/tournaments"}>
                 <a
                   className={
                     router.asPath === "/"

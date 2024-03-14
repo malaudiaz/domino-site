@@ -9,8 +9,8 @@ import Pagination from "../../components/Pagination/Pagination";
 import Search from "../../components/Search";
 
 export default function CouplesPage() {
-  const {lang, token} = useAppContext();
-  const [copuples, setCouples] = useState([]);
+  const {profile, lang, token} = useAppContext();
+  const [couples, setCouples] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [total, setTotal] = useState(0);
@@ -28,14 +28,14 @@ export default function CouplesPage() {
   };
 
   const fetchData = async () => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}federation?page=${page}&per_page=${rowsPerPage}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}federation/${profile.id}?page=${page}&per_page=${rowsPerPage}`;
 
     try {
       const { data } = await axios.get(url, config);
       if (data.success) {
         setTotal(data.total);
         setTotalPages(data.total_pages);
-        setFederations(data.data);
+        setCouples(data.data);
         setReload(false);
       }
     } catch ({code, message, name, request}) {
@@ -158,7 +158,7 @@ export default function CouplesPage() {
 
         </div>
 
-        <CouplesTable copuples={copuples} onDelete={handleDelete}/>
+        <CouplesTable couples={couples} onDelete={handleDelete}/>
 
         {totalPages > 1 && (
           <div className="row">

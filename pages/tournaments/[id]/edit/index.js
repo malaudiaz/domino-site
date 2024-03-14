@@ -1,13 +1,13 @@
 import Layout from "../../../../layouts/Layout";
 import Breadcrumbs from "../../../../components/Breadcrumbs";
-import TeamForm from "../../../../components/Teams/Form";
+import TournamentForm from "../../../../components/Tournaments/Form";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useAppContext } from "../../../../AppContext";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-export default function EditTeam() {   
+export default function EditTournament() {   
     const {lang, token} = useAppContext();
     const router = useRouter();
 
@@ -22,19 +22,44 @@ export default function EditTeam() {
         name: {
             value: "",
             error: false,
-            errorMessage: 'El Nombre del club es requerido.'                  
+            errorMessage: 'El Nombre del Torneo es requerido.'                  
         },
-        acronym: {
+        modality: {
             value: "",
             error: false,
-            errorMessage: 'Las siglas que identifican el club es requerido'                  
+            errorMessage: 'Seleccione la Modalidad del Torneo'                  
         },
-        federationId: {
+        summary: {
             value: "",
             error: false,
-            errorMessage: 'Seleccione la federación del club'                  
+            errorMessage: 'Resumen del Torneo'                  
         },
-        logo: {
+        startDate: {
+            value: "",
+            error: false,
+            errorMessage: 'Fecha de inicio requerida'                  
+        },
+        rounds: {
+            value: "",
+            error: false,
+            errorMessage: 'Rondas del Torneo requerida'                  
+        },
+        inscriptionImport: {
+            value: "",
+            error: false,
+            errorMessage: 'Precio de Inscripción requerido'                  
+        },
+        cityId: {
+            value: "",
+            error: false,
+            errorMessage: 'Seleccione la ciudad sede del torneo'
+        },
+        location: {
+            value: "",
+            error: false,
+            errorMessage: 'La ubicación donde se desarrollara el torneo es requerida'
+        },
+        image: {
             value: "",
             error: false,
             errorMessage: ''                  
@@ -51,37 +76,51 @@ export default function EditTeam() {
     };
     
     const fetchData = async () => {
-        const url = `${process.env.NEXT_PUBLIC_API_URL}team/one/${id}`;
+        const url = `${process.env.NEXT_PUBLIC_API_URL}tourney/one/${id}`;
         try {
             const { data } = await axios.get(url, config);
             if (data.success) {
-                console.log(data.data.name);
-
                 setFormFields({
                     id: {
+                        ...formFields["id"],
                         value: data.data.id,
-                        error: false,
-                        errorMessage: ''                  
                     },
                     name: {
+                        ...formFields["name"],
                         value: data.data.name,
-                        error: false,
-                        errorMessage: 'El Nombre de la Federación es requerido.'                  
                     },
-                    // acronym: {
-                    //     ...formFields["acronym"],
-                    //     value: data.data.acronym
-                    // },
-                    federationId: {
-                        value: data.data.country_id,
-                        error: false,
-                        errorMessage: 'Seleccione la federación del Club'                  
+                    modality: {
+                        ...formFields["modality"],
+                        value: data.data.modality,
                     },
-                    logo: {
-                        value: data.data.logo,
-                        error: false,
-                        errorMessage: ''                  
-                    }                                
+                    summary: {
+                        ...formFields["summary"],
+                        value: data.data.summary,
+                    },
+                    startDate: {
+                        ...formFields["startDate"],
+                        value: data.data.startDate,
+                    },
+                    rounds: {
+                        ...formFields["rounds"],
+                        value: data.data.number_rounds,
+                    },
+                    cityId: {
+                        ...formFields["cityId"],
+                        value: data.data.city_id,
+                    },
+                    location: {
+                        ...formFields["location"],
+                        value: data.data.main_location,
+                    },            
+                    inscriptionImport: {
+                        ...formFields["inscriptionImport"],
+                        value: data.data.inscription_import,
+                    },
+                    image: {
+                        ...formFields["image"],
+                        value: data.data.image,
+                    }            
                 })
             }
         } catch ({code, message, name, request}) {
@@ -119,7 +158,7 @@ export default function EditTeam() {
     }, [id]);
     
     return (
-        <Layout title={"Editar Jugador"}>
+        <Layout title={"Editar Torneo"}>
 
             <div
                 className="card"
@@ -129,16 +168,16 @@ export default function EditTeam() {
 
                     <Breadcrumbs
                         breadcrumbs={[
-                            { label: 'Equipos', href: '/teams' },
+                            { label: 'Torneos', href: '/tournaments' },
                             {
-                                label: 'Editar Equipo',
-                                href: `/teams/${id}/edit`,
+                                label: 'Editar Torneo',
+                                href: `/tournaments/${id}/edit`,
                                 active: true,
                             },
                         ]}
                     />
 
-                    <TeamForm formFields={formFields} setFormFields={setFormFields}/>
+                    <TournamentForm formFields={formFields} setFormFields={setFormFields}/>
 
                 </div>
             </div>

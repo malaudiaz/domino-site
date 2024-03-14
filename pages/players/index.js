@@ -9,7 +9,7 @@ import Pagination from "../../components/Pagination/Pagination";
 import Search from "../../components/Search";
 
 export default function PlayersPage() {
-  const {lang, token} = useAppContext();
+  const {profile, lang, token} = useAppContext();
   const [players, setPlayers] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -28,7 +28,7 @@ export default function PlayersPage() {
   };
 
   const fetchData = async () => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}players?page=${page}&per_page=${rowsPerPage}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}players/${profile.id}?page=${page}&per_page=${rowsPerPage}`;
 
     try {
       const { data } = await axios.get(url, config);
@@ -41,7 +41,7 @@ export default function PlayersPage() {
     } catch ({code, message, name, request}) {
       if (code === "ERR_NETWORK") {
         Swal.fire({
-          title: "Error en la Red",
+          title: "Jugadores",
           text: "Error en su red, consulte a su proveedor de servicio",
           icon: "error",
           showCancelButton: false,
@@ -54,7 +54,7 @@ export default function PlayersPage() {
           console.log(message);
           const {detail} = JSON.parse(request.response)
           Swal.fire({
-            title: "Federaciones",
+            title: "Jugadores",
             text: detail,
             icon: "error",
             showCancelButton: false,

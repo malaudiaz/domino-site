@@ -16,7 +16,8 @@ import {
   export default function CouplesForm({ formFields, setFormFields }) {
   
     const [open, setOpen] = useState(false);
-  
+    const [image, setImage] = useState(null);
+
     const handleChange = (event) => {
       const name = event.target.name;
   
@@ -155,10 +156,13 @@ import {
   
         <Upload 
           open={open} 
+          field={"logo"}
           setOpen={setOpen} 
           formFields={formFields} 
           setFormFields={setFormFields}
           title="Subir Avatar"
+          image={image}
+          setImage={setImage}  
         />
   
       </form>

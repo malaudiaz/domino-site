@@ -2,13 +2,13 @@ import { Card, CardBody, Table } from "reactstrap";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function CouplesTable({couples, onDelete}) {
+export default function RefereeTable({judges, onDelete}) {
   return (
     <>
       <div className="d-md-none">
         <div className="grid">
-          {couples.length > 0 ? (<div className="container-events px-4">
-            {couples.map((item, idx)=>(
+          {judges.length > 0 ? (<div className="container-events px-4">
+            {judges.map((item, idx)=>(
 
               <Card key={idx} className="card-info">
                 <CardBody>
@@ -57,7 +57,7 @@ export default function CouplesTable({couples, onDelete}) {
 
             ))}
           </div>) : (<div className="container-events px-4">
-            <strong>No existen parejes definidas</strong>
+            <strong>No existen equipos definidos</strong>
           </div>)}
         </div>
       </div>
@@ -104,9 +104,9 @@ export default function CouplesTable({couples, onDelete}) {
               </th>
             </tr>
           </thead>
-          {couples.length > 0 ? (
+          {judges.length > 0 ? (
             <tbody className="bg-white">          
-              {couples.map((item, idx)=>(
+              {judges.map((item, idx)=>(
                 <tr key={idx} className="align-middle">
                   <td scope="row" className="text-center">
                     <Image
@@ -161,7 +161,7 @@ export default function CouplesTable({couples, onDelete}) {
             <tbody className="bg-white">
               <tr className="align-middle">
                 <td scope="row" colSpan={6} className="text-center">
-                  <strong>No existen parejes definidas</strong>
+                  <strong>No existen equipos definidos</strong>
                 </td>
               </tr>
             </tbody>              

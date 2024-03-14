@@ -7,7 +7,7 @@ import { useAppContext } from "../../../../AppContext";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-export default function EditFederative() {   
+export default function EditCouples() {   
     const {lang, token} = useAppContext();
     const router = useRouter();
 
