@@ -72,10 +72,10 @@ export default function FederationsPage() {
   };
 
   useEffect(() => {
-    if (reload) {
+    if (reload && profile.id) {
       fetchData();
     }
-  }, [reload]);
+  }, [reload, profile.id]);
 
   const onChangePage = (pageNumber) => {
     setPage(pageNumber);

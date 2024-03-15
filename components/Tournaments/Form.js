@@ -199,11 +199,7 @@ export default function TournamentForm({ formFields, setFormFields }) {
         } else {
           url = url + `/${profile.id}`;
         }
-        url = url + "?name=" + formFields.name.value + "&modality=" + formFields.modality.value + "&startDate=" + formFields.startDate.value + "&number_rounds=" + formFields.rounds.value + "&inscription_import=" + formFields.inscriptionImport.value + "&city_id=" + formFields.cityId.value + "&main_location=" + formFields.location.value;
-
-        if (formFields.summary.value) {
-          url + url + "&summary=" + formFields.summary.value
-        }
+        url = url + "?name=" + formFields.name.value + "&modality=" + formFields.modality.value + "&startDate=" + formFields.startDate.value + "&number_rounds=" + formFields.rounds.value + "&inscription_import=" + formFields.inscriptionImport.value + "&city_id=" + formFields.cityId.value  + "&summary=" + formFields.summary.value + "&main_location=" + formFields.location.value;
 
         save(url, method);
       }

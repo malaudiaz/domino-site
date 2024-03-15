@@ -2,65 +2,73 @@ import { Card, CardBody, Table } from "reactstrap";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function TournamentTable({tournaments, onDelete}) {
+function TournamentCard({tournaments}) {
+  return (
+    tournaments.map((item, idx)=>(
+      <Card key={idx} className="card-info">
+        <CardBody>
+          <div className="d-flex flex-row gap-2">
+            <Image
+              alt={"Poster de Publicidad"}
+              src={item.image ? item.image : "/profile/user-vector.jpg"}
+              width={100}
+              height={100}
+              quality={50}
+              priority
+              layout="intrinsic"
+              className="rounded-circle"
+            />
+            <div className="d-flex flex-column gap-2 pt-2">
+              <span>{item.name}</span>
+              <div className="d-flex flex-row gap-2">
+                <span>{item.modality} |</span>
+                <span>{item.city_name}</span>
+              </div>
+              <div className="d-flex flex-row gap-2">
+                <span>{item.main_location}</span>
+              </div>                      
+            </div>
+          </div>
+          <div className="d-flex flex-row gap-2 justify-content-between pt-2 align-item-center">
+            <strong>Precio Inscripción: {Number(Math.round(item.inscription_import + 'e' + 2) + 'e-' + 2).toFixed(2)}</strong>
+            <div className="d-flex flex-row gap-2 justify-content-end">
+              <Link href={`/tournaments/${item.id}/edit`}>
+                <a className="edit" title="Editar">
+                  <i
+                    className="bi bi-pencil-square"
+                    style={{ fontSize: "18px" }}
+                  ></i>
+                </a>
+              </Link>
+              <a
+                className="delete"
+                title="Eliminar"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onDelete(item.id);
+                }}
+              >
+                <i className="bi bi-trash" style={{ fontSize: "18px" }}></i>
+              </a>
+            </div>
+          </div>
+        </CardBody>
+      </Card>
+    ))
+  )
+}
+
+export default function TournamentTable({tournaments, onDelete, mode}) {
   return (
     <>
       <div className="d-md-none">
         <div className="grid">
+
+          
           {tournaments.length > 0 ? (<div className="container-events px-4">
-            {tournaments.map((item, idx)=>(
 
-              <Card key={idx} className="card-info">
-                <CardBody>
-                  <div className="d-flex flex-row gap-2">
-                    <Image
-                      alt={"Poster de Publicidad"}
-                      src={item.image ? item.image : "/profile/user-vector.jpg"}
-                      width={100}
-                      height={100}
-                      quality={50}
-                      priority
-                      layout="intrinsic"
-                      className="rounded-circle"
-                    />
-                    <div className="d-flex flex-column gap-2 pt-2">
-                      <span>{item.name}</span>
-                      <div className="d-flex flex-row gap-2">
-                        <span>{item.modality} |</span>
-                        <span>{item.city_name}</span>
-                      </div>
-                      <div className="d-flex flex-row gap-2">
-                        <span>{item.main_location}</span>
-                      </div>                      
-                    </div>
-                  </div>
-                  <div className="d-flex flex-row gap-2 justify-content-between pt-2 align-item-center">
-                    <strong>Precio Inscripción: {Number(Math.round(item.inscription_import + 'e' + 2) + 'e-' + 2).toFixed(2)}</strong>
-                    <div className="d-flex flex-row gap-2 justify-content-end">
-                      <Link href={`/tournaments/${item.id}/edit`}>
-                        <a className="edit" title="Editar">
-                          <i
-                            className="bi bi-pencil-square"
-                            style={{ fontSize: "18px" }}
-                          ></i>
-                        </a>
-                      </Link>
-                      <a
-                        className="delete"
-                        title="Eliminar"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          onDelete(item.id);
-                        }}
-                      >
-                        <i className="bi bi-trash" style={{ fontSize: "18px" }}></i>
-                      </a>
-                    </div>
-                  </div>
-                </CardBody>
-              </Card>
+            <TournamentCard tournaments={tournaments} />
 
-            ))}
           </div>) : (<div className="container-events px-4">
             <Card  className="card-info">
                 <CardBody className="d-flex flex-column justify-content-center">
@@ -68,11 +76,13 @@ export default function TournamentTable({tournaments, onDelete}) {
                 </CardBody>
             </Card>
           </div>)}
+
         </div>
       </div>
 
-      <div className="d-none d-md-table text-gray-900 w-100 px-4">
-        <Table bordered hover responsive size="sm" striped>
+      <div className="d-none d-md-table text-gray-900 w-100 px-4 py-2">
+        {mode==="Table" && 
+          <Table bordered hover responsive size="sm" striped>
           <thead className="rounded-lg text-left text-sm font-normal">
             <tr>
               <th
@@ -184,7 +194,15 @@ export default function TournamentTable({tournaments, onDelete}) {
               </tr>
             </tbody>              
           )}
-        </Table>
+          </Table>
+        }
+        {mode==="Grid" &&
+          <div className="d-grid pt-3">
+            <div className="container-events">
+              <TournamentCard tournaments={tournaments} />
+            </div>
+          </div>
+        }
       </div>
     </>
   );
