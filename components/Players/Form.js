@@ -156,7 +156,9 @@ import {
   
         <Upload 
           open={open} 
-          key={"logo"}
+          fieldId={"profileId"}
+          fieldTitle={"username"}
+          fieldMedia={"photo"}
           setOpen={setOpen} 
           formFields={formFields} 
           setFormFields={setFormFields}

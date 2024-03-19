@@ -1,20 +1,20 @@
 import Layout from "../../../../layouts/Layout";
 import Breadcrumbs from "../../../../components/Breadcrumbs";
-import FederativeForm from "../../../../components/Federative/Form";
+import UserForm from "../../../../components/Users/Form";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useAppContext } from "../../../../AppContext";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-export default function EditFederative() {   
+export default function EditUser() {   
     const {lang, token} = useAppContext();
     const router = useRouter();
 
     const id = router.query.id;
 
     const [formFields, setFormFields] = useState({
-        profileId: {
+        id: {
             value: "",
             error: false,
             errorMessage: ''                  
@@ -24,35 +24,60 @@ export default function EditFederative() {
             error: false,
             errorMessage: 'El Nombre de usuario es requerido.'                  
         },
-        firstName: {
+        first_name: {
             value: "",
             error: false,
             errorMessage: 'El nombre de pila es requerido'                  
         },
-        lastName: {
+        last_name: {
             value: "",
             error: false,
             errorMessage: ''                  
+        },
+        sex: {
+            value: "",
+            error: false,
+            errorMessage: ''                  
+        },
+        birthdate: {
+            value: "",
+            error: false,
+            errorMessage: ''                  
+        },
+        alias: {
+            value: "",
+            error: false,
+            errorMessage: ''                  
+        },
+        job: {
+            value: "",
+            error: false,
+            errorMessage: ''                  
+        },
+        city_id: {
+            value: "",
+            error: false,
+            errorMessage: 'La Ciudad es requerida'                  
         },
         email: {
             value: "",
             error: false,
             errorMessage: ''                  
         },
-        countryId: {
-            value: "",
-            error: false,
-            errorMessage: 'El país de origen es requerido'                  
-        },
-        cityId: {
-            value: "",
-            error: false,
-            errorMessage: 'La Ciudad es requerida'                  
-        },
-        photo: {
+        phone: {
             value: "",
             error: false,
             errorMessage: ''                  
+        },
+        image: {
+            value: "",
+            error: false,
+            errorMessage: ''                  
+        },
+        receive_notifications: {
+            value: false,
+            error: false,
+            errorMessage: ''
         }
     });
 
@@ -66,42 +91,62 @@ export default function EditFederative() {
     };
     
     const fetchData = async () => {
-        const url = `${process.env.NEXT_PUBLIC_API_URL}profile/generic/eventadmon/${id}`;
+        const url = `${process.env.NEXT_PUBLIC_API_URL}users/${id}`;
         try {
             const { data } = await axios.get(url, config);
             if (data.success) {
                 setFormFields({
-                    profileId: {
-                        ...formFields["profileId"],
+                    id: {
+                        ...formFields["id"],
                         value: data.data.id,
                     },
                     username: {
                         ...formFields["username"],
                         value: data.data.username,
                     },
-                    firstName: {
-                        ...formFields["firstName"],
+                    first_name: {
+                        ...formFields["first_name"],
                         value: data.data.first_name,
                     },
-                    lastName: {
-                        ...formFields["lastName"],
+                    last_name: {
+                        ...formFields["last_name"],
                         value: data.data.last_name,
                     },
+                    sex: {
+                        ...formFields["sex"],
+                        value: data.data.sex,
+                    },
+                    birthdate: {
+                        ...formFields["birthdate"],
+                        value: data.data.birthdate,
+                    },
+                    alias: {
+                        ...formFields["alias"],
+                        value: data.data.alias,
+                    },
+                    job: {
+                        ...formFields["job"],
+                        value: data.data.job,
+                    },
+                    city_id: {
+                        ...formFields["city_id"],
+                        value: data.data.city_id,
+                    },          
                     email: {
                         ...formFields["email"],
                         value: data.data.email,
                     },
-                    countryId: {
-                        ...formFields["countryId"],
-                        value: data.data.country_id,
+                    phone: {
+                        ...formFields["phone"],
+                        value: data.data.phone,
                     },
-                    cityId: {
-                        ...formFields["cityId"],
-                        value: data.data.city_id,
+                    image: {
+                        ...formFields["image"],
+                        value: data.data.image,
                     },
-                    photo: {
-                        ...formFields["photo"],
-                        value: data.data.photo,
+                    receive_notifications: {
+                        ...formFields["receive_notifications"],
+                        value: data.data.receive_notifications,
                     }
                 })
             }
@@ -150,16 +195,16 @@ export default function EditFederative() {
 
                     <Breadcrumbs
                         breadcrumbs={[
-                            { label: 'Federativos', href: '/federative' },
+                            { label: 'Usuarios', href: '/users' },
                             {
-                                label: 'Editar Federativo',
-                                href: `/federative/${id}/edit`,
+                                label: 'Editar Usuario',
+                                href: `/users/${id}/edit`,
                                 active: true,
                             },
                         ]}
                     />
 
-                    <FederativeForm formFields={formFields} setFormFields={setFormFields}/>
+                    <UserForm formFields={formFields} setFormFields={setFormFields}/>
 
                 </div>
             </div>

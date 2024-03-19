@@ -67,6 +67,22 @@ const Sidebar = () => {
           <>
 
             <li className="nav-item">
+              <Link href={"/users"}>
+                <a
+                  className={
+                    router.asPath === "/"
+                      ? "nav-link active"
+                      : "nav-link collapsed"
+                  }
+                >
+                  <i className={"bi bi-diagram-2"}></i>
+                  <span>Usuarios</span>
+                </a>
+              </Link>
+            </li>
+
+
+            <li className="nav-item">
               <Link href={"/federations"}>
                 <a
                   className={

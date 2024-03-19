@@ -289,17 +289,19 @@ export default function FederationForm({ formFields, setFormFields }) {
         </Button>
       </div>
 
-      <Upload 
-        open={open} 
-        field={"logo"}
-        setOpen={setOpen} 
-        formFields={formFields} 
-        setFormFields={setFormFields}
-        title="Subir Logotipo"
-        image={image}
-        setImage={setImage}
-      />
 
+      <Upload 
+          open={open} 
+          fieldId={"id"}
+          fieldTitle={"name"}
+          fieldMedia={"logo"}
+          setOpen={setOpen} 
+          formFields={formFields} 
+          setFormFields={setFormFields}
+          title="Subir Logotipo"
+          image={image}
+          setImage={setImage}
+      />
     </form>
   );
 }

@@ -161,7 +161,7 @@ export default function TournamentTable({tournaments, onDelete, mode}) {
                     {Number(Math.round(item.inscription_import + 'e' + 2) + 'e-' + 2).toFixed(2)}
                   </td>
                   <td scope="row" className="text-center">
-                    <div className="d-flex flex-row gap-2 justify-content-center">
+                    <div className="d-flex flex-row gap-3 justify-content-center">
                       <Link href={`/tournaments/${item.id}/edit`}>
                         <a className="edit" title="Editar">
                           <i

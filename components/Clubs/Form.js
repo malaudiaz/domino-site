@@ -305,7 +305,9 @@ export default function ClubForm({ formFields, setFormFields }) {
   
         <Upload 
           open={open} 
-          field={"logo"}
+          fieldId={"id"}
+          fieldTitle={"name"}
+          fieldMedia={"logo"}
           setOpen={setOpen} 
           formFields={formFields} 
           setFormFields={setFormFields}
@@ -314,7 +316,7 @@ export default function ClubForm({ formFields, setFormFields }) {
           setImage={setImage}
         />
   
-      </form>
+     </form>
     );
   }
   

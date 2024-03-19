@@ -1,4 +1,4 @@
-import FederativeTable from "../../components/Federative/Table";
+import UsersTable from "../../components/Users/Table";
 import Layout from "../../layouts/Layout";
 import Link from "next/link";
 import { useAppContext } from "../../AppContext";
@@ -8,9 +8,9 @@ import Swal from "sweetalert2";
 import Pagination from "../../components/Pagination/Pagination";
 import Search from "../../components/Search";
 
-export default function FederativePage() {
+export default function UsersPage() {
   const {profile, lang, token} = useAppContext();
-  const [federatives, setFederatives] = useState([]);
+  const [users, setUsers] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [total, setTotal] = useState(0);
@@ -29,7 +29,7 @@ export default function FederativePage() {
   };
 
   const fetchData = async () => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}profile/eventadmon/${profile.id}?page=${page}&per_page=${rowsPerPage}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}users?page=${page}&per_page=${rowsPerPage}`;
 
     if (searchField!=="") {
       url = url + `&search=${searchField}`;
@@ -40,13 +40,13 @@ export default function FederativePage() {
       if (data.success) {
         setTotal(data.total);
         setTotalPages(data.total_pages);
-        setFederatives(data.data);
+        setUsers(data.data);
         setReload(false);
       }
     } catch ({code, message, name, request}) {
       if (code === "ERR_NETWORK") {
         Swal.fire({
-          title: "Cargando Federativos",
+          title: "Cargando Usuarios",
           text: "Error en su red, consulte a su proveedor de servicio",
           icon: "error",
           showCancelButton: false,
@@ -56,10 +56,9 @@ export default function FederativePage() {
         });
       } else {
         if (code === "ERR_BAD_REQUEST") {
-          console.log(message);
           const {detail} = JSON.parse(request.response)
           Swal.fire({
-            title: "Cargando Federativos",
+            title: "Cargando Usuarios",
             text: detail,
             icon: "error",
             showCancelButton: false,
@@ -73,7 +72,7 @@ export default function FederativePage() {
   };
 
   useEffect(() => {
-    if (reload && profile.id) {
+    if (reload) {
       fetchData();
     }
   }, [searchField, reload, profile.id]);
@@ -84,7 +83,7 @@ export default function FederativePage() {
   };
 
   const delItem = async (id) => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}federative/${id}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}users/${id}`;
 
     try {
       const { data } = await axios.delete(url, config);
@@ -95,7 +94,7 @@ export default function FederativePage() {
     } catch ({ code, message, name, request }) {
       if (code === "ERR_NETWORK") {
         Swal.fire({
-          title: "Eliminado Federativo",
+          title: "Eliminado Usuario",
           text: "Error en su red, consulte a su proveedor de servicio",
           icon: "error",
           showCancelButton: false,
@@ -107,7 +106,7 @@ export default function FederativePage() {
         if (code === "ERR_BAD_REQUEST") {
           const { detail } = JSON.parse(request.response);
           Swal.fire({
-            title: "Eliminado Federativo",
+            title: "Eliminado Usuario",
             text: detail,
             icon: "error",
             showCancelButton: false,
@@ -122,8 +121,8 @@ export default function FederativePage() {
 
   const handleDelete = (id) => {
     Swal.fire({
-      title: "¿ Eliminar Federativo ?",
-      text: "¿ Deseas eliminar éste Federativo ?",
+      title: "¿ Eliminar Usuario ?",
+      text: "¿ Deseas eliminar éste Usuario ?",
       icon: "question",
       showCancelButton: true,
       cancelButtonText: "No",
@@ -147,21 +146,21 @@ export default function FederativePage() {
   }
 
   return (
-    <Layout title={"Federativos"}>
+    <Layout title={"Usuarios"}>
       <div
         className="card"
         style={{ border: "1px solid", borderColor: "#c7c7c7" }}
       >
         <div className="d-flex flex-row justify-content-between align-items-center py-3 px-4">
           <h1 style={{ fontSize: "24px", fontWeight: "600", color: "#012970" }}>
-            Federativos
+            Usuarios
           </h1>
           <div className="d-flex flex-row gap-3 mx-4">
             {mode==="Table" ? (
-            <a onClick={handleMode} style={{fontSize: "18px", cursor: "pointer"}}>
+            <a title="Postal" onClick={handleMode} style={{fontSize: "18px", cursor: "pointer"}}>
               <i className="bi bi-grid"></i>
             </a>) : (
-            <a onClick={handleMode} style={{fontSize: "18px", cursor: "pointer"}}>
+            <a title="Tabla" onClick={handleMode} style={{fontSize: "18px", cursor: "pointer"}}>
               <i className="bi bi-table"></i>
             </a>)}
           </div>
@@ -173,15 +172,15 @@ export default function FederativePage() {
 
           <Search field={searchField} setField={handleSearch} />
 
-          <Link href="/federative/create" >
+          <Link href="/users/create" >
             <a className="btn btn-primary btn-sm">
-              <i className="bi bi-plus-lg"></i> Crear Federativo
+              <i className="bi bi-plus-lg"></i> Crear Usuario
             </a>
           </Link>
 
         </div>
 
-        <FederativeTable federatives={federatives} onDelete={handleDelete} mode={mode}/>
+        <UsersTable users={users} onDelete={handleDelete} mode={mode}/>
 
         {totalPages > 1 && (
           <div className="row">
@@ -196,7 +195,6 @@ export default function FederativePage() {
             />
           </div>
         )}
-
 
       </div>
     </Layout>

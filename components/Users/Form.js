@@ -16,7 +16,7 @@ import {
   import axios from "axios";
   import Swal from "sweetalert2";
 
-  export default function FederativeForm({ formFields, setFormFields }) {
+  export default function UserForm({ formFields, setFormFields }) {
   
     const {profile, lang, token} = useAppContext();
     const [open, setOpen] = useState(false);
@@ -48,21 +48,17 @@ import {
           ...formFields["username"],
           error: formFields.username.value === ""
         },
-        firstName: {
-          ...formFields["firstName"],
-          error: formFields.firstName.value === ""
+        first_name: {
+          ...formFields["first_name"],
+          error: formFields.first_name.value === ""
         },
-        countryId: {
-          ...formFields["countryId"],
-          error: formFields.countryId.value === ""
-        },
-        cityId: {
-          ...formFields["cityId"],
-          error: formFields.cityId.value === ""
+        city_id: {
+          ...formFields["city_id"],
+          error: formFields.city_id.value === ""
         },
       })
   
-      return formFields.username.error && formFields.firstName.error && formFields.countryId.error && formFields.cityId.error;
+      return formFields.username.error && formFields.first_name.error && formFields.city_id.error;
     }
   
     const config = {
@@ -82,8 +78,8 @@ import {
           if (data.success) {
             setFormFields({
               ...formFields,
-              profileId: {
-                ...formFields["profileId"],
+              id: {
+                ...formFields["id"],
                 value: "",
                 error: false,
               },
@@ -92,13 +88,33 @@ import {
                 value: "",
                 error: false,
               },
-              firstName: {
-                ...formFields["firstName"],
+              first_name: {
+                ...formFields["first_name"],
                 value: "",
                 error: false,
               },
-              lastName: {
-                ...formFields["lastName"],
+              last_name: {
+                ...formFields["last_name"],
+                value: "",
+                error: false,
+              },
+              sex: {
+                ...formFields["sex"],
+                value: "",
+                error: false,
+              },
+              birthdate: {
+                ...formFields["birthdate"],
+                value: "",
+                error: false,
+              },
+              alias: {
+                ...formFields["alias"],
+                value: "",
+                error: false,
+              },
+              job: {
+                ...formFields["job"],
                 value: "",
                 error: false,
               },
@@ -107,24 +123,29 @@ import {
                 value: "",
                 error: false,
               },
-              countryId: {
-                ...formFields["countryId"],
+              phone: {
+                ...formFields["phone"],
                 value: "",
                 error: false,
               },
-              cityId: {
-                ...formFields["cityId"],
+              city_id: {
+                ...formFields["city_id"],
                 value: "",
                 error: false,
               },
-              photo: {
-                ...formFields["photo"],
+              image: {
+                ...formFields["image"],
+                value: "",
+                error: false,
+              },
+              receive_notifications: {
+                ...formFields["receive_notifications"],
                 value: "",
                 error: false,
               }
             });
             Swal.fire({
-              title: formFields.id.value==="" ? "Creando Federación" : "Actualizando Federación",
+              title: formFields.id.value==="" ? "Creando Usuario" : "Actualizando Usuario",
               text: data.detail,
               icon: "success",
               showCancelButton: false,
@@ -136,7 +157,7 @@ import {
         } catch ({code, message, name, request}) {
           if (code === "ERR_NETWORK") {
             Swal.fire({
-              title: formFields.id.value==="" ? "Creando Federación" : "Actualizando Federación",
+              title: formFields.id.value==="" ? "Creando Usuario" : "Actualizando Usuario",
               text: "Error en su red, consulte a su proveedor de servicio",
               icon: "error",
               showCancelButton: false,
@@ -148,7 +169,7 @@ import {
             if (code === "ERR_BAD_REQUEST") {
               const {detail} = JSON.parse(request.response)
               Swal.fire({
-                  title: formFields.id.value==="" ? "Creando Federación" : "Actualizando Federación",
+                  title: formFields.id.value==="" ? "Creando Usuario" : "Actualizando Usuario",
                   text: detail,
                   icon: "error",
                   showCancelButton: false,
@@ -164,17 +185,23 @@ import {
     const handleSubmit = (event) => {
       event.preventDefault(); 
 
-      let url = `${process.env.NEXT_PUBLIC_API_URL}profile/generic/eventadmon/`; 
+      let url = `${process.env.NEXT_PUBLIC_API_URL}users`; 
       let method = "post";
   
       if (!isValid()) {
-        if (formFields.profileId.value !== "") {
-          url = url + formFields.profileId.value;
+        if (formFields.id.value !== "") {
+          url = url + "/" + formFields.id.value;
           method = "put";
-        } else {
-          url = url + profile.id;
         }
-        url = url + "?username=" + formFields.username.value + "&first_name=" + formFields.firstName.value + "&last_name=" + formFields.lastName.value + "&email=" + formFields.email.value + "&city_id=" + formFields.cityId.value;
+        url = url + "?username=" + formFields.username.value;       
+
+        for (let key in formFields) {
+            if (key !== "username" && key !== "id") {
+                if (formFields[key].value) {
+                    url = url + "&" + key + "=" + formFields[key].value;
+                }            
+            }
+        }
   
         save(url, method);
       }
@@ -213,14 +240,14 @@ import {
               <InputGroup size="sm">
                 <Input
                   autoComplete="off"
-                  name="firstName"
-                  id="firstName"
+                  name="first_name"
+                  id="first_name"
                   placeholder={"Nombre de Pila"}
-                  value={formFields.firstName.value}
-                  invalid={formFields.firstName.error}
+                  value={formFields.first_name.value}
+                  invalid={formFields.first_name.error}
                   onChange={handleChange}
                 />
-                <FormFeedback>{formFields.firstName.errorMessage}</FormFeedback>
+                <FormFeedback>{formFields.first_name.errorMessage}</FormFeedback>
               </InputGroup>
             </FormGroup>
 
@@ -231,17 +258,16 @@ import {
               <InputGroup size="sm">
                 <Input
                   autoComplete="off"
-                  name="lastName"
-                  id="lastName"
+                  name="last_name"
+                  id="last_name"
                   placeholder={"Apellidos"}
-                  value={formFields.lastName.value}
-                  invalid={formFields.lastName.error}
+                  value={formFields.last_name.value}
+                  invalid={formFields.last_name.error}
                   onChange={handleChange}
                 />
-                <FormFeedback>{formFields.lastName.errorMessage}</FormFeedback>
+                <FormFeedback>{formFields.last_name.errorMessage}</FormFeedback>
               </InputGroup>
             </FormGroup>
-
 
             <FormGroup>
               <Label size="sm" sm={4}>
@@ -261,7 +287,109 @@ import {
                     }
                   }}
                 />
-                <FormFeedback>{formFields.lastName.errorMessage}</FormFeedback>
+                <FormFeedback>{formFields.email.errorMessage}</FormFeedback>
+              </InputGroup>
+            </FormGroup>
+
+            <FormGroup>
+              <Label size="sm" sm={4}>
+                <b>Teléfono</b>
+              </Label>
+              <InputGroup size="sm">
+                <Input
+                    type="text"
+                    autoComplete="off"
+                    name="phone"
+                    id="phone"
+                    maxLength={12}
+                    invalid={formFields.phone.error}
+                    onChange={handleChange}
+                    placeholder={"Teléfono"}
+                    value={formFields.phone.value}
+                    onKeyDown={(event) => {
+                        if (!/[0-9]/.test(event.key)) {
+                            event.preventDefault();
+                        }
+                    }}
+                />
+                <FormFeedback>{formFields.phone.errorMessage}</FormFeedback>
+              </InputGroup>
+            </FormGroup>
+
+            <FormGroup>
+              <Label size="sm" sm={4}>
+                <b>Sexo</b>
+              </Label>
+              <InputGroup size="sm">
+                <Input
+                    id="sex"
+                    name="sex"
+                    type="select"
+                    invalid={formFields.sex.error}
+                    value={formFields.sex.value}
+                    onChange={handleChange}
+                >
+                    <option value="">Seleccione sexo...</option>
+                    <option value="M">Másculino</option>
+                    <option value="F">Femenino</option>
+                </Input>
+                <FormFeedback>{formFields.sex.errorMessage}</FormFeedback>
+              </InputGroup>
+            </FormGroup>
+
+            <FormGroup>
+              <Label size="sm" sm={4}>
+                <b>Fecha de Nacimiento</b>
+              </Label>
+              <InputGroup size="sm">
+                <Input
+                    type="date"
+                    id="birthdate"
+                    name="birthdate"
+                    placeholder={"Fecha de Nacimiento"}
+                    value={formFields.birthdate.value}
+                    invalid={formFields.birthdate.error}
+                    onChange={handleChange}
+                />
+                <FormFeedback>{formFields.birthdate.errorMessage}</FormFeedback>
+              </InputGroup>
+            </FormGroup>
+
+            <FormGroup>
+              <Label size="sm" sm={4}>
+                <b>Alias</b>
+              </Label>
+              <InputGroup size="sm">
+                <Input
+                    type="text"
+                    autoComplete="off"
+                    name="alias"
+                    id="alias"
+                    invalid={formFields.alias.error}
+                    onChange={handleChange}
+                    placeholder={"Alias"}
+                    value={formFields.alias.value}
+                />
+                <FormFeedback>{formFields.alias.errorMessage}</FormFeedback>
+              </InputGroup>
+            </FormGroup>
+
+            <FormGroup>
+              <Label size="sm" sm={4}>
+                <b>Ocupación</b>
+              </Label>
+              <InputGroup size="sm">
+                <Input
+                    type="text"
+                    autoComplete="off"
+                    name="job"
+                    id="job"
+                    invalid={formFields.job.error}
+                    onChange={handleChange}
+                    placeholder={"Ocupación"}
+                    value={formFields.job.value}
+                />
+                <FormFeedback>{formFields.job.errorMessage}</FormFeedback>
               </InputGroup>
             </FormGroup>
 
@@ -272,16 +400,16 @@ import {
               <InputGroup size="sm">
                 <CityComboBox
                   country_id={profile.id}
-                  name="cityId"
+                  name="city_id"
                   url={cityUrl}
                   cmbText="Seleccione ciudad..."
-                  invalid={formFields.cityId.error}
-                  value={formFields.cityId.value}
-                  valueDefault={formFields.cityId.value}
+                  invalid={formFields.city_id.error}
+                  value={formFields.city_id.value}
+                  valueDefault={formFields.city_id.value}
                   autoComplete="off"
                   onChange={handleChange}
                 />
-                <FormFeedback>{formFields.cityId.errorMessage}</FormFeedback>
+                <FormFeedback>{formFields.city_id.errorMessage}</FormFeedback>
               </InputGroup>
             </FormGroup>
 
@@ -294,7 +422,7 @@ import {
                     type="text"
                     name="logo"
                     placeholder="Avatar"
-                    value={formFields.photo.value}
+                    value={formFields.image.value}
                     readOnly
                 />
                 <InputGroupText>
@@ -312,22 +440,22 @@ import {
   
         </div>
         <div className="mt-4 d-flex justify-content-end gap-2 mb-2">
-          <Link href="/federative" >
+          <Link href="/users" >
               <a className="btn btn-secondary btn-sm">
                 Cancelar
               </a>
           </Link>
   
           <Button className="btn btn-sm" color="primary" type="submit">
-            {formFields.profileId.value==="" ? "Crear Federativo" : "Actualizar"}
+            {formFields.id.value==="" ? "Crear Usuario" : "Actualizar"}
           </Button>
         </div>
   
         <Upload 
           open={open} 
-          fieldId={"profileId"}
+          fieldId={"id"}
           fieldTitle={"username"}
-          fieldMedia={"photo"}
+          fieldMedia={"image"}
           setOpen={setOpen} 
           formFields={formFields} 
           setFormFields={setFormFields}

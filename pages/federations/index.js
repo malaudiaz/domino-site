@@ -16,6 +16,7 @@ export default function FederationsPage() {
   const [total, setTotal] = useState(0);
   const [searchField, setSearchField] = useState("");
   const [reload, setReload] = useState(true);
+  const [mode, setMode] = useState("Table");
   const rowsPerPage = 12;
 
   const config = {
@@ -141,16 +142,30 @@ export default function FederationsPage() {
     setReload(true);
   }
 
+  const handleMode = () => {
+    setMode(mode==="Table" ? "Grid" : "Table");
+  }
+
   return (
     <Layout title={"Federaciones"}>
       <div
         className="card"
         style={{ border: "1px solid", borderColor: "#c7c7c7" }}
       >
-        <div className="row pt-3 px-4">
+        <div className="d-flex flex-row justify-content-between align-items-center py-3 px-4">
           <h1 style={{ fontSize: "24px", fontWeight: "600", color: "#012970" }}>
             Federaciones
           </h1>
+
+          <div className="d-flex flex-row gap-3 mx-4">
+            {mode==="Table" ? (
+            <a title="Postal" onClick={handleMode} style={{fontSize: "18px", cursor: "pointer"}}>
+              <i className="bi bi-grid"></i>
+            </a>) : (
+            <a title="Tabla" onClick={handleMode} style={{fontSize: "18px", cursor: "pointer"}}>
+              <i className="bi bi-table"></i>
+            </a>)}
+          </div>
         </div>
 
         <div
@@ -167,7 +182,7 @@ export default function FederationsPage() {
 
         </div>
 
-        <FederationTable federations={federations} onDelete={handleDelete}/>
+        <FederationTable federations={federations} onDelete={handleDelete} mode={mode}/>
 
         {totalPages > 1 && (
           <div className="row">

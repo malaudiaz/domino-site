@@ -12,7 +12,7 @@ import Image from "next/image";
 import Swal from "sweetalert2";
 import { useState } from "react";
 
-export default function Upload({open, field, setOpen, formFields, setFormFields, title, image, setImage}) {
+export default function Upload({open, fieldId, fieldTitle, fieldMedia, setOpen, formFields, setFormFields, title, image, setImage}) {
     const [createObjectURL, setCreateObjectURL] = useState(null);
 
     const toggle = () => {
@@ -23,8 +23,8 @@ export default function Upload({open, field, setOpen, formFields, setFormFields,
 
         setFormFields({
             ...formFields,
-            [field]: {
-                ...formFields[field],
+            [fieldMedia]: {
+                ...formFields[fieldMedia],
                 value: image.name,
             }
         })
@@ -45,16 +45,16 @@ export default function Upload({open, field, setOpen, formFields, setFormFields,
             </ModalHeader>
             <ModalBody>
                 <div className="d-flex flex-column gap-4">
-                    <h5>{formFields.name.value}</h5>
+                    <h5>{formFields[fieldTitle].value}</h5>
 
-                    {formFields.id.value==="" || formFields[field].value === "" ? (
+                    {formFields[fieldId].value==="" || formFields[fieldMedia].value === "" ? (
 
                         !createObjectURL ? 
                             <div className="col-auto p-5 text-center rounded" style={{background: "#c7c7c7"}} >
                                 <strong>Logotipo</strong>
                             </div> :
                             <Image
-                                src={createObjectURL ? createObjectURL : formFields[field].value}
+                                src={createObjectURL ? createObjectURL : formFields[fieldMedia].value}
                                 alt="Logotipo"
                                 width={100}
                                 height={200}
@@ -64,9 +64,9 @@ export default function Upload({open, field, setOpen, formFields, setFormFields,
                                 className="rounded-circle"
                             />
                     ) : (
-                        formFields[field].value ?
+                        formFields[fieldMedia].value ?
                         <Image
-                            src={createObjectURL ? createObjectURL : formFields[field].value}
+                            src={createObjectURL ? createObjectURL : formFields[fieldMedia].value}
                             alt="Logotipo"
                             width={100}
                             height={200}
@@ -120,8 +120,8 @@ export default function Upload({open, field, setOpen, formFields, setFormFields,
                                 setImage(null);
                                 setFormFields({
                                     ...formFields,
-                                    [field]: {
-                                        ...formFields[field],
+                                    [fieldMedia]: {
+                                        ...formFields[fieldMedia],
                                         value: "",
                                     }                        
                                 })    

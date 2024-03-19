@@ -145,7 +145,7 @@ export default function CouplesPage() {
         </div>
 
         <div
-          className="d-flex flex-row flex-wrap gap-2 justify-content-between align-center px-4 pb-2"
+          className="d-flex flex-row flex-wrap gap-2 justify-content-between align-center pt-3 px-4 pb-4"
         >
 
           <Search field={searchField} setField={setSearchField} />
