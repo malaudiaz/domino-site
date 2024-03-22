@@ -2,62 +2,63 @@ import { Card, CardBody, Table } from "reactstrap";
 import Image from "next/image";
 import Link from "next/link";
 
-function FederativeCard({federatives}) {
-  return (
-    federatives.map((item, idx)=>(
-      <Card key={idx} className="card-info">
-        <CardBody>
-          <div className="d-flex flex-row gap-2">
-            <Image
-              alt={"Avatar"}
-              src={item.photo ? item.photo : "/profile/user-vector.jpg"}
-              width={50}
-              height={50}
-              quality={50}
-              priority
-              layout="intrinsic"
-              className="rounded-circle"
-            />
-            <div className="d-flex flex-column gap-2 pt-2">
-              <span>{item.name}</span>
-              <div className="d-flex flex-row gap-2">
-                <span>{item.city_name + ", " + item.country_name}</span>
-              </div>                      
-            </div>
-          </div>
-          <div className="d-flex flex-row gap-2 justify-content-end">
-            <Link href={`/federative/${item.profile_id}/edit`}>
-              <a className="edit" title="Editar">
-                <i
-                  className="bi bi-pencil-square"
-                  style={{ fontSize: "18px" }}
-                ></i>
-              </a>
-            </Link>
-            <a
-              className="delete"
-              title="Eliminar"
-              onClick={(e) => {
-                e.preventDefault();
-                onDelete(item.id);
-              }}
-            >
-              <i className="bi bi-trash" style={{ fontSize: "18px" }}></i>
-            </a>
-          </div>
-        </CardBody>
-      </Card>
-    ))
-  )
-}
-
 export default function FederativeTable({federatives, onDelete, mode}) {
+
+  const FederativeCard = () => {
+    return (
+      federatives.map((item, idx)=>(
+        <Card key={idx} className="card-info">
+          <CardBody>
+            <div className="d-flex flex-row gap-2">
+              <Image
+                alt={"Avatar"}
+                src={item.photo ? item.photo : "/profile/user-vector.jpg"}
+                width={50}
+                height={50}
+                quality={50}
+                priority
+                layout="intrinsic"
+                className="rounded-circle"
+              />
+              <div className="d-flex flex-column gap-2 pt-2">
+                <span>{item.name}</span>
+                <div className="d-flex flex-row gap-2">
+                  <span>{item.city_name + ", " + item.country_name}</span>
+                </div>                      
+              </div>
+            </div>
+            <div className="d-flex flex-row gap-2 justify-content-end">
+              <Link href={`/federative/${item.profile_id}/edit`}>
+                <a className="edit" title="Editar">
+                  <i
+                    className="bi bi-pencil-square"
+                    style={{ fontSize: "18px" }}
+                  ></i>
+                </a>
+              </Link>
+              <a
+                className="delete"
+                title="Eliminar"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onDelete(item.id);
+                }}
+              >
+                <i className="bi bi-trash" style={{ fontSize: "18px" }}></i>
+              </a>
+            </div>
+          </CardBody>
+        </Card>
+      ))
+    )
+  }
+  
   return (
     <>
       <div className="d-md-none">
         <div className="grid">
           <div className="container-events px-4">
-            <FederativeCard federatives={federatives}/>
+            <FederativeCard />
           </div>
         </div>
       </div>
@@ -157,7 +158,7 @@ export default function FederativeTable({federatives, onDelete, mode}) {
         {mode==="Grid" &&
           <div className="d-grid pt-3">
             <div className="container-events">
-              <FederativeCard federatives={federatives}/>
+              <FederativeCard />
             </div>
           </div>
         }

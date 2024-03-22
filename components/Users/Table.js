@@ -2,7 +2,9 @@ import { Card, CardBody, Table } from "reactstrap";
 import Image from "next/image";
 import Link from "next/link";
 
-function UserCard({users}) {
+export default function UsersTable({users, onDelete, mode}) {
+
+  const UserCard = () => {
     return (
         users.map((item, idx)=>(
 
@@ -53,16 +55,14 @@ function UserCard({users}) {
 
         ))
     )
-}
-  
+  };
 
-export default function UsersTable({users, onDelete, mode}) {
   return (
     <>
       <div className="d-md-none">
         <div className="grid">
           <div className="container-events px-4">
-            <UserCard users={users}/>
+            <UserCard />
           </div>
         </div>
       </div>
@@ -171,7 +171,7 @@ export default function UsersTable({users, onDelete, mode}) {
        {mode==="Grid" &&
           <div className="d-grid pt-3">
             <div className="container-events">
-              <UserCard users={users}/>
+              <UserCard />
             </div>
           </div>
        }

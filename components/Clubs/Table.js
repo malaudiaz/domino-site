@@ -2,65 +2,65 @@ import { Card, CardBody, Table } from "reactstrap";
 import Image from "next/image";
 import Link from "next/link";
 
-function ClubCard({clubs}) {
-  return (
-    clubs.map((item, idx)=>(
-      <Card key={idx} className="card-info">
-        <CardBody>
-          <div className="d-flex flex-row gap-2">
-            <Image
-              alt={"Logo Club"}
-              src={item.logo ? item.logo : "/profile/user-vector.jpg"}
-              width={50}
-              height={50}
-              quality={50}
-              priority
-              layout="intrinsic"
-              className="rounded-circle"
-            />
-            <div className="d-flex flex-column gap-2 pt-2">
-              <span>{item.name}</span>
-              <div className="d-flex flex-row gap-2">
-                <span>{item.siglas} |</span>
-                <span>{item.city_name} |</span>
-                <span>{item.country_name}</span>
+export default function ClubsTable({clubs, onDelete, mode}) {
+
+  const ClubCard = () => {
+    return (
+      clubs.map((item, idx)=>(
+        <Card key={idx} className="card-info">
+          <CardBody>
+            <div className="d-flex flex-row gap-2">
+              <Image
+                alt={"Logo Club"}
+                src={item.logo ? item.logo : "/profile/user-vector.jpg"}
+                width={50}
+                height={50}
+                quality={50}
+                priority
+                layout="intrinsic"
+                className="rounded-circle"
+              />
+              <div className="d-flex flex-column gap-2 pt-2">
+                <span>{item.name}</span>
+                <div className="d-flex flex-row gap-2">
+                  <span>{item.siglas} |</span>
+                  <span>{item.city_name} |</span>
+                  <span>{item.country_name}</span>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="d-flex flex-row gap-2 justify-content-end">
-            <Link href={`/federations/${item.id}/edit`}>
-              <a className="edit" title="Editar">
-                <i
-                  className="bi bi-pencil-square"
-                  style={{ fontSize: "18px" }}
-                ></i>
+            <div className="d-flex flex-row gap-2 justify-content-end">
+              <Link href={`/federations/${item.id}/edit`}>
+                <a className="edit" title="Editar">
+                  <i
+                    className="bi bi-pencil-square"
+                    style={{ fontSize: "18px" }}
+                  ></i>
+                </a>
+              </Link>
+              <a
+                className="delete"
+                title="Eliminar"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onDelete(item.id);
+                }}
+              >
+                <i className="bi bi-trash" style={{ fontSize: "18px" }}></i>
               </a>
-            </Link>
-            <a
-              className="delete"
-              title="Eliminar"
-              onClick={(e) => {
-                e.preventDefault();
-                onDelete(item.id);
-              }}
-            >
-              <i className="bi bi-trash" style={{ fontSize: "18px" }}></i>
-            </a>
-          </div>
-        </CardBody>
-      </Card>
-    ))
+            </div>
+          </CardBody>
+        </Card>
+      ))  
+    )
+  };
 
-  )
-}
-
-export default function ClubsTable({clubs, onDelete, mode}) {
   return (
     <>
       <div className="d-md-none">
         <div className="grid">
           <div className="container-events px-4">
-            <ClubCard clubs={clubs} />
+            <ClubCard />
           </div>
         </div>
       </div>
@@ -160,7 +160,7 @@ export default function ClubsTable({clubs, onDelete, mode}) {
         {mode==="Grid" &&
           <div className="d-grid pt-3">
             <div className="container-events">
-              <ClubCard clubs={clubs}/>
+              <ClubCard />
             </div>
           </div>
         }

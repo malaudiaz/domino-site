@@ -3,59 +3,65 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function CouplesTable({couples, onDelete}) {
+
+  const CoupleCard = () => {
+    return (
+      couples.map((item, idx)=>(
+        <Card key={idx} className="card-info">
+          <CardBody>
+            <div className="d-flex flex-row gap-2">
+              <Image
+                alt={"Avatar de la Pareja"}
+                src="/profile/user-vector.jpg"
+                width={50}
+                height={50}
+                quality={50}
+                priority
+                layout="intrinsic"
+                className="rounded-circle"
+              />
+              <div className="d-flex flex-column gap-2 pt-2">
+                <span>{item.name}</span>
+                <div className="d-flex flex-row gap-2">
+                  <span>SDF |</span>
+                  <span>{item.city_name} |</span>
+                  <span>{item.country_name}</span>
+                </div>
+              </div>
+            </div>
+            <div className="d-flex flex-row gap-2 justify-content-end">
+              <Link href={`/federations/${item.id}/edit`}>
+                <a className="edit" title="Editar">
+                  <i
+                    className="bi bi-pencil-square"
+                    style={{ fontSize: "18px" }}
+                  ></i>
+                </a>
+              </Link>
+              <a
+                className="delete"
+                title="Eliminar"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onDelete(item.id);
+                }}
+              >
+                <i className="bi bi-trash" style={{ fontSize: "18px" }}></i>
+              </a>
+            </div>
+          </CardBody>
+        </Card>
+      ))
+    )
+  };
+
+
   return (
     <>
       <div className="d-md-none">
         <div className="grid">
           {couples.length > 0 ? (<div className="container-events px-4">
-            {couples.map((item, idx)=>(
-
-              <Card key={idx} className="card-info">
-                <CardBody>
-                  <div className="d-flex flex-row gap-2">
-                    <Image
-                      alt={"Avatar de la Pareja"}
-                      src="/profile/user-vector.jpg"
-                      width={50}
-                      height={50}
-                      quality={50}
-                      priority
-                      layout="intrinsic"
-                      className="rounded-circle"
-                    />
-                    <div className="d-flex flex-column gap-2 pt-2">
-                      <span>{item.name}</span>
-                      <div className="d-flex flex-row gap-2">
-                        <span>SDF |</span>
-                        <span>{item.city_name} |</span>
-                        <span>{item.country_name}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="d-flex flex-row gap-2 justify-content-end">
-                    <Link href={`/federations/${item.id}/edit`}>
-                      <a className="edit" title="Editar">
-                        <i
-                          className="bi bi-pencil-square"
-                          style={{ fontSize: "18px" }}
-                        ></i>
-                      </a>
-                    </Link>
-                    <a
-                      className="delete"
-                      title="Eliminar"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        onDelete(item.id);
-                      }}
-                    >
-                      <i className="bi bi-trash" style={{ fontSize: "18px" }}></i>
-                    </a>
-                  </div>
-                </CardBody>
-              </Card>
-
-            ))}
+            <CoupleCard />
           </div>) : (<div className="container-events px-4">
             <strong>No existen parejes definidas</strong>
           </div>)}
