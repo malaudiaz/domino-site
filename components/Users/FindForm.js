@@ -18,7 +18,7 @@ import {
     Button
 } from "reactstrap";
 
-export default function FindForm({isOpen, setClose, displayField, valueField, formFields, setFormFields}) {
+export default function FindForm({isOpen, setClose, field, formFields, setFormFields}) {
 
     const {profile, lang, token} = useAppContext();
     const [page, setPage] = useState(1);
@@ -27,13 +27,13 @@ export default function FindForm({isOpen, setClose, displayField, valueField, fo
     const [searchField, setSearchField] = useState("");
     const [reload, setReload] = useState(true);
     const [mode, setMode] = useState("Table");
-    const [players, setPlayers] = useState([]);
+    const [users, setUsers] = useState([]);
     const [record, setRecord] = useState(null);
     const rowsPerPage = 8;
 
-    const UserCard = ({players}) => {
+    const UserCard = ({users}) => {
         return (
-            players.map((item, idx)=>(
+            users.map((item, idx)=>(
     
                 <Card key={idx} className="row-hover" onClick={(e)=>{onSelectUser(e, idx)}}>
                   <CardBody>
@@ -75,8 +75,8 @@ export default function FindForm({isOpen, setClose, displayField, valueField, fo
     };
 
     const fetchData = async () => {
-        const url = `${process.env.NEXT_PUBLIC_API_URL}profile/singleplayer/${profile.id}?page=${page}&per_page=${rowsPerPage}`;
-
+        const url = `${process.env.NEXT_PUBLIC_API_URL}users?page=${page}&per_page=${rowsPerPage}`;
+    
         if (searchField!=="") {
           url = url + `&search=${searchField}`;
         }
@@ -86,13 +86,13 @@ export default function FindForm({isOpen, setClose, displayField, valueField, fo
           if (data.success) {
             setTotal(data.total);
             setTotalPages(data.total_pages);
-            setPlayers(data.data);
+            setUsers(data.data);
             setReload(false);
           }
         } catch ({code, message, name, request}) {
           if (code === "ERR_NETWORK") {
             Swal.fire({
-              title: "Cargando Jugadores",
+              title: "Cargando Usuarios",
               text: "Error en su red, consulte a su proveedor de servicio",
               icon: "error",
               showCancelButton: false,
@@ -104,7 +104,7 @@ export default function FindForm({isOpen, setClose, displayField, valueField, fo
             if (code === "ERR_BAD_REQUEST") {
               const {detail} = JSON.parse(request.response)
               Swal.fire({
-                title: "Cargando Jugadores",
+                title: "Cargando Usuarios",
                 text: detail,
                 icon: "error",
                 showCancelButton: false,
@@ -142,15 +142,15 @@ export default function FindForm({isOpen, setClose, displayField, valueField, fo
         setReload(true);
     };    
 
-    const onSelect = (e, idx) => {
+    const onSelectUser = (e, idx) => {
         e.preventDefault();
         if (!record) {
-            setRecord(players[idx]);
+            setRecord(users[idx]);
         } else {
-            if (record.profile_id === players[idx].profile_id) {
+            if (record.id === users[idx].id) {
                 setRecord(null);
             } else {
-                setRecord(players[idx]);
+                setRecord(users[idx]);
             }
         }
     }
@@ -160,13 +160,9 @@ export default function FindForm({isOpen, setClose, displayField, valueField, fo
         
         setFormFields({
             ...formFields,
-            [displayField]: {
-                ...formFields[displayField],
-                value: record.name
-            },
-            [valueField]: {
-                ...formFields[valueField],
-                value: record.profile_id
+            [field]: {
+                ...formFields[field],
+                value: record.username
             }
         })
 
@@ -185,7 +181,7 @@ export default function FindForm({isOpen, setClose, displayField, valueField, fo
             centered={true}
             size="lg"
         >
-            <ModalHeader toggle={onClose}>Buscar Jugador</ModalHeader>
+            <ModalHeader toggle={onClose}>Buscar Usuario</ModalHeader>
             <ModalBody>
 
                 <div
@@ -214,8 +210,8 @@ export default function FindForm({isOpen, setClose, displayField, valueField, fo
                     <div className="d-md-none">
                         <div className="grid">
                             <div className="container-user px-4">
-                                {players.length > 0 ? <UserCard players={players}/> : <div className="d-flex flex-row justify-content-center py-4">
-                                    <strong>No existen Jugadores, registrados</strong>    
+                                {users.length > 0 ? <UserCard users={users}/> : <div className="d-flex flex-row justify-content-center py-4">
+                                    <strong>No existen usuarios, registrados</strong>    
                                 </div>}
                             </div>
                         </div>
@@ -223,7 +219,7 @@ export default function FindForm({isOpen, setClose, displayField, valueField, fo
 
                     <div className="d-none d-md-table text-gray-900 w-100 pb-4">
                         {mode==="Table" ? (
-                            players.length > 0 ? 
+                            users.length > 0 ? 
                             <Table bordered hover responsive size="sm" striped>
                                 <thead className="rounded-lg text-left text-sm font-normal">
                                     <tr style={{height: "40px"}}>
@@ -234,19 +230,19 @@ export default function FindForm({isOpen, setClose, displayField, valueField, fo
                                             scope="col"
                                             className="px-4 py-2 font-weight-bold pl-sm-6 text-center"
                                         >
-                                            Jugador
+                                            Usuario
                                         </th>
                                         <th
                                             scope="col"
                                             className="px-3 py-2 font-weight-bold text-center"
                                         >
-                                            Club
+                                            Nombre
                                         </th>
                                         <th
                                             scope="col"
                                             className="px-3 py-2 font-weight-bold text-center"
                                         >
-                                            ELO
+                                            Apellidos
                                         </th>
                                         <th
                                             scope="col"
@@ -268,8 +264,8 @@ export default function FindForm({isOpen, setClose, displayField, valueField, fo
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white">
-                                    {players.map((item, idx)=>(
-                                        <tr key={idx} className="align-middle row-hover" onClick={(e)=>{onSelect(e, idx)}}>
+                                    {users.map((item, idx)=>(
+                                        <tr key={idx} className="align-middle row-hover" onClick={(e)=>{onSelectUser(e, idx)}}>
                                             <td scope="row" className="whitespace-nowrap py-2">
                                                 <div className="d-flex align-items-center gap-4">
                                                     <Image
@@ -282,33 +278,33 @@ export default function FindForm({isOpen, setClose, displayField, valueField, fo
                                                         layout="intrinsic"
                                                         className="rounded-circle"
                                                     />
-                                                    {item.name}
+                                                    {item.username}
                                                 </div>
                                             </td>
                                             <td scope="row" className="text-center">
-                                                {item.club_name}
+                                                {item.first_name}
                                             </td>
                                             <td scope="row" className="text-center">
-                                                {item.elo}
+                                                {item.last_name}
                                             </td>
                                             <td scope="row" className="text-center">
                                                 {item.city_name}
                                             </td>
                                             <td scope="row" className="text-center">
-                                                {item.country}
+                                                {item.country_name}
                                             </td>
                                             <td scope="row" className="text-center" style={{fontSize: "18px", color: "green"}}>
-                                                {record && item.profile_id === record.profile_id && <i className="bi bi-check2-circle"/>}
+                                                {record && item.id === record.id && <i className="bi bi-check2-circle"/>}
                                             </td>
                                         </tr>
                                     ))}
                                 </tbody>
-                            </Table> : <div className="d-flex flex-row justify-content-center py-4"><strong>No existen Jugadores, registrados {mode}</strong></div>) :
+                            </Table> : <div className="d-flex flex-row justify-content-center py-4"><strong>No existen usuarios, registrados {mode}</strong></div>) :
                             (
                                 <div className="d-grid pt-3">
                                     <div className="container-user">
-                                        {players.length > 0 ? <UserCard players={players}/> : <div className="d-flex flex-row justify-content-center py-4">
-                                            <strong>No existen Jugadores, registrados</strong>    
+                                        {users.length > 0 ? <UserCard users={users}/> : <div className="d-flex flex-row justify-content-center py-4">
+                                            <strong>No existen usuarios, registrados</strong>    
                                         </div>}
                                     </div>
                                 </div>

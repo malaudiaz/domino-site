@@ -3,7 +3,7 @@ import Breadcrumbs from "../../../components/Breadcrumbs";
 import PlayerForm from "../../../components/Players/Form";
 import { useState } from "react";
 
-export default function CreateFederative() {
+export default function CreatePlayer() {
     const [formFields, setFormFields] = useState({
         id: {
             value: "",
@@ -13,14 +13,29 @@ export default function CreateFederative() {
         name: {
             value: "",
             error: false,
-            errorMessage: 'El Nombre del Club es requerido.'                  
+            errorMessage: 'El Nombre del Pérfil de Jugador es requerido.'                  
         },
-        acronym: {
+        username: {
             value: "",
             error: false,
-            errorMessage: 'Las siglas que identifican el club es requerida'                  
+            errorMessage: ''                  
         },
-        logo: {
+        elo: {
+            value: "",
+            error: false,
+            errorMessage: ''                  
+        },
+        level: {
+            value: "",
+            error: false,
+            errorMessage: ''                  
+        },
+        club_id: {
+            value: "",
+            error: false,
+            errorMessage: 'El club del jugador es requerido'                  
+        },
+        image: {
             value: "",
             error: false,
             errorMessage: ''                  

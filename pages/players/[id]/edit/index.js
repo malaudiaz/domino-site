@@ -14,7 +14,7 @@ export default function EditPlayer() {
     const id = router.query.id;
 
     const [formFields, setFormFields] = useState({
-        id: {
+        profile_id: {
             value: "",
             error: false,
             errorMessage: ''                  
@@ -22,19 +22,29 @@ export default function EditPlayer() {
         name: {
             value: "",
             error: false,
-            errorMessage: 'El Nombre del club es requerido.'                  
+            errorMessage: 'El Nombre del Pérfil de Jugador es requerido.'                  
         },
-        acronym: {
+        username: {
             value: "",
             error: false,
-            errorMessage: 'Las siglas que identifican el club es requerido'                  
+            errorMessage: ''                  
         },
-        federationId: {
+        elo: {
             value: "",
             error: false,
-            errorMessage: 'Seleccione la federación del club'                  
+            errorMessage: ''                  
         },
-        logo: {
+        level: {
+            value: "",
+            error: false,
+            errorMessage: ''                  
+        },
+        club_id: {
+            value: "",
+            error: false,
+            errorMessage: 'El club del jugador es requerido'                  
+        },
+        image: {
             value: "",
             error: false,
             errorMessage: ''                  
@@ -51,37 +61,39 @@ export default function EditPlayer() {
     };
     
     const fetchData = async () => {
-        const url = `${process.env.NEXT_PUBLIC_API_URL}club/one/${id}`;
+        const url = `${process.env.NEXT_PUBLIC_API_URL}profile/singleplayer/one/${id}`;
         try {
             const { data } = await axios.get(url, config);
             if (data.success) {
-                console.log(data.data.name);
-
                 setFormFields({
                     id: {
+                        ...formFields["id"],
                         value: data.data.id,
-                        error: false,
-                        errorMessage: ''                  
                     },
                     name: {
+                        ...formFields["name"],
                         value: data.data.name,
-                        error: false,
-                        errorMessage: 'El Nombre de la Federación es requerido.'                  
                     },
-                    // acronym: {
-                    //     ...formFields["acronym"],
-                    //     value: data.data.acronym
-                    // },
-                    federationId: {
-                        value: data.data.country_id,
-                        error: false,
-                        errorMessage: 'Seleccione la federación del Club'                  
+                    username: {
+                        ...formFields["username"],
+                        value: data.data.username,
                     },
-                    logo: {
-                        value: data.data.logo,
-                        error: false,
-                        errorMessage: ''                  
-                    }                                
+                    elo: {
+                        ...formFields["elo"],
+                        value: data.data.elo,
+                    },
+                    level: {
+                        ...formFields["level"],
+                        value: data.data.level,
+                    },
+                    club_id: {
+                        ...formFields["club_id"],
+                        value: data.data.club_id,
+                    },
+                    image: {
+                        ...formFields["image"],
+                        value: data.data.photo,
+                    }
                 })
             }
         } catch ({code, message, name, request}) {

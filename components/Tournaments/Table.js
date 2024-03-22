@@ -7,7 +7,7 @@ function TournamentCard({tournaments}) {
     tournaments.map((item, idx)=>(
       <Card key={idx} className="card-info">
         <CardBody>
-          <div className="d-flex flex-row gap-2">
+          <div className="d-flex flex-row gap-4">
             <Image
               alt={"Poster de Publicidad"}
               src={item.image ? item.image : "/profile/user-vector.jpg"}
@@ -19,17 +19,17 @@ function TournamentCard({tournaments}) {
               className="rounded-circle"
             />
             <div className="d-flex flex-column gap-2 pt-2">
-              <span>{item.name}</span>
+              <strong>{item.name}</strong>
               <div className="d-flex flex-row gap-2">
-                <span>{item.modality} |</span>
-                <span>{item.city_name}</span>
+                <span>Modalidad: <strong>{item.modality}</strong></span>
               </div>
               <div className="d-flex flex-row gap-2">
-                <span>{item.main_location}</span>
+                <span>{item.main_location}.</span>
+                <span>{item.city_name}</span>
               </div>                      
             </div>
           </div>
-          <div className="d-flex flex-row gap-2 justify-content-between pt-2 align-item-center">
+          <div className="d-flex flex-row gap-4 justify-content-between pt-2 align-item-center">
             <strong>Precio Inscripción: {Number(Math.round(item.inscription_import + 'e' + 2) + 'e-' + 2).toFixed(2)}</strong>
             <div className="d-flex flex-row gap-2 justify-content-end">
               <Link href={`/tournaments/${item.id}/edit`}>

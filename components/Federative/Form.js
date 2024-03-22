@@ -11,10 +11,10 @@ import {
   import Link from "next/link";
   import Upload from "../Upload";
   import { useState } from "react";
-  import CityComboBox from "../City/CityComboBox";
   import { useAppContext } from "../../AppContext";
   import axios from "axios";
   import Swal from "sweetalert2";
+  import FinderUser from "../Users/Finder";
 
   export default function FederativeForm({ formFields, setFormFields }) {
   
@@ -22,8 +22,6 @@ import {
     const [open, setOpen] = useState(false);
     const [image, setImage] = useState(null);
   
-    const cityUrl = `${process.env.NEXT_PUBLIC_API_URL}federation/city/`;
-
     const handleChange = (event) => {
       const name = event.target.name;
   
@@ -48,21 +46,14 @@ import {
           ...formFields["username"],
           error: formFields.username.value === ""
         },
-        firstName: {
-          ...formFields["firstName"],
-          error: formFields.firstName.value === ""
-        },
-        countryId: {
-          ...formFields["countryId"],
-          error: formFields.countryId.value === ""
-        },
-        cityId: {
-          ...formFields["cityId"],
-          error: formFields.cityId.value === ""
-        },
+        name: {
+          ...formFields["name"],
+          error: formFields.name.value === ""
+        }
+
       })
   
-      return formFields.username.error && formFields.firstName.error && formFields.countryId.error && formFields.cityId.error;
+      return formFields.username.error && formFields.name.error;
     }
   
     const config = {
@@ -82,8 +73,8 @@ import {
           if (data.success) {
             setFormFields({
               ...formFields,
-              profileId: {
-                ...formFields["profileId"],
+              id: {
+                ...formFields["id"],
                 value: "",
                 error: false,
               },
@@ -92,39 +83,14 @@ import {
                 value: "",
                 error: false,
               },
-              firstName: {
-                ...formFields["firstName"],
-                value: "",
-                error: false,
-              },
-              lastName: {
-                ...formFields["lastName"],
-                value: "",
-                error: false,
-              },
-              email: {
-                ...formFields["email"],
-                value: "",
-                error: false,
-              },
-              countryId: {
-                ...formFields["countryId"],
-                value: "",
-                error: false,
-              },
-              cityId: {
-                ...formFields["cityId"],
-                value: "",
-                error: false,
-              },
-              photo: {
-                ...formFields["photo"],
+              image: {
+                ...formFields["image"],
                 value: "",
                 error: false,
               }
             });
             Swal.fire({
-              title: formFields.id.value==="" ? "Creando Federación" : "Actualizando Federación",
+              title: formFields.id.value==="" ? "Creando Federativo" : "Actualizando Federativo",
               text: data.detail,
               icon: "success",
               showCancelButton: false,
@@ -136,7 +102,7 @@ import {
         } catch ({code, message, name, request}) {
           if (code === "ERR_NETWORK") {
             Swal.fire({
-              title: formFields.id.value==="" ? "Creando Federación" : "Actualizando Federación",
+              title: formFields.id.value==="" ? "Creando Federativo" : "Actualizando Federativo",
               text: "Error en su red, consulte a su proveedor de servicio",
               icon: "error",
               showCancelButton: false,
@@ -148,7 +114,7 @@ import {
             if (code === "ERR_BAD_REQUEST") {
               const {detail} = JSON.parse(request.response)
               Swal.fire({
-                  title: formFields.id.value==="" ? "Creando Federación" : "Actualizando Federación",
+                  title: formFields.id.value==="" ? "Creando Federativo" : "Actualizando Federativo",
                   text: detail,
                   icon: "error",
                   showCancelButton: false,
@@ -164,17 +130,17 @@ import {
     const handleSubmit = (event) => {
       event.preventDefault(); 
 
-      let url = `${process.env.NEXT_PUBLIC_API_URL}profile/generic/eventadmon/`; 
+      let url = `${process.env.NEXT_PUBLIC_API_URL}profile/federative`; 
       let method = "post";
   
       if (!isValid()) {
-        if (formFields.profileId.value !== "") {
-          url = url + formFields.profileId.value;
+        if (formFields.id.value !== "") {
+          url = url + "/" + formFields.id.value;
           method = "put";
         } else {
-          url = url + profile.id;
+          url = url + "/" + profile.id;
         }
-        url = url + "?username=" + formFields.username.value + "&first_name=" + formFields.firstName.value + "&last_name=" + formFields.lastName.value + "&email=" + formFields.email.value + "&city_id=" + formFields.cityId.value;
+        url = url + "?username=" + formFields.username.value + "&name=" + formFields.name.value;
   
         save(url, method);
       }
@@ -190,100 +156,34 @@ import {
         <div className="rounded-md bg-light p-4">
             <FormGroup>
               <Label size="sm" sm={4}>
-                <b>Nombre de Usuario</b>
+                <b>Usuario</b>
               </Label>
-              <InputGroup size="sm">
-                <Input
-                  autoComplete="off"
-                  name="username"
-                  id="username"
-                  placeholder={"Nombre de Usuario"}
-                  value={formFields.username.value}
-                  invalid={formFields.username.error}
-                  onChange={handleChange}
-                />
-                <FormFeedback>{formFields.username.errorMessage}</FormFeedback>
-              </InputGroup>
+              <FinderUser 
+                field={"username"} 
+                formFields={formFields} 
+                setFormFields={setFormFields} 
+                disabled={formFields.id.value!==""} 
+              />
             </FormGroup>
 
             <FormGroup>
               <Label size="sm" sm={4}>
-                <b>Nombre de Pila</b>
+                <b>Nombre de Pérfil</b>
               </Label>
               <InputGroup size="sm">
                 <Input
                   autoComplete="off"
-                  name="firstName"
-                  id="firstName"
-                  placeholder={"Nombre de Pila"}
-                  value={formFields.firstName.value}
-                  invalid={formFields.firstName.error}
+                  name="name"
+                  id="name"
+                  placeholder={"Nombre de Pérfil"}
+                  value={formFields.name.value}
+                  invalid={formFields.name.error}
                   onChange={handleChange}
                 />
-                <FormFeedback>{formFields.firstName.errorMessage}</FormFeedback>
+                <FormFeedback>{formFields.name.errorMessage}</FormFeedback>
               </InputGroup>
             </FormGroup>
 
-            <FormGroup>
-              <Label size="sm" sm={4}>
-                <b>Apellidos</b>
-              </Label>
-              <InputGroup size="sm">
-                <Input
-                  autoComplete="off"
-                  name="lastName"
-                  id="lastName"
-                  placeholder={"Apellidos"}
-                  value={formFields.lastName.value}
-                  invalid={formFields.lastName.error}
-                  onChange={handleChange}
-                />
-                <FormFeedback>{formFields.lastName.errorMessage}</FormFeedback>
-              </InputGroup>
-            </FormGroup>
-
-
-            <FormGroup>
-              <Label size="sm" sm={4}>
-                <b>Dirección de Correo</b>
-              </Label>
-              <InputGroup size="sm">
-                <Input
-                  type="email"
-                  name="email"
-                  id="email"
-                  placeholder="Dirección de Correo"
-                  value={formFields.email.value}
-                  onChange={handleChange}
-                  onKeyDown={(event) => {
-                    if (!/^[a-z_@\s]*$/.test(event.key)) {
-                      event.preventDefault();
-                    }
-                  }}
-                />
-                <FormFeedback>{formFields.lastName.errorMessage}</FormFeedback>
-              </InputGroup>
-            </FormGroup>
-
-            <FormGroup>
-              <Label size="sm" sm={4}>
-                <b>Ciudad</b>
-              </Label>
-              <InputGroup size="sm">
-                <CityComboBox
-                  country_id={profile.id}
-                  name="cityId"
-                  url={cityUrl}
-                  cmbText="Seleccione ciudad..."
-                  invalid={formFields.cityId.error}
-                  value={formFields.cityId.value}
-                  valueDefault={formFields.cityId.value}
-                  autoComplete="off"
-                  onChange={handleChange}
-                />
-                <FormFeedback>{formFields.cityId.errorMessage}</FormFeedback>
-              </InputGroup>
-            </FormGroup>
 
             <FormGroup>
               <Label size="sm" sm={4}>
@@ -294,7 +194,7 @@ import {
                     type="text"
                     name="logo"
                     placeholder="Avatar"
-                    value={formFields.photo.value}
+                    value={formFields.image.value}
                     readOnly
                 />
                 <InputGroupText>
@@ -319,15 +219,15 @@ import {
           </Link>
   
           <Button className="btn btn-sm" color="primary" type="submit">
-            {formFields.profileId.value==="" ? "Crear Federativo" : "Actualizar"}
+            {formFields.id.value==="" ? "Crear Federativo" : "Actualizar"}
           </Button>
         </div>
   
         <Upload 
           open={open} 
-          fieldId={"profileId"}
+          fieldId={"id"}
           fieldTitle={"username"}
-          fieldMedia={"photo"}
+          fieldMedia={"image"}
           setOpen={setOpen} 
           formFields={formFields} 
           setFormFields={setFormFields}

@@ -5,7 +5,7 @@ export default function Search({ field, setField }) {
    
     const handleSearch = useDebouncedCallback((term) => {
         setField(term);
-    }, 300);
+    }, 200);
   
     return (
         <div className="d-flex flex-row flex-fill gap-2">

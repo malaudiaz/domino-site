@@ -157,7 +157,7 @@ const Sidebar = () => {
               </Link>
             </li>
 
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Link href={"/teams"}>
                 <a
                   className={
@@ -170,9 +170,9 @@ const Sidebar = () => {
                   <span>Equipos</span>
                 </a>
               </Link>
-            </li>
+            </li> */}
 
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Link href={"/referees"}>
                 <a
                   className={
@@ -185,7 +185,7 @@ const Sidebar = () => {
                   <span>Arbitros</span>
                 </a>
               </Link>
-            </li>
+            </li> */}
 
             <li className="nav-item">
               <Link href={"/tournaments"}>

@@ -5,7 +5,7 @@ import { useState } from "react";
 
 export default function CreateFederative() {
     const [formFields, setFormFields] = useState({
-        profileId: {
+        id: {
             value: "",
             error: false,
             errorMessage: ''                  
@@ -15,36 +15,16 @@ export default function CreateFederative() {
             error: false,
             errorMessage: 'El Nombre de usuario es requerido.'                  
         },
-        firstName: {
+        name: {
             value: "",
             error: false,
-            errorMessage: 'El nombre de pila es requerido'                  
+            errorMessage: 'El nombre del pérfil de federativo es requerido'                  
         },
-        lastName: {
+        image: {
             value: "",
             error: false,
             errorMessage: ''                  
         },
-        email: {
-            value: "",
-            error: false,
-            errorMessage: ''                  
-        },
-        countryId: {
-            value: "",
-            error: false,
-            errorMessage: 'El país de origen es requerido'                  
-        },
-        cityId: {
-            value: "",
-            error: false,
-            errorMessage: 'La Ciudad es requerida'                  
-        },
-        photo: {
-            value: "",
-            error: false,
-            errorMessage: ''                  
-        }
     });
 
     return (

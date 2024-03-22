@@ -405,14 +405,17 @@ export default function TournamentForm({ formFields, setFormFields }) {
   
         <Upload 
           open={open} 
-          field="image"
+          fieldId={"id"}
+          fieldTitle={"name"}
+          fieldMedia={"image"}
           setOpen={setOpen} 
           formFields={formFields} 
           setFormFields={setFormFields}
-          title="Subir Poster"
+          title="Subir Avatar"
           image={image}
-          setImage={setImage}  
+          setImage={setImage}
         />
+
   
       </form>
     );

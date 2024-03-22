@@ -28,7 +28,11 @@ export default function CouplesPage() {
   };
 
   const fetchData = async () => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}federation/${profile.id}?page=${page}&per_page=${rowsPerPage}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}profile/pairplayer/${profile.id}?page=${page}&per_page=${rowsPerPage}`;
+
+    if (searchField!=="") {
+      url = url + `&search=${searchField}`;
+    }
 
     try {
       const { data } = await axios.get(url, config);

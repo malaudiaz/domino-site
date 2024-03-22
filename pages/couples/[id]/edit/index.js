@@ -22,19 +22,44 @@ export default function EditCouples() {
         name: {
             value: "",
             error: false,
-            errorMessage: 'El Nombre del club es requerido.'                  
+            errorMessage: 'El Nombre de la pareja es requerido.'                  
         },
-        acronym: {
+        profile_id_one: {
             value: "",
             error: false,
-            errorMessage: 'Las siglas que identifican el club es requerido'                  
+            errorMessage: ''                  
         },
-        federationId: {
+        username_one: {
             value: "",
             error: false,
-            errorMessage: 'Seleccione la federación del club'                  
+            errorMessage: 'El nombre de usuario del primer jugador de la pareja es requerido'                  
         },
-        logo: {
+        profile_id_two: {
+            value: "",
+            error: false,
+            errorMessage: ''                  
+        },
+        username_two: {
+            value: "",
+            error: false,
+            errorMessage: 'El nombre de usuario del segundo jugador de la pareja es requerido'                  
+        },
+        elo: {
+            value: "",
+            error: false,
+            errorMessage: ''                  
+        },
+        level: {
+            value: "",
+            error: false,
+            errorMessage: ''                  
+        },
+        club_id: {
+            value: "",
+            error: false,
+            errorMessage: 'El club al que pertenece la pareja es requerido'                  
+        },
+        image: {
             value: "",
             error: false,
             errorMessage: ''                  
@@ -51,43 +76,58 @@ export default function EditCouples() {
     };
     
     const fetchData = async () => {
-        const url = `${process.env.NEXT_PUBLIC_API_URL}club/one/${id}`;
+        const url = `${process.env.NEXT_PUBLIC_API_URL}profile/pairplayer/one/${id}`;
         try {
             const { data } = await axios.get(url, config);
             if (data.success) {
-                console.log(data.data.name);
-
                 setFormFields({
+                    ...formFields,
                     id: {
-                        value: data.data.id,
-                        error: false,
-                        errorMessage: ''                  
+                        ...formFields['id'],
+                        value: data.data.id
                     },
                     name: {
-                        value: data.data.name,
-                        error: false,
-                        errorMessage: 'El Nombre de la Federación es requerido.'                  
+                        ...formFields['id'],
+                        value: data.data.name
                     },
-                    // acronym: {
-                    //     ...formFields["acronym"],
-                    //     value: data.data.acronym
-                    // },
-                    federationId: {
-                        value: data.data.country_id,
-                        error: false,
-                        errorMessage: 'Seleccione la federación del Club'                  
+                    profile_id_one: {
+                        ...formFields['profile_id_one'],
+                        value: data.data.profile_id_one
                     },
-                    logo: {
-                        value: data.data.logo,
-                        error: false,
-                        errorMessage: ''                  
-                    }                                
+                    username_one: {
+                        ...formFields['username_one'],
+                        value: data.data.username_one
+                    },
+                    profile_id_two: {
+                        ...formFields['profile_id_two'],
+                        value: data.data.profile_id_two
+                    },
+                    username_two: {
+                        ...formFields['username_two'],
+                        value: data.data.username_two
+                    },
+                    elo: {
+                        ...formFields['elo'],
+                        value: data.data.elo
+                    },
+                    level: {
+                        ...formFields['level'],
+                        value: data.data.level
+                    },
+                    club_id: {
+                        ...formFields['club_id'],
+                        value: data.data.club_id
+                    },
+                    image: {
+                        ...formFields['image'],
+                        value: data.data.image
+                    }
                 })
             }
         } catch ({code, message, name, request}) {
             if (code === "ERR_NETWORK") {
               Swal.fire({
-                title: "Editar Jugador",
+                title: "Editar Pareja",
                 text: "Error en su red, consulte a su proveedor de servicio",
                 icon: "error",
                 showCancelButton: false,
@@ -99,7 +139,7 @@ export default function EditCouples() {
               if (code === "ERR_BAD_REQUEST") {
                 const {detail} = JSON.parse(request.response)
                 Swal.fire({
-                    title: "Editar Jugador",
+                    title: "Editar Pareja",
                     text: detail,
                     icon: "error",
                     showCancelButton: false,

@@ -29,7 +29,7 @@ export default function FederativePage() {
   };
 
   const fetchData = async () => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}profile/eventadmon/${profile.id}?page=${page}&per_page=${rowsPerPage}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}profile/federative/${profile.id}?page=${page}&per_page=${rowsPerPage}`;
 
     if (searchField!=="") {
       url = url + `&search=${searchField}`;

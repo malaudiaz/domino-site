@@ -14,7 +14,7 @@ export default function EditFederative() {
     const id = router.query.id;
 
     const [formFields, setFormFields] = useState({
-        profileId: {
+        id: {
             value: "",
             error: false,
             errorMessage: ''                  
@@ -24,32 +24,12 @@ export default function EditFederative() {
             error: false,
             errorMessage: 'El Nombre de usuario es requerido.'                  
         },
-        firstName: {
+        name: {
             value: "",
             error: false,
-            errorMessage: 'El nombre de pila es requerido'                  
+            errorMessage: 'El nombre del pérfil de federativo es requerido'                  
         },
-        lastName: {
-            value: "",
-            error: false,
-            errorMessage: ''                  
-        },
-        email: {
-            value: "",
-            error: false,
-            errorMessage: ''                  
-        },
-        countryId: {
-            value: "",
-            error: false,
-            errorMessage: 'El país de origen es requerido'                  
-        },
-        cityId: {
-            value: "",
-            error: false,
-            errorMessage: 'La Ciudad es requerida'                  
-        },
-        photo: {
+        image: {
             value: "",
             error: false,
             errorMessage: ''                  
@@ -66,41 +46,25 @@ export default function EditFederative() {
     };
     
     const fetchData = async () => {
-        const url = `${process.env.NEXT_PUBLIC_API_URL}profile/generic/eventadmon/${id}`;
+        const url = `${process.env.NEXT_PUBLIC_API_URL}profile/federative/one/${id}`;
         try {
             const { data } = await axios.get(url, config);
             if (data.success) {
                 setFormFields({
-                    profileId: {
-                        ...formFields["profileId"],
+                    id: {
+                        ...formFields["id"],
                         value: data.data.id,
                     },
                     username: {
                         ...formFields["username"],
                         value: data.data.username,
                     },
-                    firstName: {
-                        ...formFields["firstName"],
-                        value: data.data.first_name,
+                    name: {
+                        ...formFields["name"],
+                        value: data.data.name,
                     },
-                    lastName: {
-                        ...formFields["lastName"],
-                        value: data.data.last_name,
-                    },
-                    email: {
-                        ...formFields["email"],
-                        value: data.data.email,
-                    },
-                    countryId: {
-                        ...formFields["countryId"],
-                        value: data.data.country_id,
-                    },
-                    cityId: {
-                        ...formFields["cityId"],
-                        value: data.data.city_id,
-                    },
-                    photo: {
-                        ...formFields["photo"],
+                    image: {
+                        ...formFields["image"],
                         value: data.data.photo,
                     }
                 })

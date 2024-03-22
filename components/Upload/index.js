@@ -56,7 +56,7 @@ export default function Upload({open, fieldId, fieldTitle, fieldMedia, setOpen, 
                             <Image
                                 src={createObjectURL ? createObjectURL : formFields[fieldMedia].value}
                                 alt="Logotipo"
-                                width={100}
+                                width={200}
                                 height={200}
                                 quality={50}
                                 priority

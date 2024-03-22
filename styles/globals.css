@@ -1888,3 +1888,29 @@ h6 {
 .delete:hover {
   color: red;
 }
+
+.row-hover {
+  cursor: pointer;
+}
+
+.row-hover:hover {
+  opacity: 0.9;
+  color: white;
+  font-weight: 500;
+  background-color: #61a1fe;
+  cursor: pointer;
+}
+
+.container-user {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+@media (min-width: 900px) {
+  .container-user {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+}

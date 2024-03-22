@@ -281,11 +281,6 @@ import {
                   placeholder="Dirección de Correo"
                   value={formFields.email.value}
                   onChange={handleChange}
-                  onKeyDown={(event) => {
-                    if (!/^[a-z_@\s]*$/.test(event.key)) {
-                      event.preventDefault();
-                    }
-                  }}
                 />
                 <FormFeedback>{formFields.email.errorMessage}</FormFeedback>
               </InputGroup>

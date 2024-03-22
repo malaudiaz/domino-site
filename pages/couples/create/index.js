@@ -13,14 +13,44 @@ export default function CreateCouples() {
         name: {
             value: "",
             error: false,
-            errorMessage: 'El Nombre del Club es requerido.'                  
+            errorMessage: 'El Nombre de la pareja es requerido.'                  
         },
-        acronym: {
+        profile_id_one: {
             value: "",
             error: false,
-            errorMessage: 'Las siglas que identifican el club es requerida'                  
+            errorMessage: ''                  
         },
-        logo: {
+        username_one: {
+            value: "",
+            error: false,
+            errorMessage: 'El nombre de usuario del primer jugador de la pareja es requerido'                  
+        },
+        profile_id_two: {
+            value: "",
+            error: false,
+            errorMessage: ''                  
+        },
+        username_two: {
+            value: "",
+            error: false,
+            errorMessage: 'El nombre de usuario del segundo jugador de la pareja es requerido'                  
+        },
+        elo: {
+            value: "",
+            error: false,
+            errorMessage: ''                  
+        },
+        level: {
+            value: "",
+            error: false,
+            errorMessage: ''                  
+        },
+        club_id: {
+            value: "",
+            error: false,
+            errorMessage: 'El club al que pertenece la pareja es requerido'                  
+        },
+        image: {
             value: "",
             error: false,
             errorMessage: ''                  
@@ -28,7 +58,7 @@ export default function CreateCouples() {
     });
 
     return (
-        <Layout title={"Crear Jugador"}>
+        <Layout title={"Crear Pareja de Jugadores"}>
 
             <div
                 className="card"

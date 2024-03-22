@@ -2,7 +2,7 @@ import { useState } from "react";
 import { InputGroup, InputGroupText, Input, FormFeedback } from "reactstrap";
 import FindForm from "./FindForm";
 
-export default function FinderPlayer({ displayField, valueField, formFields, setFormFields, disabled }) {
+export default function FinderUser({ field, formFields, setFormFields, disabled }) {
   const [open, setOpen] = useState(false);
 
   const onOpen = () => {
@@ -11,15 +11,16 @@ export default function FinderPlayer({ displayField, valueField, formFields, set
     }
   };
 
+
   return (
     <InputGroup size="sm">
       <Input
-        id="textFindPlayer"
-        name="textFindPlayer"
+        id="textFindUser"
+        name="textFindUser"
         type="text"
-        placeholder="Jugador"
-        invalid={formFields[displayField].error}
-        value={formFields[displayField].value}
+        placeholder="Usuario"
+        invalid={formFields[field].error}
+        value={formFields[field].value}
         readOnly
       />
       <InputGroupText>
@@ -30,8 +31,8 @@ export default function FinderPlayer({ displayField, valueField, formFields, set
             if (!disabled) {
               setFormFields({
                 ...formFields,
-                [displayField]: {
-                  ...formFields[displayField],
+                [field]: {
+                  ...formFields[field],
                   value: ""
                 }
               });
@@ -47,22 +48,15 @@ export default function FinderPlayer({ displayField, valueField, formFields, set
         <a
           style={{ cursor: "pointer", color: disabled ? "#c7c7c7" : "black"  }}
           data-toggle="tooltip"
-          title="Buscar Jugador"
+          title="Buscar Usuario"
           onClick={onOpen}
         >
           <i className="bi bi-search"></i>
         </a>
       </InputGroupText>
-      <FormFeedback>{formFields[displayField].errorMessage}</FormFeedback>
+      <FormFeedback>{formFields[field].errorMessage}</FormFeedback>
 
-      <FindForm 
-        isOpen={open} 
-        setClose={setOpen} 
-        displayField={displayField} 
-        valueField={valueField} 
-        formFields={formFields} 
-        setFormFields={setFormFields}
-      />
+      <FindForm isOpen={open} setClose={setOpen} field={field} formFields={formFields} setFormFields={setFormFields}/>
 
     </InputGroup>
   );
