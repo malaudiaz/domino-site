@@ -16,6 +16,7 @@ export default function CouplesPage() {
   const [total, setTotal] = useState(0);
   const [searchField, setSearchField] = useState("");
   const [reload, setReload] = useState(true);
+  const [mode, setMode] = useState("Table");
   const rowsPerPage = 12;
 
   const config = {
@@ -72,10 +73,10 @@ export default function CouplesPage() {
   };
 
   useEffect(() => {
-    if (reload) {
+    if (reload && profile.id) {
       fetchData();
     }
-  }, [searchField, reload]);
+  }, [searchField, reload, profile.id]);
 
   const onChangePage = (pageNumber) => {
     setPage(pageNumber);
@@ -136,23 +137,43 @@ export default function CouplesPage() {
     });
   };
 
+  const handleMode = () => {
+    setMode(mode==="Table" ? "Grid" : "Table");
+  }
+
+  const handleSearch = (value) => {
+    setSearchField(value);
+    setReload(true);
+  }
+
   return (
     <Layout title={"Parejas"}>
       <div
         className="card"
         style={{ border: "1px solid", borderColor: "#c7c7c7" }}
       >
-        <div className="row pt-3 px-4">
+        <div className="d-flex flex-row justify-content-between align-items-center py-3 px-4">
           <h1 style={{ fontSize: "24px", fontWeight: "600", color: "#012970" }}>
             Parejas
           </h1>
+
+          <div className="d-flex flex-row gap-3 mx-4">
+            {mode==="Table" ? (
+            <a onClick={handleMode} style={{fontSize: "18px", cursor: "pointer"}}>
+              <i className="bi bi-grid"></i>
+            </a>) : (
+            <a onClick={handleMode} style={{fontSize: "18px", cursor: "pointer"}}>
+              <i className="bi bi-table"></i>
+            </a>)}
+          </div>
+
         </div>
 
         <div
           className="d-flex flex-row flex-wrap gap-2 justify-content-between align-center pt-3 px-4 pb-4"
         >
 
-          <Search field={searchField} setField={setSearchField} />
+          <Search field={searchField} setField={handleSearch} />
 
           <Link href="/couples/create" >
             <a className="btn btn-primary btn-sm">
@@ -162,7 +183,7 @@ export default function CouplesPage() {
 
         </div>
 
-        <CouplesTable couples={couples} onDelete={handleDelete}/>
+        <CouplesTable couples={couples} onDelete={handleDelete} mode={mode}/>
 
         {totalPages > 1 && (
           <div className="row">

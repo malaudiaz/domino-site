@@ -1,6 +1,6 @@
 import Layout from "../../../../layouts/Layout";
 import Breadcrumbs from "../../../../components/Breadcrumbs";
-import PlayerForm from "../../../../components/Players/Form";
+import CouplesForm from "../../../../components/Couples/Form";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useAppContext } from "../../../../AppContext";
@@ -159,7 +159,7 @@ export default function EditCouples() {
     }, [id]);
     
     return (
-        <Layout title={"Editar Jugador"}>
+        <Layout title={"Editar Pareja"}>
 
             <div
                 className="card"
@@ -169,16 +169,16 @@ export default function EditCouples() {
 
                     <Breadcrumbs
                         breadcrumbs={[
-                            { label: 'Jugadores', href: '/players' },
+                            { label: 'Parejas', href: '/couples' },
                             {
                                 label: 'Editar Jugador',
-                                href: `/players/${id}/edit`,
+                                href: `/couples/${id}/edit`,
                                 active: true,
                             },
                         ]}
                     />
 
-                    <PlayerForm formFields={formFields} setFormFields={setFormFields}/>
+                    <CouplesForm formFields={formFields} setFormFields={setFormFields}/>
 
                 </div>
             </div>

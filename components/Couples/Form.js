@@ -151,7 +151,7 @@ import {
               }
             });
             Swal.fire({
-              title: formFields.id.value==="" ? "Creando Jugador" : "Actualizando Jugador",
+              title: formFields.id.value==="" ? "Creando Pareja" : "Actualizando Pareja",
               text: data.detail,
               icon: "success",
               showCancelButton: false,
@@ -163,7 +163,7 @@ import {
         } catch ({code, message, name, request}) {
           if (code === "ERR_NETWORK") {
             Swal.fire({
-              title: formFields.id.value==="" ? "Creando Jugador" : "Actualizando Jugador",
+              title: formFields.id.value==="" ? "Creando Pareja" : "Actualizando Pareja",
               text: "Error en su red, consulte a su proveedor de servicio",
               icon: "error",
               showCancelButton: false,
@@ -175,7 +175,7 @@ import {
             if (code === "ERR_BAD_REQUEST") {
               const {detail} = JSON.parse(request.response)
               Swal.fire({
-                  title: formFields.id.value==="" ? "Creando Jugador" : "Actualizando Jugador",
+                  title: formFields.id.value==="" ? "Creando Pareja" : "Actualizando Pareja",
                   text: detail,
                   icon: "error",
                   showCancelButton: false,

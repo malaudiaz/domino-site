@@ -2,40 +2,16 @@ import { Card, CardBody, Table } from "reactstrap";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function PlayersTable({players, onDelete, mode}) {
-
-  const PlayerCard = () => {
-    return (
-      players.map((item, idx)=>(
-        <Card key={idx} className="card-info">
-          <CardBody>
-            <div className="d-flex flex-row gap-4 pt-4">
-              <Image
-                alt={"Avatar Jugador"}
-                src={item.photo ? item.photo : "/profile/user-vector.jpg"}
-                width={50}
-                height={50}
-                quality={50}
-                priority
-                layout="intrinsic"
-                className="rounded-circle"
-              />
-              <div className="d-flex flex-column gap-2 pt-2">
-                <span>{item.name}</span>
-                <span>{item.club_name}</span>
-                <div className="d-flex flex-row gap-2">
-                  <span>{item.city_name}.</span>
-                  <span>{item.country}</span>
-                </div>
-              </div>
-            </div>
+export default function InscriptionsTable({ inscriptions, onDelete, mode }) {
+  const InscriptionCard = () => {
+    return inscriptions.map((item, idx) => (
+      <Card key={idx} className="card-info">
+        <CardBody>
             <div className="d-flex flex-row gap-2 justify-content-between align-items-center">
               <div className="d-flex flex-row gap-4">
-                <strong>ELO: {item.elo}</strong>
-                <strong>Nivel: {item.level}</strong>
               </div>
               <div className="d-flex flex-row gap-4">
-                <Link href={`/players/${item.id}/edit`}>
+                <Link href={`/inscriptions/${item.id}/edit`}>
                   <a className="edit" title="Editar">
                     <i
                       className="bi bi-pencil-square"
@@ -55,18 +31,17 @@ export default function PlayersTable({players, onDelete, mode}) {
                 </a>
               </div>
             </div>
-          </CardBody>
-        </Card>
-      ))
-    );
-  }
+        </CardBody>
+      </Card>
+    ));
+  };
 
   return (
     <>
       <div className="d-md-none">
         <div className="grid">
           <div className="container-events px-4">
-            <PlayerCard/>
+            <InscriptionCard/>
           </div>
         </div>
       </div>
@@ -122,7 +97,7 @@ export default function PlayersTable({players, onDelete, mode}) {
               </tr>
             </thead>
             <tbody className="bg-white">
-              {players.map((item, idx)=>(
+              {inscriptions.map((item, idx)=>(
                   <tr key={idx} className="align-middle">
                   <td scope="row" className="whitespace-nowrap py-2">
                     <div className="d-flex align-items-center gap-4">
@@ -156,7 +131,7 @@ export default function PlayersTable({players, onDelete, mode}) {
                   </td>
                   <td scope="row" className="text-center">
                     <div className="d-flex flex-row gap-3 justify-content-center">
-                      <Link href={`/players/${item.profile_id}/edit`}>
+                      <Link href={`/inscriptions/${item.id}/edit`}>
                         <a className="edit" title="Editar">
                           <i
                             className="bi bi-pencil-square"
@@ -170,7 +145,7 @@ export default function PlayersTable({players, onDelete, mode}) {
                         title="Eliminar"
                         onClick={(e) => {
                           e.preventDefault();
-                          onDelete(item.profile_id);
+                          onDelete(item.id);
                         }}
                       >
                         <i className="bi bi-trash" style={{ fontSize: "18px" }}></i>
@@ -186,14 +161,13 @@ export default function PlayersTable({players, onDelete, mode}) {
         {mode==="Grid" &&
           <div className="d-grid pt-3">
             <div className="container-events">
-              <PlayerCard/>
+              <InscriptionCard/>
             </div>
           </div>
         }
 
 
       </div>
-
     </>
   );
 }

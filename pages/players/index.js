@@ -167,7 +167,6 @@ export default function PlayersPage() {
             </a>)}
           </div>
 
-
         </div>
 
         <div

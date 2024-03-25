@@ -218,7 +218,7 @@ const Sidebar = () => {
             </li>
 
 
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <a
                 className="nav-link"
                 data-bs-target="#Events"
@@ -255,6 +255,9 @@ const Sidebar = () => {
 
               </ul>          
             </li>
+ */}
+
+
           </>
         }
 
