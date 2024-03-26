@@ -29,7 +29,7 @@ export default function EditCouples() {
             error: false,
             errorMessage: ''                  
         },
-        username_one: {
+        profile_name_one: {
             value: "",
             error: false,
             errorMessage: 'El nombre de usuario del primer jugador de la pareja es requerido'                  
@@ -39,7 +39,7 @@ export default function EditCouples() {
             error: false,
             errorMessage: ''                  
         },
-        username_two: {
+        profile_name_two: {
             value: "",
             error: false,
             errorMessage: 'El nombre de usuario del segundo jugador de la pareja es requerido'                  
@@ -94,17 +94,17 @@ export default function EditCouples() {
                         ...formFields['profile_id_one'],
                         value: data.data.profile_id_one
                     },
-                    username_one: {
-                        ...formFields['username_one'],
-                        value: data.data.username_one
+                    profile_name_one: {
+                        ...formFields['profile_name_one'],
+                        value: data.data.profile_name_one
                     },
                     profile_id_two: {
                         ...formFields['profile_id_two'],
                         value: data.data.profile_id_two
                     },
-                    username_two: {
-                        ...formFields['username_two'],
-                        value: data.data.username_two
+                    profile_name_two: {
+                        ...formFields['profile_name_two'],
+                        value: data.data.profile_name_two
                     },
                     elo: {
                         ...formFields['elo'],
@@ -171,7 +171,7 @@ export default function EditCouples() {
                         breadcrumbs={[
                             { label: 'Parejas', href: '/couples' },
                             {
-                                label: 'Editar Jugador',
+                                label: 'Editar Pareja',
                                 href: `/couples/${id}/edit`,
                                 active: true,
                             },

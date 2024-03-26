@@ -16,9 +16,11 @@ import CityComboBox from "../City/CityComboBox";
 import { useAppContext } from "../../AppContext";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useRouter } from "next/router";
   
 export default function ClubForm({ formFields, setFormFields }) {
   
+    const router = useRouter();
     const {profile, lang, token} = useAppContext();
     const [open, setOpen] = useState(false);
     const [image, setImage] = useState(null);
@@ -116,6 +118,11 @@ export default function ClubForm({ formFields, setFormFields }) {
                 error: false
               }      
             });
+
+            if (method==="put") {
+              router.push(`/users`);              
+            }
+
             Swal.fire({
               title: formFields.id.value==="" ? "Creando Club" : "Actualizando Club",
               text: data.detail,

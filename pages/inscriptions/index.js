@@ -31,7 +31,7 @@ export default function InscriptionsPage() {
   const fetchData = async () => {
     const url = `${process.env.NEXT_PUBLIC_API_URL}tourney/${profile.id}?page=${page}&per_page=${rowsPerPage}`;
 
-    if (searchField!=="") {
+    if (searchField !== "") {
       url = url + `&search=${searchField}`;
     }
 
@@ -43,7 +43,7 @@ export default function InscriptionsPage() {
         setTournaments(data.data);
         setReload(false);
       }
-    } catch ({code, message, name, request}) {
+    } catch ({ code, message, name, request }) {
       if (code === "ERR_NETWORK") {
         Swal.fire({
           title: "Inscripciones",
@@ -57,7 +57,7 @@ export default function InscriptionsPage() {
       } else {
         if (code === "ERR_BAD_REQUEST") {
           console.log(message);
-          const {detail} = JSON.parse(request.response)
+          const { detail } = JSON.parse(request.response);
           Swal.fire({
             title: "Inscripciones",
             text: detail,
@@ -66,7 +66,7 @@ export default function InscriptionsPage() {
             allowOutsideClick: false,
             confirmButtonColor: "#3085d6",
             confirmButtonText: "Aceptar",
-          });  
+          });
         }
       }
     }
@@ -88,6 +88,15 @@ export default function InscriptionsPage() {
     setReload(true);
   };
 
+  const getIntegerPart = (value) => {
+    return Math.floor(value);
+  }
+
+  const getDecimalPart = (value) => {
+    const num = (value - Math.floor(value)).toFixed(2);
+    return num.split(".")[1];
+  }
+
   return (
     <Layout title={"Inscripciones"}>
       <div
@@ -107,20 +116,22 @@ export default function InscriptionsPage() {
         <div className="d-none d-md-table text-gray-900 w-100 px-4 pb-2">
           <div className="d-grid pt-3">
             <div className="container-events">
-              {tournaments.map((item, idx)=>(
+              {tournaments.map((item, idx) => (
                 <Link key={idx} href={`/inscriptions/${item.id}/players`}>
-                  <Card  className="card-info">
+                  <Card className="card-info">
                     <div className="d-flex justify-content-between p-2">
                       <div className="d-flex flex-row align-items-center">
                         <div className="d-flex flex-column ms-2">
-                            <span className="fw-bold">{item.name}</span>
+                          <span className="fw-bold">{item.name}</span>
                         </div>
                       </div>
                     </div>
                     <div className="w-100 px-3">
                       <Image
                         alt={"Poster de Publicidad"}
-                        src={item.image ? item.image : "/profile/user-vector.jpg"}
+                        src={
+                          item.image ? item.image : "/profile/user-vector.jpg"
+                        }
                         width={350}
                         height={200}
                         quality={50}
@@ -132,18 +143,29 @@ export default function InscriptionsPage() {
                         <div className="d-flex flex-row gap-4 pt-2 justify-content-between">
                           <div className="d-flex flex-column gap-2 pt-2">
                             <div className="d-flex flex-row gap-2">
-                              <span>Modalidad: <strong>{item.modality}</strong></span>
+                              <span>
+                                Modalidad: <strong>{item.modality}</strong>
+                              </span>
                             </div>
                             <div className="d-flex flex-row gap-2">
-                              <span style={{fontSize: "14px", color: "green"}}>
-                                <i className="bi bi-geo-alt"/>
-                              </span> 
-                              <a>{item.main_location}. {item.city_name}</a>
-                            </div>                      
+                              <span
+                                style={{ fontSize: "14px", color: "green" }}
+                              >
+                                <i className="bi bi-geo-alt" />
+                              </span>
+                              <a>
+                                {item.main_location}. {item.city_name}
+                              </a>
+                            </div>
                           </div>
                           <div className="d-flex flex-column justify-content-center align-items-center">
-                            <span className="badge bg-primary text-wrap rounded fs-6">$ {Number(Math.round(item.inscription_import + 'e' + 2) + 'e-' + 2).toFixed(2)}</span>
-                            
+                            <span className="badge bg-primary text-wrap rounded" aria-hidden="true">
+                              <span className="a-price-symbol">$</span>
+                              <span className="a-price">
+                                {getIntegerPart(item.inscription_import)}<span className="a-price-decimal">.</span>
+                              </span>
+                              <span className="a-price-fraction">{getDecimalPart(item.inscription_import)}</span>
+                            </span>
                           </div>
                         </div>
                       </CardBody>

@@ -153,6 +153,7 @@ export default function FindForm({isOpen, setClose, displayField, valueField, fo
                 setRecord(players[idx]);
             }
         }
+        setReload(true);
     }
 
     const onAccept = (e) => {
@@ -173,7 +174,8 @@ export default function FindForm({isOpen, setClose, displayField, valueField, fo
         setRecord(null);
         setTotalPages(0);
         setTotal(0);
-        setClose(false);       
+
+        onClose();
     }    
     
     return (

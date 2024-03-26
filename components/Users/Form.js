@@ -15,9 +15,11 @@ import {
   import { useAppContext } from "../../AppContext";
   import axios from "axios";
   import Swal from "sweetalert2";
+  import { useRouter } from "next/router";
 
   export default function UserForm({ formFields, setFormFields }) {
   
+    const router = useRouter();
     const {profile, lang, token} = useAppContext();
     const [open, setOpen] = useState(false);
     const [image, setImage] = useState(null);
@@ -144,6 +146,12 @@ import {
                 error: false,
               }
             });
+
+            if (method==="put") {
+              router.push(`/users`);              
+            }
+
+            
             Swal.fire({
               title: formFields.id.value==="" ? "Creando Usuario" : "Actualizando Usuario",
               text: data.detail,

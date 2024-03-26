@@ -7,28 +7,44 @@ export default function InscriptionsTable({ inscriptions, onDelete, mode }) {
     return inscriptions.map((item, idx) => (
       <Card key={idx} className="card-info">
         <CardBody>
-            <div className="d-flex flex-row gap-2 justify-content-between align-items-center">
-              <div className="d-flex flex-row gap-4">
-              </div>
-              <div className="d-flex flex-row gap-4">
-                <Link href={`/inscriptions/${item.id}/edit`}>
-                  <a className="edit" title="Editar">
-                    <i
-                      className="bi bi-pencil-square"
-                      style={{ fontSize: "18px" }}
-                    ></i>
-                  </a>
-                </Link>
-                <a
-                  className="delete"
-                  title="Eliminar"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    onDelete(item.id);
-                  }}
-                >
-                  <i className="bi bi-trash" style={{ fontSize: "18px" }}></i>
-                </a>
+          <div className="d-flex flex-row gap-4 pt-4">
+              <Image
+                alt={"Avatar Jugador"}
+                src={item.photo ? item.photo : "/profile/user-vector.jpg"}
+                width={50}
+                height={50}
+                quality={50}
+                priority
+                layout="intrinsic"
+                className="rounded-circle"
+              />
+
+              <div className="d-flex flex-column gap-2 pt-2">
+                <span>{item.name}</span>
+                <strong>{item.was_pay ? "Inscripción Pagada" : "Pendiente de Pago"}</strong>
+                <div className="d-flex flex-row justify-content-between">
+                  <span>{item.payment_way}.</span>
+                  <div className="d-flex flex-row gap-4">
+                    <Link href={`/inscriptions/${item.id}/players/edit`}>
+                      <a className="edit" title="Editar">
+                        <i
+                          className="bi bi-pencil-square"
+                          style={{ fontSize: "18px" }}
+                        ></i>
+                      </a>
+                    </Link>
+                    <a
+                      className="delete"
+                      title="Eliminar"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        onDelete(item.id);
+                      }}
+                    >
+                      <i className="bi bi-trash" style={{ fontSize: "18px" }}></i>
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
         </CardBody>
@@ -68,25 +84,19 @@ export default function InscriptionsTable({ inscriptions, onDelete, mode }) {
                   scope="col"
                   className="px-3 py-2 font-weight-bold text-center"
                 >
-                  Nivel
-                </th>
-                <th
-                  scope="col"
-                  className="px-3 py-2 font-weight-bold text-center"
-                >
                   Club
                 </th>
                 <th
                   scope="col"
                   className="px-3 py-2 font-weight-bold text-center"
                 >
-                  Ciudad
+                  Estado
                 </th>
                 <th
                   scope="col"
                   className="px-3 py-2 font-weight-bold text-center"
                 >
-                  País
+                  Forma de Pago
                 </th>
                 <th
                   scope="col"
@@ -117,21 +127,18 @@ export default function InscriptionsTable({ inscriptions, onDelete, mode }) {
                   <td scope="row" className="text-center">
                     {item.elo}
                   </td>
-                  <td scope="row" className="text-center">
-                    {item.level}
-                  </td>
                   <td scope="row" className="text-left">
                     {item.club_name}
                   </td>
-                  <td scope="row" className="text-center">
-                    {item.city_name}
+                  <td scope="row">
+                    {item.was_pay ? "Pagado" : "Pendiente"}
                   </td>
                   <td scope="row" className="text-center">
-                    {item.country}
+                    {item.payment_way}
                   </td>
                   <td scope="row" className="text-center">
                     <div className="d-flex flex-row gap-3 justify-content-center">
-                      <Link href={`/inscriptions/${item.id}/edit`}>
+                      <Link href={`/inscriptions/${item.id}/players/edit`}>
                         <a className="edit" title="Editar">
                           <i
                             className="bi bi-pencil-square"

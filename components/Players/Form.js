@@ -17,9 +17,11 @@ import {
   import { useAppContext } from "../../AppContext";
   import axios from "axios";
   import Swal from "sweetalert2";
+  import { useRouter } from "next/router";
 
   export default function PlayerForm({ formFields, setFormFields }) {
   
+    const router = useRouter();
     const {profile, lang, token} = useAppContext();
     const [open, setOpen] = useState(false);
     const [image, setImage] = useState(null);
@@ -91,8 +93,8 @@ import {
           if (data.success) {
             setFormFields({
               ...formFields,
-              id: {
-                ...formFields["id"],
+              profile_id: {
+                ...formFields["profile_id"],
                 value: "",
                 error: false,
               },
@@ -127,6 +129,11 @@ import {
                 error: false,
               }
             });
+
+            if (method==="put") {
+              router.push(`/players`);              
+            }
+
             Swal.fire({
               title: formFields.id.value==="" ? "Creando Jugador" : "Actualizando Jugador",
               text: data.detail,
@@ -173,8 +180,8 @@ import {
       let method = "post";
   
       if (!isValid()) {
-        if (formFields.id.value !== "") {
-          url = url + "/" + formFields.id.value;
+        if (formFields.profile_id.value !== "") {
+          url = url + "/" + formFields.profile_id.value;
           method = "put";
         } else {
           url = url + "/" + profile.id;
@@ -229,7 +236,7 @@ import {
               field={"username"} 
               formFields={formFields} 
               setFormFields={setFormFields} 
-              disabled={formFields.id.value!==""} 
+              disabled={formFields.profile_id.value!==""} 
             />
           </FormGroup>
 
@@ -330,7 +337,7 @@ import {
   
         <Upload 
           open={open} 
-          fieldId={"id"}
+          fieldId={"profile_id"}
           fieldTitle={"name"}
           fieldMedia={"image"}
           setOpen={setOpen} 

@@ -20,7 +20,7 @@ export default function CreateCouples() {
             error: false,
             errorMessage: ''                  
         },
-        username_one: {
+        profile_name_one: {
             value: "",
             error: false,
             errorMessage: 'El nombre de usuario del primer jugador de la pareja es requerido'                  
@@ -30,7 +30,7 @@ export default function CreateCouples() {
             error: false,
             errorMessage: ''                  
         },
-        username_two: {
+        profile_name_two: {
             value: "",
             error: false,
             errorMessage: 'El nombre de usuario del segundo jugador de la pareja es requerido'                  

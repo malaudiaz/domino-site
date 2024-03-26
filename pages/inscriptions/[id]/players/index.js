@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 
 export default function InscriptionsPlayer() {
   const router = useRouter();
-  const { profile, lang, token } = useAppContext();
+  const { lang, token } = useAppContext();
   const [inscriptions, setInscriptions] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -45,7 +45,7 @@ export default function InscriptionsPlayer() {
       if (data.success) {
         setTotal(data.total);
         setTotalPages(data.total_pages);
-        setTournaments(data.data);
+        setInscriptions(data.data);
         setReload(false);
       }
     } catch ({ code, message, name, request }) {
@@ -94,6 +94,60 @@ export default function InscriptionsPlayer() {
   const handleSearch = (value) => {
     setSearchField(value);
     setReload(true);
+  };
+
+  const delItem = async (id) => {
+    const url = `${process.env.NEXT_PUBLIC_API_URL}inscriptions/${id}`;
+
+    try {
+      const { data } = await axios.delete(url, config);
+
+      if (data.success) {
+        setReload(true);
+      }
+    } catch ({ code, message, name, request }) {
+      if (code === "ERR_NETWORK") {
+        Swal.fire({
+          title: "Eliminado Inscripción",
+          text: "Error en su red, consulte a su proveedor de servicio",
+          icon: "error",
+          showCancelButton: false,
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Aceptar",
+        });
+      } else {
+        if (code === "ERR_BAD_REQUEST") {
+          const { detail } = JSON.parse(request.response);
+          Swal.fire({
+            title: "Eliminado Inscripción",
+            text: detail,
+            icon: "error",
+            showCancelButton: false,
+            allowOutsideClick: false,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Aceptar",
+          });
+        }
+      }
+    }
+  };
+
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "¿ Eliminar Inscripción ?",
+      text: "¿ Deseas eliminar ésta inscripción ?",
+      icon: "question",
+      showCancelButton: true,
+      cancelButtonText: "No",
+      allowOutsideClick: false,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Sí",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        delItem(id);
+      }
+    });
   };
 
   return (
@@ -145,7 +199,7 @@ export default function InscriptionsPlayer() {
           </div>
 
           {inscriptions.length > 0 ? (
-            <InscriptionsTable inscriptions={inscriptions} mode={"Table"} />
+            <InscriptionsTable inscriptions={inscriptions} onDelete={handleDelete} mode={mode} />
           ) : (
             <div className="d-flex flex-row justify-content-center p-4 fs-5">
               <strong>No existen jugadores Inscriptos en el torneo</strong>

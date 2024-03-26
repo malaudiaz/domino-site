@@ -15,9 +15,11 @@ import {
   import axios from "axios";
   import Swal from "sweetalert2";
   import FinderUser from "../Users/Finder";
+  import { useRouter } from "next/router";
 
   export default function FederativeForm({ formFields, setFormFields }) {
   
+    const router = useRouter();
     const {profile, lang, token} = useAppContext();
     const [open, setOpen] = useState(false);
     const [image, setImage] = useState(null);
@@ -89,6 +91,11 @@ import {
                 error: false,
               }
             });
+
+            if (method==="put") {
+              router.push(`/federative`);              
+            }
+
             Swal.fire({
               title: formFields.id.value==="" ? "Creando Federativo" : "Actualizando Federativo",
               text: data.detail,
@@ -159,7 +166,7 @@ import {
                 <b>Usuario</b>
               </Label>
               <FinderUser 
-                field={"username"} 
+                field={"name"} 
                 formFields={formFields} 
                 setFormFields={setFormFields} 
                 disabled={formFields.id.value!==""} 

@@ -66,9 +66,9 @@ export default function EditPlayer() {
             const { data } = await axios.get(url, config);
             if (data.success) {
                 setFormFields({
-                    id: {
-                        ...formFields["id"],
-                        value: data.data.id,
+                    profile_id: {
+                        ...formFields["profile_id"],
+                        value: data.data.profile_id,
                     },
                     name: {
                         ...formFields["name"],

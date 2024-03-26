@@ -1914,3 +1914,25 @@ h6 {
     gap: 10px;
   }
 }
+
+
+.a-price-symbol {
+  position: relative;
+  top: -.75em !important;
+  font-size: 13px;
+}
+
+.a-price {
+  font-size: 28px;
+}
+
+.a-price .a-price-decimal, .a-price .a-price-decimal {
+  position: absolute;
+  opacity: 0;
+}
+
+.a-price-fraction {
+  position: relative;
+  top: -.75em !important;
+  font-size: 13px;
+}

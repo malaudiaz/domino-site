@@ -4,10 +4,12 @@ import { useAppContext } from "../../AppContext";
 import Link from "next/link";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useRouter } from "next/router";
 
 export default function InscriptionForm({ formFields, setFormFields, tourney }) {
 
   const { lang, token } = useAppContext();
+  const router = useRouter();
 
   const config = {
     headers: {
@@ -83,6 +85,11 @@ export default function InscriptionForm({ formFields, setFormFields, tourney }) 
             error: false,
           }
         });
+
+        if (method==="put") {
+          router.push(`/inscriptions/${tourney.id}/players`);              
+        }
+
         Swal.fire({
           title: formFields.id.value==="" ? "Creando Inscripción" : "Actualizando Inscripción",
           text: data.detail,
@@ -124,7 +131,7 @@ export default function InscriptionForm({ formFields, setFormFields, tourney }) 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    let url = `${process.env.NEXT_PUBLIC_API_URL}inscriptions/`; 
+    let url = `${process.env.NEXT_PUBLIC_API_URL}inscriptions`; 
     let method = "post";
     let body = {};
 

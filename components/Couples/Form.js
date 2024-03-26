@@ -17,9 +17,11 @@ import {
   import FinderPlayer from "../Players/Finder";
   import axios from "axios";
   import Swal from "sweetalert2";
+  import { useRouter } from "next/router";
 
   export default function CouplesForm({ formFields, setFormFields }) {
   
+    const router = useRouter();
     const {profile, lang, token} = useAppContext();
     const [open, setOpen] = useState(false);
     const [image, setImage] = useState(null);
@@ -65,13 +67,13 @@ import {
           ...formFields["name"],
           error: formFields.name.value === ""
         },
-        username_one: {
-          ...formFields["username_one"],
-          error: formFields.username_one.value === ""
+        profile_name_one: {
+          ...formFields["profile_name_one"],
+          error: formFields.profile_name_one.value === ""
         },
-        username_two: {
-          ...formFields["username_two"],
-          error: formFields.username_two.value === ""
+        profile_name_two: {
+          ...formFields["profile_name_two"],
+          error: formFields.profile_name_two.value === ""
         },
         club_id: {
           ...formFields["club_id"],
@@ -114,8 +116,8 @@ import {
                 value: "",
                 error: false,
               },
-              username_one: {
-                  ...formFields['username_one'],
+              profile_name_one: {
+                  ...formFields['profile_name_one'],
                   value: "",
                   error: false,
                 },
@@ -124,8 +126,8 @@ import {
                   value: "",
                   error: false,
                 },
-              username_two: {
-                  ...formFields['username_two'],
+              profile_name_two: {
+                  ...formFields['profile_name_two'],
                   value: "",
                   error: false,
               },
@@ -150,6 +152,11 @@ import {
                 error: false,
               }
             });
+
+            if (method==="put") {
+              router.push(`/couples`);              
+            }
+
             Swal.fire({
               title: formFields.id.value==="" ? "Creando Pareja" : "Actualizando Pareja",
               text: data.detail,
@@ -249,7 +256,7 @@ import {
               <b>Jugador 1</b>
             </Label>
             <FinderPlayer 
-              displayField={"username_one"} 
+              displayField={"profile_name_one"} 
               valueField={"profile_id_one"} 
               formFields={formFields} 
               setFormFields={setFormFields} 
@@ -262,7 +269,7 @@ import {
               <b>Jugador 2</b>
             </Label>
             <FinderPlayer 
-              displayField={"username_two"} 
+              displayField={"profile_name_two"} 
               valueField={"profile_id_two"} 
               formFields={formFields} 
               setFormFields={setFormFields} 
@@ -355,14 +362,14 @@ import {
   
         </div>
         <div className="mt-4 d-flex justify-content-end gap-2 mb-2">
-          <Link href="/players" >
+          <Link href="/couples" >
               <a className="btn btn-secondary btn-sm">
                 Cancelar
               </a>
           </Link>
   
           <Button className="btn btn-sm" color="primary" type="submit">
-            Crear Jugador
+            {formFields.id.value === "" ? "Crear" : "Actualizar"}
           </Button>
         </div>
   
