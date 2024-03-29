@@ -47,7 +47,7 @@ export default function CreateTeam() {
                         ]}
                     />
 
-                    <TeamForm formFields={formFields} setFormFields={setFormFields}/>
+                    {/* <TeamForm formFields={formFields} setFormFields={setFormFields}/> */}
 
                 </div>
             </div>

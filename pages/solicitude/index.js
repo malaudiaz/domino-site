@@ -50,6 +50,7 @@ export default function Solicitude() {
 
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refresh]);
 
   const handleRequest = async (e, id, status) => {

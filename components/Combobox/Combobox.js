@@ -66,6 +66,7 @@ export default function Combobox({
     if (reload) {
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps    
   }, [reload]);
 
   return (
@@ -75,9 +76,7 @@ export default function Combobox({
       type="select"
       invalid={invalid}
       value={valueDefault}
-      onChange={(e) => {
-        onChange(e);
-      }}
+      onChange={onChange}
     >
       <option value="">{cmbText}</option>
       

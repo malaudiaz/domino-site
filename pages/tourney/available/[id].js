@@ -58,6 +58,7 @@ export default function Available() {
     if (router.query.id) {
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps    
   }, [reload, router.query.id]);
 
 

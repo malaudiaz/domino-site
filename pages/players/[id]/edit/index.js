@@ -14,7 +14,7 @@ export default function EditPlayer() {
     const id = router.query.id;
 
     const [formFields, setFormFields] = useState({
-        profile_id: {
+        id: {
             value: "",
             error: false,
             errorMessage: ''                  
@@ -66,9 +66,9 @@ export default function EditPlayer() {
             const { data } = await axios.get(url, config);
             if (data.success) {
                 setFormFields({
-                    profile_id: {
-                        ...formFields["profile_id"],
-                        value: data.data.profile_id,
+                    id: {
+                        ...formFields["id"],
+                        value: data.data.id,
                     },
                     name: {
                         ...formFields["name"],
@@ -128,6 +128,7 @@ export default function EditPlayer() {
         if (id) {
             fetchData();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
     
     return (

@@ -78,6 +78,7 @@ export default function Invitations({ tourney, active }) {
         if (tourney.id && active) {
           fetchData();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tourney.id, refresh, page, filter, playerName, active]);
     
     const onChangePage = (pageNumber) => {

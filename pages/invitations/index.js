@@ -66,6 +66,7 @@ export default function Invitations() {
     if (Object.entries(profile).length > 0) {
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status, refresh]);
 
   const handlerInvitation = async (id, status) => {

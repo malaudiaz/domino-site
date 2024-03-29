@@ -79,6 +79,7 @@ export default function SliderResult({id}) {
       if (id) {
         fetchData();
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id, page, activeIndex]); 
 
   const next = () => {

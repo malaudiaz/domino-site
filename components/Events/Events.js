@@ -86,6 +86,7 @@ export default function NewEvent({
       tourney: null
     });
     setStep(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [record, reload]);
 
   const isValid = () => {

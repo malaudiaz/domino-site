@@ -54,6 +54,7 @@ export default function View({ session }) {
 
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const sendInvitations = async (torneyId) => {

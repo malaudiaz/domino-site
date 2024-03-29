@@ -19,7 +19,7 @@ import {
   import Swal from "sweetalert2";
   import { useRouter } from "next/router";
 
-  export default function PlayerForm({ formFields, setFormFields }) {
+  export default function PlayerForms({ formFields, setFormFields }) {
   
     const router = useRouter();
     const {profile, lang, token} = useAppContext();
@@ -172,7 +172,6 @@ import {
         }
     } 
 
-
     const handleSubmit = (event) => {
       event.preventDefault();
   
@@ -232,12 +231,13 @@ import {
             <Label size="sm" sm={4}>
               <b>Usuario</b>
             </Label>
+
             <FinderUser 
-              field={"username"} 
-              formFields={formFields} 
-              setFormFields={setFormFields} 
-              disabled={formFields.profile_id.value!==""} 
-            />
+                field={"username"} 
+                formFields={formFields} 
+                setFormFields={setFormFields} 
+                disabled={formFields.id.value!==""} 
+              />
           </FormGroup>
 
           <FormGroup>
@@ -337,7 +337,7 @@ import {
   
         <Upload 
           open={open} 
-          fieldId={"profile_id"}
+          fieldId={"id"}
           fieldTitle={"name"}
           fieldMedia={"image"}
           setOpen={setOpen} 
@@ -347,8 +347,8 @@ import {
           image={image}
           setImage={setImage}
         />
-  
+
       </form>
     );
-}
+  }
   

@@ -65,6 +65,7 @@ export default function Invitations() {
 
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status, refresh]);
 
   const handlerInvitation = async (id, status) => {

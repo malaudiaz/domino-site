@@ -1,6 +1,6 @@
 import Layout from "../../../layouts/Layout"
 import Breadcrumbs from "../../../components/Breadcrumbs";
-import PlayerForm from "../../../components/Players/Form";
+import PlayerForms from "../../../components/Players/Form";
 import { useState } from "react";
 
 export default function CreatePlayer() {
@@ -62,7 +62,7 @@ export default function CreatePlayer() {
                         ]}
                     />
 
-                    <PlayerForm formFields={formFields} setFormFields={setFormFields}/>
+                    <PlayerForms formFields={formFields} setFormFields={setFormFields}/>
 
                 </div>
             </div>

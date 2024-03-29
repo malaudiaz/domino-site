@@ -78,6 +78,7 @@ export default function Players({tourney, active}) {
         if ( active && (tourney.id || !register) ) {
             fetchData();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tourney.id, refresh, page, filter, playerName, register, active]);
 
     const onChangePage = (pageNumber) => {

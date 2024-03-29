@@ -29,11 +29,6 @@ export default function EditTeam() {
             error: false,
             errorMessage: 'Las siglas que identifican el club es requerido'                  
         },
-        federationId: {
-            value: "",
-            error: false,
-            errorMessage: 'Seleccione la federación del club'                  
-        },
         logo: {
             value: "",
             error: false,
@@ -68,14 +63,9 @@ export default function EditTeam() {
                         error: false,
                         errorMessage: 'El Nombre de la Federación es requerido.'                  
                     },
-                    // acronym: {
-                    //     ...formFields["acronym"],
-                    //     value: data.data.acronym
-                    // },
-                    federationId: {
-                        value: data.data.country_id,
-                        error: false,
-                        errorMessage: 'Seleccione la federación del Club'                  
+                    acronym: {
+                        ...formFields["siglas"],
+                        value: data.data.siglas
                     },
                     logo: {
                         value: data.data.logo,
@@ -116,6 +106,7 @@ export default function EditTeam() {
         if (id) {
             fetchData();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
     
     return (
@@ -138,7 +129,7 @@ export default function EditTeam() {
                         ]}
                     />
 
-                    <TeamForm formFields={formFields} setFormFields={setFormFields}/>
+                    {/* <TeamForm formFields={formFields} setFormFields={setFormFields}/> */}
 
                 </div>
             </div>

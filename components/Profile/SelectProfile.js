@@ -45,6 +45,7 @@ export default function SelectProfile({ setProfileType }) {
 
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [choice]);
 
   const handleChange = (item) => {

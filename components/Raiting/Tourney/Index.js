@@ -74,6 +74,7 @@ export default function TournerResult({ id }) {
       if (id) {
         fetchData();
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id, page]);
   
     const onChangePage = (pageNumber) => {

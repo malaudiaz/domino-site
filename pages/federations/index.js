@@ -76,6 +76,7 @@ export default function FederationsPage() {
     if (reload && profile.id) {
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reload, profile.id]);
 
   const onChangePage = (pageNumber) => {

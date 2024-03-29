@@ -175,6 +175,7 @@ export default function Bombo({ open, setClose, eloMax, tourneyId, setRefresh })
             value: eloMax
         },
     });  
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[eloMax]);
 
   return (

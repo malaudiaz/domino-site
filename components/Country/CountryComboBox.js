@@ -41,6 +41,8 @@ export default function CountryComboBox({
     };
 
     fetchData();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
 
   return (

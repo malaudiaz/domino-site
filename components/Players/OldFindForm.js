@@ -78,6 +78,7 @@ export default function FindForm({isOpen, setClose, setPlayer, changePlayer, pro
     
       useEffect(()=>{
         findPlayer()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
       },[page, filter.criteria_value]);
     
 

@@ -92,6 +92,7 @@ export default function CreateInscription() {
         if (id) {
             fetchData();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
     
 

@@ -158,6 +158,7 @@ export default function Profile() {
     if (Object.entries(profile).length > 0) {
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile, reload]);
 
   const saveProfile = async () => {

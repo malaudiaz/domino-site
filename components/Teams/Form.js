@@ -79,7 +79,7 @@ import {
                 <b>Club</b>
               </Label>
               <InputGroup size="sm">
-                <Combobox 
+                {/* <Combobox 
                   name="clubId"
                   cmbText="Seleccione club del jugador..."
                   invalid={formFields.clubId.error}
@@ -91,7 +91,7 @@ import {
                   displayValue={"name"}
                   valueField={"id"}
                   reload={reload}
-                />
+                /> */}
                 <FormFeedback>{formFields.clubId.errorMessage}</FormFeedback>
               </InputGroup>
             </FormGroup>
@@ -155,13 +155,17 @@ import {
   
         <Upload 
           open={open} 
-          key={"logo"}
+          fieldId={"id"}
+          fieldTitle={"name"}
+          fieldMedia={"image"}
           setOpen={setOpen} 
           formFields={formFields} 
           setFormFields={setFormFields}
           title="Subir Avatar"
+          image={image}
+          setImage={setImage}
         />
-  
+
       </form>
     );
 }

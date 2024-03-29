@@ -87,6 +87,7 @@ export default function Detail() {
     if (tourneyId) {
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tourneyId]);
 
 

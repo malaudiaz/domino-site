@@ -59,6 +59,7 @@ export default function Tables({ round, edited, active }) {
     if (round && active) {
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [round, page, active]);
 
   const onChangePage = (pageNumber) => {

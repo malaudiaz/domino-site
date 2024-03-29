@@ -66,6 +66,7 @@ export default function PairsPositions({ id, active }) {
       if (id && active) {
         fetchData();
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id, page, active]);
   
     const onChangePage = (pageNumber) => {

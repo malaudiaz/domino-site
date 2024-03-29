@@ -88,6 +88,7 @@ export default function ListPenalty({ record, readOnly, active }) {
     if (reload && active) {
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reload, active]);
 
   const parseMotive = (type) => {

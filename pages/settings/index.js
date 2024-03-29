@@ -9,7 +9,7 @@ import Image from "next/image";
 import { Card, CardBody, CardHeader } from "reactstrap";
 import Link from "next/link";
 
-export default function InscriptionsPage() {
+export default function TourneyPage() {
   const { profile, lang, token } = useAppContext();
   const [tournaments, setTournaments] = useState([]);
   const [page, setPage] = useState(1);
@@ -99,14 +99,14 @@ export default function InscriptionsPage() {
   }
 
   return (
-    <Layout title={"Inscripciones"}>
+    <Layout title={"Configurar Torneo"}>
       <div
         className="card"
         style={{ border: "1px solid", borderColor: "#c7c7c7" }}
       >
         <div className="d-flex flex-row justify-content-between align-items-center px-4 pt-4">
           <h1 style={{ fontSize: "24px", fontWeight: "600", color: "#012970" }}>
-            Inscripciones
+            Configurar Torneo
           </h1>
         </div>
 
@@ -118,7 +118,7 @@ export default function InscriptionsPage() {
           <div className="d-grid pt-3">
             <div className="container-events">
               {tournaments.map((item, idx) => (
-                <Link key={idx} href={`/inscriptions/${item.id}/players`}>
+                <Link key={idx} href={`/settings/${item.id}`}>
                   <Card className="card-info">
                     <div className="d-flex justify-content-between p-2">
                       <div className="d-flex flex-row align-items-center">

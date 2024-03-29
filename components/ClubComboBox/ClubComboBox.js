@@ -50,6 +50,7 @@ export default function ClubComboBox({
     if (federation_id) {
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [federation_id]);
 
   return (

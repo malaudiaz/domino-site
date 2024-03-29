@@ -53,6 +53,7 @@ export default function Page() {
     if (Object.entries(profile).length > 0) {
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile, refresh]);
 
   const t = i18n.home;

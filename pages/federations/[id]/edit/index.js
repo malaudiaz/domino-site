@@ -127,6 +127,7 @@ export default function EditFederation() {
         if (id) {
             fetchData();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
     
     return (

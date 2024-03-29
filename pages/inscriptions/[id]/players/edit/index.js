@@ -157,12 +157,14 @@ export default function EditInscription() {
         if (formFields.tourney_id.value) {
             fetchTourney();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [formFields.tourney_id.value]);
 
     useEffect(() => {
         if (id) {
             fetchOne();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
 
 

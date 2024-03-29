@@ -86,6 +86,7 @@ export default function Tourneys() {
     if (eventId) {
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps    
   }, [reload, eventId]);
 
   const sendInvitations = (id) => {

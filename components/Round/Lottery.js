@@ -80,6 +80,7 @@ export default function Lottery({ activeRound, tourney, selected, setSelected, a
     if (refresh && active) {
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refresh, active]);
 
   const handleChange = (e) => {

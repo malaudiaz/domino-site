@@ -77,6 +77,7 @@ export default function BomboPlayer({ tourney, item, bombo, setBombo, setPlayerA
     if (max !== "" && min !== "") {
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, max, min]);
 
   const onChangePage = (pageNumber) => {

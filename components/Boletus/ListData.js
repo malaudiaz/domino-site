@@ -86,6 +86,7 @@ export default function ListData({ record, readOnly, setActiveRound, active }) {
     if (reload && active) {
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps    
   }, [reload, active]);
 
   const handleNew = (item) => {

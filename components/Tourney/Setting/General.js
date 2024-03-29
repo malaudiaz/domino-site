@@ -8,8 +8,8 @@ import {
 } from "reactstrap";
 
 export default function General({ formValues, setFormValues }) {
-  const handleChange = (e) => {
-    const name = e.target.name;
+  const handleChange = (event) => {
+    const name = event.target.name;
 
     const value =
       event.target.type === "checkbox"

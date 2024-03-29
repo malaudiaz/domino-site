@@ -83,6 +83,7 @@ export default function Players({
 
   useEffect(() => {   
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refresh, page, filter, reload]);
 
   const onChangePage = (pageNumber) => {

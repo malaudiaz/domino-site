@@ -52,7 +52,7 @@ export default function Attend() {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  });
 
   const onMenuSelection = (key, index) => {
     switch (key) {

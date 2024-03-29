@@ -71,6 +71,7 @@ export default function TeamsPage() {
     if (reload) {
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchField, reload]);
 
   const onChangePage = (pageNumber) => {

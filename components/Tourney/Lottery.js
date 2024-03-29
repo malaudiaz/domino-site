@@ -77,6 +77,7 @@ export default function Lottery({ tourney, setRefresh }) {
 
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleChange = (e) => {

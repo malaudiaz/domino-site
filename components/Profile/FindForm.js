@@ -121,6 +121,7 @@ export default function FindForm({isOpen, setClose, displayField, valueField, fo
         if (reload && profile.id) {
           fetchData();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchField, reload, profile.id]);
 
 

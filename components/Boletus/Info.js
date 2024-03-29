@@ -59,6 +59,7 @@ export default function InfoBoletus({ record, handleSubmit }) {
         if (record.boletus_id !== "") {
             fetchData();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [record]);
 
     return (

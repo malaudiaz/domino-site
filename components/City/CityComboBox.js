@@ -61,6 +61,7 @@ export default function CityComboBox({
     if (country_id) {
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps    
   }, [country_id]);
 
   return (

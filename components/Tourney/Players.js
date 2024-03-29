@@ -67,6 +67,7 @@ export default function Players({tourneyId, title, status}) {
         if (tourneyId) {
             fetchData();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tourneyId, refresh, page]);
 
     const onChangePage = (pageNumber) => {

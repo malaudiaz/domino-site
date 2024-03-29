@@ -218,6 +218,54 @@ const Sidebar = () => {
             </li>
 
 
+            <li className="nav-item">
+              <Link href={"/settings"}>
+                <a
+                  className={
+                    router.asPath === "/"
+                      ? "nav-link active"
+                      : "nav-link collapsed"
+                  }
+                >
+                  <i className={"bi bi-gear"}></i>
+                  <span>Configurar Torneo</span>
+                </a>
+              </Link>
+            </li>
+
+
+            <li className="nav-item">
+              <Link href={"/rounds"}>
+                <a
+                  className={
+                    router.asPath === "/"
+                      ? "nav-link active"
+                      : "nav-link collapsed"
+                  }
+                >
+                  <i className={"bi bi-ui-checks-grid"}></i>
+                  <span>Rondas</span>
+                </a>
+              </Link>
+            </li>
+
+
+            <li className="nav-item">
+              <Link href={"/reports"}>
+                <a
+                  className={
+                    router.asPath === "/"
+                      ? "nav-link active"
+                      : "nav-link collapsed"
+                  }
+                >
+                  <i className={"bi bi-receipt"}></i>
+                  <span>Resultados</span>
+                </a>
+              </Link>
+            </li>
+
+            
             {/* <li className="nav-item">
               <a
                 className="nav-link"

@@ -80,6 +80,7 @@ export default function InscriptionsPlayer() {
     if (reload && id) {
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchField, reload, id]);
 
   const onChangePage = (pageNumber) => {
@@ -162,7 +163,7 @@ export default function InscriptionsPlayer() {
               breadcrumbs={[
                 { label: "Torneos", href: "/inscriptions" },
                 {
-                  label: "Jugadores Inscriptos",
+                  label: "Inscripciones",
                   href: "/inscriptions/players",
                   active: true,
                 },

@@ -226,6 +226,7 @@ export default function Register({ tourney, open, close, playerId }) {
     if (playerId) {
       fetchData()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[playerId])
 
   const validateFields = () => {

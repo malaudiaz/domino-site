@@ -69,6 +69,7 @@ export default function Tables({ tourney }) {
     if (tourney.id) {
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps    
   }, [tourney.id, page, reload]);
 
   const onChangePage = (pageNumber) => {

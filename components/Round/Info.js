@@ -74,6 +74,7 @@ export default function Info({ round, readOnly, setActiveRound, active }) {
     if (round.id && !open && active) {
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [round.id, open, record, page, active]);
 
   const handleClick = (item) => {

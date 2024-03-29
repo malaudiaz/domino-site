@@ -67,6 +67,7 @@ export default function RoundPositions({ id, active }) {
       if (id && active) {
         fetchData();
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id, page, active, order]);
   
     const onChangePage = (pageNumber) => {

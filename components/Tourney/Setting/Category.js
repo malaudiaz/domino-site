@@ -91,6 +91,7 @@ export default function Category({ formValues, setFormValues, active }) {
     if (formValues.tourneyId.value && active) {
       fechData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
 }, [refresh, formValues.tourneyId.value, active]);
 
   const handleAdd = (e) => {

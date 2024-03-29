@@ -95,6 +95,7 @@ export default function Rounds({ tourney, readOnly }) {
     if (tourney.id && reload) {
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tourney.id, selected, reload]);
 
   const handleRound = async (id) => {

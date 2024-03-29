@@ -82,6 +82,7 @@ export default function View({ record }) {
     };
 
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [record.country_id]);
 
   return (

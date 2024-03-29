@@ -71,6 +71,7 @@ export default function JugesPage() {
     if (reload) {
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchField, reload]);
 
   const onChangePage = (pageNumber) => {
@@ -150,7 +151,7 @@ export default function JugesPage() {
 
           <Search field={searchField} setField={setSearchField} />
 
-          <Link href="/referee/create" >
+          <Link href="/referee" >
             <a className="btn btn-primary btn-sm">
               <i className="bi bi-plus-lg"></i> Crear Arbitro
             </a>

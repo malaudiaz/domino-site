@@ -111,6 +111,7 @@ export default function Events() {
     if (Object.entries(profile).length > 0) {
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps    
   }, [refresh, profile, filter]);
 
   const t = i18n.events;

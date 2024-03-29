@@ -115,6 +115,7 @@ export default function Boletus({
     if (record.boletus_id) {
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [record, reload]);
 
   const closeByTime = async () => {

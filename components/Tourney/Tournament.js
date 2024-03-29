@@ -70,6 +70,7 @@ export default function Tournament({ open, setClose, record, event }) {
       startDate: false,
       number_rounds: false
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [record]);
 
   const close = () => {

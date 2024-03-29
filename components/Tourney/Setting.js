@@ -481,6 +481,7 @@ export default function Setting({ tourney }) {
     if (tourney.id && reload) {
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reload, tourney.id]);
 
   const toggleTab = (tab) => {
@@ -627,25 +628,13 @@ export default function Setting({ tourney }) {
                   </NavLink>
                 </NavItem>
 
+
                 <NavItem>
                   <NavLink
                     href="#"
                     className={classnames({ active: activeTab === "2" })}
                     onClick={() => {
                       toggleTab("2");
-                    }}
-                  >
-                    Ajustes
-                  </NavLink>
-                </NavItem>
-
-
-                <NavItem>
-                  <NavLink
-                    href="#"
-                    className={classnames({ active: activeTab === "3" })}
-                    onClick={() => {
-                      toggleTab("3");
                     }}
                   >
                     Categorias
@@ -655,9 +644,9 @@ export default function Setting({ tourney }) {
                 <NavItem>
                   <NavLink
                     href="#"
-                    className={classnames({ active: activeTab === "4" })}
+                    className={classnames({ active: activeTab === "3" })}
                     onClick={() => {
-                      toggleTab("4");
+                      toggleTab("3");
                     }}
                   >
                     Críterios para Organizar
@@ -668,22 +657,19 @@ export default function Setting({ tourney }) {
               </Nav>
 
               <TabContent activeTab={activeTab}>
-                <TabPane tabId="1">
-                  <General formValues={formValues} setFormValues={setFormValues}/>
-                </TabPane>
 
-                <TabPane tabId="2">
+                <TabPane tabId="1">
 
                     <Settings formValues={formValues} setFormValues={setFormValues}/>
 
                 </TabPane>
-                <TabPane tabId="3">
+                <TabPane tabId="2">
 
                     <Category formValues={formValues} setFormValues={setFormValues} active={activeTab==="3"}/>
 
                 </TabPane>
 
-                <TabPane tabId="4">
+                <TabPane tabId="3">
                     <Criteria formValues={formValues} setFormValues={setFormValues}/>
                 </TabPane>
 

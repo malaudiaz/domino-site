@@ -88,6 +88,7 @@ export default function Own() {
     if (Object.entries(profile).length > 0) {
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refresh, profile]);
 
   const t = i18n.events;

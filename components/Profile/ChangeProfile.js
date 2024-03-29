@@ -58,6 +58,7 @@ export default function ChangeProfile({open, setOpen}) {
         if (Object.entries(profile).length > 0) {
           fetchData();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [profile]);
     
     const changeProfile = ({ profile_id, profile_name, name, photo }) => {

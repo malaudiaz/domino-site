@@ -76,6 +76,7 @@ export default function FederativePage() {
     if (reload && profile.id) {
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchField, reload, profile.id]);
 
   const onChangePage = (pageNumber) => {

@@ -51,6 +51,7 @@ export default function Following({refresh, setRefresh}) {
     if (Object.entries(profile).length > 0) {
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile, reload, refresh]);
 
   const followyou = async (item) => {

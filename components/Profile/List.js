@@ -49,6 +49,7 @@ export default function ListProfile() {
     if (Object.entries(profile).length > 0) {
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps    
   }, [profile, reload]);
 
   const changeProfile = ({ profile_id, profile_name, name, photo }) => {

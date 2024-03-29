@@ -84,6 +84,7 @@ export default function View() {
     if (tourneyId) {
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps    
   }, [tourneyId, refresh]);
 
   const handleButton = (btn) => {
